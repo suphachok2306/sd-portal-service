@@ -1,6 +1,8 @@
 package com.pcc.portalservice.model.controller;
 
+import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.UpdateUserRequest;
 import com.pcc.portalservice.service.UserService;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
 @AllArgsConstructor
 @BasePathAwareController
 public class UserController {
@@ -27,7 +30,7 @@ public class UserController {
     }
 
     // TODO: Change to created http response
-    @PostMapping("/users")
+    @PostMapping("/create_user")
     public ResponseEntity<User> create(@RequestBody CreateUserRequest createUserRequest) {
         User user = userService.create(createUserRequest);
         return ResponseEntity.ok(user);
@@ -46,10 +49,22 @@ public class UserController {
         return ResponseEntity.ok(assembler.toFullResource(user));
     }
 
-//    @GetMapping("/users/{id}/teams")
-//    public ResponseEntity<?> findAllTeamsForUser(@PathVariable Long id, Pageable pageable, PagedResourcesAssembler assembler, PersistentEntityResourceAssembler persistentEntityResourceAssembler) {
-//        Page<Team> teamList = userService.findAllTeamsForUser(id, pageable);
-//        return ResponseEntity.ok(assembler.toModel(teamList, persistentEntityResourceAssembler));
-//    }
+
+    @PostMapping("/create_role")
+    public ResponseEntity<Role> createRole(@RequestBody String roleName) {
+        Roles roleEnum = Roles.valueOf(roleName);
+        Role role = userService.createRole(roleEnum);
+        return ResponseEntity.ok(role);
+    }
+
+    @PostMapping("/add_role/{userId}/{roleName}")
+    public ResponseEntity<?> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {
+        Roles roleEnum = Roles.valueOf(roleName);
+        userService.addRoleToUser(userId, roleEnum);
+        return ResponseEntity.ok("Role added to user successfully");
+    }
+
+
+
 
 }

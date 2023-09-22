@@ -19,20 +19,15 @@ import javax.transaction.Transactional;
 @Transactional
 public class AuthenticationService {
 
-    //@Autowired
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
     //private final RefreshTokenRepository refreshTokenRepository;
 
-    /**
-     * Login in a user by email and password.
-     * Password is checked against the password hash in the database
-     */
     public JwtAuthenticationResponse login(User user, String plainPassword) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), plainPassword));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUser_id(), plainPassword));
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Invalid username/password supplied");
         }

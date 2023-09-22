@@ -1,6 +1,8 @@
 package com.pcc.portalservice.service;
 
+import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.RoleRepository;
 import com.pcc.portalservice.repository.UserRepository;
 import com.pcc.portalservice.requests.CreateUserRequest;
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
@@ -100,10 +105,31 @@ public class UserService {
                 .password(hashedPassword)
                 .username(createUserRequest.getUsername())
                 .telephone(createUserRequest.getTelephone())
+                .roles(new ArrayList<>())
                 .build();
-
+        for (String roleName : createUserRequest.getRoles()) {
+            Roles roleEnum = Roles.valueOf(roleName); // Convert role name to enum
+            Role role = roleRepository.findByRole(roleEnum).orElseThrow(()
+                    -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found: " + roleName));
+            user.getRoles().add(role); // Add the role to the user's roles
+            }
         return userRepository.save(user);
     }
+
+    public Role createRole(Roles roleName) {
+        Role role = Role.builder().role(roleName).build();
+        return roleRepository.save(role);
+    }
+
+    public void addRoleToUser(Long userId, Roles roleName) {
+        User user = findById(userId);
+        Role role = roleRepository.findByRole(roleName).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found: " + roleName));
+
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
 
 
 }

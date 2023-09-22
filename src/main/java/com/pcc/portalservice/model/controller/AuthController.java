@@ -10,15 +10,18 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 
+@RestController
 @BasePathAwareController
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
     private final AuthenticationService authenticationService;
+
 
     @PostMapping("/auth/login")
     @Transactional
