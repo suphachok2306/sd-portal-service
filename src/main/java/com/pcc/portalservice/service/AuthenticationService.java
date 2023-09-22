@@ -27,7 +27,7 @@ public class AuthenticationService {
 
     public JwtAuthenticationResponse login(User user, String plainPassword) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUser_id(), plainPassword));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), plainPassword));
         } catch (AuthenticationException e) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Invalid username/password supplied");
         }

@@ -18,20 +18,31 @@ import java.util.Collection;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long id;
     private String firstname;
     private String lastname;
     private String username;
     private String email;
     private String password;
     private String telephone;
-    @ManyToMany(fetch = FetchType.EAGER)
+
+    @ManyToMany(fetch = FetchType.EAGER )
     //@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_roles", // ชื่อตารางกลาง
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
+//    @JoinTable(
+//            name = "user_roles", // ชื่อตารางกลาง
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id")
+//    )
     private Collection<Role> roles = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @OneToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+
 
 }
