@@ -1,4 +1,4 @@
-package com.pcc.portalservice.model.controller;
+package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
