@@ -6,7 +6,7 @@ public enum Roles implements GrantedAuthority {
 
     Admin,
     Approver,
-    VicePersident,
+    VicePresident,
     Personnel,
     User;
 

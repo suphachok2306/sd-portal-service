@@ -13,9 +13,15 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>portal-service</name>
     <description>portal-service</description>
+
     <properties>
         <java.version>17</java.version>
     </properties>
+
+<!--    <properties>-->
+<!--        <start-class>com.bt.collab.alu.api.webapp.Application</start-class>-->
+<!--    </properties>-->
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

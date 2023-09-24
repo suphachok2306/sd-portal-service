@@ -19,8 +19,8 @@ public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String dept_name;
-    private String dept_code;
+    private String deptName;
+    private String deptCode;
 
     //@OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     @OneToMany(mappedBy = "department")

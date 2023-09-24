@@ -1,5 +1,6 @@
 package com.pcc.portalservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String position_name;
+    private String positionName;
 
     @ManyToOne
     @JoinColumn(name = "department_id")

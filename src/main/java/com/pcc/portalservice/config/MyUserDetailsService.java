@@ -2,6 +2,7 @@ package com.pcc.portalservice.config;
 
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,5 +49,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         return authorities;
     }
+
 
 }

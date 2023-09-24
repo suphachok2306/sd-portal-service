@@ -2,6 +2,7 @@ package com.pcc.portalservice.config;
 
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.Roles;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -44,7 +45,7 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setSubject(Long.toString(user.getId()));
 
         claims.put("email", user.getEmail());
-        claims.put("username", user.getUsername());
+        //claims.put("username", user.getUsername());
         claims.put("role", getAuthorities(user.getRoles()));
         claims.put("firstname", user.getFirstname());
         claims.put("lastname", user.getLastname());
@@ -94,5 +95,12 @@ public class JwtTokenProvider {
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRole().name()))
                 .collect(Collectors.toList());
     }
+
+    private Collection<Role> convertRoles(Collection<Roles> rolesEnum) {
+        return rolesEnum.stream()
+                .map(roleEnum -> Role.builder().role(roleEnum).build())
+                .collect(Collectors.toList());
+    }
+
 
 }

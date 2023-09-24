@@ -1,18 +1,20 @@
 package com.pcc.portalservice.requests;
+
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
-@Builder
 @Data
-public class CreateUserRequest {
-
-    String email;
+@Builder
+public class CreateEmployeeRequest {
+    String deptName;
+    String deptCode;
+    String empCode;
     String firstname;
     String lastname;
-    String password;
-    String telephone;
+    String positionName;
+    String email;
     private List<String> roles;
 
 }
