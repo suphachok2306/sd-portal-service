@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -177,8 +178,28 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public String deleteData(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            userRepository.deleteById(id);
+        }
+        return null;
+    }
+
     public List<User> findAllEmployee() {
         return userRepository.findByRolesRole(Roles.User);
+    }
+    public List<User> findAllPersonnel() {
+        return userRepository.findByRolesRole(Roles.Personnel);
+    }
+    public List<User> findAllVicePresident() {
+        return userRepository.findByRolesRole(Roles.VicePresident);
+    }
+    public List<User> findAllApprover() {
+        return userRepository.findByRolesRole(Roles.Approver);
+    }
+    public List<User> findAllAdmin() {
+        return userRepository.findByRolesRole(Roles.Admin);
     }
 
 

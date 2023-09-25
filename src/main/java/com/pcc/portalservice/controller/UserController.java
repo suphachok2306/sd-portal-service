@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
 
-    @GetMapping("/findUserById") // เปลี่ยนเส้นทางตามความเหมาะสม
+    @GetMapping("/findUserById")
     public ResponseEntity<User> findUserById(@PathVariable Long userId) {
         User user = userService.findById(userId);
         if (user != null) {
@@ -72,10 +72,43 @@ public class UserController {
         return ResponseEntity.ok("Role added to user successfully");
     }
 
+    @DeleteMapping("deleteById")
+    public Object delete(@RequestParam Long id) {
+        return userService.deleteData(id);
+    }
+
     @GetMapping("/findAllEmployee")
-    public ResponseEntity<List<User>> getUsersWithUserRole() {
+    public ResponseEntity<List<User>> getAllEmployee() {
         List<User> users = userService.findAllEmployee();
         return ResponseEntity.ok(users);
     }
+
+    @GetMapping("/findAllPersonnel")
+    public ResponseEntity<List<User>> getAllPersonnel() {
+        List<User> users = userService.findAllPersonnel();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/findAllVicePresident")
+    public ResponseEntity<List<User>> getAllVicePresident() {
+        List<User> users = userService.findAllVicePresident();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/findAllApprover")
+    public ResponseEntity<List<User>> getAllApprover() {
+        List<User> users = userService.findAllApprover();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/findAllAdmin")
+    public ResponseEntity<List<User>> getAllAdmin() {
+        List<User> users = userService.findAllAdmin();
+        return ResponseEntity.ok(users);
+    }
+
+
+
+
 
 }

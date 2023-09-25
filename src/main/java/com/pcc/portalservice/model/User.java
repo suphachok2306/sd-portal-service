@@ -1,5 +1,6 @@
 package com.pcc.portalservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,22 +27,27 @@ public class User {
     private String password;
     private String telephone;
     @ManyToMany(fetch = FetchType.EAGER )
+    @JsonIgnore
     private Collection<Role> roles = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "sector_id")
+    @JsonIgnore
     private Sector sector;
 
     @OneToOne
     @JoinColumn(name = "department_id")
+    @JsonIgnore
     private Department department;
 
     @OneToOne
     @JoinColumn(name = "position_id")
+    @JsonIgnore
     private Position position;
 
     @OneToOne
     @JoinColumn(name = "company_id")
+    @JsonIgnore
     private Company company;
 
 }

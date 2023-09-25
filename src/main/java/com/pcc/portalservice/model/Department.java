@@ -1,5 +1,7 @@
 package com.pcc.portalservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,13 +25,16 @@ public class Department {
     private String deptCode;
 
     @OneToMany(mappedBy = "department")
+    @JsonIgnore
     private List<Position> positions = new ArrayList<>();
 
     @OneToOne(mappedBy = "department")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "sector_id")
+    @JsonIgnore
     private Sector sector;
 }
 
