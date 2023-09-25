@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
+import java.util.Locale;
 
 @RestController
 @BasePathAwareController
@@ -26,7 +27,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     @Transactional
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.findByEmail(loginRequest.getEmail());
+        User user = userService.findByEmail(loginRequest.getEmail().toLowerCase(Locale.ROOT));
         JwtAuthenticationResponse jwtAuthenticationResponse = authenticationService.login(user, loginRequest.getPassword());
         return ResponseEntity.ok(jwtAuthenticationResponse);
     }

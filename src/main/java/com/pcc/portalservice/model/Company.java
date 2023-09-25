@@ -10,26 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "DEPARTMENT")
+@Table(name = "COMPANY")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Department {
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String deptName;
-    private String deptCode;
+    private String companyName;
 
-    @OneToMany(mappedBy = "department")
-    private List<Position> positions = new ArrayList<>();
-
-    @OneToOne(mappedBy = "department")
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "sector_id")
-    private Sector sector;
+//    @OneToMany(mappedBy = "company")
+//    private List<User> users = new ArrayList<>();
 }
-

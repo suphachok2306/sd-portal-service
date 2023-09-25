@@ -1,7 +1,9 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Department;
+import com.pcc.portalservice.model.Sector;
 import com.pcc.portalservice.repository.DepartmentRepository;
+import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateDepartmentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,15 @@ import java.util.List;
 @Transactional
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
+    private final SectorRepository sectorRepository;
 
     public Department create(CreateDepartmentRequest createDepartmentRequest) {
+
+        Sector sectorId = sectorRepository.findById(createDepartmentRequest.getSectorId())
+                .orElseThrow(() -> new RuntimeException("sectorId not found: " + createDepartmentRequest.getSectorId()));
+
         Department department = Department.builder()
+                .sector(sectorId)
                 .deptName(createDepartmentRequest.getDeptName())
                 .deptCode(createDepartmentRequest.getDeptCode())
                 .build();

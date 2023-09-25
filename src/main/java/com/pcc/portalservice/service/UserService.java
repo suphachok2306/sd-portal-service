@@ -1,14 +1,8 @@
 package com.pcc.portalservice.service;
 
-import com.pcc.portalservice.model.Department;
-import com.pcc.portalservice.model.Position;
-import com.pcc.portalservice.model.Role;
-import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.model.enums.Roles;
-import com.pcc.portalservice.repository.DepartmentRepository;
-import com.pcc.portalservice.repository.PositionRepository;
-import com.pcc.portalservice.repository.RoleRepository;
-import com.pcc.portalservice.repository.UserRepository;
+import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 //import com.pcc.portalservice.specs.UserSpecs;
@@ -33,6 +27,8 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final DepartmentRepository departmentRepository;
     private final PositionRepository positionRepository;
+    private final SectorRepository sectorRepository;
+    private final CompanyRepository companyRepository;
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
@@ -81,6 +77,15 @@ public class UserService {
             throw new RuntimeException("Email is already in use.");
         }
 
+        Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
+                .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
+
+        Sector sectorName = sectorRepository.findBySectorName(createEmployeeRequest.getSectorName())
+                .orElseThrow(() -> new RuntimeException("sectorName not found: " + createEmployeeRequest.getSectorName()));
+
+        Sector sectorCode = sectorRepository.findBySectorCode(createEmployeeRequest.getSectorCode())
+                .orElseThrow(() -> new RuntimeException("sectorCode not found: " + createEmployeeRequest.getSectorCode()));
+
         Department departmentName = departmentRepository.findByDeptName(createEmployeeRequest.getDeptName())
                 .orElseThrow(() -> new RuntimeException("departmentName not found: " + createEmployeeRequest.getDeptName()));
 
@@ -91,13 +96,16 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("positionName not found: " + createEmployeeRequest.getPositionName()));
 
         User user = User.builder()
+                .company(companyName)
+                .sector(sectorCode)
+                .sector(sectorName)
+                .department(departmentCode)
+                .department(departmentName)
                 .empCode(createEmployeeRequest.getEmpCode())
                 .firstname(createEmployeeRequest.getFirstname())
                 .lastname(createEmployeeRequest.getLastname())
                 .email(createEmployeeRequest.getEmail())
                 .roles(new ArrayList<>())
-                .department(departmentName)
-                .department(departmentCode)
                 .position(positionName)
                 .build();
 
@@ -122,6 +130,15 @@ public class UserService {
     public User editUser(Long id, CreateEmployeeRequest createEmployeeRequest) {
         User user = findById(id);
 
+        Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
+                .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
+
+        Sector sectorName = sectorRepository.findBySectorName(createEmployeeRequest.getSectorName())
+                .orElseThrow(() -> new RuntimeException("sectorName not found: " + createEmployeeRequest.getSectorName()));
+
+        Sector sectorCode = sectorRepository.findBySectorCode(createEmployeeRequest.getSectorCode())
+                .orElseThrow(() -> new RuntimeException("sectorCode not found: " + createEmployeeRequest.getSectorCode()));
+
         Department departmentName = departmentRepository.findByDeptName(createEmployeeRequest.getDeptName())
                 .orElseThrow(() -> new RuntimeException("Department not found: " + createEmployeeRequest.getDeptName()));
 
@@ -131,8 +148,11 @@ public class UserService {
         Position position = positionRepository.findByPositionName(createEmployeeRequest.getPositionName())
                 .orElseThrow(() -> new RuntimeException("Position not found: " + createEmployeeRequest.getPositionName()));
 
-        user.setDepartment(departmentName);
+        user.setCompany(companyName);
+        user.setSector(sectorCode);
+        user.setSector(sectorName);
         user.setDepartment(departmentCode);
+        user.setDepartment(departmentName);
         user.setPosition(position);
         user.setEmpCode(createEmployeeRequest.getEmpCode());
         user.setEmail(createEmployeeRequest.getEmail());

@@ -29,6 +29,7 @@ public class DepartmentController {
         return new ResponseEntity<>(createdDepartment, HttpStatus.CREATED);
     }
 
+
     @GetMapping("/findAllDepartments")
     public List<Department> getAllDepartments() {
         return departmentService.findAll();

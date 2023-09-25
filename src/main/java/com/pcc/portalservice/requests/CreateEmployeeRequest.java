@@ -8,6 +8,9 @@ import java.util.List;
 @Data
 @Builder
 public class CreateEmployeeRequest {
+    String companyName;
+    String sectorName;
+    String sectorCode;
     String deptName;
     String deptCode;
     String empCode;
