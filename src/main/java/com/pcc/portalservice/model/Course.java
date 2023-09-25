@@ -26,6 +26,5 @@ public class Course {
     private float priceProject;
     private String place;
     private String institute;
-    
 }
 
