@@ -1,5 +1,7 @@
 package com.pcc.portalservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +24,10 @@ public class Position {
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @JsonIgnore
     private Department department;
 
     @OneToOne(mappedBy = "position")
+    @JsonIgnore
     private User user;
 }
