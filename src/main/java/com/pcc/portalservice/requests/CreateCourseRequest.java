@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 @Builder
 @Data
 public class CreateCourseRequest {
+    private Long id;
     private String course_name;
     private Timestamp startDate;
     private Timestamp endDate;
