@@ -19,5 +19,4 @@ public class CreateEmployeeRequest {
     String positionName;
     String email;
     private List<String> roles;
-
 }

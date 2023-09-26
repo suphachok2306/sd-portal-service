@@ -1,4 +1,4 @@
-package com.pcc.portalservice.requests;
+package com.pcc.portalservice.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

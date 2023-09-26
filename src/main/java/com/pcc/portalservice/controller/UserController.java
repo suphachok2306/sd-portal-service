@@ -5,6 +5,7 @@ import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
+import com.pcc.portalservice.requests.EditEmployeeRequest;
 import com.pcc.portalservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -23,7 +24,7 @@ public class UserController {
 
 
     @GetMapping("/findUserById")
-    public ResponseEntity<User> findUserById(@PathVariable Long userId) {
+    public ResponseEntity<User> findUserById(@RequestParam Long userId) {
         User user = userService.findById(userId);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -31,6 +32,8 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
 
     @PostMapping("/createUser")
     public ResponseEntity<User> create(@RequestBody CreateUserRequest createUserRequest) {
@@ -44,14 +47,14 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/editUser")
-    public ResponseEntity<User> updateUser(
-            @PathVariable Long userId,
-            @RequestBody CreateEmployeeRequest createEmployeeRequest
+    @PutMapping("/editEmployee")
+    public ResponseEntity<User> editEmployee(
+            @RequestParam Long userId,
+            @RequestBody EditEmployeeRequest editEmployeeRequest
     ) {
-        User updatedUser = userService.editUser(userId, createEmployeeRequest);
-        if (updatedUser != null) {
-            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        User editUser = userService.editUser(userId, editEmployeeRequest);
+        if (editUser != null) {
+            return new ResponseEntity<>(editUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -66,7 +69,7 @@ public class UserController {
     }
 
     @PostMapping("/addRoleToUser")
-    public ResponseEntity<?> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {
+    public ResponseEntity<?> addRoleToUser(@RequestParam Long userId, @RequestParam String roleName) {
         Roles roleEnum = Roles.valueOf(roleName);
         userService.addRoleToUser(userId, roleEnum);
         return ResponseEntity.ok("Role added to user successfully");
