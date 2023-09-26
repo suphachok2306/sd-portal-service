@@ -24,10 +24,11 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
+    @JsonIgnore
     private String password;
+    @JsonIgnore
     private String telephone;
     @ManyToMany(fetch = FetchType.EAGER )
-    @JsonIgnore
     private Collection<Role> roles = new ArrayList<>();
 
     @OneToOne
@@ -42,7 +43,6 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "position_id")
-    @JsonIgnore
     private Position position;
 
     @OneToOne

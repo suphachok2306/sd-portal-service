@@ -6,6 +6,7 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 //import com.pcc.portalservice.specs.UserSpecs;
+import com.pcc.portalservice.requests.EditEmployeeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,8 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
     }
+
+
 
     public User create(CreateUserRequest createUserRequest) {
         if (userRepository.existsByEmail(createUserRequest.getEmail())) {
@@ -131,37 +134,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User editUser(Long id, CreateEmployeeRequest createEmployeeRequest) {
+    public User editUser(Long id, EditEmployeeRequest editEmployeeRequest) {
         User user = findById(id);
+        Position position = positionRepository.findByPositionName(editEmployeeRequest.getPositionName())
+                .orElseThrow(() -> new RuntimeException("Position not found: " + editEmployeeRequest.getPositionName()));
 
-        Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
-                .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
-
-        Sector sectorName = sectorRepository.findBySectorName(createEmployeeRequest.getSectorName())
-                .orElseThrow(() -> new RuntimeException("sectorName not found: " + createEmployeeRequest.getSectorName()));
-
-        Sector sectorCode = sectorRepository.findBySectorCode(createEmployeeRequest.getSectorCode())
-                .orElseThrow(() -> new RuntimeException("sectorCode not found: " + createEmployeeRequest.getSectorCode()));
-
-        Department departmentName = departmentRepository.findByDeptName(createEmployeeRequest.getDeptName())
-                .orElseThrow(() -> new RuntimeException("Department not found: " + createEmployeeRequest.getDeptName()));
-
-        Department departmentCode = departmentRepository.findByDeptCode(createEmployeeRequest.getDeptCode())
-                .orElseThrow(() -> new RuntimeException("Department not found: " + createEmployeeRequest.getDeptCode()));
-
-        Position position = positionRepository.findByPositionName(createEmployeeRequest.getPositionName())
-                .orElseThrow(() -> new RuntimeException("Position not found: " + createEmployeeRequest.getPositionName()));
-
-        user.setCompany(companyName);
-        user.setSector(sectorCode);
-        user.setSector(sectorName);
-        user.setDepartment(departmentCode);
-        user.setDepartment(departmentName);
+        user.setEmail(editEmployeeRequest.getEmail());
+        user.setFirstname(editEmployeeRequest.getFirstname());
+        user.setLastname(editEmployeeRequest.getLastname());
         user.setPosition(position);
-        user.setEmpCode(createEmployeeRequest.getEmpCode());
-        user.setEmail(createEmployeeRequest.getEmail());
-        user.setFirstname(createEmployeeRequest.getFirstname());
-        user.setLastname(createEmployeeRequest.getLastname());
         return userRepository.save(user);
     }
 

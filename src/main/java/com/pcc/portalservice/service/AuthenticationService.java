@@ -1,7 +1,7 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.User;
-import com.pcc.portalservice.requests.JwtAuthenticationResponse;
+import com.pcc.portalservice.response.JwtAuthenticationResponse;
 import com.pcc.portalservice.config.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

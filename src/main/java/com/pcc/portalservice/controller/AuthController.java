@@ -1,7 +1,7 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.User;
-import com.pcc.portalservice.requests.JwtAuthenticationResponse;
+import com.pcc.portalservice.response.JwtAuthenticationResponse;
 import com.pcc.portalservice.requests.LoginRequest;
 import com.pcc.portalservice.service.AuthenticationService;
 import com.pcc.portalservice.service.UserService;

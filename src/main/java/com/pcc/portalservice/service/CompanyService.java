@@ -18,6 +18,13 @@ import java.util.List;
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
+    public boolean isCompanyNull(Company company) {
+        if(company == null || company.getCompanyName() == null || company.getCompanyName().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
     public Company create(CreateCompanyRequest createCompanyRequest){
         Company company = Company.builder()
                 .id(createCompanyRequest.getCompanyId())

@@ -18,6 +18,8 @@ import java.util.List;
 public class SectorService {
     private final SectorRepository sectorRepository;
 
+
+
     public Sector create(CreateSectorRequest createSectorRequest){
         Sector sector = Sector.builder()
                 .sectorCode(createSectorRequest.getSectorCode())
