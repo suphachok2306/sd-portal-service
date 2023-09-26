@@ -26,8 +26,8 @@ public class Signature{
     private Long id;
     private byte[] image;
 
-    @Null
-    @OneToOne(mappedBy = "signature")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 }
