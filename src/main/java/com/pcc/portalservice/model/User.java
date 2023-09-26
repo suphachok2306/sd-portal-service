@@ -55,5 +55,4 @@ public class User {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
-
 }
