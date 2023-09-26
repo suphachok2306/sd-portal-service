@@ -20,7 +20,4 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String companyName;
-
-//    @OneToMany(mappedBy = "company")
-//    private List<User> users = new ArrayList<>();
 }

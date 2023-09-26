@@ -50,4 +50,9 @@ public class User {
     @JsonIgnore
     private Company company;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Training training;
+
+
 }
