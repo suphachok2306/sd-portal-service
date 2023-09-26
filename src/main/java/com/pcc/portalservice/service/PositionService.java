@@ -18,6 +18,14 @@ public class PositionService {
     private final PositionRepository positionRepository;
     private final DepartmentRepository departmentRepository;
 
+    public boolean isPositionNull(Position position){
+        if(position == null || position.getPositionName() == null || position.getPositionName().isEmpty()
+                || position.getDepartment() == null){
+            return true;
+        }
+        return false;
+    }
+
     public Position create(CreatePositionRequest createPositionRequest) {
 
         Department departmentId = departmentRepository.findById(createPositionRequest.getDepartmentId())

@@ -18,6 +18,14 @@ public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final SectorRepository sectorRepository;
 
+    public boolean isDeptNull(Department department){
+        if(department == null || department.getDeptName() == null || department.getDeptName().isEmpty()
+                || department.getDeptCode() == null || department.getDeptCode().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
     public Department create(CreateDepartmentRequest createDepartmentRequest) {
 
         Sector sectorId = sectorRepository.findById(createDepartmentRequest.getSectorId())
