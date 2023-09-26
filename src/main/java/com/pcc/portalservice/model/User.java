@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -49,5 +51,10 @@ public class User {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "signature_id")
+    @JsonIgnore
+    private Signature signature;
 
 }

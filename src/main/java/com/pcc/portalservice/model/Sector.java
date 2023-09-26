@@ -30,4 +30,9 @@ public class Sector {
     @JsonIgnore
     @OneToOne(mappedBy = "sector")
     private User user;
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "company_id")
+    @JsonIgnore
+    private Company company;
 }

@@ -5,10 +5,14 @@ import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.CompanyRepository;
+import com.pcc.portalservice.repository.RoleRepository;
 import com.pcc.portalservice.requests.CreateCompanyRequest;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -37,4 +41,5 @@ public class CompanyService {
     public List<Company> findAll() {
         return companyRepository.findAll();
     }
+    
 }

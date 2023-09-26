@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class Company {
     private Long id;
     private String companyName;
 
-//    @OneToMany(mappedBy = "company")
-//    private List<User> users = new ArrayList<>();
+    @JsonIgnore
+    @OneToOne(mappedBy = "company")
+    private Sector sector;
 }
