@@ -47,7 +47,6 @@ public class CourseController {
 
     @PutMapping("/editCourse")
     public ResponseEntity<Course> updateCourse(
-        @RequestParam Long courseID,
         @RequestBody CreateCourseRequest createCourseRequest
     ) {
         Course updatedCourse = courseService.editCourse(createCourseRequest);
