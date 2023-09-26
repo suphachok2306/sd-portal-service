@@ -50,7 +50,7 @@ public class CourseController {
         @RequestParam Long courseID,
         @RequestBody CreateCourseRequest createCourseRequest
     ) {
-        Course updatedCourse = courseService.editCourse(courseID,createCourseRequest);
+        Course updatedCourse = courseService.editCourse(createCourseRequest);
         if (updatedCourse != null) {
             return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
         } else {
