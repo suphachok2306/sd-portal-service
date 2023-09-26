@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +23,11 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String companyName;
+<<<<<<< HEAD
+=======
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "company")
+    private Sector sector;
+>>>>>>> fbf42f65befad1a0aa458d911bd65aee784fa9cb
 }
