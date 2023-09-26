@@ -57,13 +57,25 @@ public class UserController {
         }
     }
 
-
     @PostMapping("/createRole")
-    public ResponseEntity<Role> createRole(@RequestBody String roleName) {
-        Roles roleEnum = Roles.valueOf(roleName);
-        Role role = userService.createRole(roleEnum);
-        return ResponseEntity.ok(role);
+    public ResponseEntity<Object> createRole(@RequestBody String roleName) {
+         Roles roleEnum = Roles.valueOf(roleName);
+        
+        try {
+            Role role = userService.createRole(roleEnum);
+            if (role == null) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
+            }
+            return ResponseEntity.ok(role);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Invalid role name: " + roleName);
+        }
     }
+
+
+
 
     @PostMapping("/addRoleToUser")
     public ResponseEntity<?> addRoleToUser(@PathVariable Long userId, @PathVariable String roleName) {

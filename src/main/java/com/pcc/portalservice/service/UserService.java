@@ -8,6 +8,7 @@ import com.pcc.portalservice.requests.CreateUserRequest;
 //import com.pcc.portalservice.specs.UserSpecs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -167,9 +168,17 @@ public class UserService {
 
 
     public Role createRole(Roles roleName) {
-        Role role = Role.builder().role(roleName).build();
-        return roleRepository.save(role);
+        if (!roleRepository.existsByRole(roleName)) {
+            Role role = Role.builder().role(roleName).build();
+            return roleRepository.save(role);
+        } 
+        else {
+            return null;
+        }
     }
+      
+      
+
 
     public void addRoleToUser(Long userId, Roles roleName) {
         User user = findById(userId);
@@ -220,6 +229,11 @@ public class UserService {
                     Role roleEntity = new Role();
                     roleEntity.setRole(role);
                     roleRepository.save(roleEntity);
+                }
+                else{
+                    Role roleEntity = new Role();
+                    roleEntity.setRole(role);
+                    roleRepository.delete(roleEntity);
                 }
             }
         }
