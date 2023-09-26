@@ -47,6 +47,7 @@ public class CourseController {
 
     @PutMapping("/editCourse")
     public ResponseEntity<Course> updateCourse(
+        @RequestParam Long courseID,
         @RequestBody CreateCourseRequest createCourseRequest
     ) {
         Course updatedCourse = courseService.editCourse(createCourseRequest);
@@ -56,7 +57,8 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("/deleteCourseById")
+
+    @GetMapping("/deleteCourseById")
     public ResponseEntity<String> delete(
          @RequestParam Long courseID
         ) {

@@ -9,9 +9,11 @@ import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -182,6 +184,27 @@ public class UserService {
     public List<User> findAllAdmin() {
         return userRepository.findByRolesRole(Roles.Admin);
     }
+    
+    @Component
+    public class RoleAutoInserter {
+
+        private final RoleRepository roleRepository;
+
+        public RoleAutoInserter(RoleRepository roleRepository) {
+            this.roleRepository = roleRepository;
+        }
+
+        @PostConstruct
+        public void autoInsertRoles() {
+            for (Roles role : Roles.values()) {
+                if (!roleRepository.existsByRole(role)) {
+                    Role roleEntity = new Role();
+                    roleEntity.setRole(role);
+                    roleRepository.save(roleEntity);
+                }
+            }
+        }
+}
 
 
 }
