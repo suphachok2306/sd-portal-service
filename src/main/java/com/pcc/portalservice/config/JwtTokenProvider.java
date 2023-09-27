@@ -32,7 +32,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     @Value("${security.jwt.token.expire-length}")
-    private final long validityInMilliseconds = 3600000; // 1h
+    private final long validityInMilliseconds = 86400000; // 1day
 
     private final MyUserDetailsService myUserDetailsService;
 

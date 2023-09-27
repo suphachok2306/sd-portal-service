@@ -16,8 +16,8 @@ import javax.persistence.*;
 @Table(name = "Course")
 public class Course {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long course_id;
-    private String course_name;
+    private long id;
+    private String courseName;
     private Timestamp startDate;
     private Timestamp endDate;
     private String time;
