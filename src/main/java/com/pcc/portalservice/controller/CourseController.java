@@ -57,7 +57,7 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/deleteCourseById")
+    @DeleteMapping("/deleteCourseById")
     public ResponseEntity<String> delete(
          @RequestParam Long courseID
         ) {
