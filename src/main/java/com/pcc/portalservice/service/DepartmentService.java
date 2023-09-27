@@ -8,8 +8,14 @@ import com.pcc.portalservice.requests.CreateDepartmentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +23,7 @@ import java.util.List;
 public class DepartmentService {
     private final DepartmentRepository departmentRepository;
     private final SectorRepository sectorRepository;
+    private final EntityManager entityManager;
 
     public boolean isDeptNull(Department department){
         if(department == null || department.getDeptName() == null || department.getDeptName().isEmpty()
@@ -42,4 +49,27 @@ public class DepartmentService {
     public List<Department> findAll() {
         return departmentRepository.findAll();
     }
+
+    public List<Map<String, Object>> findAllJoinDepartments() {
+    String jpql = "SELECT c.company_name, s.sector_name, s.sector_code, d.dept_name, d.dept_code FROM " + 
+         "department d JOIN sector s ON d.sector_id = s.id JOIN company c ON s.company_id = c.id";
+
+    List<Object[]> results = entityManager.createNativeQuery(jpql).getResultList();
+    
+    List<Map<String, Object>> resultList = new ArrayList<>();
+    
+    for (Object[] row : results) {
+        Map<String, Object> resultMap = new LinkedHashMap<>();
+        resultMap.put("company", row[0]);
+        resultMap.put("sectorname", row[1]);
+        resultMap.put("sectorcode", row[2]);
+        resultMap.put("deptname", row[3]);
+        resultMap.put("deptcode", row[4]);
+        resultList.add(resultMap);
+    }
+
+    return resultList;
+}
+
+
 }
