@@ -55,4 +55,17 @@ public class User {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
+
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private Training training;
+
+
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "signature_id")
+//    @JsonIgnore
+//    private Signature signature;
+    //มันแดงเลยคอมเม้น
+
 }

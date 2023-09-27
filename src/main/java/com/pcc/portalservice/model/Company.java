@@ -23,7 +23,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String companyName;
-    
+
     @JsonIgnore
     @OneToOne(mappedBy = "company")
     private Sector sector;
