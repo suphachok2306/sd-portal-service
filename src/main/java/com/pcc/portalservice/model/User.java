@@ -52,16 +52,14 @@ public class User {
     @JsonIgnore
     private Company company;
 
-<<<<<<< HEAD
     @OneToOne(mappedBy = "user")
     @JsonIgnore
     private Training training;
 
-=======
+
     @OneToOne(optional = false)
     @JoinColumn(name = "signature_id")
     @JsonIgnore
     private Signature signature;
->>>>>>> fbf42f65befad1a0aa458d911bd65aee784fa9cb
 
 }
