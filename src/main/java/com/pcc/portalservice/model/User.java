@@ -32,6 +32,10 @@ public class User {
     private String telephone;
     @ManyToMany(fetch = FetchType.EAGER )
     private Collection<Role> roles = new ArrayList<>();
+    
+    @JsonIgnore
+    @OneToOne(mappedBy = "user")
+    private Signature signature;
 
     @OneToOne
     @JoinColumn(name = "sector_id")
@@ -52,14 +56,16 @@ public class User {
     @JsonIgnore
     private Company company;
 
+
     @OneToOne(mappedBy = "user")
     @JsonIgnore
     private Training training;
 
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "signature_id")
-    @JsonIgnore
-    private Signature signature;
+//    @OneToOne(optional = false)
+//    @JoinColumn(name = "signature_id")
+//    @JsonIgnore
+//    private Signature signature;
+    //มันแดงเลยคอมเม้น
 
 }
