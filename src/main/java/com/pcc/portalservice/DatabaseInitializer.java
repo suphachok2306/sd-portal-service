@@ -144,18 +144,14 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
     
      private void insertDataIntoUsersTable() {
-        String x1 = passwordEncoder.encode("admin");
-        String x2 = passwordEncoder.encode("approver");
-        String x3 = passwordEncoder.encode("vicePresiden");
-        String x4 = passwordEncoder.encode("personnel");
-        String x5 = passwordEncoder.encode("user");
+        String hashpassword = passwordEncoder.encode("1234");
 
         String sql = "INSERT INTO public.users (email, firstname, lastname, password, telephone) VALUES"+
-            "('admin@pccth.com', 'Admin', 'Admin','"+ x1 +"', '+15555555555'),"+
-            "('approver@pccth.com', 'Approver', 'Approver','"+x2+"', '+15555555555'),"+
-            "('vicepresident@pccth.com', 'VicePresident', 'VicePresident','"+x3+"','+15555555555'),"+
-            "('personnel@pccth.com', 'Personnel', 'Personnel','"+x4+"', '+15555555555'),"+
-            "('user@pccth.com', 'User', 'User','"+ x5 +"', '+15555555555');";
+            "('admin@pccth.com', 'Admin', 'Admin','"+ hashpassword +"', '+15555555555'),"+
+            "('approver@pccth.com', 'Approver', 'Approver','"+hashpassword+"', '+15555555555'),"+
+            "('vicepresident@pccth.com', 'VicePresident', 'VicePresident','"+hashpassword+"','+15555555555'),"+
+            "('personnel@pccth.com', 'Personnel', 'Personnel','"+hashpassword+"', '+15555555555'),"+
+            "('user@pccth.com', 'User', 'User','"+ hashpassword+"', '+15555555555');";
 
         if (isTableEmpty("public.users")) {
             jdbcTemplate.execute(sql);
