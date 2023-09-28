@@ -27,7 +27,6 @@ public class UserService {
 
     // Services
     private final AuthenticationService authenticationService;
-    private final SectorService sectorService;
     // Repositories
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -46,11 +45,11 @@ public class UserService {
 
 
 
-
     public User create(CreateUserRequest createUserRequest) {
-        if (userRepository.existsByEmail(createUserRequest.getEmail())) {
-            throw new RuntimeException("Email is already in use.");
+        if (userRepository.existsByEmail(createUserRequest.getEmail()) && (createUserRequest.getEmail() != null && !createUserRequest.getEmail().isEmpty())) {
+            throw new RuntimeException("Email is already in use.");  
         }
+
         String hashedPassword = authenticationService.hashPassword(createUserRequest.getPassword());
 
         User user = User.builder()
@@ -82,9 +81,16 @@ public class UserService {
 
 
     public User createEmployee(CreateEmployeeRequest createEmployeeRequest) {
-        if (userRepository.existsByEmail(createEmployeeRequest.getEmail())) {
-            throw new RuntimeException("Email is already in use.");
+        String email = createEmployeeRequest.getEmail();
+        if (email == null || email.isEmpty() || email.equals("")) {
+        } else {
+            if (userRepository.existsByEmail(email)) {
+                throw new RuntimeException("Email is already in use.");  
+           
         }
+    }
+        
+
 
         Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
                 .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
