@@ -1,5 +1,6 @@
 package com.pcc.portalservice.repository;
 
+import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     List<User> findByRolesRole(Roles role);
+
+    Optional<User> findById(Long userId);
 
 
     //public Page<User> findAll(Specification<User> spec, Pageable pageable);

@@ -25,53 +25,35 @@ public class TrainingService {
     private final SectorRepository sectorRepository;
     private final TrainingRepository trainingRepository;
     private final UserRepository userRepository;
+    private final ResultRepository resultRepository;
 
 
-    public Training createSectionOne(CreateTrainingSectionOneRequest createTrainingSectionOneRequest) {
-        Company companyName = companyRepository.findByCompanyName(createTrainingSectionOneRequest.getCompanyName())
-                .orElseThrow(() -> new RuntimeException("companyName not found: " + createTrainingSectionOneRequest.getCompanyName()));
-
-        Sector sectorName = sectorRepository.findBySectorName(createTrainingSectionOneRequest.getSectorName())
-                .orElseThrow(() -> new RuntimeException("sectorName not found: " + createTrainingSectionOneRequest.getSectorName()));
-
-        Sector sectorCode = sectorRepository.findBySectorCode(createTrainingSectionOneRequest.getSectorCode())
-                .orElseThrow(() -> new RuntimeException("sectorCode not found: " + createTrainingSectionOneRequest.getSectorCode()));
-
-        Department departmentName = departmentRepository.findByDeptName(createTrainingSectionOneRequest.getDeptName())
-                .orElseThrow(() -> new RuntimeException("departmentName not found: " + createTrainingSectionOneRequest.getDeptName()));
-
-        Department departmentCode = departmentRepository.findByDeptCode(createTrainingSectionOneRequest.getDeptCode())
-                .orElseThrow(() -> new RuntimeException("departmentCode not found: " + createTrainingSectionOneRequest.getDeptCode()));
-
-        Course courseName = courseRepository.findByCourseName(createTrainingSectionOneRequest.getCauseName())
-                .orElseThrow(() -> new RuntimeException("courseName not found: " + createTrainingSectionOneRequest.getCauseName()));
-
-//        Course startDate = courseRepository.findByStartDate(createTrainingSectionOneRequest.getStartDate())
-//                .orElseThrow(() -> new RuntimeException("startDate not found: " + createTrainingSectionOneRequest.getStartDate()));
-//
-//        Course endDate = courseRepository.findByEndDate(createTrainingSectionOneRequest.getEndDate())
-//                .orElseThrow(() -> new RuntimeException("endDate not found: " + createTrainingSectionOneRequest.getEndDate()));
-
-        Course coursePrice = courseRepository.findByPrice(createTrainingSectionOneRequest.getPrice())
-                .orElseThrow(() -> new RuntimeException("coursePrice not found: " + createTrainingSectionOneRequest.getPrice()));
-
-        Course coursePriceProject = courseRepository.findByPriceProject(createTrainingSectionOneRequest.getPriceProject())
-                .orElseThrow(() -> new RuntimeException("coursePriceProject not found: " + createTrainingSectionOneRequest.getPriceProject()));
-
-        Course coursePlace = courseRepository.findByPlace(createTrainingSectionOneRequest.getPlace())
-                .orElseThrow(() -> new RuntimeException("coursePlace not found: " + createTrainingSectionOneRequest.getPlace()));
-
-        Course courseInstitute = courseRepository.findByInstitute(createTrainingSectionOneRequest.getInstitute())
-                .orElseThrow(() -> new RuntimeException("courseInstitute not found: " + createTrainingSectionOneRequest.getInstitute()));
-
-
+    public Training createSectionOne(CreateTrainingSectionOneRequest createTrainingSectionOneRequest) throws ParseException {
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Timestamp currentTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getDateSave()).getTime());
+//        Timestamp dateSaveTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getDateSave()).getTime());
 //        Timestamp startDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getStartDate()).getTime());
 //        Timestamp endDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getEndDate()).getTime());
+//        Timestamp actionDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getActionDate()).getTime());
+        Company companyName = getCompanyName(createTrainingSectionOneRequest.getCompanyName());
+        Sector sectorName = getSectorName(createTrainingSectionOneRequest.getSectorName());
+        Sector sectorCode = getSectorCode(createTrainingSectionOneRequest.getSectorCode());
+        Department departmentName = getDepartmentName(createTrainingSectionOneRequest.getDeptName());
+        Department departmentCode = getDepartmentCode(createTrainingSectionOneRequest.getDeptCode());
+        Course courseName = getCourseName(createTrainingSectionOneRequest.getCauseName());
+        Course coursePrice = getCoursePrice(createTrainingSectionOneRequest.getPrice());
+        Course coursePriceProject = getCoursePriceProject(createTrainingSectionOneRequest.getPriceProject());
+        Course coursePlace = getCoursePlace(createTrainingSectionOneRequest.getPlace());
+        Course courseInstitute = getCourseInstitute(createTrainingSectionOneRequest.getInstitute());
+//        Course courseStartDate = getCourseStartDate(startDateTimestamp);
+        User userId = getUserId(createTrainingSectionOneRequest.getUserId());
+
+
 
         Collection<Course> name = new ArrayList<>();
         name.add(courseName);
+
+//        Collection<Course> startDate = new ArrayList<>();
+//        name.add(courseStartDate);
 
         Collection<Course> price = new ArrayList<>();
         price.add(coursePrice);
@@ -94,7 +76,6 @@ public class TrainingService {
                 .build();
 
         Training training = Training.builder()
-                //.dateSave(currentTimestamp)
                 .day(createTrainingSectionOneRequest.getDay())
                 .action(createTrainingSectionOneRequest.getAction())
                 .courses(name)
@@ -102,17 +83,133 @@ public class TrainingService {
                 .courses(priceProject)
                 .courses(place)
                 .courses(institute)
-                .user(user)
+                .user(userId)
                 .build();
         user.setTraining(training);
 
         trainingRepository.save(training);
         userRepository.save(user);
-
         return training;
     }
 
-//    public Training createSectionTwo(CreateTrainingSectionTwoRequest createTrainingSectionTwoRequest){
-//
-//    }
+
+
+    public Training createSectionTwo(CreateTrainingSectionTwoRequest createTrainingSectionTwoRequest, Long trainingId){
+
+        Sector sectorName = getSectorName(createTrainingSectionTwoRequest.getSectorName());
+        Department departmentName = getDepartmentName(createTrainingSectionTwoRequest.getDeptName());
+        Position positionName = getPositionName(createTrainingSectionTwoRequest.getPositionName());
+
+        User user = User.builder()
+                .sector(sectorName)
+                .department(departmentName)
+                .position(positionName)
+                .build();
+
+        Training training = Training.builder()
+                .id(trainingId)
+                .user(user)
+                .build();
+
+        Result result = Result.builder()
+                .result1(createTrainingSectionTwoRequest.getResult1())
+                .result2(createTrainingSectionTwoRequest.getResult2())
+                .result3(createTrainingSectionTwoRequest.getResult3())
+                .result4(createTrainingSectionTwoRequest.getResult4())
+                .result5(createTrainingSectionTwoRequest.getResult5())
+                .result6(createTrainingSectionTwoRequest.getResult6())
+                .result7(createTrainingSectionTwoRequest.getResult7())
+                .result(createTrainingSectionTwoRequest.getResult())
+                .comment(createTrainingSectionTwoRequest.getComment())
+                .cause(createTrainingSectionTwoRequest.getCause())
+                .plan(createTrainingSectionTwoRequest.getPlan())
+                .evaluator(user)
+                .build();
+
+        result.setEvaluator(user);
+        result.setTraining(training);
+
+        trainingRepository.save(training);
+        userRepository.save(user);
+        resultRepository.save(result);
+        return training;
+    }
+
+    private Company getCompanyName(String companyName) {
+        return companyRepository.findByCompanyName(companyName)
+                .orElseThrow(() -> new RuntimeException("Company not found: " + companyName));
+    }
+
+    private Sector getSectorName(String sectorName) {
+        return sectorRepository.findBySectorName(sectorName)
+                .orElseThrow(() -> new RuntimeException("Sector not found: " + sectorName));
+    }
+
+    private Sector getSectorCode(String sectorCode) {
+        return sectorRepository.findBySectorCode(sectorCode)
+                .orElseThrow(() -> new RuntimeException("Sector not found by code: " + sectorCode));
+    }
+
+    private Department getDepartmentName(String deptName) {
+        return departmentRepository.findByDeptName(deptName)
+                .orElseThrow(() -> new RuntimeException("Department not found: " + deptName));
+    }
+
+    private Department getDepartmentCode(String deptCode) {
+        return departmentRepository.findByDeptCode(deptCode)
+                .orElseThrow(() -> new RuntimeException("Department not found by code: " + deptCode));
+    }
+
+    private Course getCourseName(String courseName) {
+        return courseRepository.findByCourseName(courseName)
+                .orElseThrow(() -> new RuntimeException("Course not found by name: " + courseName));
+    }
+
+    private Course getCourseStartDate(Timestamp startDate) {
+        return courseRepository.findByStartDate(startDate)
+                .orElseThrow(() -> new RuntimeException("Course not found by startDate: " + startDate));
+    }
+
+    private Course getCourseEndDate(Timestamp endDate) {
+        return courseRepository.findByEndDate(endDate)
+                .orElseThrow(() -> new RuntimeException("Course not found by endDate: " + endDate));
+    }
+
+    private Course getCoursePrice(float price) {
+        return courseRepository.findByPrice(price)
+                .orElseThrow(() -> new RuntimeException("Course not found by price: " + price));
+    }
+
+    private Course getCoursePriceProject(float priceProject) {
+        return courseRepository.findByPriceProject(priceProject)
+                .orElseThrow(() -> new RuntimeException("Course not found by project price: " + priceProject));
+    }
+
+    private Course getCoursePlace(String place) {
+        return courseRepository.findByPlace(place)
+                .orElseThrow(() -> new RuntimeException("Course not found by place: " + place));
+    }
+
+    private Course getCourseInstitute(String institute) {
+        return courseRepository.findByInstitute(institute)
+                .orElseThrow(() -> new RuntimeException("Course not found by institute: " + institute));
+    }
+
+    private Position getPositionName(String position) {
+        return positionRepository.findByPositionName(position)
+                .orElseThrow(() -> new RuntimeException("Position not found by position: " + position));
+    }
+
+    private Training getTrainingId(Long trainingId){
+        return trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new RuntimeException("Training not found by id: " + trainingId));
+    }
+
+    private User getUserId(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found by id: " + userId));
+    }
+
 }
+
+

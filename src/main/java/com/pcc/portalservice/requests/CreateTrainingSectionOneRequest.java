@@ -6,6 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class CreateTrainingSectionOneRequest {
+    Long userId;
     String companyName;
     String sectorCode;
     String sectorName;

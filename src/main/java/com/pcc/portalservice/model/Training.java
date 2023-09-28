@@ -1,6 +1,4 @@
 package com.pcc.portalservice.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,14 +25,13 @@ public class Training {
     private Timestamp dateSave;
     private int day;
     private String action;
-    private Timestamp action_date;
+    private Timestamp actionDate;
     private String approve1;
     private String approve2;
     private String approve3;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     @ManyToMany

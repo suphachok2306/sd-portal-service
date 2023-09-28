@@ -39,12 +39,10 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "sector_id")
-    @JsonIgnore
     private Sector sector;
 
     @OneToOne
     @JoinColumn(name = "department_id")
-    @JsonIgnore
     private Department department;
 
     @OneToOne
@@ -53,7 +51,6 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "company_id")
-    @JsonIgnore
     private Company company;
 
 
