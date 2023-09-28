@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -39,5 +40,11 @@ public class SectorService {
 
     public List<Sector> findAll() {
         return sectorRepository.findAll();
+    }
+
+    public Optional<Sector> findBySectorCodeAndSectorNameAndCompanyCompanyName(
+            String sectorCode, String sectorName, String companyName) {
+        return sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
+                sectorCode, sectorName, companyName);
     }
 }

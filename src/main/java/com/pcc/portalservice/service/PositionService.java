@@ -2,6 +2,7 @@ package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Position;
+import com.pcc.portalservice.model.Sector;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.PositionRepository;
 import com.pcc.portalservice.requests.CreatePositionRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +42,10 @@ public class PositionService {
 
     public List<Position> findAll() {
         return positionRepository.findAll();
+    }
+
+    public Optional<Position> findByPositionNameAndDepartment(String positionName, Department department){
+        return positionRepository.findByPositionNameAndDepartment(positionName,department);
     }
 }
 

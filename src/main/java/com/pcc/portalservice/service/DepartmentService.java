@@ -11,11 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -70,6 +66,10 @@ public class DepartmentService {
 
     return resultList;
 }
+    public Optional<Department> findByDeptCodeAndDeptName(String DeptCode, String DeptName){
+        return departmentRepository.findByDeptCodeAndDeptName(
+                DeptCode,DeptName);
+    }
 
 
 }
