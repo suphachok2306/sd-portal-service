@@ -95,17 +95,17 @@ public class UserService {
                 createEmployeeRequest.getCompanyName()
         );
 
-        Sector sector = sectorOptional.orElseThrow(() -> new RuntimeException("Sector not found"));
+        Sector sector = sectorOptional.orElseThrow(() -> new RuntimeException("Sector not found / SectorCode or SectorName wrong"));
 
         Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
                 createEmployeeRequest.getDeptCode(),
                 createEmployeeRequest.getDeptName()
         );
-        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Sector not found"));;
+        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));;
 
         Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(createEmployeeRequest.getPositionName(), department);
 
-        Position position = positionOptional.orElseThrow(() -> new RuntimeException("position not found"));;
+        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));;
 
         User user = User.builder()
                 .company(companyName)
