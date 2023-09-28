@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -34,55 +36,43 @@ public class TrainingService {
 //        Timestamp startDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getStartDate()).getTime());
 //        Timestamp endDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getEndDate()).getTime());
 //        Timestamp actionDateTimestamp = new Timestamp(dateFormat.parse(createTrainingSectionOneRequest.getActionDate()).getTime());
+
+        Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
+                        createTrainingSectionOneRequest.getSectorCode(),
+                        createTrainingSectionOneRequest.getSectorName(),
+                        createTrainingSectionOneRequest.getCompanyName()
+                );
+
+        Sector sector = sectorOptional.orElseThrow(() -> new RuntimeException("Sector not found / SectorCode or SectorName wrong"));
+
+        Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
+                createTrainingSectionOneRequest.getDeptCode(),
+                createTrainingSectionOneRequest.getDeptName()
+        );
+        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));;
+
+        Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(createTrainingSectionOneRequest.getPosition(), department);
+
+        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));;
+
         Company companyName = getCompanyName(createTrainingSectionOneRequest.getCompanyName());
-        Sector sectorName = getSectorName(createTrainingSectionOneRequest.getSectorName());
-        Sector sectorCode = getSectorCode(createTrainingSectionOneRequest.getSectorCode());
-        Department departmentName = getDepartmentName(createTrainingSectionOneRequest.getDeptName());
-        Department departmentCode = getDepartmentCode(createTrainingSectionOneRequest.getDeptCode());
-        Course courseName = getCourseName(createTrainingSectionOneRequest.getCauseName());
-        Course coursePrice = getCoursePrice(createTrainingSectionOneRequest.getPrice());
-        Course coursePriceProject = getCoursePriceProject(createTrainingSectionOneRequest.getPriceProject());
-        Course coursePlace = getCoursePlace(createTrainingSectionOneRequest.getPlace());
-        Course courseInstitute = getCourseInstitute(createTrainingSectionOneRequest.getInstitute());
-//        Course courseStartDate = getCourseStartDate(startDateTimestamp);
+        
+        Optional<Course> courseOptional = courseRepository.findByCourseName(createTrainingSectionOneRequest.getCourseName());
+        Course course = courseOptional.orElseThrow(() -> new RuntimeException("Course not found"));
+
         User userId = getUserId(createTrainingSectionOneRequest.getUserId());
-
-
-
-        Collection<Course> name = new ArrayList<>();
-        name.add(courseName);
-
-//        Collection<Course> startDate = new ArrayList<>();
-//        name.add(courseStartDate);
-
-        Collection<Course> price = new ArrayList<>();
-        price.add(coursePrice);
-
-        Collection<Course> priceProject = new ArrayList<>();
-        priceProject.add(coursePriceProject);
-
-        Collection<Course> place = new ArrayList<>();
-        place.add(coursePlace);
-
-        Collection<Course> institute = new ArrayList<>();
-        institute.add(courseInstitute);
 
         User user = User.builder()
                 .company(companyName)
-                .sector(sectorName)
-                .sector(sectorCode)
-                .department(departmentCode)
-                .department(departmentName)
+                .sector(sector)
+                .department(department)
+                .position(position)
                 .build();
 
         Training training = Training.builder()
                 .day(createTrainingSectionOneRequest.getDay())
                 .action(createTrainingSectionOneRequest.getAction())
-                .courses(name)
-                .courses(price)
-                .courses(priceProject)
-                .courses(place)
-                .courses(institute)
+                .courses(Collections.singletonList(course))
                 .user(userId)
                 .build();
         user.setTraining(training);

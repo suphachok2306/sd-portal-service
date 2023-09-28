@@ -14,7 +14,7 @@ public class CreateTrainingSectionOneRequest {
     String deptCode;
     String dateSave;
     int day;
-    String causeName;
+    String courseName;
     String startDate;
     String endDate;
     String time;
