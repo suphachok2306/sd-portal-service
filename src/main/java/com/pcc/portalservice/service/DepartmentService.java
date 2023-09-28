@@ -47,59 +47,88 @@ public class DepartmentService {
     }
 
     public List<Map<String, Object>> findAllJoinDepartments() {
-        String jpql = "SELECT " +
-                "c.company_name, " +
-                "s.sector_name, " +
-                "s.sector_code, " +
-                "d.dept_name, " +
-                "d.dept_code, " +
-                "p.id, " +
-                "p.position_name " +
-                "FROM " +
-                "department d " +
-                "JOIN " +
-                "sector s ON d.sector_id = s.id " +
-                "JOIN " +
-                "company c ON s.company_id = c.id " +
-                "JOIN " +
-                "position p ON p.department_id = d.id;";
+        String jpql = "SELECT c.company_name, s.sector_name, s.sector_code, d.dept_name, d.dept_code,p.id,p.position_name  FROM department d JOIN sector s ON d.sector_id = s.id JOIN company c ON s.company_id = c.id join position p on p.department_id = d.id ";
     
         List<Object[]> results = entityManager.createNativeQuery(jpql).getResultList();
     
-        Map<String, Map<String, Object>> departmentMap = new HashMap<>();
+        List<Map<String, Object>> resultList = new ArrayList<>();
+    
+        Map<String, Map<String, Object>> companyMap = new HashMap<>();
     
         for (Object[] row : results) {
-            String departmentKey = row[4].toString();
+            String company = (String) row[0];
+            String sectorname = (String) row[1];
+            String sectorcode = (String) row[2];
+            String deptname = (String) row[3];
+            String deptcode = (String) row[4];
+            Long positionId = ((Number) row[5]).longValue();
+            String positionName = (String) row[6];
     
-            Map<String, Object> departmentInfo = departmentMap.computeIfAbsent(departmentKey, k -> {
-                Map<String, Object> deptData = new LinkedHashMap<>();
-                deptData.put("company", row[0]);
-                deptData.put("sectorname", row[1]);
-                deptData.put("sectorcode", row[2]);
-                deptData.put("deptname", row[3]);
-                deptData.put("deptcode", row[4]);
-                deptData.put("positions", new ArrayList<Map<String, String>>());
-                return deptData;
-            });
+            Map<String, Object> resultMap;
+            Map<String, Object> positionMap = new LinkedHashMap<>();
     
-            Map<String, String> positionMap = new LinkedHashMap<>();
-            positionMap.put("id", row[5].toString());
-            positionMap.put("name", row[6].toString());
+            if (companyMap.containsKey(company)) {
+                resultMap = companyMap.get(company);
+                List<Map<String, Object>> departments = (List<Map<String, Object>>) resultMap.get("departments");
     
-            List<Map<String, String>> positions = (List<Map<String, String>>) departmentInfo.get("positions");
-            positions.add(positionMap);
+                // Check if the department already exists
+                boolean departmentExists = false;
+                for (Map<String, Object> department : departments) {
+                    if (department.get("deptname").equals(deptname)) {
+                        departmentExists = true;
+                        List<Map<String, Object>> positions = (List<Map<String, Object>>) department.get("position");
+                        positionMap.put("id", positionId.toString());
+                        positionMap.put("name", positionName);
+                        positions.add(positionMap);
+                        break;
+                    }
+                }
+    
+                // If department doesn't exist, create a new one
+                if (!departmentExists) {
+                    Map<String, Object> departmentMap = new LinkedHashMap<>();
+                    departmentMap.put("deptname", deptname);
+                    departmentMap.put("deptcode", deptcode);
+    
+                    positionMap.put("id", positionId.toString());
+                    positionMap.put("name", positionName);
+    
+                    List<Map<String, Object>> positions = new ArrayList<>();
+                    positions.add(positionMap);
+                    departmentMap.put("position", positions);
+    
+                    departments.add(departmentMap);
+                }
+            } else {
+                resultMap = new LinkedHashMap<>();
+                resultMap.put("company", company);
+                resultMap.put("sectorname", sectorname);
+                resultMap.put("sectorcode", sectorcode);
+    
+                List<Map<String, Object>> departments = new ArrayList<>();
+    
+                Map<String, Object> departmentMap = new LinkedHashMap<>();
+                departmentMap.put("deptname", deptname);
+                departmentMap.put("deptcode", deptcode);
+    
+                positionMap.put("id", positionId.toString());
+                positionMap.put("name", positionName);
+    
+                List<Map<String, Object>> positions = new ArrayList<>();
+                positions.add(positionMap);
+                departmentMap.put("position", positions);
+    
+                departments.add(departmentMap);
+    
+                resultMap.put("departments", departments);
+                companyMap.put(company, resultMap);
+                resultList.add(resultMap);
+            }
         }
     
-        return new ArrayList<>(departmentMap.values());
+        return resultList;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+     
     public Optional<Department> findByDeptCodeAndDeptName(String DeptCode, String DeptName){
         return departmentRepository.findByDeptCodeAndDeptName(
                 DeptCode,DeptName);
