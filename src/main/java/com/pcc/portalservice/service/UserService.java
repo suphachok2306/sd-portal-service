@@ -146,13 +146,42 @@ public class UserService {
 
     public User editUser(Long id, EditEmployeeRequest editEmployeeRequest) {
         User user = findById(id);
-        Position position = positionRepository.findByPositionName(editEmployeeRequest.getPositionName())
-                .orElseThrow(() -> new RuntimeException("Position not found: " + editEmployeeRequest.getPositionName()));
+        Company companyName = companyRepository.findByCompanyName(editEmployeeRequest.getCompanyName())
+                        .orElseThrow(() -> new RuntimeException("companyName not found: " + editEmployeeRequest.getCompanyName()));
 
-        user.setEmail(editEmployeeRequest.getEmail());
+        Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
+            editEmployeeRequest.getSectorCode(),
+            editEmployeeRequest.getSectorName(),
+            editEmployeeRequest.getCompanyName()
+        );
+
+        Sector sector = sectorOptional.orElseThrow(() -> new RuntimeException("Sector not found / SectorCode or SectorName wrong"));
+
+        Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
+            editEmployeeRequest.getDeptCode(),
+            editEmployeeRequest.getDeptName()
+        );
+
+        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));;
+
+        Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(editEmployeeRequest.getPositionName(), department);
+
+        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));;
+
+        String email = editEmployeeRequest.getEmail();
+        if (userRepository.existsByEmail(email) && (email != null && !email.isEmpty() && !email.equals(user.getEmail()))) {
+            throw new RuntimeException("Email is already in use.");  
+        }
+        else{
+            user.setEmail(editEmployeeRequest.getEmail());
+        }
         user.setFirstname(editEmployeeRequest.getFirstname());
         user.setLastname(editEmployeeRequest.getLastname());
         user.setPosition(position);
+        user.setSector(sector);
+        user.setDepartment(department);
+        user.setCompany(companyName);
+
         return userRepository.save(user);
     }
 
