@@ -47,7 +47,7 @@ public class CourseService {
     }
 
 
-     public Course editCourse(CreateCourseRequest createCourseRequest) {
+    public Course editCourse(CreateCourseRequest createCourseRequest) {
         Course course = findById(createCourseRequest.getCourse_id());
         course.setCourseName(createCourseRequest.getCourse_name());
         course.setStartDate(createCourseRequest.getStartDate());
