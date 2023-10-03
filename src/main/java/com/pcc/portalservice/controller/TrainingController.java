@@ -26,10 +26,10 @@ public class TrainingController {
         Training training = trainingService.createSectionOne(createTrainingSectionOneRequest);
         return ResponseEntity.ok(training);
     }
-
-    @PostMapping("/createSectionTwo")
-    public ResponseEntity<Training> createSectionTwo(@RequestBody CreateTrainingSectionTwoRequest createTrainingSectionTwoRequest, Long trainingId) throws ParseException {
-        Training training = trainingService.createSectionTwo(createTrainingSectionTwoRequest,trainingId);
-        return ResponseEntity.ok(training);
-    }
+//
+//    @PostMapping("/createSectionTwo")
+//    public ResponseEntity<Training> createSectionTwo(@RequestBody CreateTrainingSectionTwoRequest createTrainingSectionTwoRequest, Long trainingId) throws ParseException {
+//        Training training = trainingService.createSectionTwo(createTrainingSectionTwoRequest,trainingId);
+//        return ResponseEntity.ok(training);
+//    }
 }
