@@ -9,6 +9,8 @@ import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
 import com.pcc.portalservice.requests.CreateDepartmentRequest;
 import lombok.RequiredArgsConstructor;
+
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -105,7 +107,52 @@ public class BudgetService {
     
         return result;
     }
+
+    // public List<Map<String, Object>> totalPriceRemaining(String year, long sector_id) {
+    //     String jpql = "SELECT (total_exp - use_budget) AS remaining_budget " +
+    //         "FROM ( " +
+    //         "  SELECT SUM(exp) AS total_exp " +
+    //         "  FROM public.budget " +
+    //         "  WHERE sector_id = :sectorId " +
+    //         "  AND year = :year " +
+    //         ") AS expenditures, " +
+    //         "( " +
+    //         "  SELECT SUM(price) AS use_budget " +
+    //         "  FROM ( " +
+    //         "    SELECT training_id, courses_id, course_name, price " +
+    //         "    FROM public.training_courses " +
+    //         "    JOIN course c ON c.id = courses_id " +
+    //         "    JOIN training t ON t.id = training_id " +
+    //         "    join users u on u.id = user_id " +
+    //         "    WHERE EXTRACT(YEAR FROM t.date_save) = :year and u.sector_id = :sectorId " +
+    //         "  ) AS budget_data " +
+    //         ") AS use_budget";
+    
+    //     try {
+    //         Query query = entityManager.createNativeQuery(jpql);
+    //         query.setParameter("year", year);
+    //         query.setParameter("sectorId", sector_id);
+    
+    //         List<Object> resultList = query.getResultList();
+    
+    //         List<Map<String, Object>> result = new ArrayList<>();
+    
+    //         if (!resultList.isEmpty()) {
+    //             Map<String, Object> resultMap = new HashMap<>();
+    //             resultMap.put("total_remaining", resultList.get(0));
+    //             result.add(resultMap);
+    //         }
+    
+    //         return result;
+    //     } catch (SQLGrammarException e) {
+    //         return new ArrayList<>();
+    //     }
+    // }
+    
+}
+
+    
+    
     
 
 
-}

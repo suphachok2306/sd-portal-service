@@ -104,5 +104,13 @@ public class BudgetController {
 
         return resultList;
     }
+
+    @GetMapping("/findRemainBudget")
+    public List<Map<String, Object>> findReamin(@RequestParam String Year,Long sectorId) {
+        List<Map<String, Object>> resultList = budgetService.totalPriceRemaining(Year,sectorId);
+
+        return resultList;
+    }
+    
 }
 
