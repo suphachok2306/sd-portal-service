@@ -1,14 +1,15 @@
 package com.pcc.portalservice.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -22,19 +23,37 @@ public class Training {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private Timestamp dateSave;
+
+    @Temporal(TemporalType.DATE)
+    private Date dateSave;
+
     private int day;
+
     private String action;
-    private Timestamp actionDate;
-    private String approve1;
-    private String approve2;
-    private String approve3;
+
+    @Temporal(TemporalType.DATE)
+    private Date actionDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+
     @ManyToMany
     private Collection<Course> courses = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "approve1_id")
+    private User approve1;
+
+    @ManyToOne
+    @JoinColumn(name = "approve2_id")
+    private User approve2;
+
+    @ManyToOne
+    @JoinColumn(name = "approve3_id")
+    private User approve3;
+
+    @OneToMany(mappedBy = "training")
+    private List<Status> status = new ArrayList<>();
 }

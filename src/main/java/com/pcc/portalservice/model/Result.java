@@ -36,6 +36,6 @@ public class Result {
     private Training training;
 
     @ManyToOne
-    @JoinColumn(name = "userEvaluator_id")
+    @JoinColumn(name = "evaluator_id")
     private User evaluator;
 }

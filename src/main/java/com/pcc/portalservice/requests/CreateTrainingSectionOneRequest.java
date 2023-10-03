@@ -1,33 +1,22 @@
 package com.pcc.portalservice.requests;
 
+import com.pcc.portalservice.model.enums.StatusApprove;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.Date;
 
 @Builder
 @Data
 public class CreateTrainingSectionOneRequest {
     Long userId;
-    String companyName;
-    String sectorCode;
-    String sectorName;
-    String deptName;
-    String deptCode;
-    String dateSave;
+    Date dateSave;
     int day;
-    String courseName;
-    String startDate;
-    String endDate;
-    String time;
-    String note;
-    float price;
-    float priceProject;
-    String place;
-    String institute;
-    String empCode;
-    String firstname;
-    String lastname;
-    String position;
+    Long courseId;
     String action;
     String actionDate;
+
+    Long approve1_id;
+    StatusApprove status1;
 }
 
