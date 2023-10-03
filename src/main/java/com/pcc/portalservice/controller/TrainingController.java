@@ -11,10 +11,7 @@ import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -30,7 +27,7 @@ public class TrainingController {
         return ResponseEntity.ok(training);
     }
 
-    @PostMapping("/setStatusToTraining")
+    @PutMapping("/setStatusToTraining")
     public ResponseEntity<Training> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {
         Training training = trainingService.setStatusToTraining(trainingId,approveId,statusApprove);
         return ResponseEntity.ok(training);
