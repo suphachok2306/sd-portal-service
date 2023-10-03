@@ -83,18 +83,23 @@ public class UserService {
     public User createEmployee(CreateEmployeeRequest createEmployeeRequest) {
         String email = createEmployeeRequest.getEmail();
         String empCode = createEmployeeRequest.getEmpCode();
-        if (email == null || email.isEmpty() || email.equals("")) {
+        if (userRepository.existsByEmail(email) && userRepository.existsByempCode(empCode)) {
+            throw new RuntimeException("Both Email and EmpCode are already in use.");
+        }else{
+            if (email == null || email.isEmpty() || email.equals("")) {
         } else {
             if (userRepository.existsByEmail(email)) {
                 throw new RuntimeException("Email is already in use.");  
            }
         }
-        if (empCode == null || empCode.isEmpty() || empCode.equals("")) {
-        } else {
-            if (userRepository.existsByempCode(empCode)) {
-                throw new RuntimeException("EmpCode is already in use.");  
-           }
+            if (empCode == null || empCode.isEmpty() || empCode.equals("")) {
+            } else {
+                if (userRepository.existsByempCode(empCode)) {
+                    throw new RuntimeException("EmpCode is already in use.");  
+            }
+            }
         }
+        
         
 
 

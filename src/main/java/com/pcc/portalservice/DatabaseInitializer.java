@@ -149,14 +149,19 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         String sql = "INSERT INTO public.users (email, firstname, lastname, password, telephone) VALUES"+
             "('admin@pccth.com', 'Admin', 'Admin','"+ hashpassword +"', '+15555555555'),"+
-            "('approver@pccth.com', 'Approver', 'Approver','"+hashpassword+"', '+15555555555'),"+
+            "('approver@pccth.com', 'Approver 1', 'Approver','"+hashpassword+"', '+15555555555'),"+
             "('vicepresident@pccth.com', 'VicePresident', 'VicePresident','"+hashpassword+"','+15555555555'),"+
             "('personnel@pccth.com', 'Personnel', 'Personnel','"+hashpassword+"', '+15555555555'),"+
-            "('user@pccth.com', 'User', 'User','"+ hashpassword+"', '+15555555555');";
+            "('user@pccth.com', 'User', 'User','"+ hashpassword+"', '+15555555555'),"+
+            "('2@pccth.com','Approver 2', '2', '"+ hashpassword+"', '1'),"+
+            "('3@pccth.com','Approver 3', '3', '"+ hashpassword+"', '1'),"+
+            "('4@pccth.com','Approver 4', '4', '"+ hashpassword+"', '1'),"+
+            "('5@pccth.com','Approver 5', '5', '"+ hashpassword+"', '1'),"+
+            "('6@pccth.com','Approver 6', '6', '"+ hashpassword+"', '1');";
 
         if (isTableEmpty("public.users")) {
             jdbcTemplate.execute(sql);
-            jdbcTemplate.execute("INSERT INTO public.users_roles (user_id, roles_id) VALUES(1, 1),(2, 2),(3, 3),(4, 4),(5, 5);");
+            jdbcTemplate.execute("INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2)");
             System.out.println("Data inserted into public.users table.");
         } else {
             System.out.println("public.users table is not empty. No data inserted.");
