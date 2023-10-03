@@ -38,21 +38,6 @@ public class Training {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @Transient
-//    @JsonIgnore
-//    private Company company;
-//
-//    @Transient
-//    @JsonIgnore
-//    private Sector sector;
-//
-//    @Transient
-//    @JsonIgnore
-//    private Department department;
-//
-//    @Transient
-//    @JsonIgnore
-//    private Position position;
 
     @ManyToMany
     private Collection<Course> courses = new ArrayList<>();
