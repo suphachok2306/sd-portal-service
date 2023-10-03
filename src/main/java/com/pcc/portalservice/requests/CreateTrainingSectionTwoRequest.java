@@ -7,8 +7,5 @@ import lombok.Data;
 @Data
 public class CreateTrainingSectionTwoRequest {
     Long evaluatorId;
-    Long positionId;
-    Long sectorId;
-    Long deptId;
     Long resultId;
 }

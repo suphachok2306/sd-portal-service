@@ -2,6 +2,8 @@ package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.Roles;
+import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateTrainingSectionOneRequest;
 import com.pcc.portalservice.requests.CreateTrainingSectionTwoRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -26,10 +29,10 @@ public class TrainingController {
         Training training = trainingService.createSectionOne(createTrainingSectionOneRequest);
         return ResponseEntity.ok(training);
     }
-//
-//    @PostMapping("/createSectionTwo")
-//    public ResponseEntity<Training> createSectionTwo(@RequestBody CreateTrainingSectionTwoRequest createTrainingSectionTwoRequest, Long trainingId) throws ParseException {
-//        Training training = trainingService.createSectionTwo(createTrainingSectionTwoRequest,trainingId);
-//        return ResponseEntity.ok(training);
-//    }
+
+    @PostMapping("/setStatusToTraining")
+    public ResponseEntity<Training> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {
+        Training training = trainingService.setStatusToTraining(trainingId,approveId,statusApprove);
+        return ResponseEntity.ok(training);
+    }
 }
