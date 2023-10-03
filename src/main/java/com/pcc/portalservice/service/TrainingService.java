@@ -70,7 +70,6 @@ public class TrainingService {
 
 
     public Training setStatusToTraining(Long trainingId, Long approveId, StatusApprove statusApprove) {
-
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("Training not found with ID: " + trainingId));
 
@@ -83,7 +82,6 @@ public class TrainingService {
             existingStatus.setStatus(statusApprove);
             statusRepository.save(existingStatus);
         } else {
-
             Status status = Status.builder()
                     .status(statusApprove)
                     .training(training)
@@ -100,6 +98,20 @@ public class TrainingService {
         return trainingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
     }
 
+
+    public List<Training> findTrainingsByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
+
+        return trainingRepository.findByUser(user);
+    }
+
+    public List<Training> findTrainingsByApprove1Id(Long approve1Id) {
+        User approve1 = userRepository.findById(approve1Id)
+                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + approve1Id));
+
+        return trainingRepository.findByApprove1(approve1);
+    }
 
     public List<Training> findAllTraining() {
         return trainingRepository.findAll();

@@ -17,22 +17,22 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class CourseService {
     // Services
-    private final AuthenticationService authenticationService;
     private final CourseRepository  courseRepository;
     
     public Course create(CreateCourseRequest createCourseRequest) {
         
         Course course = Course.builder()
-            .courseName(createCourseRequest.getCourse_name())
-            .startDate(createCourseRequest.getStartDate())
-            .endDate(createCourseRequest.getEndDate())
-            .time(createCourseRequest.getTime())
-            .note(createCourseRequest.getNote())
-            .price(createCourseRequest.getPrice())
-            .priceProject(createCourseRequest.getPriceProject())
-            .place(createCourseRequest.getPlace())
-            .institute(createCourseRequest.getInstitute())
-            .build();
+                .courseName(createCourseRequest.getCourse_name())
+                .startDate(createCourseRequest.getStartDate())
+                .endDate(createCourseRequest.getEndDate())
+                .time(createCourseRequest.getTime())
+                .note(createCourseRequest.getNote())
+                .objective(createCourseRequest.getObjective())
+                .price(createCourseRequest.getPrice())
+                .priceProject(createCourseRequest.getPriceProject())
+                .place(createCourseRequest.getPlace())
+                .institute(createCourseRequest.getInstitute())
+                .build();
 
 
         return courseRepository.save(course);
@@ -54,6 +54,7 @@ public class CourseService {
         course.setEndDate(createCourseRequest.getEndDate());
         course.setTime(createCourseRequest.getTime());
         course.setNote(createCourseRequest.getNote());
+        course.setObjective(createCourseRequest.getObjective());
         course.setPrice(createCourseRequest.getPrice());
         course.setPriceProject(createCourseRequest.getPriceProject());
         course.setPlace(createCourseRequest.getPlace());
