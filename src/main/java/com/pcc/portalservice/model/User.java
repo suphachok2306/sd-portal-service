@@ -22,7 +22,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String empCode;
+    
     private String firstname;
     private String lastname;
     private String email;

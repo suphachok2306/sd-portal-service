@@ -35,6 +35,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         insertDataIntoDepartmentTable();
         insertDataIntoPositionTable();
         insertDataIntoUsersTable();
+        insertBudgetTable();
     }
 
     private boolean isTableEmpty(String tableName) {
@@ -160,6 +161,35 @@ public class DatabaseInitializer implements CommandLineRunner {
         } else {
             System.out.println("public.users table is not empty. No data inserted.");
         }
+    }
+    private void insertBudgetTable(){
+        String sql = "INSERT INTO public.budget (air_acc, class_name, \"exp\", fee, number_of_person, remark, \"year\", sector_id)\n" +
+                     "VALUES\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1),\n" +
+                    "    (1000.0, 'string', 2000.0, 1000.0, 0, 'string', '2023', 1),\n" +
+                    "    (9999.0, 'string', 30000.0, 9999.0, 999, 'string', '2023', 1);";
+
+        if (isTableEmpty("public.budget")) {
+            jdbcTemplate.execute(sql);
+            System.out.println("Data inserted into public.budget table.");
+        } else {
+            System.out.println("public.budget table is not empty. No data inserted.");
+        }
+            
+        
+        
     }
 
 }

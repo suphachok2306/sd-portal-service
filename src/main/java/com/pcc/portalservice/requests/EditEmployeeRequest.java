@@ -10,4 +10,9 @@ public class EditEmployeeRequest {
     String lastname;
     String positionName;
     String email;
+    String sectorName;
+    String sectorCode;
+    String deptName;
+    String deptCode;
+    String companyName;
 }

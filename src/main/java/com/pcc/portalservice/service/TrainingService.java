@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -18,15 +19,12 @@ import java.util.Date;
 @Transactional
 public class TrainingService {
     private final TrainingRepository trainingRepository;
-    private final CompanyRepository companyRepository;
     private final CourseRepository courseRepository;
-    private final DepartmentRepository departmentRepository;
-    private final PositionRepository positionRepository;
-    private final SectorRepository sectorRepository;
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
 
     public Training createSectionOne(CreateTrainingSectionOneRequest createTrainingSectionOneRequest) throws ParseException {
+
         User user = userRepository.findById(createTrainingSectionOneRequest.getUserId()).orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingSectionOneRequest.getUserId()));
         User approve1 = userRepository.findById(createTrainingSectionOneRequest.getApprove1_id()).orElseThrow(() -> new RuntimeException("Approve1_id not found: " + createTrainingSectionOneRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingSectionOneRequest.getCourseId()).orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingSectionOneRequest.getCourseId()));
@@ -38,6 +36,8 @@ public class TrainingService {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date actionDateFormat = dateFormat.parse(createTrainingSectionOneRequest.getActionDate());
+
+
 
         Training training = Training.builder()
                 .user(user)
