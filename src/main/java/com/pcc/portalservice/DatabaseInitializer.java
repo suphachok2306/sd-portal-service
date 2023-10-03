@@ -53,8 +53,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         if (isTableEmpty("public.course")) {
             jdbcTemplate.execute(
                "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time) VALUES " +
-            "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30'), " +
-            "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00'), " +
+            "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 900, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30'), " +
+            "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 900.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00'), " +
             "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00'), " +
             "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30'), " +
             "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30'), " +

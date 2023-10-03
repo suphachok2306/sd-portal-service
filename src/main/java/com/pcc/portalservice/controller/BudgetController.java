@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,15 +100,15 @@ public class BudgetController {
     }        
 
     @GetMapping("/findTotalBudget")
-    public List<Map<String, Object>> findTotal(@RequestParam String Year,Long sectorId) {
-        List<Map<String, Object>> resultList = budgetService.total_exp(Year,sectorId);
+    public  LinkedHashMap<String, Object>findTotal(@RequestParam String Year,Long sectorId) {
+        LinkedHashMap<String, Object> resultList = budgetService.total_exp(Year,sectorId);
 
         return resultList;
     }
 
     @GetMapping("/findRemainBudget")
-    public List<Map<String, Object>> findReamin(@RequestParam String Year,Long sectorId) {
-        List<Map<String, Object>> resultList = budgetService.totalPriceRemaining(Year,sectorId);
+    public  LinkedHashMap<String, Object> findReamin(@RequestParam int Year,Long sectorId) {
+         LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(Year,sectorId);
 
         return resultList;
     }

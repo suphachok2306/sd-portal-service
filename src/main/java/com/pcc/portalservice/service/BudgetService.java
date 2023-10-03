@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -88,66 +89,60 @@ public class BudgetService {
         return budgetRepository.save(budget);
     }
 
-    public List<Map<String, Object>> total_exp(String year, long sector_id) {
-        String jpql = "SELECT SUM(exp) AS total_exp FROM Budget WHERE sector_id = :sectorId AND year = :year";
+    public  LinkedHashMap<String, Object> total_exp(String year, long sector_id) {
+        String jpql = "SELECT SUM(b.exp) AS total_exp FROM Budget b WHERE b.sector.id = :sectorId AND b.year LIKE :year";
     
         Query query = entityManager.createQuery(jpql);
         query.setParameter("sectorId", sector_id);
-        query.setParameter("year", year);
+        query.setParameter("year", year + "%");
     
         List<Object> resultList = query.getResultList();
     
-        List<Map<String, Object>> result = new ArrayList<>();
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
     
         if (!resultList.isEmpty()) {
-            Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("total_exp", resultList.get(0));
-            result.add(resultMap);
+            result.put("Year", year);
+            result.put("Sector", sectorRepository.findById(sector_id));
+            result.put("งบประมาณ", resultList.get(0));
         }
     
         return result;
     }
+    
 
-    // public List<Map<String, Object>> totalPriceRemaining(String year, long sector_id) {
-    //     String jpql = "SELECT (total_exp - use_budget) AS remaining_budget " +
-    //         "FROM ( " +
-    //         "  SELECT SUM(exp) AS total_exp " +
-    //         "  FROM public.budget " +
-    //         "  WHERE sector_id = :sectorId " +
-    //         "  AND year = :year " +
-    //         ") AS expenditures, " +
-    //         "( " +
-    //         "  SELECT SUM(price) AS use_budget " +
-    //         "  FROM ( " +
-    //         "    SELECT training_id, courses_id, course_name, price " +
-    //         "    FROM public.training_courses " +
-    //         "    JOIN course c ON c.id = courses_id " +
-    //         "    JOIN training t ON t.id = training_id " +
-    //         "    join users u on u.id = user_id " +
-    //         "    WHERE EXTRACT(YEAR FROM t.date_save) = :year and u.sector_id = :sectorId " +
-    //         "  ) AS budget_data " +
-    //         ") AS use_budget";
+    public LinkedHashMap<String, Object> totalPriceRemaining(int year, long sector_id) {
+
+        LinkedHashMap<String, Object> total_exp = total_exp(Integer.toString(year), sector_id);
     
-    //     try {
-    //         Query query = entityManager.createNativeQuery(jpql);
-    //         query.setParameter("year", year);
-    //         query.setParameter("sectorId", sector_id);
+        String jpql = "SELECT SUM(c.price) AS total_price " +
+                             "FROM training t " +
+                             "JOIN training_courses tc ON tc.training_id = t.id " +
+                             "JOIN course c ON c.id = tc.courses_id " +
+                             "JOIN users u ON u.id = t.user_id " +
+                             "WHERE u.sector_id = :sectorId AND EXTRACT(YEAR FROM t.date_save) = :year ";
     
-    //         List<Object> resultList = query.getResultList();
+        Query query = entityManager.createNativeQuery(jpql);
+        query.setParameter("year", year);
+        query.setParameter("sectorId", sector_id);
+        List<Object> resultList = query.getResultList();
     
-    //         List<Map<String, Object>> result = new ArrayList<>();
+        LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+        Object total_budget = total_exp.get("งบประมาณ");
+        Object total_price = resultList.get(0);
+
+        double total_budget_double = (double) total_budget;
+        float total_price_float = (float) total_price;
+
+        double difference = total_budget_double - total_price_float;
+
+        if (!resultList.isEmpty()) {
+            result.put("Year", year);
+            result.put("Sector", sectorRepository.findById(sector_id));
+            result.put("งบคงเหลือ", difference);
+        }
     
-    //         if (!resultList.isEmpty()) {
-    //             Map<String, Object> resultMap = new HashMap<>();
-    //             resultMap.put("total_remaining", resultList.get(0));
-    //             result.add(resultMap);
-    //         }
-    
-    //         return result;
-    //     } catch (SQLGrammarException e) {
-    //         return new ArrayList<>();
-    //     }
-    // }
+        return result;
+    }
     
 }
 
