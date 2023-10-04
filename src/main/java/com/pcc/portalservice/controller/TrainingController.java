@@ -2,7 +2,7 @@ package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.enums.StatusApprove;
-import com.pcc.portalservice.requests.CreateTrainingSectionOneRequest;
+import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -19,11 +19,17 @@ import java.util.List;
 public class TrainingController {
     private TrainingService trainingService;
 
-    @PostMapping("/createSectionOne")
-    public ResponseEntity<Training> createSectionOne(@RequestBody CreateTrainingSectionOneRequest createTrainingSectionOneRequest) throws ParseException {
-        Training training = trainingService.createSectionOne(createTrainingSectionOneRequest);
+    @PostMapping("/createTraining")
+    public ResponseEntity<Training> createTraining(@RequestBody CreateTrainingRequest createTrainingRequest) throws ParseException {
+        Training training = trainingService.createTraining(createTrainingRequest);
         return ResponseEntity.ok(training);
     }
+
+//    @PostMapping("/editTraining")
+//    public ResponseEntity<Training> editTraining(@RequestBody Long trainingId, CreateTrainingRequest editTraining) throws ParseException {
+//        Training training = trainingService.editTraining(trainingId,editTraining);
+//        return ResponseEntity.ok(training);
+//    }
 
     @PutMapping("/setStatusToTraining")
     public ResponseEntity<Training> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {

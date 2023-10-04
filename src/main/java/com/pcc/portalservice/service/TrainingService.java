@@ -1,10 +1,9 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.*;
-import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
-import com.pcc.portalservice.requests.CreateTrainingSectionOneRequest;
+import com.pcc.portalservice.requests.CreateTrainingRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,13 +22,16 @@ public class TrainingService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
+    private final ResultRepository resultRepository;
 
 
-    public Training createSectionOne(CreateTrainingSectionOneRequest createTrainingSectionOneRequest) throws ParseException {
+    public Training createTraining(CreateTrainingRequest createTrainingRequest) throws ParseException {
 
-        User user = userRepository.findById(createTrainingSectionOneRequest.getUserId()).orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingSectionOneRequest.getUserId()));
-        User approve1 = userRepository.findById(createTrainingSectionOneRequest.getApprove1_id()).orElseThrow(() -> new RuntimeException("Approve1_id not found: " + createTrainingSectionOneRequest.getApprove1_id()));
-        Course course = courseRepository.findById(createTrainingSectionOneRequest.getCourseId()).orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingSectionOneRequest.getCourseId()));
+        User user = userRepository.findById(createTrainingRequest.getUserId()).orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingRequest.getUserId()));
+        User approve1 = userRepository.findById(createTrainingRequest.getApprove1_id()).orElseThrow(() -> new RuntimeException("Approve1_id not found: " + createTrainingRequest.getApprove1_id()));
+        Course course = courseRepository.findById(createTrainingRequest.getCourseId()).orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
+
+        //User evaluator = userRepository.findById(createTrainingSectionOneRequest.getEvaluatorId()).orElseThrow(() -> new RuntimeException("Evaluator_id not found: " + createTrainingSectionOneRequest.getEvaluatorId()));
 
         Date startDate = course.getStartDate();
         Date endDate = course.getEndDate();
@@ -37,7 +39,7 @@ public class TrainingService {
         int daysDifference = (int) (differenceInMilliseconds / (1000 * 60 * 60 * 24)) + 1;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date actionDateFormat = dateFormat.parse(createTrainingSectionOneRequest.getActionDate());
+        Date actionDateFormat = dateFormat.parse(createTrainingRequest.getActionDate());
 
 
         Training training = Training.builder()
@@ -45,20 +47,39 @@ public class TrainingService {
                 .dateSave(new Date())
                 .day(daysDifference)
                 .courses(Arrays.asList(course))
-                .action(createTrainingSectionOneRequest.getAction())
+                .action(createTrainingRequest.getAction())
                 .actionDate(actionDateFormat)
                 .approve1(approve1)
                 .build();
 
+        if (training.getResult() == null) {
+            training.setResult(new ArrayList<>());
+        }
+        Result result = Result.builder()
+                .training(training)
+                .evaluator(null)
+                .result1(null)
+                .result2(null)
+                .result3(null)
+                .result4(null)
+                .result5(null)
+                .result6(null)
+                .result7(null)
+                .result(null)
+                .comment(null)
+                .cause(null)
+                .plan(null)
+                .build();
+        resultRepository.save(result);
+        training.getResult().add(result);
+
         if (training.getStatus() == null) {
             training.setStatus(new ArrayList<>());
         }
-
         Status status1 = Status.builder()
-                //.status(createTrainingSectionOneRequest.getStatus1())
                 .status(null)
                 .training(training)
-                .approveId(createTrainingSectionOneRequest.getApprove1_id())
+                .approveId(createTrainingRequest.getApprove1_id())
                 .build();
         statusRepository.save(status1);
 
@@ -67,6 +88,18 @@ public class TrainingService {
 
         return savedTraining;
     }
+
+//    public Training editTraining(Long trainingId, CreateTrainingRequest editTraining) {
+//        Training existingTraining = trainingRepository.findById(trainingId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Training not found"));
+//
+//        existingTraining.setAction(editTraining.getAction());
+//        Training updatedTraining = trainingRepository.save(existingTraining);
+//        return updatedTraining;
+//    }
+
+
+
 
 
     public Training setStatusToTraining(Long trainingId, Long approveId, StatusApprove statusApprove) {
@@ -102,14 +135,12 @@ public class TrainingService {
     public List<Training> findTrainingsByUserId(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
-
         return trainingRepository.findByUser(user);
     }
 
     public List<Training> findTrainingsByApprove1Id(Long approve1Id) {
         User approve1 = userRepository.findById(approve1Id)
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + approve1Id));
-
         return trainingRepository.findByApprove1(approve1);
     }
 
