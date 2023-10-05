@@ -28,8 +28,10 @@ public class BudgetService {
     private final SectorRepository sectorRepository;
     private final EntityManager entityManager;
 
-    public boolean isBudgetNull(Budget budget) {
-        return budget == null || Objects.equals(budget.getAirAcc(), null) || Objects.equals(budget.getFee(), null) || budget.getYear().isEmpty() ;
+    public boolean isBudgetNull(CreateBudgetRequest request) {
+        return request == null || request.getYear() == null || request.getYear().isEmpty()
+                || request.getClassName() == null || request.getClassName().isEmpty()
+                || Objects.equals(request.getAirAcc(),null) || Objects.equals(request.getFee(),null);
     }
 
      public float totalExp(float fee,float airAcc) {
@@ -48,7 +50,7 @@ public class BudgetService {
                 
         Budget budget = Budget.builder()
                 .sector(sectorId)
-                .class_name(createBudgetRequest.getClass_name())
+                .class_name(createBudgetRequest.getClassName())
                 .remark(createBudgetRequest.getRemark())
                 .year(createBudgetRequest.getYear())
                 .numberOfPerson(createBudgetRequest.getNumberOfPerson())
@@ -78,7 +80,7 @@ public class BudgetService {
 
     public Budget editBudget(CreateBudgetRequest createBudgetRequest) {
         Budget budget = findById(createBudgetRequest.getBudgetId());
-        budget.setClass_name(createBudgetRequest.getClass_name());
+        budget.setClass_name(createBudgetRequest.getClassName());
         budget.setYear(createBudgetRequest.getYear());
         budget.setRemark(createBudgetRequest.getRemark());
         budget.setNumberOfPerson(createBudgetRequest.getNumberOfPerson());

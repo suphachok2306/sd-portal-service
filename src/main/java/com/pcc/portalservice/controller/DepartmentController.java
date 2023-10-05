@@ -31,14 +31,14 @@ public class DepartmentController {
 
     @PostMapping("/createDepartment")
     public ResponseEntity<ApiResponse> createPosition(@RequestBody CreateDepartmentRequest createDepartmentRequest) {
-        Department department = departmentService.create(createDepartmentRequest);
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if(departmentService.isDeptNull(department)) {
+        if(departmentService.isDeptNull(createDepartmentRequest)) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
             return ResponseEntity.badRequest().body(response);
         }
         try {
+            Department department = departmentService.create(createDepartmentRequest);
             data.setResult(department);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);

@@ -4,6 +4,7 @@ import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -18,11 +19,21 @@ import lombok.RequiredArgsConstructor;
 public class CourseService {
     // Services
     private final CourseRepository  courseRepository;
-    
+
+    public boolean isCourseNull(CreateCourseRequest request){
+        return request == null || request.getCourseName() == null || request.getCourseName().isEmpty()
+                || request.getStartDate() == null || request.getStartDate().toString().isEmpty()
+                || request.getEndDate() == null || request.getEndDate().toString().isEmpty()
+                || request.getTime() == null || request.getTime().isEmpty()
+                || request.getNote() == null || request.getNote().isEmpty()
+                || request.getPrice() == 0 || request.getPriceProject() == 0
+                || request.getPlace() == null || request.getPlace().isEmpty();
+    }
+
     public Course create(CreateCourseRequest createCourseRequest) {
         
         Course course = Course.builder()
-                .courseName(createCourseRequest.getCourse_name())
+                .courseName(createCourseRequest.getCourseName())
                 .startDate(createCourseRequest.getStartDate())
                 .endDate(createCourseRequest.getEndDate())
                 .time(createCourseRequest.getTime())
@@ -48,8 +59,8 @@ public class CourseService {
 
 
     public Course editCourse(CreateCourseRequest createCourseRequest) {
-        Course course = findById(createCourseRequest.getCourse_id());
-        course.setCourseName(createCourseRequest.getCourse_name());
+        Course course = findById(createCourseRequest.getCourseId());
+        course.setCourseName(createCourseRequest.getCourseName());
         course.setStartDate(createCourseRequest.getStartDate());
         course.setEndDate(createCourseRequest.getEndDate());
         course.setTime(createCourseRequest.getTime());

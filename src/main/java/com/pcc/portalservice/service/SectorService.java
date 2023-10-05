@@ -22,6 +22,10 @@ public class SectorService {
     private final SectorRepository sectorRepository;
     private final CompanyRepository companyRepository;
 
+    public boolean isSectorNull(CreateSectorRequest request){
+        return request == null || request.getSectorCode() == null || request.getSectorCode().isEmpty()
+                || request.getSectorName() == null || request.getSectorName().isEmpty();
+    }
 
 
     public Sector create(CreateSectorRequest createSectorRequest){
