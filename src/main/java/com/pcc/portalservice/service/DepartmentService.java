@@ -21,12 +21,9 @@ public class DepartmentService {
     private final SectorRepository sectorRepository;
     private final EntityManager entityManager;
 
-    public boolean isDeptNull(Department department){
-        if(department == null || department.getDeptName() == null || department.getDeptName().isEmpty()
-                || department.getDeptCode() == null || department.getDeptCode().isEmpty()){
-            return true;
-        }
-        return false;
+    public boolean isDeptNull(CreateDepartmentRequest request){
+        return request == null || request.getDeptName() == null || request.getDeptName().isEmpty()
+                || request.getDeptCode() == null || request.getDeptCode().isEmpty();
     }
 
     public Department create(CreateDepartmentRequest createDepartmentRequest) {

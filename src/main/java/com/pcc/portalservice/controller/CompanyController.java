@@ -28,14 +28,14 @@ public class CompanyController {
 
     @PostMapping("/createCompany")
     public ResponseEntity<ApiResponse> createCompany(@RequestBody CreateCompanyRequest createCompanyRequest) {
-        Company company = companyService.create(createCompanyRequest);
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if(companyService.isCompanyNull(company)) {
+        if(companyService.isCompanyNull(createCompanyRequest)) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
             return ResponseEntity.badRequest().body(response);
         }
         try {
+            Company company = companyService.create(createCompanyRequest);
             data.setResult(company);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);

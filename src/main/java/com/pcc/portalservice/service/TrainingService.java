@@ -1,6 +1,7 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.*;
+import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
@@ -373,6 +374,43 @@ public class TrainingService {
         }
     
         return resultWithStatusList;
+    }
+
+    public boolean isTrainingNull(CreateTrainingRequest request){
+        return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()
+                || request.getAction() == null || request.getAction().isEmpty()
+                || request.getActionDate() == null || request.getActionDate().isEmpty();
+    }
+
+    public boolean isEditTrainingNull(CreateTrainingRequest request) {
+        return request == null || request.getResult1() == null || request.getResult1().isEmpty()
+                || request.getResult2() == null || request.getResult2().isEmpty()
+                || request.getResult3() == null || request.getResult3().isEmpty()
+                || request.getResult4() == null || request.getResult4().isEmpty()
+                || request.getResult5() == null || request.getResult5().isEmpty()
+                || request.getResult6() == null || request.getResult6().isEmpty()
+                || request.getResult7() == null || request.getResult7().isEmpty()
+                || request.getResult() == null || request.getResult().isEmpty()
+                || request.getComment() == null || request.getComment().isEmpty()
+                || request.getCause() == null || request.getCause().isEmpty()
+                || request.getPlan() == null || request.getPlan().isEmpty();
+    }
+
+    public boolean hasStatus(Long trainingId, StatusApprove statusApprove) {
+        Training training = trainingRepository.findById(trainingId).orElse(null);
+
+        if (training == null) {
+            return false;
+        }
+
+        List<Status> statusList = training.getStatus();
+
+        if (statusList == null || statusList.isEmpty()) {
+            return false;
+        }
+
+        return statusList.stream()
+                .anyMatch(status -> status.getStatus().equals(statusApprove));
     }
     
 }

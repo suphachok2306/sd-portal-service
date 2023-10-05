@@ -28,14 +28,14 @@ public class PositionController {
 
     @PostMapping("/createPosition")
     public ResponseEntity<ApiResponse> createPosition(@RequestBody CreatePositionRequest createPositionRequest) {
-        Position position = positionService.create(createPositionRequest);
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if(positionService.isPositionNull(position)) {
+        if(positionService.isPositionNull(createPositionRequest)) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
             return ResponseEntity.badRequest().body(response);
         }
         try {
+            Position position = positionService.create(createPositionRequest);
             data.setResult(position);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);

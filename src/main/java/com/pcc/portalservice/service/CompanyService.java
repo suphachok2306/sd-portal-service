@@ -22,11 +22,8 @@ import java.util.List;
 public class CompanyService {
     private final CompanyRepository companyRepository;
 
-    public boolean isCompanyNull(Company company) {
-        if(company == null || company.getCompanyName() == null || company.getCompanyName().isEmpty()){
-            return true;
-        }
-        return false;
+    public boolean isCompanyNull(CreateCompanyRequest request) {
+        return request == null || request.getCompanyName() == null || request.getCompanyName().isEmpty();
     }
 
     public Company create(CreateCompanyRequest createCompanyRequest){

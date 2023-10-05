@@ -15,7 +15,7 @@ import com.pcc.portalservice.model.Sector;
 public class CreateBudgetRequest {
     long budgetId;
     String year;
-    String class_name;
+    String className;
     String remark;
     int numberOfPerson;
     float fee;

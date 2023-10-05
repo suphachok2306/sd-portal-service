@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -221,12 +222,33 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public String deleteData(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            userRepository.deleteById(id);
+    public User deleteData(Long id){
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
+        userRepository.delete(user);
+        return user;
+    }
+
+    public boolean isEmpNull(CreateEmployeeRequest request){
+        return request == null || request.getEmpCode() == null || request.getEmpCode().isEmpty()
+                || request.getFirstname() == null || request.getFirstname().isEmpty()
+                || request.getLastname() == null || request.getLastname().isEmpty();
+    }
+
+    public boolean isEditEmpNull(EditEmployeeRequest request){
+        return request == null || request.getFirstname() == null || request.getFirstname().isEmpty()
+                || request.getLastname() == null || request.getLastname().isEmpty();
+    }
+
+    public boolean hasRole(Long userId, String roleName) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return false;
         }
-        return null;
+        Optional<Role> role = roleRepository.findByRole(Roles.valueOf(roleName));
+        if (role.isEmpty()) {
+            return false;
+        }
+        return user.getRoles().contains(role);
     }
 
     public List<User> findAllEmployee() {

@@ -1,9 +1,6 @@
 package com.pcc.portalservice.controller;
 
-import com.pcc.portalservice.model.Department;
-import com.pcc.portalservice.model.Budget;
-import com.pcc.portalservice.model.Company;
-import com.pcc.portalservice.model.Course;
+import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
 import com.pcc.portalservice.requests.CreateCourseRequest;
@@ -41,18 +38,18 @@ public class BudgetController {
 
     @PostMapping("/createBudget")
     public ResponseEntity<ApiResponse> createBudget(@RequestBody CreateBudgetRequest createbudgetRequest) {
-        Budget budget = budgetService.create(createbudgetRequest);
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if(budgetService.isBudgetNull(budget)) {
+        if(budgetService.isBudgetNull(createbudgetRequest)) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
             return ResponseEntity.badRequest().body(response);
         }
         try {
+            Budget budget = budgetService.create(createbudgetRequest);
             data.setResult(budget);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/createBuget").toUriString());
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/createBudget").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
@@ -64,38 +61,59 @@ public class BudgetController {
     public List<Budget> getAllBudgets() {return budgetService.findAll();}
 
     @GetMapping("/findBudgetById")
-    public ResponseEntity<Budget> findBudgetById(@RequestParam Long budgetID) {
+    public ResponseEntity<ApiResponse> findBudgetById(@RequestParam Long budgetID) {
         Budget budget= budgetService.findById(budgetID);
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
         if (budget != null) {
-            return new ResponseEntity<>(budget, HttpStatus.OK);
+            data.setResult(budget);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            response.setResponseMessage("ไม่สามารถทำรายการได้");
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
 
     @DeleteMapping("/deleteBudgetById")
-    public ResponseEntity<String> delete(
-         @RequestParam Long budgetID
-        ) {
+    public ResponseEntity<ApiResponse> delete(@RequestParam Long budgetID) {
+            ApiResponse response = new ApiResponse();
+            ResponseData data = new ResponseData();
             Budget budget = budgetService.deleteData(budgetID);
             if (budget != null) {
-                return new ResponseEntity<>("ลบเรียบร้อย", HttpStatus.OK);
+                data.setResult(budget);
+                response.setResponseMessage("ลบเรียบร้อย");
+                response.setResponseData(data);
+                return ResponseEntity.ok().body(response);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                response.setResponseMessage("ไม่สามารถทำรายการได้");
+                return ResponseEntity.badRequest().body(response);
             }
         } 
 
 
     @PutMapping("/editBudget")
-    public ResponseEntity<Budget> updateBudget(
+    public ResponseEntity<ApiResponse> updateBudget(
         @RequestBody CreateBudgetRequest createbudgetRequest
     ) {
-        Budget budgetCourse = budgetService.editBudget(createbudgetRequest);
-        if (budgetCourse != null) {
-            return new ResponseEntity<>(budgetCourse, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        if (budgetService.isBudgetNull(createbudgetRequest)) {
+            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+            return ResponseEntity.badRequest().body(response);
+        }
+        try {
+            Budget budget = budgetService.editBudget(createbudgetRequest);
+            data.setResult(budget);
+            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+            response.setResponseData(data);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/editEmployee").toUriString());
+            return ResponseEntity.created(uri).body(response);
+        } catch (Exception e) {
+            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            return ResponseEntity.internalServerError().body(response);
         }
     }        
 
@@ -107,7 +125,7 @@ public class BudgetController {
     }
 
     @GetMapping("/findRemainBudget")
-    public  LinkedHashMap<String, Object> findReamin(@RequestParam int Year,Long sectorId) {
+    public  LinkedHashMap<String, Object> findRemain(@RequestParam int Year,Long sectorId) {
          LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(Year,sectorId);
 
         return resultList;
