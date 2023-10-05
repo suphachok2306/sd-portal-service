@@ -3,6 +3,9 @@ import com.pcc.portalservice.model.Course;
 import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,16 +29,19 @@ public class CourseService {
                 || request.getEndDate() == null || request.getEndDate().toString().isEmpty()
                 || request.getTime() == null || request.getTime().isEmpty()
                 || request.getNote() == null || request.getNote().isEmpty()
-                || request.getPrice() == 0 || request.getPriceProject() == 0
                 || request.getPlace() == null || request.getPlace().isEmpty();
     }
 
-    public Course create(CreateCourseRequest createCourseRequest) {
+    public Course create(CreateCourseRequest createCourseRequest) throws ParseException {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDateFormat = dateFormat.parse(createCourseRequest.getStartDate());
+        Date endDateFormat = dateFormat.parse(createCourseRequest.getEndDate());
         
         Course course = Course.builder()
                 .courseName(createCourseRequest.getCourseName())
-                .startDate(createCourseRequest.getStartDate())
-                .endDate(createCourseRequest.getEndDate())
+                .startDate(startDateFormat)
+                .endDate(endDateFormat)
                 .time(createCourseRequest.getTime())
                 .note(createCourseRequest.getNote())
                 .objective(createCourseRequest.getObjective())
