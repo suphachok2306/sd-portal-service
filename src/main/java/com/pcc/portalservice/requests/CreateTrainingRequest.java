@@ -16,7 +16,7 @@ public class CreateTrainingRequest {
     String action;
     String actionDate;
 
-    Long approve1_id;
+    Long approve1Id;
     StatusApprove status1;
 
     //////////////////////////////
