@@ -186,6 +186,7 @@ public class UserService {
         else{
             user.setEmail(editEmployeeRequest.getEmail());
         }
+        user.setEmpCode(editEmployeeRequest.getEmpCode());
         user.setFirstname(editEmployeeRequest.getFirstname());
         user.setLastname(editEmployeeRequest.getLastname());
         user.setPosition(position);

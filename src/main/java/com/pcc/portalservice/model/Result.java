@@ -1,5 +1,6 @@
 package com.pcc.portalservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,11 +32,14 @@ public class Result {
     private String cause;
     private String plan;
 
+
     @ManyToOne
     @JoinColumn(name = "training_id")
+    @JsonIgnore
     private Training training;
 
     @ManyToOne
     @JoinColumn(name = "evaluator_id")
+    @JsonIgnore
     private User evaluator;
 }

@@ -56,4 +56,7 @@ public class Training {
 
     @OneToMany(mappedBy = "training")
     private List<Status> status = new ArrayList<>();
+
+    @OneToMany(mappedBy = "training")
+    private List<Result> result = new ArrayList<>();
 }

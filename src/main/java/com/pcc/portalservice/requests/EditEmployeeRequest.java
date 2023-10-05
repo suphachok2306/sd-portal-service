@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class EditEmployeeRequest {
+    String empCode;
     String firstname;
     String lastname;
     String positionName;
