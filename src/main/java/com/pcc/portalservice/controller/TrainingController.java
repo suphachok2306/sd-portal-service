@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -61,17 +62,19 @@ public class TrainingController {
     }
 
     @GetMapping("/findAllTraining")
-    public ResponseEntity<List<Training>> findAllTraining() {
-        List<Training> trainings = trainingService.findAllTraining();
+    public ResponseEntity<List<Map<String, Object>>>findAllTraining() {
+        List<Map<String, Object>> trainings = trainingService.findAllTraining();
         return ResponseEntity.ok(trainings);
     }
 
 
     @GetMapping("/findAllApprove")
-    public  ResponseEntity<List<Training>> findAllApprove(@RequestParam Long count) {
-        List<Training> trainings = trainingService.findbyAllCountApprove(count);
-
+    public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
+        List<Map<String, Object>> trainings = trainingService.findbyAllCountApprove(count);
         return ResponseEntity.ok(trainings);
     }
+
+
+
 
 }

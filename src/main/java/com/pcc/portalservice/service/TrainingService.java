@@ -151,25 +151,88 @@ public class TrainingService {
         return trainingRepository.findByApprove1(approve1);
     }
 
-    public List<Training> findAllTraining() {
-        return trainingRepository.findAll();
+    public List<Map<String, Object>> findAllTraining() {
+        String jpql = "SELECT t FROM Training t";
+    
+        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+        List<Training> resultList = query.getResultList();
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+    
+        for (Training training : resultList) {
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+            String result_status;
+    
+            for (Status status : training.getStatus()) {
+                if (status.getStatus() != null) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    }
+                }
+            }
+            if (approvedCount == 3) {
+                result_status = "อนุมัติ";
+            } else if (disapprovedCount >= 1) {
+                result_status = "ไม่อนุมัติ";
+            } else {
+                result_status = "รอประเมิน";
+            }
+    
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+            resultWithStatusList.add(resultWithStatus);
+        }
+    
+        return resultWithStatusList;
     }
+    
+    
+    public List<Map<String, Object>> findbyAllCountApprove(Long count) {
+        String jpql = "SELECT t FROM Training t " +
+                      "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count ";
+    
+        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+    
+        query.setParameter("count", count);
+    
+        List<Training> resultList = query.getResultList();
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+    
+        for (Training training : resultList) {
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+    
 
-    public List<Training> findbyAllCountApprove(Long count) {
-    String jpql = "SELECT t FROM Training t " +
-                  "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count";
-    
-    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+            for (Status status : training.getStatus()) {
+                if ("อนุมัติ".equals(status.getStatus().toString())) {
+                    approvedCount++;
+                } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                    disapprovedCount++;
+                }
+            }
 
-    query.setParameter("count", count);
     
-    List<Training> resultList = query.getResultList();
+            String result_status;
+            if (approvedCount == 3) {
+                result_status = "อนุมัติ";
+            } else if (disapprovedCount >= 1) {
+                result_status = "ไม่อนุมัติ";
+            } else {
+                result_status = "รอประเมิน";
+            }
     
-    return resultList;
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+            resultWithStatusList.add(resultWithStatus);
+        }
+    
+        return resultWithStatusList;
     }
-
     
-
 }
 
 
