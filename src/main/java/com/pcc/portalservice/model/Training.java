@@ -46,13 +46,6 @@ public class Training {
     @JoinColumn(name = "approve1_id")
     private User approve1;
 
-    @ManyToOne
-    @JoinColumn(name = "approve2_id")
-    private User approve2;
-
-    @ManyToOne
-    @JoinColumn(name = "approve3_id")
-    private User approve3;
 
     @OneToMany(mappedBy = "training")
     private List<Status> status = new ArrayList<>();

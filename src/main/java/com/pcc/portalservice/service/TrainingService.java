@@ -48,7 +48,6 @@ public class TrainingService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date actionDateFormat = dateFormat.parse(createTrainingRequest.getActionDate());
 
-
         Training training = Training.builder()
                 .user(user)
                 .dateSave(new Date())
