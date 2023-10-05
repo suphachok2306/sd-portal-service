@@ -27,4 +27,9 @@ public class Company {
     @JsonIgnore
     @OneToOne(mappedBy = "company")
     private Sector sector;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "company")
+    private Budget budget;
+
 }

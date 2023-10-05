@@ -171,21 +171,126 @@ public class TrainingService {
         return trainingRepository.save(training);
     }
 
-    public Training findById(Long id) {
-        return trainingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
+    public List<Map<String, Object>>  findById(Long id) {
+
+        String jpql = "SELECT t FROM Training t WHERE id = :id";
+    
+        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+
+        query.setParameter("id",id);
+        List<Training> resultList = query.getResultList();
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+        
+        for (Training training : resultList) {
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+            String result_status;
+    
+            for (Status status : training.getStatus()) {
+                if (status.getStatus() != null) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    }
+                }
+            }
+            if (approvedCount == 3) {
+                result_status = "อนุมัติ";
+            } else if (disapprovedCount >= 1) {
+                result_status = "ไม่อนุมัติ";
+            } else {
+                result_status = "รอประเมิน";
+            }
+    
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+            resultWithStatusList.add(resultWithStatus);
+        }
+    
+        return resultWithStatusList;
     }
 
 
-    public List<Training> findTrainingsByUserId(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
-        return trainingRepository.findByUser(user);
+    public List<Map<String, Object>>findTrainingsByUserId(Long userId) {
+        String jpql = "SELECT t FROM Training t WHERE user_id = :id";
+    
+        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+
+        query.setParameter("id",userId);
+        List<Training> resultList = query.getResultList();
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+        
+        for (Training training : resultList) {
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+            String result_status;
+    
+            for (Status status : training.getStatus()) {
+                if (status.getStatus() != null) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    }
+                }
+            }
+            if (approvedCount == 3) {
+                result_status = "อนุมัติ";
+            } else if (disapprovedCount >= 1) {
+                result_status = "ไม่อนุมัติ";
+            } else {
+                result_status = "รอประเมิน";
+            }
+    
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+            resultWithStatusList.add(resultWithStatus);
+        }
+    
+        return resultWithStatusList;
     }
 
-    public List<Training> findTrainingsByApprove1Id(Long approve1Id) {
-        User approve1 = userRepository.findById(approve1Id)
-                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + approve1Id));
-        return trainingRepository.findByApprove1(approve1);
+    public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
+        String jpql = "SELECT t FROM Training t WHERE approve1_id = :id";
+    
+        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+
+        query.setParameter("id",approve1Id);
+        List<Training> resultList = query.getResultList();
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+        
+        for (Training training : resultList) {
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+            String result_status;
+    
+            for (Status status : training.getStatus()) {
+                if (status.getStatus() != null) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    }
+                }
+            }
+            if (approvedCount == 3) {
+                result_status = "อนุมัติ";
+            } else if (disapprovedCount >= 1) {
+                result_status = "ไม่อนุมัติ";
+            } else {
+                result_status = "รอประเมิน";
+            }
+    
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+            resultWithStatusList.add(resultWithStatus);
+        }
+    
+        return resultWithStatusList;
     }
 
     public List<Map<String, Object>> findAllTraining() {

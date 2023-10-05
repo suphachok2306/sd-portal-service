@@ -40,8 +40,8 @@ public class TrainingController {
     }
 
     @GetMapping("/findTrainingByTrainingId")
-    public ResponseEntity<Training> findTrainingByTrainingId(@RequestParam Long trainingId) {
-        Training training = trainingService.findById(trainingId);
+    public ResponseEntity<List<Map<String, Object>>> findTrainingByTrainingId(@RequestParam Long trainingId) {
+        List<Map<String, Object>> training = trainingService.findById(trainingId);
         if (training != null) {
             return new ResponseEntity<>(training, HttpStatus.OK);
         } else {
@@ -50,14 +50,14 @@ public class TrainingController {
     }
 
     @GetMapping("/findTrainingByUserId")
-    public ResponseEntity<List<Training>> findTrainingByUserId(@RequestParam Long userId) {
-        List<Training> trainings = trainingService.findTrainingsByUserId(userId);
+    public ResponseEntity<List<Map<String, Object>>> findTrainingByUserId(@RequestParam Long userId) {
+        List<Map<String, Object>> trainings = trainingService.findTrainingsByUserId(userId);
         return ResponseEntity.ok(trainings);
     }
 
     @GetMapping("/findTrainingByApprove1Id")
-    public ResponseEntity<List<Training>> findTrainingByApprove1Id(@RequestParam Long approve1Id) {
-        List<Training> trainings = trainingService.findTrainingsByApprove1Id(approve1Id);
+    public ResponseEntity<List<Map<String, Object>>>  findTrainingByApprove1Id(@RequestParam Long approve1Id) {
+         List<Map<String, Object>> trainings = trainingService.findTrainingsByApprove1Id(approve1Id);
         return ResponseEntity.ok(trainings);
     }
 

@@ -32,4 +32,9 @@ public class Budget {
     @JoinColumn(name = "sector_id")
     private Sector sector;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "company_id")
+    @JsonIgnore
+    private Company company;
+
 }
