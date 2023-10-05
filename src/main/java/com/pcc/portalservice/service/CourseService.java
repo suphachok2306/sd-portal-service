@@ -64,11 +64,15 @@ public class CourseService {
     }
 
 
-    public Course editCourse(CreateCourseRequest createCourseRequest) {
+    public Course editCourse(CreateCourseRequest createCourseRequest) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDateFormat = dateFormat.parse(createCourseRequest.getStartDate());
+        Date endDateFormat = dateFormat.parse(createCourseRequest.getEndDate());
+
         Course course = findById(createCourseRequest.getCourseId());
         course.setCourseName(createCourseRequest.getCourseName());
-        course.setStartDate(createCourseRequest.getStartDate());
-        course.setEndDate(createCourseRequest.getEndDate());
+        course.setStartDate(startDateFormat);
+        course.setEndDate(endDateFormat);
         course.setTime(createCourseRequest.getTime());
         course.setNote(createCourseRequest.getNote());
         course.setObjective(createCourseRequest.getObjective());
