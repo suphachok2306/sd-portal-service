@@ -26,11 +26,11 @@ public class TrainingController {
         return ResponseEntity.ok(training);
     }
 
-//    @PostMapping("/editTraining")
-//    public ResponseEntity<Training> editTraining(@RequestBody Long trainingId, CreateTrainingRequest editTraining) throws ParseException {
-//        Training training = trainingService.editTraining(trainingId,editTraining);
-//        return ResponseEntity.ok(training);
-//    }
+    @PostMapping("/editTraining")
+    public ResponseEntity<Training> editTraining(@RequestParam Long trainingId, Long statusId, Long resultId,@RequestBody CreateTrainingRequest editTraining) throws ParseException {
+        Training training = trainingService.editTraining(trainingId,statusId,resultId,editTraining);
+        return ResponseEntity.ok(training);
+    }
 
     @PutMapping("/setStatusToTraining")
     public ResponseEntity<Training> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {
