@@ -6,7 +6,6 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 @RequiredArgsConstructor
@@ -34,11 +32,13 @@ public class TrainingService {
 
     public Training createTraining(CreateTrainingRequest createTrainingRequest) throws ParseException {
 
-        User user = userRepository.findById(createTrainingRequest.getUserId()).orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingRequest.getUserId()));
-        User approve1 = userRepository.findById(createTrainingRequest.getApprove1_id()).orElseThrow(() -> new RuntimeException("Approve1_id not found: " + createTrainingRequest.getApprove1_id()));
-        Course course = courseRepository.findById(createTrainingRequest.getCourseId()).orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
+        User user = userRepository.findById(createTrainingRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingRequest.getUserId()));
+        User approve1 = userRepository.findById(createTrainingRequest.getApprove1Id())
+                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1Id()));
+        Course course = courseRepository.findById(createTrainingRequest.getCourseId())
+                .orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
 
-        //User evaluator = userRepository.findById(createTrainingSectionOneRequest.getEvaluatorId()).orElseThrow(() -> new RuntimeException("Evaluator_id not found: " + createTrainingSectionOneRequest.getEvaluatorId()));
 
         Date startDate = course.getStartDate();
         Date endDate = course.getEndDate();
@@ -86,27 +86,65 @@ public class TrainingService {
         Status status1 = Status.builder()
                 .status(null)
                 .training(training)
-                .approveId(createTrainingRequest.getApprove1_id())
+                .approveId(createTrainingRequest.getApprove1Id())
                 .build();
         statusRepository.save(status1);
 
         training.getStatus().add(status1);
         Training savedTraining = trainingRepository.save(training);
-
         return savedTraining;
     }
 
-//    public Training editTraining(Long trainingId, CreateTrainingRequest editTraining) {
-//        Training existingTraining = trainingRepository.findById(trainingId)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Training not found"));
-//
-//        existingTraining.setAction(editTraining.getAction());
-//        Training updatedTraining = trainingRepository.save(existingTraining);
-//        return updatedTraining;
-//    }
+    public Training editTraining(Long trainingId, Long resultId, Long statusId,CreateTrainingRequest editTraining) throws ParseException {
+
+        Training training_id = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new RuntimeException("TrainingId not found: " + trainingId));
+        Result result_id = resultRepository.findById(resultId)
+                .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId));
+        Status status_id = statusRepository.findById(statusId)
+                .orElseThrow(() -> new RuntimeException("StatusId not found: " + statusId));
+        Course course_id = courseRepository.findById(editTraining.getCourseId())
+                .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
+        User user_id = userRepository.findById(editTraining.getUserId())
+                .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
+        User approve1_id = userRepository.findById(editTraining.getApprove1Id())
+                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + editTraining.getCourseId()));
+        User evaluator_id = userRepository.findById(editTraining.getEvaluatorId())
+                .orElseThrow(() -> new RuntimeException("EvaluatorId not found: " + editTraining.getEvaluatorId()));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
 
 
+        training_id.setUser(user_id);
+        training_id.setDateSave(new Date());
+        training_id.setAction(editTraining.getAction());
+        training_id.setActionDate(actionDateFormat);
+        training_id.getCourses().clear();                       ///////ต้อง clear ก่อน
+        training_id.getCourses().add(course_id);
+        //training_id.setCourses(Arrays.asList(course_id));     ////ใช้แบบนี้ไม่ได้
+        training_id.setApprove1(approve1_id);
 
+        result_id.setEvaluator(evaluator_id);
+        result_id.setResult1(editTraining.getResult1());
+        result_id.setResult2(editTraining.getResult2());
+        result_id.setResult3(editTraining.getResult3());
+        result_id.setResult4(editTraining.getResult4());
+        result_id.setResult5(editTraining.getResult5());
+        result_id.setResult6(editTraining.getResult6());
+        result_id.setResult7(editTraining.getResult7());
+        result_id.setResult(editTraining.getResult());
+        result_id.setComment(editTraining.getComment());
+        result_id.setCause(editTraining.getCause());
+        result_id.setPlan(editTraining.getPlan());
+
+        status_id.setStatus(editTraining.getStatus1());
+
+        Training updatedTraining = trainingRepository.save(training_id);
+        resultRepository.save(result_id);
+        statusRepository.save(status_id);
+        return updatedTraining;
+    }
 
 
     public Training setStatusToTraining(Long trainingId, Long approveId, StatusApprove statusApprove) {
