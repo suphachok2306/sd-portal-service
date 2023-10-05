@@ -94,7 +94,6 @@ public class TrainingService {
 
         training.getStatus().add(status1);
         Training savedTraining = trainingRepository.save(training);
-
         return savedTraining;
     }
 
@@ -119,12 +118,14 @@ public class TrainingService {
         Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
 
 
-        //training_id.setUser(user_id);
+        training_id.setUser(user_id);
         training_id.setDateSave(new Date());
         training_id.setAction(editTraining.getAction());
         training_id.setActionDate(actionDateFormat);
-        //training_id.setCourses(Arrays.asList(course_id));
-        //training_id.setApprove1(approve1_id);
+        training_id.getCourses().clear();                       ///////ต้อง clear ก่อน
+        training_id.getCourses().add(course_id);
+        //training_id.setCourses(Arrays.asList(course_id));     ////ใช้แบบนี้ไม่ได้
+        training_id.setApprove1(approve1_id);
 
         result_id.setEvaluator(evaluator_id);
         result_id.setResult1(editTraining.getResult1());
