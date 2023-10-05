@@ -7,6 +7,7 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingSectionOneRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +15,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +28,8 @@ public class TrainingService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
+
+    private final EntityManager entityManager;
 
 
     public Training createSectionOne(CreateTrainingSectionOneRequest createTrainingSectionOneRequest) throws ParseException {
@@ -117,6 +124,20 @@ public class TrainingService {
         return trainingRepository.findAll();
     }
 
+    public List<Training> findbyAllCountApprove(Long count) {
+    String jpql = "SELECT t FROM Training t " +
+                  "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count";
+    
+    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+
+    query.setParameter("count", count);
+    
+    List<Training> resultList = query.getResultList();
+    
+    return resultList;
+    }
+
+    
 
 }
 

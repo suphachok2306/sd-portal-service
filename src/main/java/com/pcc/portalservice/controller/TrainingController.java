@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -58,4 +59,13 @@ public class TrainingController {
         List<Training> trainings = trainingService.findAllTraining();
         return ResponseEntity.ok(trainings);
     }
+
+
+    @GetMapping("/findAllApprove")
+    public  ResponseEntity<List<Training>> findAllApprove(@RequestParam Long count) {
+        List<Training> trainings = trainingService.findbyAllCountApprove(count);
+
+        return ResponseEntity.ok(trainings);
+    }
+
 }
