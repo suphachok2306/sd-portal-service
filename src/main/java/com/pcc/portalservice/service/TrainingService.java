@@ -34,8 +34,8 @@ public class TrainingService {
 
         User user = userRepository.findById(createTrainingRequest.getUserId())
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingRequest.getUserId()));
-        User approve1 = userRepository.findById(createTrainingRequest.getApprove1Id())
-                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1Id()));
+        User approve1 = userRepository.findById(createTrainingRequest.getApprove1_id())
+                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
 
@@ -85,7 +85,7 @@ public class TrainingService {
         Status status1 = Status.builder()
                 .status(null)
                 .training(training)
-                .approveId(createTrainingRequest.getApprove1Id())
+                .approveId(createTrainingRequest.getApprove1_id())
                 .build();
         statusRepository.save(status1);
 
@@ -106,7 +106,7 @@ public class TrainingService {
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
         User user_id = userRepository.findById(editTraining.getUserId())
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
-        User approve1_id = userRepository.findById(editTraining.getApprove1Id())
+        User approve1_id = userRepository.findById(editTraining.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + editTraining.getCourseId()));
         User evaluator_id = userRepository.findById(editTraining.getEvaluatorId())
                 .orElseThrow(() -> new RuntimeException("EvaluatorId not found: " + editTraining.getEvaluatorId()));
