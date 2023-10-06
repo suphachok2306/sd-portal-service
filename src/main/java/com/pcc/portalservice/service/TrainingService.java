@@ -390,10 +390,8 @@ public class TrainingService {
                 || request.getResult5() == null || request.getResult5().isEmpty()
                 || request.getResult6() == null || request.getResult6().isEmpty()
                 || request.getResult7() == null || request.getResult7().isEmpty()
-                || request.getResult() == null || request.getResult().isEmpty()
-                || request.getComment() == null || request.getComment().isEmpty()
-                || request.getCause() == null || request.getCause().isEmpty()
-                || request.getPlan() == null || request.getPlan().isEmpty();
+                || request.getResult() == null || request.getResult().isEmpty();
+
     }
 
     // public boolean hasStatus(Long trainingId, StatusApprove statusApprove) {
