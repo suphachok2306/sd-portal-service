@@ -42,41 +42,23 @@ public class UserService {
         return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
     }
 
-    public User findById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Set<Long> uniqueRoleIds = new HashSet<>();
-            List<Role> uniqueRoles = (List<Role>) user.getRoles();
-
-            // สร้างรายการ roles ใหม่โดยไม่มี id ที่ซ้ำกัน
-            uniqueRoles.removeIf(role -> !uniqueRoleIds.add(role.getId()));
-
-            return user;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
-        }
-    }
-
-
 
     public User create(CreateUserRequest createUserRequest) {
         if (userRepository.existsByEmail(createUserRequest.getEmail()) && (createUserRequest.getEmail() != null && !createUserRequest.getEmail().isEmpty())) {
-            throw new RuntimeException("Email is already in use.");  
+            throw new RuntimeException("Email is already in use.");
         }
-
+    
         String hashedPassword = authenticationService.hashPassword(createUserRequest.getPassword());
-
+    
         User user = User.builder()
                 .email(createUserRequest.getEmail())
                 .firstname(createUserRequest.getFirstname())
                 .lastname(createUserRequest.getLastname())
                 .password(hashedPassword)
                 .telephone(createUserRequest.getTelephone())
-                .roles(new ArrayList<>())
+                .roles(new HashSet<>())
                 .build();
-
+    
         for (String roleName : createUserRequest.getRoles()) {
             Roles roleEnum = null;
             try {
@@ -85,61 +67,54 @@ public class UserService {
                 // ถ้าไม่มีใน enum Roles ให้กำหนดให้เป็น "User"
                 roleEnum = Roles.User;
             }
-
+    
             Role role = roleRepository.findByRole(roleEnum).orElse(null);
-            if (role != null) {
+            if (role != null && !user.getRoles().contains(role)) {
                 user.getRoles().add(role);
             }
         }
-
+    
         return userRepository.save(user);
     }
-
+    
 
     public User createEmployee(CreateEmployeeRequest createEmployeeRequest) {
         String email = createEmployeeRequest.getEmail();
         String empCode = createEmployeeRequest.getEmpCode();
-        if (userRepository.existsByEmail(email) && userRepository.existsByempCode(empCode)) {
-            throw new RuntimeException("Both Email and EmpCode are already in use.");
-        }else{
-            if (email == null || email.isEmpty()) {
-        } else {
-            if (userRepository.existsByEmail(email)) {
-                throw new RuntimeException("Email is already in use.");  
-           }
+    
+        // Check if both email and empCode are already in use
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("Email is already in use.");
         }
-            if (empCode == null || empCode.isEmpty()) {
-            } else {
-                if (userRepository.existsByempCode(empCode)) {
-                    throw new RuntimeException("EmpCode is already in use.");  
-            }
-            }
+    
+        if (userRepository.existsByempCode(empCode)) {
+            throw new RuntimeException("EmpCode is already in use.");
         }
-        
-        
-
-
+    
+        // Other validation for empty fields can be added here
+    
         Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
                 .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
-
+    
         Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
                 createEmployeeRequest.getSectorCode(),
                 createEmployeeRequest.getSectorName(),
                 createEmployeeRequest.getCompanyName()
         );
-
+    
         Sector sector = sectorOptional.orElseThrow(() -> new RuntimeException("Sector not found / SectorCode or SectorName wrong"));
-
+    
         Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
                 createEmployeeRequest.getDeptCode(),
                 createEmployeeRequest.getDeptName()
         );
-        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));;
-
+    
+        Department department = departmentOptional.orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));
+    
         Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(createEmployeeRequest.getPositionName(), department);
-
-        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));;
-
+    
+        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));
+    
         User user = User.builder()
                 .company(companyName)
                 .sector(sector)
@@ -148,31 +123,32 @@ public class UserService {
                 .firstname(createEmployeeRequest.getFirstname())
                 .lastname(createEmployeeRequest.getLastname())
                 .email(createEmployeeRequest.getEmail())
-                .roles(new ArrayList<>())
+                .roles(new HashSet<>())
                 .position(position)
                 .build();
-
-        for (String roleName : createEmployeeRequest.getRoles()) {
-            Roles roleEnum = null;
-            try {
-                roleEnum = Roles.valueOf(roleName); // ตรวจสอบว่ามีใน enum Roles หรือไม่
-            } catch (IllegalArgumentException e) {
-                // ถ้าไม่มีใน enum Roles ให้กำหนดให้เป็น "User"
-                roleEnum = Roles.User;
-            }
-
-            Role role = roleRepository.findByRole(roleEnum).orElse(null);
-            if (role != null) {
-                user.getRoles().add(role);
-            }
-        }
-
+    
+                for (String roleName : createEmployeeRequest.getRoles()) {
+                    Roles roleEnum = null;
+                    try {
+                        roleEnum = Roles.valueOf(roleName); // Check if it's a valid role
+                    } catch (IllegalArgumentException e) {
+                        // If it's not a valid role, set it to "User"
+                        roleEnum = Roles.User;
+                    }
+                
+                    Role role = roleRepository.findByRole(roleEnum).orElse(null);
+                    if (role != null && !user.getRoles().contains(role)) {
+                        user.getRoles().add(role);
+                    }
+                }
+    
         return userRepository.save(user);
     }
 
 
     public User editUser(Long id, EditEmployeeRequest editEmployeeRequest) {
-        User user = findById(id);
+        User user = userRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("UserId not found: " + editEmployeeRequest.getCompanyName()));
         Company companyName = companyRepository.findByCompanyName(editEmployeeRequest.getCompanyName())
                         .orElseThrow(() -> new RuntimeException("companyName not found: " + editEmployeeRequest.getCompanyName()));
 
@@ -229,7 +205,8 @@ public class UserService {
 
 
     public void addRoleToUser(Long userId, Roles roleName) {
-        User user = findById(userId);
+       User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
         Role role = roleRepository.findByRole(roleName).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Role not found: " + roleName));
 
@@ -275,6 +252,7 @@ public class UserService {
     public List<User> findAllEmployee() {
         return userRepository.findByRolesRole(Roles.User);
     }
+    
     public List<User> findAllPersonnel() {
         return userRepository.findByRolesRole(Roles.Personnel);
     }

@@ -3,6 +3,7 @@ package com.pcc.portalservice.controller;
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
+import com.pcc.portalservice.repository.UserRepository;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -25,11 +27,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
 
     @GetMapping("/findUserById")
     public ResponseEntity<ApiResponse> findUserById(@RequestParam Long userId) {
-        User user = userService.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         if (user != null) {

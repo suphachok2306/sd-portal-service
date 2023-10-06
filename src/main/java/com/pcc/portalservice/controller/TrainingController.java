@@ -71,10 +71,10 @@ public class TrainingController {
     public ResponseEntity<ApiResponse> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if(trainingService.hasStatus(trainingId,statusApprove)){
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
+        // if(trainingService.hasStatus(trainingId,statusApprove)){
+        //     response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+        //     return ResponseEntity.badRequest().body(response);
+        // }
         try {
             Training training = trainingService.setStatusToTraining(trainingId,approveId,statusApprove);
             data.setResult(training);
@@ -91,10 +91,8 @@ public class TrainingController {
     @GetMapping("/findTrainingByTrainingId")
     public ResponseEntity<List<Map<String, Object>>> findTrainingByTrainingId(@RequestParam Long trainingId) {
         List<Map<String, Object>> training = trainingService.findById(trainingId);
-        if(training != null){
-            return ResponseEntity.ok(training);
-        }
-            return ResponseEntity.badRequest().build();
+        
+        return ResponseEntity.ok(training);
     }
     
 

@@ -34,7 +34,8 @@ public class TrainingService {
 
     public Training createTraining(CreateTrainingRequest createTrainingRequest) throws ParseException {
 
-        User user = userService.findById(createTrainingRequest.getUserId());
+        User user = userRepository.findById(createTrainingRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         User approve1 = userRepository.findById(createTrainingRequest.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
@@ -150,7 +151,6 @@ public class TrainingService {
     public Training setStatusToTraining(Long trainingId, Long approveId, StatusApprove statusApprove) {
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("Training not found with ID: " + trainingId));
-
         Optional<Status> optionalStatus = training.getStatus().stream()
                 .filter(status -> status.getApproveId().equals(approveId))
                 .findFirst();
@@ -396,22 +396,22 @@ public class TrainingService {
                 || request.getPlan() == null || request.getPlan().isEmpty();
     }
 
-    public boolean hasStatus(Long trainingId, StatusApprove statusApprove) {
-        Training training = trainingRepository.findById(trainingId).orElse(null);
+    // public boolean hasStatus(Long trainingId, StatusApprove statusApprove) {
+    //     Training training = trainingRepository.findById(trainingId).orElse(null);
 
-        if (training == null) {
-            return false;
-        }
+    //     if (training == null) {
+    //         return false;
+    //     }
 
-        List<Status> statusList = training.getStatus();
+    //     List<Status> statusList = training.getStatus();
 
-        if (statusList == null || statusList.isEmpty()) {
-            return false;
-        }
+    //     if (statusList == null || statusList.isEmpty()) {
+    //         return false;
+    //     }
 
-        return statusList.stream()
-                .anyMatch(status -> status.getStatus().equals(statusApprove));
-    }
+    //     return statusList.stream()
+    //             .anyMatch(status -> status.getStatus().equals(statusApprove));
+    // }
     
 }
 
