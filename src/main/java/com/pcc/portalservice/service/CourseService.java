@@ -25,8 +25,8 @@ public class CourseService {
 
     public boolean isCourseNull(CreateCourseRequest request){
         return request == null || request.getCourseName() == null || request.getCourseName().isEmpty()
-                || request.getStartDate() == null || request.getStartDate().toString().isEmpty()
-                || request.getEndDate() == null || request.getEndDate().toString().isEmpty()
+                || request.getStartDate() == null || request.getStartDate().isEmpty()
+                || request.getEndDate() == null || request.getEndDate().isEmpty()
                 || request.getTime() == null || request.getTime().isEmpty()
                 || request.getPlace() == null || request.getPlace().isEmpty();
     }

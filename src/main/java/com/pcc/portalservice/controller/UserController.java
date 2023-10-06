@@ -46,9 +46,25 @@ public class UserController {
 
 
     @PostMapping("/createUser")
-    public ResponseEntity<User> create(@RequestBody CreateUserRequest createUserRequest) {
-        User user = userService.create(createUserRequest);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<ApiResponse> create(@RequestBody CreateUserRequest createUserRequest) {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        if(userService.isUserNull(createUserRequest)){
+            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+            return ResponseEntity.badRequest().body(response);
+        }
+        try {
+            User user = userService.create(createUserRequest);
+            data.setResult(user);
+            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e){
+            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            return ResponseEntity.internalServerError().body(response);
+        }
+
+
     }
 
     @PostMapping("/createEmployee")

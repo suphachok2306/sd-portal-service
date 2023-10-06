@@ -33,8 +33,7 @@ public class BudgetService {
 
     public boolean isBudgetNull(CreateBudgetRequest request) {
         return request == null || request.getYear() == null || request.getYear().isEmpty()
-                || request.getClassName() == null || request.getClassName().isEmpty()
-                || Objects.equals(request.getAirAcc(),null) || Objects.equals(request.getFee(),null);
+                || request.getClassName() == null || request.getClassName().isEmpty();
     }
 
      public float totalExp(float fee,float airAcc) {

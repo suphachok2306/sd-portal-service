@@ -102,13 +102,13 @@ public class UserService {
         if (userRepository.existsByEmail(email) && userRepository.existsByempCode(empCode)) {
             throw new RuntimeException("Both Email and EmpCode are already in use.");
         }else{
-            if (email == null || email.isEmpty() || email.equals("")) {
+            if (email == null || email.isEmpty()) {
         } else {
             if (userRepository.existsByEmail(email)) {
                 throw new RuntimeException("Email is already in use.");  
            }
         }
-            if (empCode == null || empCode.isEmpty() || empCode.equals("")) {
+            if (empCode == null || empCode.isEmpty()) {
             } else {
                 if (userRepository.existsByempCode(empCode)) {
                     throw new RuntimeException("EmpCode is already in use.");  
@@ -252,6 +252,12 @@ public class UserService {
     public boolean isEditEmpNull(EditEmployeeRequest request){
         return request == null || request.getFirstname() == null || request.getFirstname().isEmpty()
                 || request.getLastname() == null || request.getLastname().isEmpty();
+    }
+
+    public boolean isUserNull(CreateUserRequest request) {
+        return request == null || request.getFirstname() == null || request.getFirstname().isEmpty()
+                || request.getLastname() == null || request.getLastname().isEmpty()
+                || request.getTelephone() == null || request.getTelephone().isEmpty();
     }
 
     public boolean hasRole(Long userId, String roleName) {
