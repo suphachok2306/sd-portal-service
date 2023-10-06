@@ -5,6 +5,9 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
+import com.pcc.portalservice.requests.EditTrainingSection1Request;
+import com.pcc.portalservice.requests.EditTrainingSection2Request;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -96,22 +99,16 @@ public class TrainingService {
         return savedTraining;
     }
 
-    public Training editTraining(Long trainingId, Long resultId, Long statusId,CreateTrainingRequest editTraining) throws ParseException {
+    public Training editTrainingSection1(Long trainingId,EditTrainingSection1Request editTraining) throws ParseException {
 
         Training training_id = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("TrainingId not found: " + trainingId));
-        Result result_id = resultRepository.findById(resultId)
-                .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId));
-        Status status_id = statusRepository.findById(statusId)
-                .orElseThrow(() -> new RuntimeException("StatusId not found: " + statusId));
         Course course_id = courseRepository.findById(editTraining.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
         User user_id = userRepository.findById(editTraining.getUserId())
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
         User approve1_id = userRepository.findById(editTraining.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + editTraining.getCourseId()));
-        User evaluator_id = userRepository.findById(editTraining.getEvaluatorId())
-                .orElseThrow(() -> new RuntimeException("EvaluatorId not found: " + editTraining.getEvaluatorId()));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
@@ -123,8 +120,19 @@ public class TrainingService {
         training_id.setActionDate(actionDateFormat);
         training_id.getCourses().clear();                       ///////ต้อง clear ก่อน
         training_id.getCourses().add(course_id);
-        //training_id.setCourses(Arrays.asList(course_id));     ////ใช้แบบนี้ไม่ได้
         training_id.setApprove1(approve1_id);
+
+        Training updatedTraining = trainingRepository.save(training_id);
+        return updatedTraining;
+    }
+
+     public Result editTrainingSection2(Long resultId,EditTrainingSection2Request editTraining) throws ParseException {
+
+        Result result_id = resultRepository.findById(resultId)
+                .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId));
+        User evaluator_id = userRepository.findById(editTraining.getEvaluatorId())
+                .orElseThrow(() -> new RuntimeException("EvaluatorId not found: " + editTraining.getEvaluatorId()));
+
 
         result_id.setEvaluator(evaluator_id);
         result_id.setResult1(editTraining.getResult1());
@@ -139,11 +147,9 @@ public class TrainingService {
         result_id.setCause(editTraining.getCause());
         result_id.setPlan(editTraining.getPlan());
 
-        status_id.setStatus(editTraining.getStatus1());
+    
 
-        Training updatedTraining = trainingRepository.save(training_id);
-        resultRepository.save(result_id);
-        statusRepository.save(status_id);
+        Result updatedTraining = resultRepository.save(result_id);
         return updatedTraining;
     }
 
@@ -383,6 +389,24 @@ public class TrainingService {
     }
 
     public boolean isEditTrainingNull(CreateTrainingRequest request) {
+        return request == null || request.getResult1() == null || request.getResult1().isEmpty()
+                || request.getResult2() == null || request.getResult2().isEmpty()
+                || request.getResult3() == null || request.getResult3().isEmpty()
+                || request.getResult4() == null || request.getResult4().isEmpty()
+                || request.getResult5() == null || request.getResult5().isEmpty()
+                || request.getResult6() == null || request.getResult6().isEmpty()
+                || request.getResult7() == null || request.getResult7().isEmpty()
+                || request.getResult() == null || request.getResult().isEmpty();
+
+    }
+
+     public boolean isTrainingNull2(EditTrainingSection1Request request){
+        return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()
+                || request.getAction() == null || request.getAction().isEmpty()
+                || request.getActionDate() == null || request.getActionDate().isEmpty();
+    }
+
+    public boolean isEditTrainingNull2(EditTrainingSection2Request request) {
         return request == null || request.getResult1() == null || request.getResult1().isEmpty()
                 || request.getResult2() == null || request.getResult2().isEmpty()
                 || request.getResult3() == null || request.getResult3().isEmpty()
