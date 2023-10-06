@@ -1,9 +1,11 @@
 package com.pcc.portalservice.service;
 import javax.persistence.Query;
 import com.pcc.portalservice.model.Budget;
+import com.pcc.portalservice.model.Company;
 import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Sector;
 import com.pcc.portalservice.repository.BudgetRepository;
+import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
@@ -26,6 +28,7 @@ import java.util.*;
 public class BudgetService {
     private final BudgetRepository budgetRepository;
     private final SectorRepository sectorRepository;
+    private final CompanyRepository companyRepository;
     private final EntityManager entityManager;
 
     public boolean isBudgetNull(CreateBudgetRequest request) {
@@ -45,11 +48,15 @@ public class BudgetService {
 
         Sector sectorId = sectorRepository.findById(createBudgetRequest.getSectorId())
                 .orElseThrow(() -> new RuntimeException("sectorId not found: " + createBudgetRequest.getSectorId()));
+
+        Company companyId = companyRepository.findById(createBudgetRequest.getCompanyId())
+                .orElseThrow(() -> new RuntimeException("companyId not found: " + createBudgetRequest.getCompanyId()));
         
 
                 
         Budget budget = Budget.builder()
                 .sector(sectorId)
+                .company(companyId)
                 .class_name(createBudgetRequest.getClassName())
                 .remark(createBudgetRequest.getRemark())
                 .year(createBudgetRequest.getYear())
@@ -79,7 +86,16 @@ public class BudgetService {
     }
 
     public Budget editBudget(CreateBudgetRequest createBudgetRequest) {
+
+        Company companyName = companyRepository.findById(createBudgetRequest.getCompanyId())
+                        .orElseThrow(() -> new RuntimeException("companyName not found: " + createBudgetRequest.getCompanyId()));
+
+
+        Sector sector = sectorRepository.findById(createBudgetRequest.getSectorId()).orElseThrow(() -> new RuntimeException("Sector not found / SectorCode or SectorName wrong"));
+
         Budget budget = findById(createBudgetRequest.getBudgetId());
+        budget.setSector(sector);
+        budget.setCompany(companyName);
         budget.setClass_name(createBudgetRequest.getClassName());
         budget.setYear(createBudgetRequest.getYear());
         budget.setRemark(createBudgetRequest.getRemark());
