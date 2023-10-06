@@ -28,7 +28,6 @@ public class CourseService {
                 || request.getStartDate() == null || request.getStartDate().toString().isEmpty()
                 || request.getEndDate() == null || request.getEndDate().toString().isEmpty()
                 || request.getTime() == null || request.getTime().isEmpty()
-                || request.getNote() == null || request.getNote().isEmpty()
                 || request.getPlace() == null || request.getPlace().isEmpty();
     }
 
