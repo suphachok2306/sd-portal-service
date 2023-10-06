@@ -11,6 +11,7 @@ import com.pcc.portalservice.requests.CreateCourseRequest;
 import com.pcc.portalservice.repository.CourseRepository;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.data.rest.webmvc.BasePathAwareController;
@@ -71,7 +72,7 @@ public class CourseController {
     @PutMapping("/editCourse")
     public ResponseEntity<ApiResponse> updateCourse(
         @RequestBody CreateCourseRequest createCourseRequest
-    ) {
+    ) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         Course updatedCourse = courseService.editCourse(createCourseRequest);
