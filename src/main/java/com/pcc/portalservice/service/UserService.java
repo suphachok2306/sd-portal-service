@@ -18,8 +18,10 @@ import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -41,7 +43,20 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Set<Long> uniqueRoleIds = new HashSet<>();
+            List<Role> uniqueRoles = (List<Role>) user.getRoles();
+
+            // สร้างรายการ roles ใหม่โดยไม่มี id ที่ซ้ำกัน
+            uniqueRoles.removeIf(role -> !uniqueRoleIds.add(role.getId()));
+
+            return user;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found");
+        }
     }
 
 

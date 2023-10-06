@@ -27,14 +27,14 @@ public class TrainingService {
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
     private final ResultRepository resultRepository;
+    private final UserService userService;
 
     private final EntityManager entityManager;
 
 
     public Training createTraining(CreateTrainingRequest createTrainingRequest) throws ParseException {
 
-        User user = userRepository.findById(createTrainingRequest.getUserId())
-                .orElseThrow(() -> new RuntimeException("UserId not found: " + createTrainingRequest.getUserId()));
+        User user = userService.findById(createTrainingRequest.getUserId());
         User approve1 = userRepository.findById(createTrainingRequest.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
