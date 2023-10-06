@@ -246,7 +246,8 @@ public class UserService {
         if (role.isEmpty()) {
             return false;
         }
-        return user.getRoles().contains(role);
+        Role role1 = role.get();
+        return user.getRoles().contains(role1);
     }
 
     public List<User> findAllEmployee() {
