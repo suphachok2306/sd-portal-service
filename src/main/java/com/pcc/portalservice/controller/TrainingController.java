@@ -12,13 +12,17 @@ import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,6 +142,21 @@ public class TrainingController {
     public List<Map<String, Object>> findAllApprove(@RequestParam Long count) {
         return trainingService.findbyAllCountApprove(count);
     }
+
+
+    @GetMapping("/searchTraining")
+    public Object search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String department,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+            @RequestParam(required = false) String courseName
+    ) {
+        return trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
+    }
+
+
 
 
 
