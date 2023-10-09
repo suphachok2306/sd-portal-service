@@ -509,58 +509,66 @@ public class TrainingService {
     // }
 
 
-    public List<Training> searchTraining(String name, String position, String department, Date startDate
-            ,Date endDate, String courseName) {
+    public List<Map<String, Object>> searchTraining(String name, String position, String department, Date startDate,
+                                                Date endDate, String courseName) {
 
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Training> query = builder.createQuery(Training.class);
-        Root<Training> root = query.from(Training.class);
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Training> query = builder.createQuery(Training.class);
+    Root<Training> root = query.from(Training.class);
 
-        List<Predicate> predicates = new ArrayList<>();
+    List<Predicate> predicates = new ArrayList<>();
 
-        if (name != null) {
-            Join<Training, User> userJoin = root.join("user");
-            Expression<String> fullName = builder.concat(
-                    builder.concat(
-                            builder.lower(userJoin.get("firstname")), " "),
-                    builder.lower(userJoin.get("lastname"))
-            );
-            predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
-        }
-
-        if (position != null) {
-            Join<Training, User> userJoin = root.join("user");
-            Join<User, Position> positionJoin = userJoin.join("position");
-            predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
-        }
-
-
-        if (department != null) {
-            Join<Training, User> userJoin = root.join("user");
-            Join<User, Department> departmentJoin = userJoin.join("department");
-            predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + department.toLowerCase() + "%"));
-        }
-
-        if (startDate != null) {
-            Join<Training, Course> courseJoin = root.join("courses");
-            //predicates.add(builder.greaterThanOrEqualTo(courseJoin.get("startDate"), startDate));
-            predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
-        }
-
-        if (endDate != null) {
-            Join<Training, Course> courseJoin = root.join("courses");
-            predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
-        }
-
-        if (courseName != null) {
-            Join<Training, Course> courseJoin = root.join("courses");
-            predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
-        }
-
-        query.where(predicates.toArray(new Predicate[0]));
-
-        return entityManager.createQuery(query).getResultList();
+    if (name != null) {
+        Join<Training, User> userJoin = root.join("user");
+        Expression<String> fullName = builder.concat(
+                builder.concat(
+                        builder.lower(userJoin.get("firstname")), " "),
+                builder.lower(userJoin.get("lastname"))
+        );
+        predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
     }
+
+    if (position != null) {
+        Join<Training, User> userJoin = root.join("user");
+        Join<User, Position> positionJoin = userJoin.join("position");
+        predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
+    }
+
+    if (department != null) {
+        Join<Training, User> userJoin = root.join("user");
+        Join<User, Department> departmentJoin = userJoin.join("department");
+        predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + department.toLowerCase() + "%"));
+    }
+
+    if (startDate != null) {
+        Join<Training, Course> courseJoin = root.join("courses");
+        predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
+    }
+
+    if (endDate != null) {
+        Join<Training, Course> courseJoin = root.join("courses");
+        predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
+    }
+
+    if (courseName != null) {
+        Join<Training, Course> courseJoin = root.join("courses");
+        predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
+    }
+
+    query.where(predicates.toArray(new Predicate[0]));
+
+    List<Training> trainings = entityManager.createQuery(query).getResultList();
+
+    List<Map<String, Object>> results = new ArrayList<>();
+    for (Training training : trainings) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("training", training);
+        results.add(result);
+    }
+    
+    return results;
+}
+
 
 
 }
