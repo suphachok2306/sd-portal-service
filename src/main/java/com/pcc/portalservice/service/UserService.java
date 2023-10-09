@@ -5,11 +5,9 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
-//import com.pcc.portalservice.specs.UserSpecs;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +18,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+//import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
