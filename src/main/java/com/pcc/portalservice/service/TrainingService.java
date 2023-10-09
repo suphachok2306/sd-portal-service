@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class TrainingService {
     private final StatusRepository statusRepository;
     private final ResultRepository resultRepository;
     private final UserService userService;
+    private final DepartmentRepository departmentRepository;
 
     private final EntityManager entityManager;
 
@@ -43,7 +45,8 @@ public class TrainingService {
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
-
+        Department department = departmentRepository.findById(createTrainingRequest.getDeptId())
+                .orElseThrow(() -> new RuntimeException("deptCode not found: " + createTrainingRequest.getDeptId()));
 
         Date startDate = course.getStartDate();
         Date endDate = course.getEndDate();
@@ -55,6 +58,7 @@ public class TrainingService {
 
         Training training = Training.builder()
                 .user(user)
+                .department(department)
                 .dateSave(new Date())
                 .day(daysDifference)
                 .courses(Arrays.asList(course))
@@ -91,10 +95,31 @@ public class TrainingService {
                 .status(null)
                 .training(training)
                 .approveId(createTrainingRequest.getApprove1_id())
+                .active(0)
                 .build();
         statusRepository.save(status1);
 
+        Status status2 = Status.builder()
+                .status(null)
+                .training(training)
+                .approveId(Long.valueOf(3))
+                .active(0)
+                .build();
+
+         Status status3 = Status.builder()
+                .status(null)
+                .training(training)
+                .approveId(null)
+                .active(0)
+                .build();
+
+        statusRepository.save(status1);
+        statusRepository.save(status2);
+        statusRepository.save(status3);
+
         training.getStatus().add(status1);
+        training.getStatus().add(status2);
+        training.getStatus().add(status3);
         Training savedTraining = trainingRepository.save(training);
         return savedTraining;
     }
@@ -107,6 +132,8 @@ public class TrainingService {
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
         User user_id = userRepository.findById(editTraining.getUserId())
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
+        Department department = departmentRepository.findById(editTraining.getDeptId())
+                .orElseThrow(() -> new RuntimeException("deptCode not found: " + editTraining.getDeptId()));
         User approve1_id = userRepository.findById(editTraining.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + editTraining.getCourseId()));
 
@@ -115,6 +142,7 @@ public class TrainingService {
 
 
         training_id.setUser(user_id);
+        training_id.setDepartment(department);
         training_id.setDateSave(new Date());
         training_id.setAction(editTraining.getAction());
         training_id.setActionDate(actionDateFormat);
@@ -164,11 +192,13 @@ public class TrainingService {
         if (optionalStatus.isPresent()) {
             Status existingStatus = optionalStatus.get();
             existingStatus.setStatus(statusApprove);
+            existingStatus.setActive(1);
             statusRepository.save(existingStatus);
         } else {
             Status status = Status.builder()
                     .status(statusApprove)
                     .training(training)
+                    .active(1)
                     .approveId(approveId)
                     .build();
             statusRepository.save(status);
@@ -354,33 +384,73 @@ public class TrainingService {
             int approvedCount = 0;
             int disapprovedCount = 0;
     
-
-            for (Status status : training.getStatus()) {
-                if ("อนุมัติ".equals(status.getStatus().toString())) {
-                    approvedCount++;
-                } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-                    disapprovedCount++;
+            try {
+                for (Status status : training.getStatus()) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    }
                 }
-            }
 
-    
-            String result_status;
-            if (approvedCount == 3) {
-                result_status = "อนุมัติ";
-            } else if (disapprovedCount >= 1) {
-                result_status = "ไม่อนุมัติ";
-            } else {
-                result_status = "รอประเมิน";
+        
+                String result_status;
+                if (approvedCount == 3) {
+                    result_status = "อนุมัติ";
+                } else if (disapprovedCount >= 1) {
+                    result_status = "ไม่อนุมัติ";
+                } else {
+                    result_status = "รอประเมิน";
+                }
+
+                Map<String, Object> resultWithStatus = new HashMap<>();
+                resultWithStatus.put("training", training);
+                resultWithStatus.put("result_status", result_status);
+                resultWithStatusList.add(resultWithStatus);
             }
+        
+            catch(Exception e) {
+                continue;
+            }
+    
+
+        }
+    
+        return resultWithStatusList;
+    }
+
+    public List<Map<String, Object>> findNextApprove() {
+        String jpql = "SELECT DISTINCT s.training_id FROM Status s ORDER BY s.training_id";
+    
+        Query query = entityManager.createNativeQuery(jpql);
+    
+        List<Object> listOfTrainId = query.getResultList();
+    
+        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
+
+        System.out.println(listOfTrainId);
+    
+        for (Object training : listOfTrainId) {
+            String jpqlstatus = "SELECT * FROM Status s WHERE s.training_id = :training AND s.active = 0 LIMIT 1";
+            Query statusQuery = entityManager.createNativeQuery(jpqlstatus);
+            statusQuery.setParameter("training", training);
+            
+            List<Status> statusList = statusQuery.getResultList();
     
             Map<String, Object> resultWithStatus = new HashMap<>();
-            resultWithStatus.put("training", training);
-            resultWithStatus.put("result_status", result_status);
+            resultWithStatus.put("trainingId", training);
+            resultWithStatus.put("statusList", statusList);
+    
             resultWithStatusList.add(resultWithStatus);
         }
     
         return resultWithStatusList;
     }
+    
+    
+
+    
+    
 
     public boolean isTrainingNull(CreateTrainingRequest request){
         return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()

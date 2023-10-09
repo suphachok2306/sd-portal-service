@@ -80,16 +80,25 @@ public class UserService {
         String email = createEmployeeRequest.getEmail();
         String empCode = createEmployeeRequest.getEmpCode();
     
-        // Check if both email and empCode are already in use
-        if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("Email is already in use.");
+        if (userRepository.existsByEmail(email) && userRepository.existsByempCode(empCode)) {
+            throw new RuntimeException("Both Email and EmpCode are already in use.");
+        }else{
+            if (email == null || email.isEmpty()) {
+            } else {
+                if (userRepository.existsByEmail(email)) {
+                    throw new RuntimeException("Email is already in use.");  
+            }
+
+
+        if (empCode == null || empCode.isEmpty()) {
+            } else {
+                if (userRepository.existsByempCode(empCode)) {
+                    throw new RuntimeException("EmpCode is already in use.");  
+            }
         }
-    
-        if (userRepository.existsByempCode(empCode)) {
-            throw new RuntimeException("EmpCode is already in use.");
         }
-    
-        // Other validation for empty fields can be added here
+    }
+
     
         Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
                 .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));

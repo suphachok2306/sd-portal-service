@@ -143,7 +143,9 @@ public class TrainingController {
         return ResponseEntity.ok(training);
     }
 
-
-
+    @GetMapping("/findNextApprove")
+    public List<Map<String, Object>> findNextApprove() {
+        return trainingService.findNextApprove();
+    }
 
 }
