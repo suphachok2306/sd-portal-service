@@ -145,7 +145,7 @@ public class TrainingController {
 
 
     @GetMapping("/searchTraining")
-    public Object search(
+    public ResponseEntity<ApiResponse> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String position,
             @RequestParam(required = false) String department,
@@ -153,7 +153,18 @@ public class TrainingController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
             @RequestParam(required = false) String courseName
     ) {
-        return trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        Object result =  trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
+        try {
+            data.setResult(result);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e){
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 
     @GetMapping("/findNextApprove")

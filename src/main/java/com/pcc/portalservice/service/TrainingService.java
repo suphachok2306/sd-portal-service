@@ -1,7 +1,6 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.*;
-import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
@@ -11,16 +10,12 @@ import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import lombok.RequiredArgsConstructor;
 
 import org.hibernate.query.NativeQuery;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -502,66 +497,62 @@ public class TrainingService {
 
     public List<Map<String, Object>> searchTraining(String name, String position, String department, Date startDate,
                                                 Date endDate, String courseName) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
 
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Training> query = builder.createQuery(Training.class);
-    Root<Training> root = query.from(Training.class);
+        List<Predicate> predicates = new ArrayList<>();
 
-    List<Predicate> predicates = new ArrayList<>();
+        if (name != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Expression<String> fullName = builder.concat(
+                    builder.concat(
+                            builder.lower(userJoin.get("firstname")), " "),
+                    builder.lower(userJoin.get("lastname"))
+            );
+            predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
+        }
 
-    if (name != null) {
-        Join<Training, User> userJoin = root.join("user");
-        Expression<String> fullName = builder.concat(
-                builder.concat(
-                        builder.lower(userJoin.get("firstname")), " "),
-                builder.lower(userJoin.get("lastname"))
-        );
-        predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
+        if (position != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Join<User, Position> positionJoin = userJoin.join("position");
+            predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
+        }
+
+        if (department != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Join<User, Department> departmentJoin = userJoin.join("department");
+            predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + department.toLowerCase() + "%"));
+        }
+
+        if (startDate != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
+        }
+
+        if (endDate != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
+        }
+
+        if (courseName != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
+        }
+
+        query.where(predicates.toArray(new Predicate[0]));
+
+        List<Training> trainings = entityManager.createQuery(query).getResultList();
+
+        List<Map<String, Object>> results = new ArrayList<>();
+        for (Training training : trainings) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("training", training);
+            results.add(result);
+        }
+
+        return results;
     }
-
-    if (position != null) {
-        Join<Training, User> userJoin = root.join("user");
-        Join<User, Position> positionJoin = userJoin.join("position");
-        predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
-    }
-
-    if (department != null) {
-        Join<Training, User> userJoin = root.join("user");
-        Join<User, Department> departmentJoin = userJoin.join("department");
-        predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + department.toLowerCase() + "%"));
-    }
-
-    if (startDate != null) {
-        Join<Training, Course> courseJoin = root.join("courses");
-        predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
-    }
-
-    if (endDate != null) {
-        Join<Training, Course> courseJoin = root.join("courses");
-        predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
-    }
-
-    if (courseName != null) {
-        Join<Training, Course> courseJoin = root.join("courses");
-        predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
-    }
-
-    query.where(predicates.toArray(new Predicate[0]));
-
-    List<Training> trainings = entityManager.createQuery(query).getResultList();
-
-    List<Map<String, Object>> results = new ArrayList<>();
-    for (Training training : trainings) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("training", training);
-        results.add(result);
-    }
-    
-    return results;
-}
-
-
-
 }
 
 
