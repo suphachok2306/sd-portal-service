@@ -9,6 +9,8 @@ import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 
 import lombok.RequiredArgsConstructor;
+
+import org.hibernate.query.NativeQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -285,18 +287,23 @@ public class TrainingService {
     }
 
     public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
-        String jpql = "SELECT t FROM Training t WHERE approve1_id = :id";
+        String jpql = "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
+                "approve1_id,user_id,dept_code,active " + //
+                "FROM status s " + //
+                "JOIN training t ON training_id = t.id " + //
+                "WHERE s.approve_id = :id";
     
-        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
-
-        query.setParameter("id",approve1Id);
+        NativeQuery query = (NativeQuery) entityManager.createNativeQuery(jpql, Training.class);
+    
+        query.setParameter("id", approve1Id);
         List<Training> resultList = query.getResultList();
         List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-        
+    
         for (Training training : resultList) {
             int approvedCount = 0;
             int disapprovedCount = 0;
-            String result_status;
+            String resultStatus;
+            String isDo = null;
     
             for (Status status : training.getStatus()) {
                 if (status.getStatus() != null) {
@@ -306,23 +313,34 @@ public class TrainingService {
                         disapprovedCount++;
                     }
                 }
+    
+                if (status.getActive() == 1 || status.getApproveId() == approve1Id) {
+                    isDo = "อนุมัติ";
+                } else {
+                    isDo = "ไม่อนุมัติ";
+                }
             }
+    
             if (approvedCount == 3) {
-                result_status = "อนุมัติ";
+                resultStatus = "อนุมัติ";
             } else if (disapprovedCount >= 1) {
-                result_status = "ไม่อนุมัติ";
+                resultStatus = "ไม่อนุมัติ";
             } else {
-                result_status = "รอประเมิน";
+                resultStatus = "รอประเมิน";
             }
     
             Map<String, Object> resultWithStatus = new HashMap<>();
             resultWithStatus.put("training", training);
-            resultWithStatus.put("result_status", result_status);
+            resultWithStatus.put("result_status", resultStatus);
+            resultWithStatus.put("isDo", isDo);
             resultWithStatusList.add(resultWithStatus);
         }
     
         return resultWithStatusList;
     }
+    
+    
+    
 
     public List<Map<String, Object>> findAllTraining() {
         String jpql = "SELECT t FROM Training t";
