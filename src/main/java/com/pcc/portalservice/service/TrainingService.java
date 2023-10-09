@@ -318,11 +318,17 @@ public class TrainingService {
                         disapprovedCount++;
                     }
                 }
-    
-                if (status.getActive() == 1 || status.getApproveId() == approve1Id) {
-                    isDo = "อนุมัติ";
-                } else {
-                    isDo = "ไม่อนุมัติ";
+                if ((status.getActive() == 1) && (status.getStatus() != null)){
+                    if (status.getApproveId() == approve1Id){
+                       if ("อนุมัติ".equals(status.getStatus().toString())) {
+                            isDo = "อนุมัติ";
+                        } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                            isDo = "ไม่อนุมัติ ";
+                        }
+                    }
+                }
+                else{
+                    isDo = "รอประเมิน";
                 }
             }
     
