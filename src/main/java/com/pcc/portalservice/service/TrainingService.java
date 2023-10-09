@@ -16,13 +16,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 
 @RequiredArgsConstructor
 @Service
@@ -470,17 +473,6 @@ public class TrainingService {
                 || request.getActionDate() == null || request.getActionDate().isEmpty();
     }
 
-    public boolean isEditTrainingNull(CreateTrainingRequest request) {
-        return request == null || request.getResult1() == null || request.getResult1().isEmpty()
-                || request.getResult2() == null || request.getResult2().isEmpty()
-                || request.getResult3() == null || request.getResult3().isEmpty()
-                || request.getResult4() == null || request.getResult4().isEmpty()
-                || request.getResult5() == null || request.getResult5().isEmpty()
-                || request.getResult6() == null || request.getResult6().isEmpty()
-                || request.getResult7() == null || request.getResult7().isEmpty()
-                || request.getResult() == null || request.getResult().isEmpty();
-
-    }
 
      public boolean isTrainingNull2(EditTrainingSection1Request request){
         return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()
@@ -516,7 +508,62 @@ public class TrainingService {
     //     return statusList.stream()
     //             .anyMatch(status -> status.getStatus().equals(statusApprove));
     // }
-    
+
+
+    public List<Training> searchTraining(String name, String position, String department, Date startDate
+            ,Date endDate, String courseName) {
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (name != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Expression<String> fullName = builder.concat(
+                    builder.concat(
+                            builder.lower(userJoin.get("firstname")), " "),
+                    builder.lower(userJoin.get("lastname"))
+            );
+            predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
+        }
+
+        if (position != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Join<User, Position> positionJoin = userJoin.join("position");
+            predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
+        }
+
+
+        if (department != null) {
+            Join<Training, User> userJoin = root.join("user");
+            Join<User, Department> departmentJoin = userJoin.join("department");
+            predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + department.toLowerCase() + "%"));
+        }
+
+        if (startDate != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            //predicates.add(builder.greaterThanOrEqualTo(courseJoin.get("startDate"), startDate));
+            predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
+        }
+
+        if (endDate != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
+        }
+
+        if (courseName != null) {
+            Join<Training, Course> courseJoin = root.join("courses");
+            predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
+        }
+
+        query.where(predicates.toArray(new Predicate[0]));
+
+        return entityManager.createQuery(query).getResultList();
+    }
+
+
 }
 
 
