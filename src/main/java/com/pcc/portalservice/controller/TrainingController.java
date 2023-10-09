@@ -13,17 +13,13 @@ import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +54,7 @@ public class TrainingController {
     public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId,@RequestBody EditTrainingSection1Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if (trainingService.isTrainingNull2(editTraining)) {
+        if (trainingService.isEditTrainingNull1(editTraining)) {
             response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
             return ResponseEntity.badRequest().body(response);
         }
@@ -159,7 +155,6 @@ public class TrainingController {
     ) {
         return trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
     }
-
 
     @GetMapping("/findNextApprove")
     public List<Map<String, Object>> findNextApprove() {

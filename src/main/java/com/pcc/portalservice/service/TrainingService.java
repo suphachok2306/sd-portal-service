@@ -476,7 +476,7 @@ public class TrainingService {
     }
 
 
-     public boolean isTrainingNull2(EditTrainingSection1Request request){
+     public boolean isEditTrainingNull1(EditTrainingSection1Request request){
         return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()
                 || request.getAction() == null || request.getAction().isEmpty()
                 || request.getActionDate() == null || request.getActionDate().isEmpty();
@@ -493,24 +493,6 @@ public class TrainingService {
                 || request.getResult() == null || request.getResult().isEmpty();
 
     }
-
-    // public boolean hasStatus(Long trainingId, StatusApprove statusApprove) {
-    //     Training training = trainingRepository.findById(trainingId).orElse(null);
-
-    //     if (training == null) {
-    //         return false;
-    //     }
-
-    //     List<Status> statusList = training.getStatus();
-
-    //     if (statusList == null || statusList.isEmpty()) {
-    //         return false;
-    //     }
-
-    //     return statusList.stream()
-    //             .anyMatch(status -> status.getStatus().equals(statusApprove));
-    // }
-
 
     public List<Map<String, Object>> searchTraining(String name, String position, String department, Date startDate,
                                                 Date endDate, String courseName) {
