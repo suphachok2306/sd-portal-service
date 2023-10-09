@@ -10,6 +10,8 @@ import java.util.Date;
 @Data
 public class CreateTrainingRequest {
     Long userId;
+
+    Long deptId;
     Date dateSave;
     int day;
     Long courseId;

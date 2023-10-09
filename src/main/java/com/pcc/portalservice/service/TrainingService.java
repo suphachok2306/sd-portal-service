@@ -32,6 +32,7 @@ public class TrainingService {
     private final StatusRepository statusRepository;
     private final ResultRepository resultRepository;
     private final UserService userService;
+    private final DepartmentRepository departmentRepository;
 
     private final EntityManager entityManager;
 
@@ -44,7 +45,8 @@ public class TrainingService {
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
-
+        Department department = departmentRepository.findById(createTrainingRequest.getDeptId())
+                .orElseThrow(() -> new RuntimeException("deptCode not found: " + createTrainingRequest.getDeptId()));
 
         Date startDate = course.getStartDate();
         Date endDate = course.getEndDate();
@@ -56,6 +58,7 @@ public class TrainingService {
 
         Training training = Training.builder()
                 .user(user)
+                .department(department)
                 .dateSave(new Date())
                 .day(daysDifference)
                 .courses(Arrays.asList(course))
@@ -129,6 +132,8 @@ public class TrainingService {
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
         User user_id = userRepository.findById(editTraining.getUserId())
                 .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
+        Department department = departmentRepository.findById(editTraining.getDeptId())
+                .orElseThrow(() -> new RuntimeException("deptCode not found: " + editTraining.getDeptId()));
         User approve1_id = userRepository.findById(editTraining.getApprove1_id())
                 .orElseThrow(() -> new RuntimeException("Approve1Id not found: " + editTraining.getCourseId()));
 
@@ -137,6 +142,7 @@ public class TrainingService {
 
 
         training_id.setUser(user_id);
+        training_id.setDepartment(department);
         training_id.setDateSave(new Date());
         training_id.setAction(editTraining.getAction());
         training_id.setActionDate(actionDateFormat);
