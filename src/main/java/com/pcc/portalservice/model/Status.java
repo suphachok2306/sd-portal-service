@@ -23,6 +23,9 @@ public class Status {
     @Enumerated(EnumType.STRING)
     private StatusApprove status;
 
+    
+    private int active;
+
     private Long approveId;
 
     @ManyToOne

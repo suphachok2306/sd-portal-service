@@ -12,6 +12,7 @@ public class EditTrainingSection1Request {
     
     //////////////////////////////
     Long userId;
+
     Date dateSave;
     int day;
     Long courseId;
