@@ -540,9 +540,18 @@ public class TrainingService {
             predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
         }
 
+        if (name == null && position == null && department == null && startDate == null && endDate == null && courseName == null ){
+            return null;
+        }
+
+
         query.where(predicates.toArray(new Predicate[0]));
 
         List<Training> trainings = entityManager.createQuery(query).getResultList();
+
+        if(trainings.isEmpty()){
+            return null;
+        }
 
         List<Map<String, Object>> results = new ArrayList<>();
         for (Training training : trainings) {
