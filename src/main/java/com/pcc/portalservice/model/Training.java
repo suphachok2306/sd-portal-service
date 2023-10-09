@@ -24,10 +24,6 @@ public class Training {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "dept_code")
-    private Department department;
-
     @Temporal(TemporalType.DATE)
     private Date dateSave;
 

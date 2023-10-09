@@ -45,7 +45,7 @@ public class TrainingController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/createTraining").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
@@ -66,7 +66,7 @@ public class TrainingController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/editTraining").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
@@ -87,7 +87,7 @@ public class TrainingController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/editTraining").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
@@ -103,7 +103,7 @@ public class TrainingController {
             response.setResponseData(data);
             return ResponseEntity.ok().body(response);
         } catch (Exception e){
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -135,8 +135,12 @@ public class TrainingController {
 
 
     @GetMapping("/findAllApprove")
-    public List<Map<String, Object>> findAllApprove(@RequestParam Long count) {
-        return trainingService.findbyAllCountApprove(count);
+    public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
+        List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
+        if(count > 3){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(training);
     }
 
     @GetMapping("/findNextApprove")
