@@ -11,7 +11,6 @@ import java.util.Date;
 public class CreateTrainingRequest {
     Long userId;
 
-    Long deptId;
     Date dateSave;
     int day;
     Long courseId;
