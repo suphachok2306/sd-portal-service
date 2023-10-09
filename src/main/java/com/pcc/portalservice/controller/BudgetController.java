@@ -35,7 +35,6 @@ public class BudgetController {
 
     private final BudgetService budgetService;
 
-
     @PostMapping("/createBudget")
     public ResponseEntity<ApiResponse> createBudget(@RequestBody CreateBudgetRequest createbudgetRequest) {
         ApiResponse response = new ApiResponse();
@@ -61,19 +60,9 @@ public class BudgetController {
     public List<Budget> getAllBudgets() {return budgetService.findAll();}
 
     @GetMapping("/findBudgetById")
-    public ResponseEntity<ApiResponse> findBudgetById(@RequestParam Long budgetID) {
+    public ResponseEntity<Budget> findBudgetById(@RequestParam Long budgetID) {
         Budget budget= budgetService.findById(budgetID);
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (budget != null) {
-            data.setResult(budget);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่สามารถทำรายการได้");
-            return ResponseEntity.badRequest().body(response);
-        }
+        return ResponseEntity.ok(budget);
     }
 
 

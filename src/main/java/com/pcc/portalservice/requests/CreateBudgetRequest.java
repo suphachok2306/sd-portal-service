@@ -21,5 +21,6 @@ public class CreateBudgetRequest {
     float fee;
     float airAcc;
     long sectorId;
+    long companyId;
 
 }

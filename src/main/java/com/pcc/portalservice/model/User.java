@@ -12,6 +12,8 @@ import javax.validation.constraints.Null;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "USERS")
@@ -36,7 +38,7 @@ public class User {
     private String telephone;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
     
     @JsonIgnore
     @OneToOne(mappedBy = "user")
