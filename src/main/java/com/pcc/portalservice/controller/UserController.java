@@ -63,7 +63,7 @@ public class UserController {
             response.setResponseData(data);
             return ResponseEntity.ok().body(response);
         } catch (Exception e){
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
 
@@ -110,7 +110,7 @@ public class UserController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/editEmployee").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
@@ -150,7 +150,7 @@ public class UserController {
             response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
             return ResponseEntity.ok().body(response);
         } catch (Exception e){
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
 

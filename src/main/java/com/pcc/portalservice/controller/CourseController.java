@@ -64,7 +64,7 @@ public class CourseController {
             URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/createCourse").toUriString());
             return ResponseEntity.created(uri).body(response);
         } catch (Exception e) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้ เพราะ มีข้อผิดพลาดภายในเซิร์ฟเวอร์");
+            response.setResponseMessage(e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }
