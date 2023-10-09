@@ -79,27 +79,27 @@ public class UserService {
     public User createEmployee(CreateEmployeeRequest createEmployeeRequest) {
         String email = createEmployeeRequest.getEmail();
         String empCode = createEmployeeRequest.getEmpCode();
-    
-        if (userRepository.existsByEmail(email) && userRepository.existsByempCode(empCode)) {
-            throw new RuntimeException("Both Email and EmpCode are already in use.");
-        }else{
-            if (email == null || email.isEmpty()) {
-            } else {
-                if (userRepository.existsByEmail(email)) {
-                    throw new RuntimeException("Email is already in use.");  
-            }
 
 
-        if (empCode == null || empCode.isEmpty()) {
-            } else {
-                if (userRepository.existsByempCode(empCode)) {
+        if (email == null || email.isEmpty() || email.equals("")) {
+            if (userRepository.existsByempCode(empCode)) {
                     throw new RuntimeException("EmpCode is already in use.");  
             }
+            
+        }else{
+            if ((userRepository.existsByEmail(email)) && userRepository.existsByempCode(empCode)) {
+                throw new RuntimeException("Both Email and EmpCode are already in use.");
+            }
+            else{
+                if (userRepository.existsByEmail(email)) {
+                    throw new RuntimeException("Email is already in use.");  
+                }
+                if (userRepository.existsByempCode(empCode)) {
+                throw new RuntimeException("EmpCode is already in use.");  
+                }
+            }
         }
-        }
-    }
-
-    
+         
         Company companyName = companyRepository.findByCompanyName(createEmployeeRequest.getCompanyName())
                 .orElseThrow(() -> new RuntimeException("companyName not found: " + createEmployeeRequest.getCompanyName()));
     
