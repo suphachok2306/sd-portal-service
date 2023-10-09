@@ -146,7 +146,7 @@ public class TrainingController {
         }
         return ResponseEntity.ok(training);
     }
-    
+
 
     @GetMapping("/searchTraining")
     public Object search(

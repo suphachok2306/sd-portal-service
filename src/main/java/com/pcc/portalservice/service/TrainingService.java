@@ -36,7 +36,6 @@ public class TrainingService {
     private final UserRepository userRepository;
     private final StatusRepository statusRepository;
     private final ResultRepository resultRepository;
-    private final UserService userService;
 
     private final EntityManager entityManager;
 
@@ -291,7 +290,7 @@ public class TrainingService {
 
     public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
         String jpql = "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
-                "approve1_id,user_id,dept_code,active " + //
+                "approve1_id,user_id,active " + //
                 "FROM status s " + //
                 "JOIN training t ON training_id = t.id " + //
                 "WHERE s.approve_id = :id";
