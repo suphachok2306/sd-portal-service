@@ -313,11 +313,17 @@ public class TrainingService {
                         disapprovedCount++;
                     }
                 }
-    
-                if (status.getActive() == 1 || status.getApproveId() == approve1Id) {
-                    isDo = "อนุมัติ";
-                } else {
-                    isDo = "ไม่อนุมัติ";
+                if ((status.getActive() == 1) && (status.getStatus() != null)){
+                    if (status.getApproveId() == approve1Id){
+                       if ("อนุมัติ".equals(status.getStatus().toString())) {
+                            isDo = "อนุมัติ";
+                        } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                            isDo = "ไม่อนุมัติ ";
+                        }
+                    }
+                }
+                else{
+                    isDo = "รอประเมิน";
                 }
             }
     
@@ -541,6 +547,10 @@ public class TrainingService {
         query.where(predicates.toArray(new Predicate[0]));
 
         List<Training> trainings = entityManager.createQuery(query).getResultList();
+
+        if(trainings.isEmpty()){
+            return null;
+        }
 
         List<Map<String, Object>> results = new ArrayList<>();
         for (Training training : trainings) {
