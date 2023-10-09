@@ -100,27 +100,27 @@ public class TrainingService {
                 .build();
         statusRepository.save(status1);
 
-        Status status2 = Status.builder()
-                .status(null)
-                .training(training)
-                .approveId(Long.valueOf(3))
-                .active(0)
-                .build();
-
-         Status status3 = Status.builder()
-                .status(null)
-                .training(training)
-                .approveId(null)
-                .active(0)
-                .build();
+//        Status status2 = Status.builder()
+//                .status(null)
+//                .training(training)
+//                .approveId(Long.valueOf(3))
+//                .active(0)
+//                .build();
+//
+//         Status status3 = Status.builder()
+//                .status(null)
+//                .training(training)
+//                .approveId(null)
+//                .active(0)
+//                .build();
 
         statusRepository.save(status1);
-        statusRepository.save(status2);
-        statusRepository.save(status3);
+//        statusRepository.save(status2);
+//        statusRepository.save(status3);
 
         training.getStatus().add(status1);
-        training.getStatus().add(status2);
-        training.getStatus().add(status3);
+//        training.getStatus().add(status2);
+//        training.getStatus().add(status3);
         Training savedTraining = trainingRepository.save(training);
         return savedTraining;
     }
@@ -184,7 +184,7 @@ public class TrainingService {
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("Training not found with ID: " + trainingId));
         Optional<Status> optionalStatus = training.getStatus().stream()
-                .filter(status -> status.getApproveId().equals(approveId))
+                .filter(status -> approveId.equals(status.getApproveId()))
                 .findFirst();
 
         if (optionalStatus.isPresent()) {
@@ -202,25 +202,26 @@ public class TrainingService {
             statusRepository.save(status);
             training.getStatus().add(status);
         }
-
         return trainingRepository.save(training);
     }
+
+
 
     public List<Map<String, Object>>  findById(Long id) {
 
         String jpql = "SELECT t FROM Training t WHERE id = :id";
-    
+
         TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
 
         query.setParameter("id",id);
         List<Training> resultList = query.getResultList();
         List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-        
+
         for (Training training : resultList) {
             int approvedCount = 0;
             int disapprovedCount = 0;
             String result_status;
-    
+
             for (Status status : training.getStatus()) {
                 if (status.getStatus() != null) {
                     if ("อนุมัติ".equals(status.getStatus().toString())) {
@@ -237,15 +238,17 @@ public class TrainingService {
             } else {
                 result_status = "รอประเมิน";
             }
-    
+
             Map<String, Object> resultWithStatus = new HashMap<>();
             resultWithStatus.put("training", training);
             resultWithStatus.put("result_status", result_status);
             resultWithStatusList.add(resultWithStatus);
         }
-    
+
         return resultWithStatusList;
     }
+
+
 
 
     public List<Map<String, Object>>findTrainingsByUserId(Long userId) {
