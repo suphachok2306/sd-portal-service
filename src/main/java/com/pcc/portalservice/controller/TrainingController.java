@@ -139,7 +139,9 @@ public class TrainingController {
         return trainingService.findbyAllCountApprove(count);
     }
 
-
-
+    @GetMapping("/findNextApprove")
+    public List<Map<String, Object>> findNextApprove() {
+        return trainingService.findNextApprove();
+    }
 
 }
