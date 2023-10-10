@@ -490,7 +490,7 @@ public class TrainingService {
 
     }
 
-    public List<Map<String, Object>> searchTraining(String name, String position, String department, Date startDate,
+    public Object searchTraining(String name, String position, String department, Date startDate,
                                                 Date endDate, String courseName) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Training> query = builder.createQuery(Training.class);
@@ -535,9 +535,17 @@ public class TrainingService {
             predicates.add(builder.like(builder.lower(courseJoin.get("courseName")), "%" + courseName.toLowerCase() + "%"));
         }
 
+        if (name == null && position == null && department == null && startDate == null && endDate == null && courseName == null ){
+            return null;
+        }
+
         query.where(predicates.toArray(new Predicate[0]));
 
         List<Training> trainings = entityManager.createQuery(query).getResultList();
+
+        if(trainings.isEmpty()){
+            return null;
+        }
 
         List<Map<String, Object>> results = new ArrayList<>();
         for (Training training : trainings) {

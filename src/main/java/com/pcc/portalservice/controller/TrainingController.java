@@ -13,6 +13,7 @@ import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -156,13 +157,13 @@ public class TrainingController {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         Object result =  trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
-        try {
+        if(result != null){
             data.setResult(result);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);
             return ResponseEntity.ok().body(response);
-        } catch (Exception e){
-            response.setResponseMessage(e.getMessage());
+        } else {
+            response.setResponseMessage("ไม่สามารถทำรายการได้");
             return ResponseEntity.badRequest().body(response);
         }
     }
