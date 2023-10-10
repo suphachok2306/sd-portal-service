@@ -7,36 +7,38 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.RoleRepository;
 import com.pcc.portalservice.requests.CreateCompanyRequest;
-import lombok.RequiredArgsConstructor;
-
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class CompanyService {
-    private final CompanyRepository companyRepository;
 
-    public boolean isCompanyNull(CreateCompanyRequest request) {
-        return request == null || request.getCompanyName() == null || request.getCompanyName().isEmpty();
-    }
+  private final CompanyRepository companyRepository;
 
-    public Company create(CreateCompanyRequest createCompanyRequest){
-        Company company = Company.builder()
-                .id(createCompanyRequest.getCompanyId())
-                .companyName(createCompanyRequest.getCompanyName())
-                .build();
-        return companyRepository.save(company);
-    }
+  public boolean isCompanyNull(CreateCompanyRequest request) {
+    return (
+      request == null ||
+      request.getCompanyName() == null ||
+      request.getCompanyName().isEmpty()
+    );
+  }
 
+  public Company create(CreateCompanyRequest createCompanyRequest) {
+    Company company = Company
+      .builder()
+      .id(createCompanyRequest.getCompanyId())
+      .companyName(createCompanyRequest.getCompanyName())
+      .build();
+    return companyRepository.save(company);
+  }
 
-    public List<Company> findAll() {
-        return companyRepository.findAll();
-    }
-    
+  public List<Company> findAll() {
+    return companyRepository.findAll();
+  }
 }

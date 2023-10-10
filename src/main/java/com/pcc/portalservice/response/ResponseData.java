@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class ResponseData {
-    private Object result;
+
+  private Object result;
 }
