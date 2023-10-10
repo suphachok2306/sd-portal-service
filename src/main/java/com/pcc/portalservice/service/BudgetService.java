@@ -1,9 +1,7 @@
 package com.pcc.portalservice.service;
 import javax.persistence.Query;
-import com.pcc.portalservice.model.Budget;
-import com.pcc.portalservice.model.Company;
-import com.pcc.portalservice.model.Department;
-import com.pcc.portalservice.model.Sector;
+
+import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.repository.BudgetRepository;
 import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.DepartmentRepository;
@@ -76,13 +74,23 @@ public class BudgetService {
         return budgetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
     }
 
-    public Budget deleteData(Long id) {
-        Budget budget = budgetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
+//    public Budget deleteData(Long id) {
+//        Budget budget = budgetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
+//        budgetRepository.delete(budget);
+//        return budget;
+//    }
 
-        budgetRepository.delete(budget);
-
-        return budget;
+    public String deleteData(Long id) {
+        Optional<Budget> optionalBudget = budgetRepository.findById(id);
+        if (optionalBudget.isPresent()) {
+            budgetRepository.deleteById(id);
+            return "ลบข้อมูลเรียบร้อย";
+        }
+        else{
+            return null;
+        }
     }
+
 
     public Budget editBudget(CreateBudgetRequest createBudgetRequest) {
 

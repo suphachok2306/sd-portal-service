@@ -93,10 +93,10 @@ public class CourseController {
         ) {
             ApiResponse response = new ApiResponse();
             ResponseData data = new ResponseData();
-            Course course= courseService.deleteData(courseID);
+            String course= courseService.deleteData(courseID);
             if (course != null) {
                 data.setResult(course);
-                response.setResponseMessage("ลบเรียบร้อย");
+                response.setResponseMessage("ลบข้อมูลเรียบร้อย");
                 response.setResponseData(data);
                 return ResponseEntity.ok().body(response);
             } else {

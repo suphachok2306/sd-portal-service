@@ -145,18 +145,6 @@ public class TrainingController {
     }
 
 
-//    @GetMapping("/searchTraining")
-//    public Object search(
-//            @RequestParam(required = false) String name,
-//            @RequestParam(required = false) String position,
-//            @RequestParam(required = false) String department,
-//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-//            @RequestParam(required = false) String courseName
-//    ) {
-//        return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
-//    }
-
     @GetMapping("/searchTraining")
     public Object search(@RequestParam(required = false) String name,
                          @RequestParam(required = false) String position,

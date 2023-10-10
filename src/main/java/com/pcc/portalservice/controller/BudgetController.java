@@ -70,10 +70,10 @@ public class BudgetController {
     public ResponseEntity<ApiResponse> delete(@RequestParam Long budgetID) {
             ApiResponse response = new ApiResponse();
             ResponseData data = new ResponseData();
-            Budget budget = budgetService.deleteData(budgetID);
+            String budget = budgetService.deleteData(budgetID);
             if (budget != null) {
                 data.setResult(budget);
-                response.setResponseMessage("ลบเรียบร้อย");
+                response.setResponseMessage("ลบข้อมูลเรียบร้อย");
                 response.setResponseData(data);
                 return ResponseEntity.ok().body(response);
             } else {
