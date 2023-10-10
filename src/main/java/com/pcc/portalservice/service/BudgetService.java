@@ -84,7 +84,7 @@ public class BudgetService {
         Optional<Budget> optionalBudget = budgetRepository.findById(id);
         if (optionalBudget.isPresent()) {
             budgetRepository.deleteById(id);
-            return "ลบข้อมูลเรียบร้อย";
+            return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
         }
         else{
             return null;

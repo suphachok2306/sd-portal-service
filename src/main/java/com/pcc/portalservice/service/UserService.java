@@ -226,7 +226,7 @@ public class UserService {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {
             userRepository.deleteById(id);
-            return "ลบข้อมูลเรียบร้อย";
+            return "ลบข้อมูลของ ID : " + id + " เรียบร้อย" ;
         }
         else{
             return null;

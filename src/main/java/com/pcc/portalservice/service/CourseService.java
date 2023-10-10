@@ -97,7 +97,7 @@ public class CourseService {
         Optional<Course> optionalCourse = courseRepository.findById(id);
         if (optionalCourse.isPresent()) {
             courseRepository.deleteById(id);
-            return "ลบข้อมูลเรียบร้อย";
+            return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
         }
         else{
             return null;
