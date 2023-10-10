@@ -120,10 +120,12 @@ public class TrainingService {
         return savedTraining;
     }
 
-    public Training editTrainingSection1(Long trainingId,EditTrainingSection1Request editTraining) throws ParseException {
+    public Training editTrainingSection1(Long trainingId,Long statusId,EditTrainingSection1Request editTraining) throws ParseException {
 
         Training training_id = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new RuntimeException("TrainingId not found: " + trainingId));
+        Status status_id = statusRepository.findById(statusId)
+                .orElseThrow(() -> new RuntimeException("StatusId not found: " + statusId));
         Course course_id = courseRepository.findById(editTraining.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + editTraining.getCourseId()));
         User user_id = userRepository.findById(editTraining.getUserId())
@@ -143,6 +145,9 @@ public class TrainingService {
         training_id.getCourses().add(course_id);
         training_id.setApprove1(approve1_id);
 
+//        status_id.setStatus(editTraining.getStatus1());
+        status_id.setApproveId(editTraining.getApprove1_id());
+        statusRepository.save(status_id);
         Training updatedTraining = trainingRepository.save(training_id);
         return updatedTraining;
     }

@@ -52,7 +52,7 @@ public class TrainingController {
     }
 
     @PostMapping("/editTrainingSection1")
-    public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId, @RequestBody EditTrainingSection1Request editTraining) throws ParseException {
+    public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId,Long statusId, @RequestBody EditTrainingSection1Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         if (trainingService.isEditTrainingNull1(editTraining)) {
@@ -60,7 +60,7 @@ public class TrainingController {
             return ResponseEntity.badRequest().body(response);
         }
         try {
-            Training training = trainingService.editTrainingSection1(trainingId, editTraining);
+            Training training = trainingService.editTrainingSection1(trainingId,statusId, editTraining);
             data.setResult(training);
             response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
             response.setResponseData(data);
