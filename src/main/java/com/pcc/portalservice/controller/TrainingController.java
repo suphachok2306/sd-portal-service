@@ -52,7 +52,7 @@ public class TrainingController {
     }
 
     @PostMapping("/editTrainingSection1")
-    public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId,@RequestBody EditTrainingSection1Request editTraining) throws ParseException {
+    public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId, @RequestBody EditTrainingSection1Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         if (trainingService.isEditTrainingNull1(editTraining)) {
@@ -60,7 +60,7 @@ public class TrainingController {
             return ResponseEntity.badRequest().body(response);
         }
         try {
-            Training training = trainingService.editTrainingSection1(trainingId,editTraining);
+            Training training = trainingService.editTrainingSection1(trainingId, editTraining);
             data.setResult(training);
             response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
             response.setResponseData(data);
@@ -73,7 +73,7 @@ public class TrainingController {
     }
 
     @PostMapping("/editTrainingSection2")
-    public ResponseEntity<ApiResponse> editTrainingSection2(@RequestParam Long resultId,@RequestBody EditTrainingSection2Request editTraining) throws ParseException {
+    public ResponseEntity<ApiResponse> editTrainingSection2(@RequestParam Long resultId, @RequestBody EditTrainingSection2Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         if (trainingService.isEditTrainingNull2(editTraining)) {
@@ -81,7 +81,7 @@ public class TrainingController {
             return ResponseEntity.badRequest().body(response);
         }
         try {
-            Result training = trainingService.editTrainingSection2(resultId,editTraining);
+            Result training = trainingService.editTrainingSection2(resultId, editTraining);
             data.setResult(training);
             response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
             response.setResponseData(data);
@@ -94,16 +94,16 @@ public class TrainingController {
     }
 
     @PutMapping("/setStatusToTraining")
-    public ResponseEntity<ApiResponse> addStatusToTraining(@RequestParam Long trainingId, Long approveId , StatusApprove statusApprove) {
+    public ResponseEntity<ApiResponse> addStatusToTraining(@RequestParam Long trainingId, Long approveId, StatusApprove statusApprove) {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         try {
-            Training training = trainingService.setStatusToTraining(trainingId,approveId,statusApprove);
+            Training training = trainingService.setStatusToTraining(trainingId, approveId, statusApprove);
             data.setResult(training);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);
             return ResponseEntity.ok().body(response);
-        } catch (Exception e){
+        } catch (Exception e) {
             response.setResponseMessage(e.getMessage());
             return ResponseEntity.badRequest().body(response);
         }
@@ -115,7 +115,7 @@ public class TrainingController {
         List<Map<String, Object>> training = trainingService.findById(trainingId);
         return ResponseEntity.ok(training);
     }
-    
+
 
     @GetMapping("/findTrainingByUserId")
     public ResponseEntity<List<Map<String, Object>>> findTrainingByUserId(@RequestParam Long userId) {
@@ -124,8 +124,8 @@ public class TrainingController {
     }
 
     @GetMapping("/findTrainingByApprove1Id")
-    public ResponseEntity<List<Map<String, Object>>>  findTrainingByApprove1Id(@RequestParam Long approve1Id) {
-         List<Map<String, Object>> trainings = trainingService.findTrainingsByApprove1Id(approve1Id);
+    public ResponseEntity<List<Map<String, Object>>> findTrainingByApprove1Id(@RequestParam Long approve1Id) {
+        List<Map<String, Object>> trainings = trainingService.findTrainingsByApprove1Id(approve1Id);
         return ResponseEntity.ok(trainings);
     }
 
@@ -138,34 +138,33 @@ public class TrainingController {
     @GetMapping("/findAllApprove")
     public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
         List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
-        if(count > 3){
+        if (count > 3) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(training);
     }
 
 
+//    @GetMapping("/searchTraining")
+//    public Object search(
+//            @RequestParam(required = false) String name,
+//            @RequestParam(required = false) String position,
+//            @RequestParam(required = false) String department,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+//            @RequestParam(required = false) String courseName
+//    ) {
+//        return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
+//    }
+
     @GetMapping("/searchTraining")
-    public ResponseEntity<ApiResponse> search(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false) String department,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-            @RequestParam(required = false) String courseName
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        Object result =  trainingService.searchTraining(name,position,department,startDate,endDate,courseName);
-        if(result != null){
-            data.setResult(result);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่สามารถทำรายการได้");
-            return ResponseEntity.badRequest().body(response);
-        }
+    public Object search(@RequestParam(required = false) String name,
+                         @RequestParam(required = false) String position,
+                         @RequestParam(required = false) String department,
+                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                         @RequestParam(required = false) String courseName) {
+        return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
     }
 
     @GetMapping("/findNextApprove")

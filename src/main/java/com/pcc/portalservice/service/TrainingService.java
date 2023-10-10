@@ -536,7 +536,7 @@ public class TrainingService {
         }
 
         if (name == null && position == null && department == null && startDate == null && endDate == null && courseName == null ){
-            return null;
+            return "ไม่พบรายการที่ต้องการค้นหา";
         }
 
         query.where(predicates.toArray(new Predicate[0]));
@@ -544,7 +544,7 @@ public class TrainingService {
         List<Training> trainings = entityManager.createQuery(query).getResultList();
 
         if(trainings.isEmpty()){
-            return null;
+            return "ไม่พบรายการที่ต้องการค้นหา";
         }
 
         List<Map<String, Object>> results = new ArrayList<>();
