@@ -170,14 +170,14 @@ public class UserController {
   public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
-    User user = userService.deleteData(id);
+    String user = userService.deleteData(id);
     if (user != null) {
       data.setResult(user);
-      response.setResponseMessage("ลบเรียบร้อย");
+      response.setResponseMessage("ลบข้อมูลเรียบร้อย");
       response.setResponseData(data);
       return ResponseEntity.ok().body(response);
     } else {
-      response.setResponseMessage("ไม่สามารถทำรายการได้");
+      response.setResponseMessage("ไม่พบข้อมูลที่ตรงกับ ID ที่ระบุ");
       return ResponseEntity.badRequest().body(response);
     }
   }

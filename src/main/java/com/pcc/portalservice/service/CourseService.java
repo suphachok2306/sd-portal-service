@@ -1,6 +1,7 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Course;
+import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 import java.text.ParseException;
@@ -8,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -93,15 +95,21 @@ public class CourseService {
     return courseRepository.save(course);
   }
 
-  public Course deleteData(Long id) {
-    Course course = courseRepository
-      .findById(id)
-      .orElseThrow(() ->
-        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
-      );
+  //    public Course deleteData(Long id) {
+  //        Course course = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
+  //
+  //        courseRepository.delete(course);
+  //
+  //        return course;
+  //    }
 
-    courseRepository.delete(course);
-
-    return course;
+  public String deleteData(Long id) {
+    Optional<Course> optionalCourse = courseRepository.findById(id);
+    if (optionalCourse.isPresent()) {
+      courseRepository.deleteById(id);
+      return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
+    } else {
+      return null;
+    }
   }
 }

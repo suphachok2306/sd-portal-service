@@ -193,7 +193,7 @@ public class TrainingController {
   }
 
   @GetMapping("/searchTraining")
-  public ResponseEntity<ApiResponse> search(
+  public Object search(
     @RequestParam(required = false) String name,
     @RequestParam(required = false) String position,
     @RequestParam(required = false) String department,
@@ -205,9 +205,7 @@ public class TrainingController {
     ) Date endDate,
     @RequestParam(required = false) String courseName
   ) {
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    Object result = trainingService.searchTraining(
+    return trainingService.searchTraining(
       name,
       position,
       department,
@@ -215,15 +213,6 @@ public class TrainingController {
       endDate,
       courseName
     );
-    if (result != null) {
-      data.setResult(result);
-      response.setResponseMessage("ทำรายการเรียบร้อย");
-      response.setResponseData(data);
-      return ResponseEntity.ok().body(response);
-    } else {
-      response.setResponseMessage("ไม่สามารถทำรายการได้");
-      return ResponseEntity.badRequest().body(response);
-    }
   }
 
   @GetMapping("/findNextApprove")

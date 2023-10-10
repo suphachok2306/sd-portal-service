@@ -92,23 +92,19 @@ public class CourseController {
     }
   }
 
-    @DeleteMapping("/deleteCourseById")
-    public ResponseEntity<ApiResponse> delete(
-         @RequestParam Long courseID
-        ) {
-            ApiResponse response = new ApiResponse();
-            ResponseData data = new ResponseData();
-            String course= courseService.deleteData(courseID);
-            if (course != null) {
-                data.setResult(course);
-                response.setResponseMessage("ลบข้อมูลเรียบร้อย");
-                response.setResponseData(data);
-                return ResponseEntity.ok().body(response);
-            } else {
-                response.setResponseMessage("ไม่สามารถทำรายการได้");
-                return ResponseEntity.badRequest().body(response);
-            }
-        } 
+  @DeleteMapping("/deleteCourseById")
+  public ResponseEntity<ApiResponse> delete(@RequestParam Long courseID) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    String course = courseService.deleteData(courseID);
+    if (course != null) {
+      data.setResult(course);
+      response.setResponseMessage("ลบข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } else {
+      response.setResponseMessage("ไม่สามารถทำรายการได้");
+      return ResponseEntity.badRequest().body(response);
     }
   }
 }

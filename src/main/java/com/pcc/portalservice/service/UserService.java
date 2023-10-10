@@ -267,14 +267,14 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public User deleteData(Long id) {
-    User user = userRepository
-      .findById(id)
-      .orElseThrow(() ->
-        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
-      );
-    userRepository.delete(user);
-    return user;
+  public String deleteData(Long id) {
+    Optional<User> optionalUser = userRepository.findById(id);
+    if (optionalUser.isPresent()) {
+      userRepository.deleteById(id);
+      return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
+    } else {
+      return null;
+    }
   }
 
   public boolean isEmpNull(CreateEmployeeRequest request) {
