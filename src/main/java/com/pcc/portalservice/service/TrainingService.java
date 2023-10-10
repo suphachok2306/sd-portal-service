@@ -386,7 +386,6 @@ public class TrainingService {
         return resultWithStatusList;
     }
     
-    
     public List<Map<String, Object>> findbyAllCountApprove(Long count) {
         String jpql = "SELECT t FROM Training t " +
                       "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count ";
@@ -436,7 +435,7 @@ public class TrainingService {
     
         return resultWithStatusList;
     }
-
+    
     public List<Map<String, Object>> findNextApprove() {
         String jpql = "SELECT DISTINCT s.training_id FROM Status s ORDER BY s.training_id";
     
@@ -449,7 +448,7 @@ public class TrainingService {
         System.out.println(listOfTrainId);
     
         for (Object training : listOfTrainId) {
-            String jpqlstatus = "SELECT * FROM Status s WHERE s.training_id = :training AND s.active = 0 LIMIT 1";
+            String jpqlstatus = "SELECT approve_id,email,firstname,lastname FROM Status s join users u on approve_id = u.id  WHERE s.training_id = :training AND s.active = 0 LIMIT 1";
             Query statusQuery = entityManager.createNativeQuery(jpqlstatus);
             statusQuery.setParameter("training", training);
             
@@ -466,10 +465,6 @@ public class TrainingService {
     }
     
     
-
-    
-    
-
     public boolean isTrainingNull(CreateTrainingRequest request){
         return request == null || request.getDateSave() == null || request.getDateSave().toString().isEmpty()
                 || request.getAction() == null || request.getAction().isEmpty()
