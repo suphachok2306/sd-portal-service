@@ -107,15 +107,15 @@ public class BudgetController {
     }        
 
     @GetMapping("/findTotalBudget")
-    public  LinkedHashMap<String, Object>findTotal(@RequestParam String Year,Long sectorId) {
-        LinkedHashMap<String, Object> resultList = budgetService.total_exp(Year,sectorId);
+    public  LinkedHashMap<String, Object>findTotal(@RequestParam String Year,Long department_id) {
+        LinkedHashMap<String, Object> resultList = budgetService.total_exp(Year,department_id);
 
         return resultList;
     }
 
     @GetMapping("/findRemainBudget")
-    public  LinkedHashMap<String, Object> findRemain(@RequestParam int Year,Long sectorId) {
-         LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(Year,sectorId);
+    public  LinkedHashMap<String, Object> findRemain(@RequestParam int Year,Long department_id) {
+         LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(Year,department_id);
 
         return resultList;
     }

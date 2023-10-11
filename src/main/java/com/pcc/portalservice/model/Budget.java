@@ -35,4 +35,9 @@ public class Budget {
   @JoinColumn(name = "company_id")
   @JsonIgnore
   private Company company;
+
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "department_id")
+  @JsonIgnore
+  private Department department;
 }
