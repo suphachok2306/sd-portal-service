@@ -2,6 +2,8 @@ package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.pcc.portalservice.model.enums.StatusUser;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,6 +39,9 @@ public class User {
 
   @JsonIgnore
   private String telephone;
+
+  @JsonIgnore
+  private String status;
 
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Role> roles = new HashSet<>();
