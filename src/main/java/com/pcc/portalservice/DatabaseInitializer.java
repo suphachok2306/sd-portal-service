@@ -199,7 +199,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(3, 2),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2)"
       );
       System.out.println("Data inserted into public.users table.");
     } else {
@@ -209,23 +209,23 @@ public class DatabaseInitializer implements CommandLineRunner {
 
   private void insertBudgetTable() {
     String sql =
-      "INSERT INTO public.budget (air_acc, class_name, \"exp\", fee, number_of_person, remark, \"year\", sector_id,company_id)\n" +
+      "INSERT INTO public.budget (air_acc, class_name, \"exp\", fee, number_of_person, remark, \"year\", sector_id,company_id, department_id)\n" +
       "VALUES\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (1000.0, 'string', 2000.0, 1000.0, 0, 'string', '2023', 1,1),\n" +
-      "    (15000.0, 'string', 30000.0, 15000.0, 999, 'string', '2023', 1,1);";
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,1),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1,2),\n" +
+      "    (1000.0, 'string', 2000.0, 1000.0, 0, 'string', '2023', 1,1,2),\n" +
+      "    (15000.0, 'string', 30000.0, 15000.0, 999, 'string', '2023', 1,1,1);";
 
     if (isTableEmpty("public.budget")) {
       jdbcTemplate.execute(sql);

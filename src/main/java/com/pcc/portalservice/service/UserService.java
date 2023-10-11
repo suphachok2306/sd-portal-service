@@ -2,6 +2,8 @@ package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.model.enums.Roles;
+import com.pcc.portalservice.model.enums.StatusApprove;
+import com.pcc.portalservice.model.enums.StatusUser;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
@@ -17,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 @RequiredArgsConstructor
@@ -158,6 +161,7 @@ public class UserService {
       .email(createEmployeeRequest.getEmail())
       .roles(new HashSet<>())
       .position(position)
+      .status(StatusUser.เป็นพนักงานอยู่.toString())
       .build();
 
     for (String roleName : createEmployeeRequest.getRoles()) {
@@ -342,6 +346,15 @@ public class UserService {
 
   public List<User> findAllAdmin() {
     return userRepository.findByRolesRole(Roles.Admin);
+  }
+
+  public User setStatusToUser(Long User_id, StatusUser statusUser) {
+
+        User user = userRepository.findById(User_id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + User_id));
+       
+        user.setStatus(statusUser.toString());
+        return userRepository.save(user);
   }
 
   @Component

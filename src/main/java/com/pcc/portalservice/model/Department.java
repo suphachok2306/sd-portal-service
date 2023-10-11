@@ -37,4 +37,5 @@ public class Department {
   @JoinColumn(name = "sector_id")
   @JsonIgnore
   private Sector sector;
+
 }

@@ -1,8 +1,11 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Role;
+import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
+import com.pcc.portalservice.model.enums.StatusApprove;
+import com.pcc.portalservice.model.enums.StatusUser;
 import com.pcc.portalservice.repository.UserRepository;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
@@ -206,4 +209,23 @@ public class UserController {
   public List<User> getAllAdmin() {
     return userService.findAllAdmin();
   }
+
+
+  @PutMapping("/setStatusToUser")
+    public ResponseEntity<ApiResponse> addStatusToUser(@RequestParam Long User_id, StatusUser statusUser) {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        try {
+            User user = userService.setStatusToUser(User_id,statusUser);
+            data.setResult(user);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+
+    }
+
 }

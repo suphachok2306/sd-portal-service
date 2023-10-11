@@ -24,6 +24,7 @@ public class BudgetService {
 
   private final BudgetRepository budgetRepository;
   private final SectorRepository sectorRepository;
+  private final DepartmentRepository departmentRepository;
   private final CompanyRepository companyRepository;
   private final EntityManager entityManager;
 
@@ -139,35 +140,35 @@ public class BudgetService {
     return budgetRepository.save(budget);
   }
 
-  public LinkedHashMap<String, Object> total_exp(String year, long sector_id) {
-    String jpql =
-      "SELECT SUM(b.exp) AS total_exp FROM Budget b WHERE b.sector.id = :sectorId AND b.year LIKE :year";
+  public LinkedHashMap<String, Object> total_exp(String year, long department_id) {
+    String jpql = "SELECT SUM(b.exp) AS total_exp FROM Budget b WHERE b.department.id = :department_id AND b.year = :year";
 
     Query query = entityManager.createQuery(jpql);
-    query.setParameter("sectorId", sector_id);
-    query.setParameter("year", year + "%");
+    query.setParameter("department_id", department_id);
+    query.setParameter("year", year);
 
     List<Object> resultList = query.getResultList();
 
     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
 
     if (!resultList.isEmpty()) {
-      result.put("Year", year);
-      result.put("Sector", sectorRepository.findById(sector_id));
-      result.put("Total_exp", resultList.get(0));
+        result.put("Year", year);
+        result.put("Department", departmentRepository.findById(department_id));
+        result.put("Total_exp", resultList.get(0));
     }
 
     return result;
-  }
+}
+
 
   public LinkedHashMap<String, Object> totalPriceRemaining(
     int year,
-    long sector_id
+    long department_id
   ) {
     try {
       LinkedHashMap<String, Object> total_exp = total_exp(
         Integer.toString(year),
-        sector_id
+        department_id
       );
 
       String jpql =
@@ -176,11 +177,11 @@ public class BudgetService {
         "JOIN training_courses tc ON tc.training_id = t.id " +
         "JOIN course c ON c.id = tc.courses_id " +
         "JOIN users u ON u.id = t.user_id " +
-        "WHERE u.sector_id = :sectorId AND EXTRACT(YEAR FROM t.date_save) = :year ";
+        "WHERE u.department_id = :departmentId AND EXTRACT(YEAR FROM t.date_save) = :year ";
 
       Query query = entityManager.createNativeQuery(jpql);
       query.setParameter("year", year);
-      query.setParameter("sectorId", sector_id);
+      query.setParameter("departmentId", department_id);
       List<Object> resultList = query.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
@@ -196,7 +197,7 @@ public class BudgetService {
 
           if (!resultList.isEmpty()) {
             result.put("Year", year);
-            result.put("Sector", sectorRepository.findById(sector_id));
+            result.put("Department", departmentRepository.findById(department_id));
             result.put("Remaining", difference);
           }
         } catch (Exception e) {
