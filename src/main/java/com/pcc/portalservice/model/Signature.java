@@ -7,10 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.Base64;
 
 @Entity
 @Table(name = "SIGNATURE")
@@ -25,6 +23,7 @@ public class Signature{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private byte[] image;
+//    private String image;
 
     @OneToOne
     @JoinColumn(name = "user_id")

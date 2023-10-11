@@ -41,10 +41,6 @@ public class User {
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Role> roles = new HashSet<>();
 
-  @JsonIgnore
-  @OneToOne(mappedBy = "user")
-  private Signature signature;
-
   @OneToOne
   @JoinColumn(name = "sector_id")
   private Sector sector;
@@ -64,10 +60,9 @@ public class User {
   @OneToOne(mappedBy = "user")
   @JsonIgnore
   private Training training;
-  //    @OneToOne(optional = false)
-  //    @JoinColumn(name = "signature_id")
-  //    @JsonIgnore
-  //    private Signature signature;
-  //มันแดงเลยคอมเม้น
+
+  @OneToOne(mappedBy = "user")
+  @JsonIgnore
+  private Signature signature;
 
 }
