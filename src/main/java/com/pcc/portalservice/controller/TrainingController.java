@@ -150,20 +150,26 @@ public class TrainingController {
         return ResponseEntity.ok(trainings);
     }
 
+    @GetMapping("/findTrainingByPersonnelId")
+    public ResponseEntity<List<Map<String, Object>>> findTrainingByPersonnelId(@RequestParam Long PersonnelId) {
+        List<Map<String, Object>> trainings = trainingService.findTrainingByPersonnelId(PersonnelId);
+        return ResponseEntity.ok(trainings);
+    }
+
     @GetMapping("/findAllTraining")
     public List<Map<String, Object>> findAllTraining() {
         return trainingService.findAllTraining();
     }
 
 
-    @GetMapping("/findAllApprove")
-    public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
-        List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
-        if (count > 3) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(training);
-    }
+    // @GetMapping("/findAllApprove")
+    // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
+    //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
+    //     if (count > 3) {
+    //         return ResponseEntity.badRequest().build();
+    //     }
+    //     return ResponseEntity.ok(training);
+    // }
 
 
     @GetMapping("/searchTraining")
@@ -176,9 +182,9 @@ public class TrainingController {
         return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
     }
 
-    @GetMapping("/findNextApprove")
-    public List<Map<String, Object>> findNextApprove() {
-        return trainingService.findNextApprove();
-    }
+    // @GetMapping("/findNextApprove")
+    // public List<Map<String, Object>> findNextApprove() {
+    //     return trainingService.findNextApprove();
+    // }
 
 }
