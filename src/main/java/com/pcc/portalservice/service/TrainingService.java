@@ -5,6 +5,7 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
+import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 
@@ -175,6 +176,20 @@ public class TrainingService {
 //        status_id.setStatus(editTraining.getStatus1());
         status_id.setApproveId(editTraining.getApprove1_id());
         statusRepository.save(status_id);
+        Training updatedTraining = trainingRepository.save(training_id);
+        return updatedTraining;
+    }
+    public Training editTrainingSection1Person(Long trainingId, EditTrainingSection1PersonRequest editTraining) throws ParseException {
+
+        Training training_id = trainingRepository.findById(trainingId)
+                .orElseThrow(() -> new RuntimeException("TrainingId not found: " + trainingId));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
+
+        training_id.setAction(editTraining.getAction());
+        training_id.setActionDate(actionDateFormat);
+
         Training updatedTraining = trainingRepository.save(training_id);
         return updatedTraining;
     }
@@ -543,6 +558,11 @@ public class TrainingService {
                 || request.getResult7() == null || request.getResult7().isEmpty()
                 || request.getResult() == null || request.getResult().isEmpty();
 
+    }
+    public boolean isEditTrainingNull3(EditTrainingSection1PersonRequest request){
+        return request == null
+                || request.getAction() == null || request.getAction().isEmpty()
+                || request.getActionDate() == null || request.getActionDate().isEmpty();
     }
 
     public Object searchTraining(String name, String position, String department, Date startDate,
