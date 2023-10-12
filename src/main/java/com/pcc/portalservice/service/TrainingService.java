@@ -87,35 +87,56 @@ public class TrainingService {
         if (training.getStatus() == null) {
             training.setStatus(new ArrayList<>());
         }
-        Status status1 = Status.builder()
+        if (createTrainingRequest.getApprove1_id() == 3){
+            Status status1 = Status.builder()
                 .status(null)
                 .training(training)
                 .approveId(createTrainingRequest.getApprove1_id())
                 .active(0)
                 .build();
-        statusRepository.save(status1);
 
-//        Status status2 = Status.builder()
-//                .status(null)
-//                .training(training)
-//                .approveId(Long.valueOf(3))
-//                .active(0)
-//                .build();
-//
-//         Status status3 = Status.builder()
-//                .status(null)
-//                .training(training)
-//                .approveId(null)
-//                .active(0)
-//                .build();
 
-        statusRepository.save(status1);
-//        statusRepository.save(status2);
-//        statusRepository.save(status3);
+            Status status2 = Status.builder()
+                    .status(null)
+                    .training(training)
+                    .active(0)
+                    .build();
 
-        training.getStatus().add(status1);
-//        training.getStatus().add(status2);
-//        training.getStatus().add(status3);
+            statusRepository.save(status1);
+            statusRepository.save(status2);
+            training.getStatus().add(status1);
+            training.getStatus().add(status2);
+        }
+        else {
+            Status status1 = Status.builder()
+                .status(null)
+                .training(training)
+                .approveId(createTrainingRequest.getApprove1_id())
+                .active(0)
+                .build();
+
+            Status status2 = Status.builder()
+                    .status(null)
+                    .training(training)
+                    .approveId(Long.valueOf(3))
+                    .active(0)
+                    .build();
+
+
+                Status status3 = Status.builder()
+                    .status(null)
+                    .training(training)
+                    .active(0)
+                    .build();
+
+            statusRepository.save(status1);
+            statusRepository.save(status2);
+            statusRepository.save(status3);
+            training.getStatus().add(status1);
+            training.getStatus().add(status2);
+            training.getStatus().add(status3);
+        }
+
         Training savedTraining = trainingRepository.save(training);
         return savedTraining;
     }

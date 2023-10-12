@@ -54,7 +54,19 @@ public class DepartmentService {
 
   public List<Map<String, Object>> findAllJoinDepartments() {
     String jpql =
-      "SELECT c.company_name, s.sector_name, s.sector_code, d.dept_name, d.dept_code,p.id,p.position_name  FROM department d JOIN sector s ON d.sector_id = s.id JOIN company c ON s.company_id = c.id join position p on p.department_id = d.id ";
+    "SELECT " +
+    "c.company_name AS company_name, " +
+    "s.sector_name AS sector_name, " +
+    "s.sector_code AS sector_code, " +
+    "d.id AS department_id, " +
+    "d.dept_name AS department_name, " +
+    "d.dept_code AS department_code, " +
+    "p.id AS position_id, " +
+    "p.position_name AS position_name " +
+    "FROM department d " +
+    "JOIN sector s ON d.sector_id = s.id " +
+    "JOIN company c ON s.company_id = c.id " +
+    "JOIN position p ON p.department_id = d.id;";
 
     List<Object[]> results = entityManager
       .createNativeQuery(jpql)
@@ -68,10 +80,11 @@ public class DepartmentService {
       String company = (String) row[0];
       String sectorname = (String) row[1];
       String sectorcode = (String) row[2];
-      String deptname = (String) row[3];
-      String deptcode = (String) row[4];
-      Long positionId = ((Number) row[5]).longValue();
-      String positionName = (String) row[6];
+      Long deptid = ((Number) row[3]).longValue();
+      String deptname = (String) row[4];
+      String deptcode = (String) row[5];
+      Long positionId = ((Number) row[6]).longValue();
+      String positionName = (String) row[7];
 
       Map<String, Object> resultMap;
       Map<String, Object> positionMap = new LinkedHashMap<>();
@@ -100,6 +113,7 @@ public class DepartmentService {
         // If department doesn't exist, create a new one
         if (!departmentExists) {
           Map<String, Object> departmentMap = new LinkedHashMap<>();
+          departmentMap.put("deptid", deptid);
           departmentMap.put("deptname", deptname);
           departmentMap.put("deptcode", deptcode);
 
@@ -121,6 +135,7 @@ public class DepartmentService {
         List<Map<String, Object>> departments = new ArrayList<>();
 
         Map<String, Object> departmentMap = new LinkedHashMap<>();
+        departmentMap.put("deptid", deptid);
         departmentMap.put("deptname", deptname);
         departmentMap.put("deptcode", deptcode);
 
