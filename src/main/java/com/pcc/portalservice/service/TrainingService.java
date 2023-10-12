@@ -215,27 +215,45 @@ public class TrainingService {
                 .findFirst();
 
         if (optionalStatus.isPresent()) {
-            Status existingStatus = optionalStatus.get();
-            existingStatus.setStatus(statusApprove);
-            existingStatus.setActive(2);
-            statusRepository.save(existingStatus);
+             if (optionalStatus.get().getActive() != 3){
+                Status existingStatus = optionalStatus.get();
+                existingStatus.setStatus(statusApprove);
+                existingStatus.setActive(2);
+                statusRepository.save(existingStatus);
+
+                Optional<Status> updateStatusNext = training.getStatus().stream()
+                .filter(status -> trainingId.equals(status.getTraining().getId()) && status.getActive() != 2 )
+                .findFirst();
+
+                if (updateStatusNext.isPresent()) {
+                    if (updateStatusNext.get().getApproveId() != null){
+                        Status nextStatus = updateStatusNext.get();
+                        nextStatus.setActive(1);
+                        statusRepository.save(nextStatus);
+                    }
+                    else{
+                         Status nextStatus = updateStatusNext.get();
+                        nextStatus.setActive(3);
+                        statusRepository.save(nextStatus);
+                    }
+                }
+             }
         } else {
-            Optional<Status> updateStatus = training.getStatus().stream()
+                Optional<Status> updateStatus = training.getStatus().stream()
                 .filter(status -> trainingId.equals(status.getTraining().getId()) && status.getApproveId() == null)
                 .findFirst();
-            Status UpdateStatus = updateStatus.get();
-            UpdateStatus.setStatus(statusApprove);
-            UpdateStatus.setApproveId(approveId);
-            UpdateStatus.setActive(2);
-            statusRepository.save(UpdateStatus);
+                Status UpdateStatus = updateStatus.get();
+                UpdateStatus.setStatus(statusApprove);
+                UpdateStatus.setApproveId(approveId);
+                UpdateStatus.setActive(3);
+                statusRepository.save(UpdateStatus);
         }
+            
+           
         return trainingRepository.save(training);
     }
 
-
-
     public Map<String, Object> findById(Long id) {
-
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Training> query = builder.createQuery(Training.class);
         Root<Training> root = query.from(Training.class);
@@ -272,8 +290,12 @@ public class TrainingService {
     
         return resultWithStatus;
     }
-    
 
+
+    
+    
+    
+    
 
 
 
