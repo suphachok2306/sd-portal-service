@@ -4,6 +4,7 @@ import com.pcc.portalservice.model.Result;
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
+import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 // import com.pcc.portalservice.requests.CreateTrainingSection2Request;
@@ -61,6 +62,26 @@ public class TrainingController {
         }
         try {
             Training training = trainingService.editTrainingSection1(trainingId,statusId, editTraining);
+            data.setResult(training);
+            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+            response.setResponseData(data);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/editTraining").toUriString());
+            return ResponseEntity.created(uri).body(response);
+        } catch (Exception e) {
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+    @PostMapping("/editTrainingSection1Person")
+    public ResponseEntity<ApiResponse> editTrainingSection1Person(@RequestParam Long trainingId, @RequestBody EditTrainingSection1PersonRequest editTraining) throws ParseException {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        if (trainingService.isEditTrainingNull3(editTraining)) {
+            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+            return ResponseEntity.badRequest().body(response);
+        }
+        try {
+            Training training = trainingService.editTrainingSection1Person(trainingId, editTraining);
             data.setResult(training);
             response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
             response.setResponseData(data);
