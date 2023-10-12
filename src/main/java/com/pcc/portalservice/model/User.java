@@ -40,7 +40,6 @@ public class User {
   @JsonIgnore
   private String telephone;
 
-  @JsonIgnore
   private String status;
 
   @ManyToMany(fetch = FetchType.EAGER)

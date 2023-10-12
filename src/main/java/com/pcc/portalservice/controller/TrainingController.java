@@ -111,8 +111,8 @@ public class TrainingController {
     }
 
     @GetMapping("/findTrainingByTrainingId")
-    public ResponseEntity<List<Map<String, Object>>> findTrainingByTrainingId(@RequestParam Long trainingId) {
-        List<Map<String, Object>> training = trainingService.findById(trainingId);
+    public ResponseEntity<Map<String, Object>> findTrainingByTrainingId(@RequestParam Long trainingId) {
+        Map<String, Object> training = trainingService.findById(trainingId);
         return ResponseEntity.ok(training);
     }
 

@@ -1,6 +1,7 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.*;
+import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
@@ -44,6 +45,10 @@ public class TrainingService {
         Course course = courseRepository.findById(createTrainingRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("CourseId not found: " + createTrainingRequest.getCourseId()));
 
+        Role vicePresidentRole = approve1.getRoles().stream()
+                .filter(role -> role.getRole().equals(Roles.VicePresident))
+                .findFirst()
+                .orElse(null);
 
         Date startDate = course.getStartDate();
         Date endDate = course.getEndDate();
@@ -87,12 +92,13 @@ public class TrainingService {
         if (training.getStatus() == null) {
             training.setStatus(new ArrayList<>());
         }
-        if (createTrainingRequest.getApprove1_id() == 3){
-            Status status1 = Status.builder()
+        
+        if (vicePresidentRole != null){
+             Status status1 = Status.builder()
                 .status(null)
                 .training(training)
                 .approveId(createTrainingRequest.getApprove1_id())
-                .active(0)
+                .active(1)
                 .build();
 
 
@@ -112,7 +118,7 @@ public class TrainingService {
                 .status(null)
                 .training(training)
                 .approveId(createTrainingRequest.getApprove1_id())
-                .active(0)
+                .active(1)
                 .build();
 
             Status status2 = Status.builder()
@@ -211,63 +217,62 @@ public class TrainingService {
         if (optionalStatus.isPresent()) {
             Status existingStatus = optionalStatus.get();
             existingStatus.setStatus(statusApprove);
-            existingStatus.setActive(1);
+            existingStatus.setActive(2);
             statusRepository.save(existingStatus);
         } else {
-            Status status = Status.builder()
-                    .status(statusApprove)
-                    .training(training)
-                    .active(1)
-                    .approveId(approveId)
-                    .build();
-            statusRepository.save(status);
-            training.getStatus().add(status);
+            Optional<Status> updateStatus = training.getStatus().stream()
+                .filter(status -> trainingId.equals(status.getTraining().getId()) && status.getApproveId() == null)
+                .findFirst();
+            Status UpdateStatus = updateStatus.get();
+            UpdateStatus.setStatus(statusApprove);
+            UpdateStatus.setApproveId(approveId);
+            UpdateStatus.setActive(2);
+            statusRepository.save(UpdateStatus);
         }
         return trainingRepository.save(training);
     }
 
 
 
-    public List<Map<String, Object>>  findById(Long id) {
+    public Map<String, Object> findById(Long id) {
 
-        String jpql = "SELECT t FROM Training t WHERE id = :id";
-
-        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
-
-        query.setParameter("id",id);
-        List<Training> resultList = query.getResultList();
-        List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-
-        for (Training training : resultList) {
-            int approvedCount = 0;
-            int disapprovedCount = 0;
-            String result_status;
-
-            for (Status status : training.getStatus()) {
-                if (status.getStatus() != null) {
-                    if ("อนุมัติ".equals(status.getStatus().toString())) {
-                        approvedCount++;
-                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-                        disapprovedCount++;
-                    }
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
+    
+        query.where(builder.equal(root.get("id"), id));
+    
+        Training training = entityManager.createQuery(query).getSingleResult();
+    
+        int approvedCount = 0;
+        int disapprovedCount = 0;
+        String result_status;
+    
+        for (Status status : training.getStatus()) {
+            if (status.getStatus() != null) {
+                if ("อนุมัติ".equals(status.getStatus().toString())) {
+                    approvedCount++;
+                } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                    disapprovedCount++;
                 }
             }
-            if (approvedCount == 3) {
-                result_status = "อนุมัติ";
-            } else if (disapprovedCount >= 1) {
-                result_status = "ไม่อนุมัติ";
-            } else {
-                result_status = "รอประเมิน";
-            }
-
-            Map<String, Object> resultWithStatus = new HashMap<>();
-            resultWithStatus.put("training", training);
-            resultWithStatus.put("result_status", result_status);
-            resultWithStatusList.add(resultWithStatus);
         }
-
-        return resultWithStatusList;
+    
+        if (approvedCount == 3) {
+            result_status = "อนุมัติ";
+        } else if (disapprovedCount >= 1) {
+            result_status = "ไม่อนุมัติ";
+        } else {
+            result_status = "รอประเมิน";
+        }
+    
+        Map<String, Object> resultWithStatus = new HashMap<>();
+        resultWithStatus.put("training", training);
+        resultWithStatus.put("result_status", result_status);
+    
+        return resultWithStatus;
     }
+    
 
 
 
@@ -375,13 +380,14 @@ public class TrainingService {
     
 
     public List<Map<String, Object>> findAllTraining() {
-        String jpql = "SELECT t FROM Training t";
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
+        List<Training> trainingList = entityManager.createQuery(query).getResultList();
     
-        TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
-        List<Training> resultList = query.getResultList();
         List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-    
-        for (Training training : resultList) {
+        for (Training training : trainingList) {
             int approvedCount = 0;
             int disapprovedCount = 0;
             String result_status;
@@ -395,6 +401,7 @@ public class TrainingService {
                     }
                 }
             }
+    
             if (approvedCount == 3) {
                 result_status = "อนุมัติ";
             } else if (disapprovedCount >= 1) {
