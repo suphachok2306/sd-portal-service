@@ -1,5 +1,6 @@
 package com.pcc.portalservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pcc.portalservice.model.Role;
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.User;
@@ -14,10 +15,12 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.UserService;
 import java.net.URI;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -184,7 +187,18 @@ public class UserController {
       return ResponseEntity.badRequest().body(response);
     }
   }
-
+  @GetMapping("/searchUser")
+  public Object search(@RequestParam(required = false) String empCode,
+                       @RequestParam(required = false) String name,
+                       @RequestParam(required = false) String position,
+                       @RequestParam(required = false) String email,
+                       //@RequestParam(required = false) String department,
+                       @RequestParam(required = false) String deptName,
+                       @RequestParam(required = false) String deptCode,
+                       @RequestParam(required = false) String company
+                       ) throws JsonProcessingException {
+    return userService.searchUser(empCode,name,position,email,deptName,deptCode,company);
+  }
   @GetMapping("/findAllEmployee")
   public List<User> getAllEmployee() {
     return userService.findAllEmployee();
