@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.nio.file.Path;
-import java.util.Base64;
 
 @Entity
 @Table(name = "SIGNATURE")

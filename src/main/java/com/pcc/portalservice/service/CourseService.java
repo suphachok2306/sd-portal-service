@@ -1,14 +1,12 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Course;
-import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;

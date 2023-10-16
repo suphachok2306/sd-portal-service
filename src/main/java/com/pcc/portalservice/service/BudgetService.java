@@ -6,15 +6,12 @@ import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
-import com.pcc.portalservice.requests.CreateDepartmentRequest;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.exception.SQLGrammarException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

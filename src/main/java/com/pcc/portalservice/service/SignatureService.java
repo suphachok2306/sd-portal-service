@@ -14,9 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 
 @Service
 @Transactional
@@ -38,8 +36,6 @@ public class SignatureService {
 
         return outputStream.toByteArray();
     }
-
-    //แบบเก็บเป็น byte
 
     public void uploadSignature(Long userId, MultipartFile file) throws IOException {
         User user = userRepository.findById(userId)
@@ -72,34 +68,5 @@ public class SignatureService {
             throw new EntityNotFoundException("ไม่พบลายเซ็นสำหรับผู้ใช้ด้วย ID: " + userId);
         }
     }
-
-
-    //แบบเก็บเป็น string
-
-//    public void uploadSignature(Long userId, MultipartFile file) throws IOException {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new EntityNotFoundException("ไม่พบผู้ใช้ด้วย ID: " + userId));
-//
-//
-//        String filename = userId + "_signature." + file.getOriginalFilename().split("\\.")[1];
-//        String path = System.getProperty("user.home") + "/Downloads/uploads/" + filename;
-//
-//        try (FileOutputStream fos = new FileOutputStream(path)) {
-//            fos.write(file.getBytes());
-//        }
-//        Signature signature = user.getSignature();
-//
-//        if (signature == null) {
-//            signature = Signature.builder()
-//                    .user(user)
-//                    .image(filename)
-//                    .build();
-//        } else {
-//            signature.setImage(filename);
-//        }
-//
-//        signatureRepository.save(signature);
-//    }
-
 }
 

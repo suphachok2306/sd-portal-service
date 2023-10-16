@@ -51,7 +51,6 @@ public class AuthenticationService {
    * Here we handle all the stuff for refresh tokens
    */
   //    public RefreshToken createRefreshToken(Long userId) {
-  //        // TODO: Replace hardcoded value by property
   //        // @Value("${security.token.refresh.duration}")
   //        long refreshTokenDurationMs = 11111L;
   //

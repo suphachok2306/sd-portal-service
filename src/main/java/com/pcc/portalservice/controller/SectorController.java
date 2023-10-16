@@ -1,8 +1,6 @@
 package com.pcc.portalservice.controller;
 
-import com.pcc.portalservice.model.Company;
 import com.pcc.portalservice.model.Sector;
-import com.pcc.portalservice.requests.CreateCompanyRequest;
 import com.pcc.portalservice.requests.CreateSectorRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
@@ -11,7 +9,6 @@ import java.net.URI;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

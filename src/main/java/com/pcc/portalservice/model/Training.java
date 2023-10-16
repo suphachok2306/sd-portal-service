@@ -1,5 +1,4 @@
 package com.pcc.portalservice.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +26,8 @@ public class Training {
     @Temporal(TemporalType.DATE)
     private Date dateSave;
 
-    private int day;
+    @Builder.Default
+    private int day = 0;
 
     private String action;
 

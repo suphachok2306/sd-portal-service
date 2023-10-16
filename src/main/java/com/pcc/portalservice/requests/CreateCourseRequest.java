@@ -2,9 +2,6 @@ package com.pcc.portalservice.requests;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 @Builder
 @Data
 public class CreateCourseRequest {

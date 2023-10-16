@@ -1,10 +1,7 @@
 package com.pcc.portalservice.requests;
 
-import com.pcc.portalservice.model.enums.StatusApprove;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Builder
 @Data

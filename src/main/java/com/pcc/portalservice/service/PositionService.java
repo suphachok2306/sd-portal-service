@@ -2,7 +2,6 @@ package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Position;
-import com.pcc.portalservice.model.Sector;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.PositionRepository;
 import com.pcc.portalservice.requests.CreatePositionRequest;
