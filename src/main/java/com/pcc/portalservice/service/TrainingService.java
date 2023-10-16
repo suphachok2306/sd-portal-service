@@ -340,42 +340,17 @@ public class TrainingService {
     return trainingRepository.save(training);
   }
 
-  public Map<String, Object> findById(Long id) {
+  public List<Map<String, Object>> findById(Long id) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
 
     query.where(builder.equal(root.get("id"), id));
+    List<Training> trainingList = entityManager
+      .createQuery(query)
+      .getResultList();
 
-    Training training = entityManager.createQuery(query).getSingleResult();
-
-    int approvedCount = 0;
-    int disapprovedCount = 0;
-    String result_status;
-
-    for (Status status : training.getStatus()) {
-      if (status.getStatus() != null) {
-        if ("อนุมัติ".equals(status.getStatus().toString())) {
-          approvedCount++;
-        } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-          disapprovedCount++;
-        }
-      }
-    }
-
-    if (approvedCount == 3) {
-      result_status = "อนุมัติ";
-    } else if (disapprovedCount >= 1) {
-      result_status = "ไม่อนุมัติ";
-    } else {
-      result_status = "รอประเมิน";
-    }
-
-    Map<String, Object> resultWithStatus = new HashMap<>();
-    resultWithStatus.put("training", training);
-    resultWithStatus.put("result_status", result_status);
-
-    return resultWithStatus;
+    return calculateTrainingResultStatus(trainingList);
   }
 
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
