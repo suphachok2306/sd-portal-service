@@ -1,11 +1,9 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Company;
-import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Sector;
 import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.SectorRepository;
-import com.pcc.portalservice.requests.CreateCompanyRequest;
 import com.pcc.portalservice.requests.CreateSectorRequest;
 import java.util.List;
 import java.util.Optional;

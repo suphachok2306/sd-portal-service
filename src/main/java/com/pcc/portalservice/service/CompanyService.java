@@ -1,17 +1,11 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Company;
-import com.pcc.portalservice.model.Department;
-import com.pcc.portalservice.model.Role;
-import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.repository.CompanyRepository;
-import com.pcc.portalservice.repository.RoleRepository;
 import com.pcc.portalservice.requests.CreateCompanyRequest;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

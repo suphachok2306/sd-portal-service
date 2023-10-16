@@ -1,6 +1,5 @@
 package com.pcc.portalservice.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;

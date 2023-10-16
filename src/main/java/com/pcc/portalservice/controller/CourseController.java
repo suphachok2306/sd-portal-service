@@ -1,7 +1,6 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Course;
-import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
@@ -11,7 +10,6 @@ import java.text.ParseException;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

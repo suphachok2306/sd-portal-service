@@ -1,20 +1,10 @@
 package com.pcc.portalservice;
 
-import com.pcc.portalservice.repository.CompanyRepository;
-import com.pcc.portalservice.repository.DepartmentRepository;
-import com.pcc.portalservice.repository.PositionRepository;
-import com.pcc.portalservice.repository.RoleRepository;
-import com.pcc.portalservice.repository.SectorRepository;
-import com.pcc.portalservice.repository.UserRepository;
-import com.pcc.portalservice.requests.CreateUserRequest;
-import com.pcc.portalservice.service.AuthenticationService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class DatabaseInitializer implements CommandLineRunner {

@@ -1,7 +1,6 @@
 package com.pcc.portalservice.repository;
 
 import com.pcc.portalservice.model.Status;
-import com.pcc.portalservice.model.User;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

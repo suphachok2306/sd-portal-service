@@ -2,13 +2,6 @@ package com.pcc.portalservice.requests;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-import com.pcc.portalservice.model.Department;
-import com.pcc.portalservice.model.Sector;
 
 @Builder
 @Data

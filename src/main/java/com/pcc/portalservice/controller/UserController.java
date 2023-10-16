@@ -2,10 +2,8 @@ package com.pcc.portalservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pcc.portalservice.model.Role;
-import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
-import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.model.enums.StatusUser;
 import com.pcc.portalservice.repository.UserRepository;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
@@ -15,13 +13,10 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.UserService;
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -156,7 +151,6 @@ public class UserController {
     @RequestParam String roleName
   ) {
     ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
     Roles roleEnum = Roles.valueOf(roleName);
     if (userService.hasRole(userId, roleName)) {
       response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
