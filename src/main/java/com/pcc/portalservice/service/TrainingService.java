@@ -205,13 +205,8 @@ public class TrainingService {
         )
       );
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
-
     training_id.setUser(user_id);
     training_id.setDateSave(new Date());
-    training_id.setAction(editTraining.getAction());
-    training_id.setActionDate(actionDateFormat);
     training_id.getCourses().clear(); ///////ต้อง clear ก่อน
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
