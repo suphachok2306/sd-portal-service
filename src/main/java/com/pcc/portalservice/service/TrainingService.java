@@ -340,18 +340,68 @@ public class TrainingService {
     return trainingRepository.save(training);
   }
 
-  public List<Map<String, Object>> findById(Long id) {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Training> query = builder.createQuery(Training.class);
-    Root<Training> root = query.from(Training.class);
-
-    query.where(builder.equal(root.get("id"), id));
-    List<Training> trainingList = entityManager
-      .createQuery(query)
-      .getResultList();
-
-    return calculateTrainingResultStatus(trainingList);
-  }
+  public Map<String, Object> findById(Long id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Training> query = builder.createQuery(Training.class);
+        Root<Training> root = query.from(Training.class);
+    
+        query.where(builder.equal(root.get("id"), id));
+        List<Training> trainingList = entityManager
+          .createQuery(query)
+          .getResultList();
+    
+        Map<String, Object> resultWithStatus = new HashMap<>();
+    
+        if (!trainingList.isEmpty()) {
+            Training training = trainingList.get(0);
+            int approvedCount = 0;
+            int disapprovedCount = 0;
+            int cancalapprovedCount = 0;
+            String result_status;
+            int count = 0;
+    
+            for (Status status : training.getStatus()) {
+                if (status.getStatus() != null) {
+                    if ("อนุมัติ".equals(status.getStatus().toString())) {
+                        approvedCount++;
+                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                        disapprovedCount++;
+                    } else if ("ยกเลิก".equals(status.getStatus().toString())) {
+                        cancalapprovedCount++;
+                    }
+                }
+                count++;
+            }
+    
+            if (count == 3) {
+                if (approvedCount == 3) {
+                    result_status = "อนุมัติ";
+                } else if (disapprovedCount >= 1) {
+                    result_status = "ไม่อนุมัติ";
+                } else if (cancalapprovedCount >= 1) {
+                    result_status = "ยกเลิก";
+                } else {
+                    result_status = "รอประเมิน";
+                }
+            } else {
+                if (approvedCount == 2) {
+                    result_status = "อนุมัติ";
+                } else if (disapprovedCount >= 1) {
+                    result_status = "ไม่อนุมัติ";
+                } else if (cancalapprovedCount >= 1) {
+                    result_status = "ยกเลิก";
+                } else {
+                    result_status = "รอประเมิน";
+                }
+            }
+    
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", result_status);
+        }
+    
+        return resultWithStatus;
+    }
+    
 
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
     String jpql = "SELECT t FROM Training t WHERE user_id = :id";
