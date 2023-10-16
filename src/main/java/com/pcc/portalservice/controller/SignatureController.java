@@ -28,13 +28,10 @@ public class SignatureController {
         }
     }
 
-    @GetMapping(value = "/getSignatureImage", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/getSignatureImage", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getSignatureImage(@RequestParam Long userId) {
         try {
             byte[] signatureImage = signatureService.getSignatureImage(userId);
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.setContentType(MediaType.IMAGE_JPEG);
-            //return new ResponseEntity<>(signatureImage, headers, HttpStatus.OK);
             return new ResponseEntity<>(signatureImage, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
