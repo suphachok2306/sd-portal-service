@@ -47,6 +47,19 @@ public class SignatureService {
         signatureRepository.save(signature);
     }
 
+    public byte[] getSignatureImage(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("ไม่พบผู้ใช้ด้วย ID: " + userId));
+
+        Signature signature = user.getSignature();
+
+        if (signature != null) {
+            return signature.getImage();
+        } else {
+            throw new EntityNotFoundException("ไม่พบลายเซ็นสำหรับผู้ใช้ด้วย ID: " + userId);
+        }
+    }
+
 
     //แบบเก็บเป็น string
 

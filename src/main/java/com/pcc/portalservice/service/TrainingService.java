@@ -1,6 +1,5 @@
 package com.pcc.portalservice.service;
 
-import com.pcc.portalservice.PortalServiceApplication;
 import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
@@ -19,12 +18,9 @@ import javax.persistence.criteria.*;
 
 import lombok.RequiredArgsConstructor;
 
-import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RequiredArgsConstructor
 @Service
