@@ -627,7 +627,7 @@ public class TrainingService {
     );
   }
 
-//  public boolean isEditTrainingNull3(
+//  public boolean isEditTrainingNul3(
 //    EditTrainingSection1PersonRequest request
 //  ) {
 //    return (
