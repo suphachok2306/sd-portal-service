@@ -2,7 +2,6 @@ package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.service.SignatureService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

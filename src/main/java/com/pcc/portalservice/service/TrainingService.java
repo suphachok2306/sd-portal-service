@@ -302,7 +302,8 @@ public class TrainingService {
           .stream()
           .filter(status ->
             trainingId.equals(status.getTraining().getId()) &&
-            status.getActive() != 2
+            status.getActive() != 2 &&
+            status.getActive() != 3
           )
           .findFirst();
 
@@ -411,6 +412,7 @@ public class TrainingService {
   public List<Map<String, Object>> findAllTraining() {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
+    Root<Training> root = query.from(Training.class);
     List<Training> trainingList = entityManager
       .createQuery(query)
       .getResultList();
@@ -505,7 +507,8 @@ public class TrainingService {
       int disapprovedCount = 0;
       int cancalapprovedCount = 0;
       String result_status;
-      String isDo = null;
+      String isDo = "รอประเมิน";
+      String isDoResult = "ไม่";
       int count = 0;
 
       for (Status status : training.getStatus()) {
@@ -518,18 +521,20 @@ public class TrainingService {
             cancalapprovedCount++;
           }
         }
-        if ((status.getActive() == active) && (status.getStatus() != null)) {
-          if (status.getApproveId() == approve1Id) {
-            if ("อนุมัติ".equals(status.getStatus().toString())) {
-              isDo = "อนุมัติ";
-            } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-              isDo = "ไม่อนุมัติ";
-            } else if ("ยกเลิก".equals(status.getStatus().toString())) {
-              isDo = "ยกเลิก";
+        if (status.getActive() == active) {
+          if (status.getStatus() != null) {
+            if (status.getApproveId() == approve1Id) {
+              if ("อนุมัติ".equals(status.getStatus().toString())) {
+                isDo = "อนุมัติ";
+              } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                isDo = "ไม่อนุมัติ";
+              } else if ("ยกเลิก".equals(status.getStatus().toString())) {
+                isDo = "ยกเลิก";
+              }
             }
+          } else {
+            isDo = "รอประเมิน";
           }
-        } else {
-          isDo = "รอประเมิน";
         }
         count++;
       }
@@ -555,12 +560,20 @@ public class TrainingService {
           result_status = "รอประเมิน";
         }
       }
-
-      Map<String, Object> resultWithStatus = new HashMap<>();
-      resultWithStatus.put("training", training);
-      resultWithStatus.put("result_status", result_status);
-      resultWithStatus.put("isDo", isDo);
-      resultWithStatusList.add(resultWithStatus);
+      if (
+        result_status == "อนุมัติ" &&
+        training.getApprove1().getId() == approve1Id
+      ) {
+        isDoResult = "ใช่";
+      }
+      if(result_status != "ยกเลิก"){
+        Map<String, Object> resultWithStatus = new HashMap<>();
+        resultWithStatus.put("training", training);
+        resultWithStatus.put("result_status", result_status);
+        resultWithStatus.put("isDo", isDo);
+        resultWithStatus.put("isDoResult", isDoResult);
+        resultWithStatusList.add(resultWithStatus);
+      }
     }
 
     return resultWithStatusList;
