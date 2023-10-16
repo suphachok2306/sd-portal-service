@@ -71,10 +71,10 @@ public class TrainingService {
     ) +
     1;
 
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Date actionDateFormat = dateFormat.parse(
-      createTrainingRequest.getActionDate()
-    );
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//    Date actionDateFormat = dateFormat.parse(
+//      createTrainingRequest.getActionDate()
+//    );
 
     Training training = Training
       .builder()
@@ -82,8 +82,10 @@ public class TrainingService {
       .dateSave(new Date())
       .day(daysDifference)
       .courses(Arrays.asList(course))
-      .action(createTrainingRequest.getAction())
-      .actionDate(actionDateFormat)
+//      .action(createTrainingRequest.getAction())
+//      .actionDate(actionDateFormat)
+      .action(null)
+      .actionDate(null)
       .approve1(approve1)
       .build();
 
@@ -93,7 +95,7 @@ public class TrainingService {
     Result result = Result
       .builder()
       .training(training)
-      .evaluator(null)
+      .evaluator(approve1)
       .result1(null)
       .result2(null)
       .result3(null)
@@ -570,11 +572,11 @@ public class TrainingService {
     return (
       request == null ||
       request.getDateSave() == null ||
-      request.getDateSave().toString().isEmpty() ||
-      request.getAction() == null ||
-      request.getAction().isEmpty() ||
-      request.getActionDate() == null ||
-      request.getActionDate().isEmpty()
+      request.getDateSave().toString().isEmpty()
+//      request.getAction() == null ||
+//      request.getAction().isEmpty() ||
+//      request.getActionDate() == null ||
+//      request.getActionDate().isEmpty()
     );
   }
 
@@ -582,11 +584,11 @@ public class TrainingService {
     return (
       request == null ||
       request.getDateSave() == null ||
-      request.getDateSave().toString().isEmpty() ||
-      request.getAction() == null ||
-      request.getAction().isEmpty() ||
-      request.getActionDate() == null ||
-      request.getActionDate().isEmpty()
+      request.getDateSave().toString().isEmpty()
+//      request.getAction() == null ||
+//      request.getAction().isEmpty() ||
+//      request.getActionDate() == null ||
+//      request.getActionDate().isEmpty()
     );
   }
 
@@ -612,17 +614,17 @@ public class TrainingService {
     );
   }
 
-  public boolean isEditTrainingNull3(
-    EditTrainingSection1PersonRequest request
-  ) {
-    return (
-      request == null ||
-      request.getAction() == null ||
-      request.getAction().isEmpty() ||
-      request.getActionDate() == null ||
-      request.getActionDate().isEmpty()
-    );
-  }
+//  public boolean isEditTrainingNull3(
+//    EditTrainingSection1PersonRequest request
+//  ) {
+//    return (
+//      request == null ||
+//      request.getAction() == null ||
+//      request.getAction().isEmpty() ||
+//      request.getActionDate() == null ||
+//      request.getActionDate().isEmpty()
+//    );
+//  }
 
   public Object searchTraining(
     String name,

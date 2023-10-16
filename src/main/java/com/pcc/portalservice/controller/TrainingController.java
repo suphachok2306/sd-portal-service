@@ -75,10 +75,10 @@ public class TrainingController {
     public ResponseEntity<ApiResponse> editTrainingSection1Person(@RequestParam Long trainingId, @RequestBody EditTrainingSection1PersonRequest editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        if (trainingService.isEditTrainingNull3(editTraining)) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
+//        if (trainingService.isEditTrainingNull3(editTraining)) {
+//            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+//            return ResponseEntity.badRequest().body(response);
+//        }
         try {
             Training training = trainingService.editTrainingSection1Person(trainingId, editTraining);
             data.setResult(training);

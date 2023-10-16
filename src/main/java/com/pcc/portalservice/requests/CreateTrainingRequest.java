@@ -33,12 +33,5 @@ public class CreateTrainingRequest {
     String comment;
     String cause;
     String plan;
-
-
-
-
-
-
-
 }
 
