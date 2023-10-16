@@ -321,6 +321,11 @@ public class TrainingService {
           }
         }
       }
+      else{
+        Status existingStatus = optionalStatus.get();
+        existingStatus.setStatus(statusApprove);
+        statusRepository.save(existingStatus);
+      }
     } else {
       Optional<Status> updateStatus = training
         .getStatus()
