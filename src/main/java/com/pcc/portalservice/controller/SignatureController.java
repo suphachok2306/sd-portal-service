@@ -4,6 +4,7 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.SignatureService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,28 +23,24 @@ public class SignatureController {
     //อัพโหลด Signature,สร้าง Signature
     @PostMapping(value = "/uploadSignatureImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadSignatureImage(@RequestParam Long userId,@RequestParam("file") MultipartFile file) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
         try {
-            Object result = signatureService.uploadSignature(userId, file);
-            data.setResult(result);
-            response.setResponseMessage("ลายเซ็นถูกอัพโหลดเรียบร้อยแล้ว");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
+            signatureService.uploadSignature(userId, file);
+            return ResponseEntity.ok("ลายเซ็นถูกอัพโหลดเรียบร้อยแล้ว");
         } catch (IOException e) {
-            response.setResponseMessage("เกิดข้อผิดพลาดในการอัพโหลดลายเซ็น: " + e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body("เกิดข้อผิดพลาดในการอัพโหลดลายเซ็น: " + e.getMessage());
         }
     }
 
     //หา Signature
     @GetMapping(value = "/getSignatureImage", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getSignatureImage(@RequestParam Long userId) {
+    public ResponseEntity<Object> getSignatureImage(@RequestParam Long userId) {
         try {
             byte[] signatureImage = signatureService.getSignatureImage(userId);
             return new ResponseEntity<>(signatureImage, HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            return new ResponseEntity<>("ไม่พบลายเซ็นของผู้ใช้", headers, HttpStatus.NOT_FOUND);
         }
     }
 }
