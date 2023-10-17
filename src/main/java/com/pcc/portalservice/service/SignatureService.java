@@ -37,7 +37,7 @@ public class SignatureService {
         return outputStream.toByteArray();
     }
 
-    public void uploadSignature(Long userId, MultipartFile file) throws IOException {
+    public Object uploadSignature(Long userId, MultipartFile file) throws IOException {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("ไม่พบผู้ใช้ด้วย ID: " + userId));
 
@@ -53,7 +53,7 @@ public class SignatureService {
         } else {
             signature.setImage(pngImageData);
         }
-        signatureRepository.save(signature);
+        return signatureRepository.save(signature);
     }
 
     public byte[] getSignatureImage(Long userId) {
