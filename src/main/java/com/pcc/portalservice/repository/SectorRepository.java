@@ -11,7 +11,7 @@ public interface SectorRepository extends JpaRepository<Sector, Long> {
 
   Optional<Sector> findById(Long sectorId);
 
-  Optional<Sector> findBySectorCodeAndSectorNameAndCompanyName(
+  Optional<Sector> findBySectorCodeAndSectorNameAndCompanyCompanyName(
     String sectorCode,
     String sectorName,
     String companyName

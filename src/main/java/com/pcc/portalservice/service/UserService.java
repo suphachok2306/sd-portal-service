@@ -35,6 +35,9 @@ public class UserService {
 
   private final EntityManager entityManager;
 
+  /**
+   * @สร้างUser
+   */
   public User create(CreateUserRequest createUserRequest) {
     if (
       userRepository.existsByEmail(createUserRequest.getEmail()) &&
@@ -78,6 +81,9 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  /**
+   * @สร้างEmployee
+   */
   public User createEmployee(CreateEmployeeRequest createEmployeeRequest) {
     String email = createEmployeeRequest.getEmail();
     String empCode = createEmployeeRequest.getEmpCode();
@@ -112,7 +118,7 @@ public class UserService {
         )
       );
 
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyName(
+    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
       createEmployeeRequest.getSectorCode(),
       createEmployeeRequest.getSectorName(),
       createEmployeeRequest.getCompanyName()
@@ -172,6 +178,9 @@ public class UserService {
     return userRepository.save(user);
   }
 
+  /**
+   * @แก้ไขUser,Employee
+   */
   public User editUser(Long id, EditEmployeeRequest editEmployeeRequest) {
     User user = userRepository
       .findById(id)
@@ -188,7 +197,7 @@ public class UserService {
         )
       );
 
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyName(
+    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
       editEmployeeRequest.getSectorCode(),
       editEmployeeRequest.getSectorName(),
       editEmployeeRequest.getCompanyName()
