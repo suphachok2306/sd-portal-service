@@ -171,6 +171,7 @@ public class UserController {
    * @GetMapping
    */
   @GetMapping("/searchUser")
+
   public Object search(
     @RequestParam(required = false) String empCode,
     @RequestParam(required = false) String name,
@@ -179,7 +180,9 @@ public class UserController {
     //@RequestParam(required = false) String department,
     @RequestParam(required = false) String deptName,
     @RequestParam(required = false) String deptCode,
-    @RequestParam(required = false) String company
+    @RequestParam(required = false) String company,
+    @RequestParam(required = false) String sectorName,
+    @RequestParam(required = false) String sectorCode
   ) throws JsonProcessingException {
     return userService.searchUser(
       empCode,
@@ -188,7 +191,9 @@ public class UserController {
       email,
       deptName,
       deptCode,
-      company
+      company,
+      sectorCode,
+      sectorName
     );
   }
 

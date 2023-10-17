@@ -388,7 +388,9 @@ public class UserService {
     String email,
     String deptName,
     String deptCode,
-    String company
+    String company,
+    String sectorName,
+    String sectorCode
   ) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<User> query = builder.createQuery(User.class);
@@ -405,7 +407,6 @@ public class UserService {
       );
     }
     if (name != null) {
-      //Join<Object, User> userJoin = root.join("user");
       Expression<String> fullName = builder.concat(
         builder.concat(builder.lower(root.get("firstname")), " "),
         builder.lower(root.get("lastname"))
@@ -423,7 +424,6 @@ public class UserService {
       );
     }
     if (position != null) {
-      //Join<Object, User> userJoin = root.join("user");
       Join<User, Position> positionJoin = root.join("position");
       predicates.add(
         builder.like(
@@ -433,7 +433,6 @@ public class UserService {
       );
     }
     if (deptName != null) {
-      //Join<Training, User> userJoin = root.join("user");
       Join<User, Department> departmentJoin = root.join("department");
       predicates.add(
         builder.like(
@@ -443,7 +442,6 @@ public class UserService {
       );
     }
     if (deptCode != null) {
-      //Join<Training, User> userJoin = root.join("user");
       Join<User, Department> departmentJoin = root.join("department");
       predicates.add(
         builder.like(
@@ -453,7 +451,6 @@ public class UserService {
       );
     }
     if (company != null) {
-      //Join<Training, User> userJoin = root.join("user");
       Join<User, Company> companyJoin = root.join("company");
       predicates.add(
         builder.like(
@@ -461,6 +458,22 @@ public class UserService {
           "%" + company.toLowerCase() + "%"
         )
       );
+    }
+    if (sectorName != null) {
+      Join<User, Sector> sectorJoin = root.join("sector");
+      predicates.add(
+        builder.like(
+          builder.lower(sectorJoin.get("sectorName")),
+          "%" + sectorName.toLowerCase() + "%")
+        );
+    }
+    if (sectorCode != null) {
+      Join<User, Sector> sectorJoin = root.join("sector");
+      predicates.add(
+        builder.like(
+          builder.lower(sectorJoin.get("sectorCode")),
+          "%" + sectorCode.toLowerCase() + "%")
+        );
     }
 
     if (
@@ -470,7 +483,9 @@ public class UserService {
       email != null &&
       deptCode != null &&
       deptName != null &&
-      company != null
+      company != null &&
+      sectorName != null &&
+      sectorCode != null
     ) {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
@@ -483,15 +498,9 @@ public class UserService {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
 
-//    List<Map<String, Object>> results = new ArrayList<>();
-//    for (User user : users) {
-//      Map<String, Object> result = new HashMap<>();
-//      result.put("user", user);
-//      results.add(result);
-//    }
-
     return users;
   }
+
 
   /**
    * @SetStatusลาออกให้Employee
