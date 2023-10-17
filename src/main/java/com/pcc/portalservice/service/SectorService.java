@@ -56,7 +56,7 @@ public class SectorService {
     String sectorName,
     String companyName
   ) {
-    return sectorRepository.findBySectorCodeAndSectorNameAndCompanyName(
+    return sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
       sectorCode,
       sectorName,
       companyName
