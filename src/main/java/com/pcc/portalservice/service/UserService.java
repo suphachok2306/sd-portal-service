@@ -330,6 +330,17 @@ public class UserService {
     return userRepository.findByRolesRole(Roles.User);
   }
 
+  public List<User> findActiveEmployees() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = builder.createQuery(User.class);
+    Root<User> root = query.from(User.class);
+    query.where(builder.equal(root.get("status"), "เป็นพนักงานอยู่"));
+
+    List<User> users = entityManager.createQuery(query).getResultList();
+
+    return users;
+  }
+
   public List<User> findAllPersonnel() {
     return userRepository.findByRolesRole(Roles.Personnel);
   }

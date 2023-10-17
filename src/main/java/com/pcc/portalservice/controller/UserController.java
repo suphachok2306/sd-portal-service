@@ -209,6 +209,12 @@ public class UserController {
     return userService.findAllEmployee();
   }
 
+  //หาพนักงานทั้งหมด , หา Employee ทั้งหมด 
+  @GetMapping("/findActiveEmployees")
+  public List<User> findActiveEmployees() {
+    return userService.findActiveEmployees();
+  }
+
   //หา Personnel ทั้งหมด
   @GetMapping("/findAllPersonnel")
   public List<User> getAllPersonnel() {
