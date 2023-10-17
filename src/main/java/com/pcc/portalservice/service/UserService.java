@@ -483,14 +483,14 @@ public class UserService {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
 
-    List<Map<String, Object>> results = new ArrayList<>();
-    for (User user : users) {
-      Map<String, Object> result = new HashMap<>();
-      result.put("user", user);
-      results.add(result);
-    }
+//    List<Map<String, Object>> results = new ArrayList<>();
+//    for (User user : users) {
+//      Map<String, Object> result = new HashMap<>();
+//      result.put("user", user);
+//      results.add(result);
+//    }
 
-    return results;
+    return users;
   }
 
   /**
