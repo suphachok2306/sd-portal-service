@@ -1,5 +1,7 @@
 package com.pcc.portalservice.controller;
 
+import com.pcc.portalservice.response.ApiResponse;
+import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.SignatureService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,11 +22,17 @@ public class SignatureController {
     //อัพโหลด Signature,สร้าง Signature
     @PostMapping(value = "/uploadSignatureImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadSignatureImage(@RequestParam Long userId,@RequestParam("file") MultipartFile file) {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
         try {
-            signatureService.uploadSignature(userId, file);
-            return ResponseEntity.ok("ลายเซ็นถูกอัพโหลดเรียบร้อยแล้ว");
+            Object result = signatureService.uploadSignature(userId, file);
+            data.setResult(result);
+            response.setResponseMessage("ลายเซ็นถูกอัพโหลดเรียบร้อยแล้ว");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("เกิดข้อผิดพลาดในการอัพโหลดลายเซ็น: " + e.getMessage());
+            response.setResponseMessage("เกิดข้อผิดพลาดในการอัพโหลดลายเซ็น: " + e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
