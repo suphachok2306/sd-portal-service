@@ -22,6 +22,12 @@ public class AuthController {
   private final UserService userService;
   private final AuthenticationService authenticationService;
 
+  /**
+ * This method finds a user by their ID.
+ *
+ * @param userId The ID of the user to find.
+ * @return A ResponseEntity containing the user information.
+ */
   @PostMapping("/auth/login")
   @Transactional
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

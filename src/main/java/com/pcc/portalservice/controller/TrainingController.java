@@ -30,6 +30,7 @@ import java.util.Map;
 public class TrainingController {
     private TrainingService trainingService;
 
+    //สร้าง Training
     @PostMapping("/createTraining")
     public ResponseEntity<ApiResponse> createTraining(@RequestBody CreateTrainingRequest createTrainingRequest) throws ParseException {
         ApiResponse response = new ApiResponse();
@@ -51,6 +52,7 @@ public class TrainingController {
         }
     }
 
+    //แก้ไข Training ส่วนที่ 1
     @PostMapping("/editTrainingSection1")
     public ResponseEntity<ApiResponse> editTrainingSection1(@RequestParam Long trainingId,Long statusId, @RequestBody EditTrainingSection1Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
@@ -71,6 +73,8 @@ public class TrainingController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
+
+    //แก้ไข Training ส่วนที่ 3
     @PostMapping("/editTrainingSection1Person")
     public ResponseEntity<ApiResponse> editTrainingSection1Person(@RequestParam Long trainingId, @RequestBody EditTrainingSection1PersonRequest editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
@@ -92,6 +96,7 @@ public class TrainingController {
         }
     }
 
+    //แก้ไข Training ส่วนที่ 2
     @PostMapping("/editTrainingSection2")
     public ResponseEntity<ApiResponse> editTrainingSection2(@RequestParam Long resultId, @RequestBody EditTrainingSection2Request editTraining) throws ParseException {
         ApiResponse response = new ApiResponse();
@@ -113,6 +118,7 @@ public class TrainingController {
         }
     }
 
+    //แก้ไข Statusของ Training
     @PutMapping("/setStatusToTraining")
     public ResponseEntity<ApiResponse> addStatusToTraining(@RequestParam Long trainingId, Long approveId, StatusApprove statusApprove) {
         ApiResponse response = new ApiResponse();
@@ -130,34 +136,49 @@ public class TrainingController {
 
     }
 
+    //หา Training ด้วย Id
     @GetMapping("/findTrainingByTrainingId")
     public ResponseEntity<Map<String, Object>> findTrainingByTrainingId(@RequestParam Long trainingId) {
         Map<String, Object> training = trainingService.findById(trainingId);
         return ResponseEntity.ok(training);
     }
 
-
+    //หา Training ด้วย UserId
     @GetMapping("/findTrainingByUserId")
     public ResponseEntity<List<Map<String, Object>>> findTrainingByUserId(@RequestParam Long userId) {
         List<Map<String, Object>> trainings = trainingService.findTrainingsByUserId(userId);
         return ResponseEntity.ok(trainings);
     }
 
+    //หา Training ด้วย ApproveId
     @GetMapping("/findTrainingByApprove1Id")
     public ResponseEntity<List<Map<String, Object>>> findTrainingByApprove1Id(@RequestParam Long approve1Id) {
         List<Map<String, Object>> trainings = trainingService.findTrainingsByApprove1Id(approve1Id);
         return ResponseEntity.ok(trainings);
     }
 
+    //หา Training ด้วย PersonnelId
     @GetMapping("/findTrainingByPersonnelId")
     public ResponseEntity<List<Map<String, Object>>> findTrainingByPersonnelId(@RequestParam Long PersonnelId) {
         List<Map<String, Object>> trainings = trainingService.findTrainingByPersonnelId(PersonnelId);
         return ResponseEntity.ok(trainings);
     }
 
+    //หา Training ทั้งหมด
     @GetMapping("/findAllTraining")
     public List<Map<String, Object>> findAllTraining() {
         return trainingService.findAllTraining();
+    }
+
+    //ค้นหา Training ด้วย Name,Position,Department,startDate,endDate,courseName
+    @GetMapping("/searchTraining")
+    public Object search(@RequestParam(required = false) String name,
+                         @RequestParam(required = false) String position,
+                         @RequestParam(required = false) String department,
+                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
+                         @RequestParam(required = false) String courseName) {
+        return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
     }
 
 
@@ -169,17 +190,6 @@ public class TrainingController {
     //     }
     //     return ResponseEntity.ok(training);
     // }
-
-
-    @GetMapping("/searchTraining")
-    public Object search(@RequestParam(required = false) String name,
-                         @RequestParam(required = false) String position,
-                         @RequestParam(required = false) String department,
-                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
-                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate,
-                         @RequestParam(required = false) String courseName) {
-        return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
-    }
 
     // @GetMapping("/findNextApprove")
     // public List<Map<String, Object>> findNextApprove() {

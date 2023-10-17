@@ -413,7 +413,7 @@ public class TrainingService {
 
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
-
+    
     return calculateTrainingResultStatus(resultList);
   }
 

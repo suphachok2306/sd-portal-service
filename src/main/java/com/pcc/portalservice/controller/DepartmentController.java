@@ -24,6 +24,7 @@ public class DepartmentController {
 
   private final DepartmentService departmentService;
 
+  //สร้าง Department
   @PostMapping("/createDepartment")
   public ResponseEntity<ApiResponse> createPosition(
     @RequestBody CreateDepartmentRequest createDepartmentRequest
@@ -52,11 +53,13 @@ public class DepartmentController {
     }
   }
 
+  //หา Department ทั้งหมด
   @GetMapping("/findAllDepartments")
   public List<Department> getAllDepartments() {
     return departmentService.findAll();
   }
 
+  //หา Department ที่มีทำการ Join กับ Sector Company แล้ว
   @GetMapping("/findAllJoinDepartments")
   public List<Map<String, Object>> getAllJoinDepartments() {
     return departmentService.findAllJoinDepartments();

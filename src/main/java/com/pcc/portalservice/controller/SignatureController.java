@@ -17,7 +17,7 @@ public class SignatureController {
 
     private final SignatureService signatureService;
 
-
+    //อัพโหลด Signature,สร้าง Signature
     @PostMapping(value = "/uploadSignatureImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadSignatureImage(@RequestParam Long userId,@RequestParam("file") MultipartFile file) {
         try {
@@ -28,6 +28,7 @@ public class SignatureController {
         }
     }
 
+    //หา Signature
     @GetMapping(value = "/getSignatureImage", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getSignatureImage(@RequestParam Long userId) {
         try {

@@ -21,11 +21,13 @@ public class CourseController {
 
   private final CourseService courseService;
 
+  //หา Course ทั้งหมด
   @GetMapping("/findAllCourse")
   public List<Course> getCourseAll() {
     return courseService.findAllCourse();
   }
 
+  //หา Course ด้วย Id
   @GetMapping("/findCourseById")
   public ResponseEntity<ApiResponse> findCourseById(
     @RequestParam Long CourseId
@@ -44,6 +46,7 @@ public class CourseController {
     }
   }
 
+  //สร้าง Course
   @PostMapping("/createCourse")
   public ResponseEntity<ApiResponse> createCourse(
     @RequestBody CreateCourseRequest createCourseRequest
@@ -72,6 +75,7 @@ public class CourseController {
     }
   }
 
+  //แก้ไข Course
   @PutMapping("/editCourse")
   public ResponseEntity<ApiResponse> updateCourse(
     @RequestBody CreateCourseRequest createCourseRequest
@@ -90,6 +94,7 @@ public class CourseController {
     }
   }
 
+  //ลบ Course ด้วย Id
   @DeleteMapping("/deleteCourseById")
   public ResponseEntity<ApiResponse> delete(@RequestParam Long courseID) {
     ApiResponse response = new ApiResponse();

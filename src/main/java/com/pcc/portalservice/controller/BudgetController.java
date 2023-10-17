@@ -28,6 +28,7 @@ public class BudgetController {
 
     private final BudgetService budgetService;
 
+    //สร้าง Budget
     @PostMapping("/createBudget")
     public ResponseEntity<ApiResponse> createBudget(@RequestBody CreateBudgetRequest createbudgetRequest) {
         ApiResponse response = new ApiResponse();
@@ -49,16 +50,18 @@ public class BudgetController {
         }
     }
 
+    //หา Bugdet ทั้งหมด
     @GetMapping("/findAllBudget")
     public List<Budget> getAllBudgets() {return budgetService.findAll();}
 
+    //หา Bugdet ด้วย Id
     @GetMapping("/findBudgetById")
     public ResponseEntity<Budget> findBudgetById(@RequestParam Long budgetID) {
         Budget budget= budgetService.findById(budgetID);
         return ResponseEntity.ok(budget);
     }
 
-
+    //ลบ Bugdet ด้วย Id
     @DeleteMapping("/deleteBudgetById")
     public ResponseEntity<ApiResponse> delete(@RequestParam Long budgetID) {
             ApiResponse response = new ApiResponse();
@@ -75,7 +78,7 @@ public class BudgetController {
             }
         } 
 
-
+    //แก้ไข Bugdet
     @PutMapping("/editBudget")
     public ResponseEntity<ApiResponse> updateBudget(
         @RequestBody CreateBudgetRequest createbudgetRequest
@@ -99,6 +102,7 @@ public class BudgetController {
         }
     }        
 
+    //หางบทั้งหมดของแต่ละ Year และ Department
     @GetMapping("/findTotalBudget")
     public  LinkedHashMap<String, Object>findTotal(@RequestParam String Year,Long department_id) {
         LinkedHashMap<String, Object> resultList = budgetService.total_exp(Year,department_id);
@@ -106,6 +110,7 @@ public class BudgetController {
         return resultList;
     }
 
+    //หางบท่ี่เหลือของแต่ละ Year และ Department
     @GetMapping("/findRemainBudget")
     public  LinkedHashMap<String, Object> findRemain(@RequestParam int Year,Long department_id) {
          LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(Year,department_id);

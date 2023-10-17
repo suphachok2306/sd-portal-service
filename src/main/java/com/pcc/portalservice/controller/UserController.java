@@ -13,6 +13,7 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.UserService;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,7 @@ public class UserController {
     }
   }
 
+  //สร้าง User
   @PostMapping("/createUser")
   public ResponseEntity<ApiResponse> create(
     @RequestBody CreateUserRequest createUserRequest
@@ -67,6 +69,7 @@ public class UserController {
     }
   }
 
+  //สร้างพนักงาน,Employee
   @PostMapping("/createEmployee")
   public ResponseEntity<ApiResponse> createEmployee(
     @RequestBody CreateEmployeeRequest createEmployeeRequest
@@ -95,6 +98,7 @@ public class UserController {
     }
   }
 
+  //แก้ไขพนักงาน , edit Employee
   @PutMapping("/editEmployee")
   public ResponseEntity<ApiResponse> editEmployee(
     @RequestParam Long userId,
@@ -124,6 +128,7 @@ public class UserController {
     }
   }
 
+  //สร้างยศ , สร้าง Role
   @PostMapping("/createRole")
   public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
     Roles roleEnum = Roles.valueOf(roleName);
@@ -145,6 +150,7 @@ public class UserController {
     }
   }
 
+  //เพิ่ม Role ให้ User
   @PostMapping("/addRoleToUser")
   public ResponseEntity<ApiResponse> addRoleToUser(
     @RequestParam Long userId,
@@ -166,6 +172,7 @@ public class UserController {
     }
   }
 
+  //ลบ User ด้วย Id
   @DeleteMapping("deleteById")
   public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
     ApiResponse response = new ApiResponse();
@@ -181,6 +188,8 @@ public class UserController {
       return ResponseEntity.badRequest().body(response);
     }
   }
+
+  //หา User ด้วย empCode,name,position,email,deptName,deptCode,company
   @GetMapping("/searchUser")
   public Object search(@RequestParam(required = false) String empCode,
                        @RequestParam(required = false) String name,
@@ -193,32 +202,50 @@ public class UserController {
                        ) throws JsonProcessingException {
     return userService.searchUser(empCode,name,position,email,deptName,deptCode,company);
   }
+
+  //หาพนักงานทั้งหมด , หา Employee ทั้งหมด 
   @GetMapping("/findAllEmployee")
   public List<User> getAllEmployee() {
     return userService.findAllEmployee();
   }
 
+  //หา Personnel ทั้งหมด
   @GetMapping("/findAllPersonnel")
   public List<User> getAllPersonnel() {
     return userService.findAllPersonnel();
   }
 
+  //หา VicePresident ทั้งหมด
   @GetMapping("/findAllVicePresident")
   public List<User> getAllVicePresident() {
     return userService.findAllVicePresident();
   }
 
+  //หา Approver ทั้งหมด
   @GetMapping("/findAllApprover")
   public List<User> getAllApprover() {
     return userService.findAllApprover();
   }
 
+  //หา Admin ทั้งหมด
   @GetMapping("/findAllAdmin")
   public List<User> getAllAdmin() {
     return userService.findAllAdmin();
   }
 
+  @GetMapping("/findAllVicePresidentAndApprover")
+  public List<User> getAllVicePresidentAndApprover() {
+      List<User> vicePresidents = userService.findAllVicePresident();
+      List<User> approvers = userService.findAllApprover();
 
+      List<User> allVicePresidentAndApprover = new ArrayList<>();
+      allVicePresidentAndApprover.addAll(vicePresidents);
+      allVicePresidentAndApprover.addAll(approvers);
+
+      return allVicePresidentAndApprover;
+  }
+
+  //set Status ให้ User
   @PutMapping("/setStatusToUser")
     public ResponseEntity<ApiResponse> addStatusToUser(@RequestParam Long User_id, StatusUser statusUser) {
         ApiResponse response = new ApiResponse();
