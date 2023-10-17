@@ -32,6 +32,9 @@ public class TrainingService {
 
   private final EntityManager entityManager;
 
+  /**
+   * @สร้างTraining
+   */
   public Training createTraining(CreateTrainingRequest createTrainingRequest)
     throws ParseException {
     User user = userRepository
@@ -71,19 +74,14 @@ public class TrainingService {
     ) +
     1;
 
-//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//    Date actionDateFormat = dateFormat.parse(
-//      createTrainingRequest.getActionDate()
-//    );
-
     Training training = Training
       .builder()
       .user(user)
       .dateSave(new Date())
       .day(daysDifference)
       .courses(Arrays.asList(course))
-//      .action(createTrainingRequest.getAction())
-//      .actionDate(actionDateFormat)
+      //      .action(createTrainingRequest.getAction())
+      //      .actionDate(actionDateFormat)
       .action(null)
       .actionDate(null)
       .approve1(approve1)
@@ -171,6 +169,9 @@ public class TrainingService {
     return savedTraining;
   }
 
+  /**
+   * @EditTrainingSection1
+   */
   public Training editTrainingSection1(
     Long trainingId,
     Long statusId,
@@ -207,17 +208,18 @@ public class TrainingService {
 
     training_id.setUser(user_id);
     training_id.setDateSave(new Date());
-    training_id.getCourses().clear(); ///////ต้อง clear ก่อน
+    training_id.getCourses().clear();
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
-
-    //        status_id.setStatus(editTraining.getStatus1());
     status_id.setApproveId(editTraining.getApprove1_id());
     statusRepository.save(status_id);
     Training updatedTraining = trainingRepository.save(training_id);
     return updatedTraining;
   }
 
+  /**
+   * @EditTrainingSection3
+   */
   public Training editTrainingSection1Person(
     Long trainingId,
     EditTrainingSection1PersonRequest editTraining
@@ -238,6 +240,9 @@ public class TrainingService {
     return updatedTraining;
   }
 
+  /**
+   * @EditTrainingSection2
+   */
   public Result editTrainingSection2(
     Long resultId,
     EditTrainingSection2Request editTraining
@@ -271,6 +276,9 @@ public class TrainingService {
     return updatedTraining;
   }
 
+  /**
+   * @SetStatus
+   */
   public Training setStatusToTraining(
     Long trainingId,
     Long approveId,
@@ -315,8 +323,7 @@ public class TrainingService {
             statusRepository.save(nextStatus);
           }
         }
-      }
-      else{
+      } else {
         Status existingStatus = optionalStatus.get();
         existingStatus.setStatus(statusApprove);
         statusRepository.save(existingStatus);
@@ -340,69 +347,74 @@ public class TrainingService {
     return trainingRepository.save(training);
   }
 
+  /**
+   * @หาTrainingด้วยId
+   */
   public Map<String, Object> findById(Long id) {
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Training> query = builder.createQuery(Training.class);
-        Root<Training> root = query.from(Training.class);
-    
-        query.where(builder.equal(root.get("id"), id));
-        List<Training> trainingList = entityManager
-          .createQuery(query)
-          .getResultList();
-    
-        Map<String, Object> resultWithStatus = new HashMap<>();
-    
-        if (!trainingList.isEmpty()) {
-            Training training = trainingList.get(0);
-            int approvedCount = 0;
-            int disapprovedCount = 0;
-            int cancalapprovedCount = 0;
-            String result_status;
-            int count = 0;
-    
-            for (Status status : training.getStatus()) {
-                if (status.getStatus() != null) {
-                    if ("อนุมัติ".equals(status.getStatus().toString())) {
-                        approvedCount++;
-                    } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-                        disapprovedCount++;
-                    } else if ("ยกเลิก".equals(status.getStatus().toString())) {
-                        cancalapprovedCount++;
-                    }
-                }
-                count++;
-            }
-    
-            if (count == 3) {
-                if (approvedCount == 3) {
-                    result_status = "อนุมัติ";
-                } else if (disapprovedCount >= 1) {
-                    result_status = "ไม่อนุมัติ";
-                } else if (cancalapprovedCount >= 1) {
-                    result_status = "ยกเลิก";
-                } else {
-                    result_status = "รอประเมิน";
-                }
-            } else {
-                if (approvedCount == 2) {
-                    result_status = "อนุมัติ";
-                } else if (disapprovedCount >= 1) {
-                    result_status = "ไม่อนุมัติ";
-                } else if (cancalapprovedCount >= 1) {
-                    result_status = "ยกเลิก";
-                } else {
-                    result_status = "รอประเมิน";
-                }
-            }
-    
-            resultWithStatus.put("training", training);
-            resultWithStatus.put("result_status", result_status);
-        }
-    
-        return resultWithStatus;
-    }
-    
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Training> query = builder.createQuery(Training.class);
+    Root<Training> root = query.from(Training.class);
 
+    query.where(builder.equal(root.get("id"), id));
+    List<Training> trainingList = entityManager
+      .createQuery(query)
+      .getResultList();
+
+    Map<String, Object> resultWithStatus = new HashMap<>();
+
+    if (!trainingList.isEmpty()) {
+      Training training = trainingList.get(0);
+      int approvedCount = 0;
+      int disapprovedCount = 0;
+      int cancalapprovedCount = 0;
+      String result_status;
+      int count = 0;
+
+      for (Status status : training.getStatus()) {
+        if (status.getStatus() != null) {
+          if ("อนุมัติ".equals(status.getStatus().toString())) {
+            approvedCount++;
+          } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+            disapprovedCount++;
+          } else if ("ยกเลิก".equals(status.getStatus().toString())) {
+            cancalapprovedCount++;
+          }
+        }
+        count++;
+      }
+
+      if (count == 3) {
+        if (approvedCount == 3) {
+          result_status = "อนุมัติ";
+        } else if (disapprovedCount >= 1) {
+          result_status = "ไม่อนุมัติ";
+        } else if (cancalapprovedCount >= 1) {
+          result_status = "ยกเลิก";
+        } else {
+          result_status = "รอประเมิน";
+        }
+      } else {
+        if (approvedCount == 2) {
+          result_status = "อนุมัติ";
+        } else if (disapprovedCount >= 1) {
+          result_status = "ไม่อนุมัติ";
+        } else if (cancalapprovedCount >= 1) {
+          result_status = "ยกเลิก";
+        } else {
+          result_status = "รอประเมิน";
+        }
+      }
+
+      resultWithStatus.put("training", training);
+      resultWithStatus.put("result_status", result_status);
+    }
+
+    return resultWithStatus;
+  }
+
+  /**
+   * @หาTrainingด้วยUserId
+   */
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
     String jpql = "SELECT t FROM Training t WHERE user_id = :id";
 
@@ -413,10 +425,13 @@ public class TrainingService {
 
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
-    
+
     return calculateTrainingResultStatus(resultList);
   }
 
+  /**
+   * @หาTrainingด้วยApproveId
+   */
   public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
     String jpql =
       "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
@@ -436,6 +451,9 @@ public class TrainingService {
     return calculateTrainingResultStatus(resultList, approve1Id, 2);
   }
 
+  /**
+   * @หาTrainingทั้งหมด
+   */
   public List<Map<String, Object>> findAllTraining() {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
@@ -447,6 +465,9 @@ public class TrainingService {
     return calculateTrainingResultStatus(trainingList);
   }
 
+  /**
+   * @หาTrainingด้วยPersonnelId
+   */
   public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
     String jpql =
       "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
@@ -465,6 +486,10 @@ public class TrainingService {
 
     return calculateTrainingResultStatus(resultList, approve1Id, 3);
   }
+
+  /**
+   * @OutputForTraining1
+   */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
     List<Training> trainingList
@@ -521,6 +546,10 @@ public class TrainingService {
 
     return resultWithStatusList;
   }
+
+  /**
+   * @OutputForTraining2
+   */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
     List<Training> trainingList,
@@ -593,7 +622,7 @@ public class TrainingService {
       ) {
         isDoResult = "ใช่";
       }
-      if(result_status != "ยกเลิก"){
+      if (result_status != "ยกเลิก") {
         Map<String, Object> resultWithStatus = new HashMap<>();
         resultWithStatus.put("training", training);
         resultWithStatus.put("result_status", result_status);
@@ -606,64 +635,9 @@ public class TrainingService {
     return resultWithStatusList;
   }
 
-  public boolean isTrainingNull(CreateTrainingRequest request) {
-    return (
-      request == null ||
-      request.getDateSave() == null ||
-      request.getDateSave().toString().isEmpty()
-//      request.getAction() == null ||
-//      request.getAction().isEmpty() ||
-//      request.getActionDate() == null ||
-//      request.getActionDate().isEmpty()
-    );
-  }
-
-  public boolean isEditTrainingNull1(EditTrainingSection1Request request) {
-    return (
-      request == null ||
-      request.getDateSave() == null ||
-      request.getDateSave().toString().isEmpty()
-//      request.getAction() == null ||
-//      request.getAction().isEmpty() ||
-//      request.getActionDate() == null ||
-//      request.getActionDate().isEmpty()
-    );
-  }
-
-  public boolean isEditTrainingNull2(EditTrainingSection2Request request) {
-    return (
-      request == null ||
-      request.getResult1() == null ||
-      request.getResult1().isEmpty() ||
-      request.getResult2() == null ||
-      request.getResult2().isEmpty() ||
-      request.getResult3() == null ||
-      request.getResult3().isEmpty() ||
-      request.getResult4() == null ||
-      request.getResult4().isEmpty() ||
-      request.getResult5() == null ||
-      request.getResult5().isEmpty() ||
-      request.getResult6() == null ||
-      request.getResult6().isEmpty() ||
-      request.getResult7() == null ||
-      request.getResult7().isEmpty() ||
-      request.getResult() == null ||
-      request.getResult().isEmpty()
-    );
-  }
-
-//  public boolean isEditTrainingNul3(
-//    EditTrainingSection1PersonRequest request
-//  ) {
-//    return (
-//      request == null ||
-//      request.getAction() == null ||
-//      request.getAction().isEmpty() ||
-//      request.getActionDate() == null ||
-//      request.getActionDate().isEmpty()
-//    );
-//  }
-
+  /**
+   * @หาtrainingด้วยName,Position,Department,StartDate,Enddate,CourseName
+   */
   public Object searchTraining(
     String name,
     String position,
@@ -758,6 +732,53 @@ public class TrainingService {
     }
 
     return results;
+  }
+
+  /**
+   * @เช็คNullของTraining1
+   */
+  public boolean isTrainingNull(CreateTrainingRequest request) {
+    return (
+      request == null ||
+      request.getDateSave() == null ||
+      request.getDateSave().toString().isEmpty()
+    );
+  }
+
+  /**
+   * @เช็คNullของTraining2
+   */
+  public boolean isEditTrainingNull1(EditTrainingSection1Request request) {
+    return (
+      request == null ||
+      request.getDateSave() == null ||
+      request.getDateSave().toString().isEmpty()
+    );
+  }
+
+  /**
+   * @เช็คNullของTraining3
+   */
+  public boolean isEditTrainingNull2(EditTrainingSection2Request request) {
+    return (
+      request == null ||
+      request.getResult1() == null ||
+      request.getResult1().isEmpty() ||
+      request.getResult2() == null ||
+      request.getResult2().isEmpty() ||
+      request.getResult3() == null ||
+      request.getResult3().isEmpty() ||
+      request.getResult4() == null ||
+      request.getResult4().isEmpty() ||
+      request.getResult5() == null ||
+      request.getResult5().isEmpty() ||
+      request.getResult6() == null ||
+      request.getResult6().isEmpty() ||
+      request.getResult7() == null ||
+      request.getResult7().isEmpty() ||
+      request.getResult() == null ||
+      request.getResult().isEmpty()
+    );
   }
 }
 // public List<Map<String, Object>> findbyAllCountApprove(Long count) {

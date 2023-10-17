@@ -21,32 +21,10 @@ public class CourseController {
 
   private final CourseService courseService;
 
-  //หา Course ทั้งหมด
-  @GetMapping("/findAllCourse")
-  public List<Course> getCourseAll() {
-    return courseService.findAllCourse();
-  }
-
-  //หา Course ด้วย Id
-  @GetMapping("/findCourseById")
-  public ResponseEntity<ApiResponse> findCourseById(
-    @RequestParam Long CourseId
-  ) {
-    Course course = courseService.findById(CourseId);
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    if (course != null) {
-      data.setResult(course);
-      response.setResponseMessage("ทำรายการเรียบร้อย");
-      response.setResponseData(data);
-      return ResponseEntity.ok().body(response);
-    } else {
-      response.setResponseMessage("ไม่สามารถทำรายการได้");
-      return ResponseEntity.badRequest().body(response);
-    }
-  }
-
-  //สร้าง Course
+  /**
+   * @สร้างCourse
+   * @PostMapping
+   */
   @PostMapping("/createCourse")
   public ResponseEntity<ApiResponse> createCourse(
     @RequestBody CreateCourseRequest createCourseRequest
@@ -75,7 +53,10 @@ public class CourseController {
     }
   }
 
-  //แก้ไข Course
+  /**
+   * @แก้ไขCompany
+   * @PutMapping
+   */
   @PutMapping("/editCourse")
   public ResponseEntity<ApiResponse> updateCourse(
     @RequestBody CreateCourseRequest createCourseRequest
@@ -94,7 +75,10 @@ public class CourseController {
     }
   }
 
-  //ลบ Course ด้วย Id
+  /**
+   * @ลบCourseด้วยId
+   * @DeleteMapping
+   */
   @DeleteMapping("/deleteCourseById")
   public ResponseEntity<ApiResponse> delete(@RequestParam Long courseID) {
     ApiResponse response = new ApiResponse();
@@ -103,6 +87,37 @@ public class CourseController {
     if (course != null) {
       data.setResult(course);
       response.setResponseMessage("ลบข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } else {
+      response.setResponseMessage("ไม่สามารถทำรายการได้");
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  /**
+   * @หาCourseทั้งหมด
+   * @GetMapping
+   */
+  @GetMapping("/findAllCourse")
+  public List<Course> getCourseAll() {
+    return courseService.findAllCourse();
+  }
+
+  /**
+   * @หาCourseด้วยId
+   * @GetMapping
+   */
+  @GetMapping("/findCourseById")
+  public ResponseEntity<ApiResponse> findCourseById(
+    @RequestParam Long CourseId
+  ) {
+    Course course = courseService.findById(CourseId);
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    if (course != null) {
+      data.setResult(course);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
       response.setResponseData(data);
       return ResponseEntity.ok().body(response);
     } else {

@@ -20,16 +20,9 @@ public class DepartmentService {
   private final SectorRepository sectorRepository;
   private final EntityManager entityManager;
 
-  public boolean isDeptNull(CreateDepartmentRequest request) {
-    return (
-      request == null ||
-      request.getDeptName() == null ||
-      request.getDeptName().isEmpty() ||
-      request.getDeptCode() == null ||
-      request.getDeptCode().isEmpty()
-    );
-  }
-
+   /**
+   * @สร้างCourse
+   */
   public Department create(CreateDepartmentRequest createDepartmentRequest) {
     Sector sectorId = sectorRepository
       .findById(createDepartmentRequest.getSectorId())
@@ -48,10 +41,16 @@ public class DepartmentService {
     return departmentRepository.save(department);
   }
 
+   /**
+   * @หาDepartmentทั้งหมด
+   */
   public List<Department> findAll() {
     return departmentRepository.findAll();
   }
 
+   /**
+   * @หาDepartmentที่มีทำการJoinกับSectorและCompanyแล้ว
+   */
   public List<Map<String, Object>> findAllJoinDepartments() {
     String jpql =
     "SELECT " +
@@ -95,7 +94,6 @@ public class DepartmentService {
           "departments"
         );
 
-        // Check if the department already exists
         boolean departmentExists = false;
         for (Map<String, Object> department : departments) {
           if (department.get("deptname").equals(deptname)) {
@@ -110,7 +108,6 @@ public class DepartmentService {
           }
         }
 
-        // If department doesn't exist, create a new one
         if (!departmentExists) {
           Map<String, Object> departmentMap = new LinkedHashMap<>();
           departmentMap.put("deptid", deptid);
@@ -157,10 +154,26 @@ public class DepartmentService {
     return resultList;
   }
 
+  /**
+   * @หาDepartmentด้วยDeptNameและDeptCode
+   */
   public Optional<Department> findByDeptCodeAndDeptName(
     String DeptCode,
     String DeptName
   ) {
     return departmentRepository.findByDeptCodeAndDeptName(DeptCode, DeptName);
+  }
+
+  /**
+   * @เช็คNullของDepartment
+   */
+  public boolean isDeptNull(CreateDepartmentRequest request) {
+    return (
+      request == null ||
+      request.getDeptName() == null ||
+      request.getDeptName().isEmpty() ||
+      request.getDeptCode() == null ||
+      request.getDeptCode().isEmpty()
+    );
   }
 }

@@ -7,7 +7,6 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
-
 import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -35,13 +34,6 @@ public class UserService {
   private final CompanyRepository companyRepository;
 
   private final EntityManager entityManager;
-  public User findByEmail(String email) {
-    return userRepository
-      .findByEmail(email)
-      .orElseThrow(() ->
-        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found")
-      );
-  }
 
   public User create(CreateUserRequest createUserRequest) {
     if (
@@ -120,7 +112,7 @@ public class UserService {
         )
       );
 
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
+    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyName(
       createEmployeeRequest.getSectorCode(),
       createEmployeeRequest.getSectorName(),
       createEmployeeRequest.getCompanyName()
@@ -196,7 +188,7 @@ public class UserService {
         )
       );
 
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
+    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyName(
       editEmployeeRequest.getSectorCode(),
       editEmployeeRequest.getSectorName(),
       editEmployeeRequest.getCompanyName()
@@ -252,6 +244,253 @@ public class UserService {
     }
   }
 
+  public String deleteData(Long id) {
+    Optional<User> optionalUser = userRepository.findById(id);
+    if (optionalUser.isPresent()) {
+      userRepository.deleteById(id);
+      return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
+    } else {
+      return null;
+    }
+  }
+
+  /**
+   * @เช็คNullของEmployee
+   */
+  public boolean isEmpNull(CreateEmployeeRequest request) {
+    return (
+      request == null ||
+      request.getEmpCode() == null ||
+      request.getEmpCode().isEmpty() ||
+      request.getFirstname() == null ||
+      request.getFirstname().isEmpty() ||
+      request.getLastname() == null ||
+      request.getLastname().isEmpty()
+    );
+  }
+/**
+   * @เช็คNullของEditEmployee
+   */
+  public boolean isEditEmpNull(EditEmployeeRequest request) {
+    return (
+      request == null ||
+      request.getFirstname() == null ||
+      request.getFirstname().isEmpty() ||
+      request.getLastname() == null ||
+      request.getLastname().isEmpty()
+    );
+  }
+/**
+   * @เช็คNullของUser
+   */
+  public boolean isUserNull(CreateUserRequest request) {
+    return (
+      request == null ||
+      request.getFirstname() == null ||
+      request.getFirstname().isEmpty() ||
+      request.getLastname() == null ||
+      request.getLastname().isEmpty() ||
+      request.getTelephone() == null ||
+      request.getTelephone().isEmpty()
+    );
+  }
+/**
+   * @เช็คว่ามีRoleนี้ในระบบไหม
+   */
+  public boolean hasRole(Long userId, String roleName) {
+    User user = userRepository.findById(userId).orElse(null);
+    if (user == null) {
+      return false;
+    }
+    Optional<Role> role = roleRepository.findByRole(Roles.valueOf(roleName));
+    if (role.isEmpty()) {
+      return false;
+    }
+    Role role1 = role.get();
+    return user.getRoles().contains(role1);
+  }
+
+  /**
+   * @หาEmployeeทั้งหมด
+   */
+  public List<User> findAllEmployee() {
+    return userRepository.findByRolesRole(Roles.User);
+  }
+
+  /**
+   * @หาEmployeeทั้งหมดที่ยังทำงานอยู่
+   */
+  public List<User> findActiveEmployees() {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = builder.createQuery(User.class);
+    Root<User> root = query.from(User.class);
+    query.where(builder.equal(root.get("status"), "เป็นพนักงานอยู่"));
+
+    List<User> users = entityManager.createQuery(query).getResultList();
+
+    return users;
+  }
+
+  /**
+   * @หาPersonnel
+   */
+  public List<User> findAllPersonnel() {
+    return userRepository.findByRolesRole(Roles.Personnel);
+  }
+
+  /**
+   * @หาVicePresident
+   */
+  public List<User> findAllVicePresident() {
+    return userRepository.findByRolesRole(Roles.VicePresident);
+  }
+
+  /**
+   * @หาApprover
+   */
+  public List<User> findAllApprover() {
+    return userRepository.findByRolesRole(Roles.Approver);
+  }
+
+  /**
+   * @หาAdmin
+   */
+  public List<User> findAllAdmin() {
+    return userRepository.findByRolesRole(Roles.Admin);
+  }
+
+  /**
+   * @หาUserด้วยempcode,name,position,email,deptname,deptcode,company
+   */
+  public Object searchUser(
+    String empCode,
+    String name,
+    String position,
+    String email,
+    String deptName,
+    String deptCode,
+    String company
+  ) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<User> query = builder.createQuery(User.class);
+    Root<User> root = query.from(User.class);
+
+    List<Predicate> predicates = new ArrayList<>();
+
+    if (empCode != null) {
+      predicates.add(
+        builder.like(
+          builder.lower(root.get("empCode")),
+          "%" + empCode.toLowerCase() + "%"
+        )
+      );
+    }
+    if (name != null) {
+      //Join<Object, User> userJoin = root.join("user");
+      Expression<String> fullName = builder.concat(
+        builder.concat(builder.lower(root.get("firstname")), " "),
+        builder.lower(root.get("lastname"))
+      );
+      predicates.add(
+        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
+      );
+    }
+    if (email != null) {
+      predicates.add(
+        builder.like(
+          builder.lower(root.get("email")),
+          "%" + email.toLowerCase() + "%"
+        )
+      );
+    }
+    if (position != null) {
+      //Join<Object, User> userJoin = root.join("user");
+      Join<User, Position> positionJoin = root.join("position");
+      predicates.add(
+        builder.like(
+          builder.lower(positionJoin.get("positionName")),
+          "%" + position.toLowerCase() + "%"
+        )
+      );
+    }
+    if (deptName != null) {
+      //Join<Training, User> userJoin = root.join("user");
+      Join<User, Department> departmentJoin = root.join("department");
+      predicates.add(
+        builder.like(
+          builder.lower(departmentJoin.get("deptName")),
+          "%" + deptName.toLowerCase() + "%"
+        )
+      );
+    }
+    if (deptCode != null) {
+      //Join<Training, User> userJoin = root.join("user");
+      Join<User, Department> departmentJoin = root.join("department");
+      predicates.add(
+        builder.like(
+          builder.lower(departmentJoin.get("deptCode")),
+          "%" + deptCode.toLowerCase() + "%"
+        )
+      );
+    }
+    if (company != null) {
+      //Join<Training, User> userJoin = root.join("user");
+      Join<User, Company> companyJoin = root.join("company");
+      predicates.add(
+        builder.like(
+          builder.lower(companyJoin.get("companyName")),
+          "%" + company.toLowerCase() + "%"
+        )
+      );
+    }
+
+    if (
+      name == null &&
+      empCode != null &&
+      position != null &&
+      email != null &&
+      deptCode != null &&
+      deptName != null &&
+      company != null
+    ) {
+      return "ไม่พบรายการที่ต้องการค้นหา";
+    }
+
+    query.where(predicates.toArray(new Predicate[0]));
+
+    List<User> users = entityManager.createQuery(query).getResultList();
+
+    if (users.isEmpty()) {
+      return "ไม่พบรายการที่ต้องการค้นหา";
+    }
+
+    List<Map<String, Object>> results = new ArrayList<>();
+    for (User user : users) {
+      Map<String, Object> result = new HashMap<>();
+      result.put("user", user);
+      results.add(result);
+    }
+
+    return results;
+  }
+
+  /**
+   * @SetStatusลาออกให้Employee
+   */
+  public User setStatusToUser(Long User_id, StatusUser statusUser) {
+    User user = userRepository
+      .findById(User_id)
+      .orElseThrow(() ->
+        new RuntimeException("User not found with ID: " + User_id)
+      );
+
+    user.setStatus(statusUser.toString());
+    return userRepository.save(user);
+  }
+
+  /**
+   * @SetRoleให้User
+   */
   public void addRoleToUser(Long userId, Roles roleName) {
     User user = userRepository
       .findById(userId)
@@ -269,168 +508,9 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public String deleteData(Long id) {
-    Optional<User> optionalUser = userRepository.findById(id);
-    if (optionalUser.isPresent()) {
-      userRepository.deleteById(id);
-      return "ลบข้อมูลของ ID : " + id + " เรียบร้อย";
-    } else {
-      return null;
-    }
-  }
-
-  public boolean isEmpNull(CreateEmployeeRequest request) {
-    return (
-      request == null ||
-      request.getEmpCode() == null ||
-      request.getEmpCode().isEmpty() ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty()
-    );
-  }
-
-  public boolean isEditEmpNull(EditEmployeeRequest request) {
-    return (
-      request == null ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty()
-    );
-  }
-
-  public boolean isUserNull(CreateUserRequest request) {
-    return (
-      request == null ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty() ||
-      request.getTelephone() == null ||
-      request.getTelephone().isEmpty()
-    );
-  }
-
-  public boolean hasRole(Long userId, String roleName) {
-    User user = userRepository.findById(userId).orElse(null);
-    if (user == null) {
-      return false;
-    }
-    Optional<Role> role = roleRepository.findByRole(Roles.valueOf(roleName));
-    if (role.isEmpty()) {
-      return false;
-    }
-    Role role1 = role.get();
-    return user.getRoles().contains(role1);
-  }
-
-  public List<User> findAllEmployee() {
-    return userRepository.findByRolesRole(Roles.User);
-  }
-
-  public List<User> findActiveEmployees() {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<User> query = builder.createQuery(User.class);
-    Root<User> root = query.from(User.class);
-    query.where(builder.equal(root.get("status"), "เป็นพนักงานอยู่"));
-
-    List<User> users = entityManager.createQuery(query).getResultList();
-
-    return users;
-  }
-
-  public List<User> findAllPersonnel() {
-    return userRepository.findByRolesRole(Roles.Personnel);
-  }
-
-  public List<User> findAllVicePresident() {
-    return userRepository.findByRolesRole(Roles.VicePresident);
-  }
-
-  public List<User> findAllApprover() {
-    return userRepository.findByRolesRole(Roles.Approver);
-  }
-
-  public List<User> findAllAdmin() {
-    return userRepository.findByRolesRole(Roles.Admin);
-  }
-
-  public User setStatusToUser(Long User_id, StatusUser statusUser) {
-
-        User user = userRepository.findById(User_id)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + User_id));
-       
-        user.setStatus(statusUser.toString());
-        return userRepository.save(user);
-  }
-
-  public Object searchUser(String empCode,String name, String position,String email,String deptName,String deptCode,String company) {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<User> query = builder.createQuery(User.class);
-    Root<User> root = query.from(User.class);
-
-    List<Predicate> predicates = new ArrayList<>();
-
-    if (empCode != null) {
-      predicates.add(builder.like(builder.lower(root.get("empCode")), "%" + empCode.toLowerCase() + "%"));
-    }
-    if (name != null) {
-      //Join<Object, User> userJoin = root.join("user");
-      Expression<String> fullName = builder.concat(
-              builder.concat(
-                      builder.lower(root.get("firstname")), " "),
-                      builder.lower(root.get("lastname"))
-      );
-      predicates.add(builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
-    }
-    if (email != null) {
-      predicates.add(builder.like(builder.lower(root.get("email")), "%" + email.toLowerCase() + "%"));
-    }
-    if (position != null) {
-      //Join<Object, User> userJoin = root.join("user");
-      Join<User, Position> positionJoin = root.join("position");
-      predicates.add(builder.like(builder.lower(positionJoin.get("positionName")), "%" + position.toLowerCase() + "%"));
-    }
-    if (deptName != null) {
-      //Join<Training, User> userJoin = root.join("user");
-      Join<User, Department> departmentJoin = root.join("department");
-      predicates.add(builder.like(builder.lower(departmentJoin.get("deptName")), "%" + deptName.toLowerCase() + "%"));
-    }
-    if (deptCode != null) {
-      //Join<Training, User> userJoin = root.join("user");
-      Join<User, Department> departmentJoin = root.join("department");
-      predicates.add(builder.like(builder.lower(departmentJoin.get("deptCode")), "%" + deptCode.toLowerCase() + "%"));
-    }
-    if (company != null) {
-      //Join<Training, User> userJoin = root.join("user");
-      Join<User, Company> companyJoin = root.join("company");
-      predicates.add(builder.like(builder.lower(companyJoin.get("companyName")), "%" + company.toLowerCase() + "%"));
-    }
-
-    if (name == null && empCode != null && position != null && email != null && deptCode != null && deptName != null && company != null){
-      return "ไม่พบรายการที่ต้องการค้นหา";
-    }
-
-    query.where(predicates.toArray(new Predicate[0]));
-
-    List<User> users = entityManager.createQuery(query).getResultList();
-
-    if(users.isEmpty()){
-      return "ไม่พบรายการที่ต้องการค้นหา";
-    }
-
-    List<Map<String, Object>> results = new ArrayList<>();
-    for (User user : users) {
-      Map<String, Object> result = new HashMap<>();
-      result.put("user", user);
-      results.add(result);
-    }
-
-    return results;
-  }
-
+  /**
+   * @เพิ่มRoleออโต้เมื่อเพิ่มในEnum
+   */
   @Component
   public class RoleAutoInserter {
 
