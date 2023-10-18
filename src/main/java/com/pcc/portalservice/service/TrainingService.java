@@ -409,12 +409,18 @@ public class TrainingService {
         }
       }
 
+      List<Status> statusListCopy = new ArrayList<>(training.getStatus());
+      statusListCopy.sort(Comparator.comparing(Status::getId));
+      training.setStatus(statusListCopy);
+
       resultWithStatus.put("training", training);
       resultWithStatus.put("result_status", result_status);
     }
 
     return resultWithStatus;
   }
+
+
 
   /**
    * @หาTrainingด้วยUserId
@@ -542,6 +548,10 @@ public class TrainingService {
         }
       }
 
+      List<Status> statusListCopy = new ArrayList<>(training.getStatus());
+      statusListCopy.sort(Comparator.comparing(Status::getId));
+      training.setStatus(statusListCopy);
+
       Map<String, Object> resultWithStatus = new HashMap<>();
       resultWithStatus.put("training", training);
       resultWithStatus.put("result_status", result_status);
@@ -627,6 +637,9 @@ public class TrainingService {
         isDoResult = "ใช่";
       }
       if (result_status != "ยกเลิก") {
+        List<Status> statusListCopy = new ArrayList<>(training.getStatus());
+        statusListCopy.sort(Comparator.comparing(Status::getId));
+        training.setStatus(statusListCopy);
         Map<String, Object> resultWithStatus = new HashMap<>();
         resultWithStatus.put("training", training);
         resultWithStatus.put("result_status", result_status);
