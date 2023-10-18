@@ -1,6 +1,4 @@
 package com.pcc.portalservice.service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
@@ -9,9 +7,6 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -748,13 +743,10 @@ public class TrainingService {
   }
 
 
-  public String printByJson(Long trainId) {
+  public String printReport(Long trainId) {
     try {
       Training training_id = trainingRepository.findById(trainId)
               .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
-      System.out.println("1111111");
-      System.out.println(training_id.getUser().getPosition().getPositionName());
-
 
       if (training_id == null) {
         return null;

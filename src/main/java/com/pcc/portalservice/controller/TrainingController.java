@@ -292,10 +292,10 @@ public class TrainingController {
 
 
   @GetMapping("/Report")
-  public String porDB(@RequestParam Long trainId) {
-    return trainingService.printByJson(trainId);
+  public String report(@RequestParam Long trainId) {
+    return trainingService.printReport(trainId);
   }
-  
+
   // @GetMapping("/findAllApprove")
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
