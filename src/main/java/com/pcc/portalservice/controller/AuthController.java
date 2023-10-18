@@ -23,9 +23,9 @@ public class AuthController {
   private final AuthenticationService authenticationService;
 
   /**
- * Login.
- * @PostMapping
- */
+   * @Login
+   * @PostMapping
+   */
   @PostMapping("/auth/login")
   @Transactional
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

@@ -12,17 +12,12 @@ import com.pcc.portalservice.requests.EditEmployeeRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.UserService;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,23 +30,10 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @GetMapping("/findUserById")
-    public ResponseEntity<ApiResponse> findUserById(@RequestParam Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (user != null) {
-            data.setResult(user);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่สามารถทำรายการได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    //สร้าง User
+    /**
+     * @สร้างUser
+     * @PostMapping
+     */
     @PostMapping("/createUser")
     public ResponseEntity<ApiResponse> create(
             @RequestBody CreateUserRequest createUserRequest
@@ -74,7 +56,10 @@ public class UserController {
         }
     }
 
-    //สร้างพนักงาน,Employee
+    /**
+     * @สร้างEmployee
+     * @PostMapping
+     */
     @PostMapping("/createEmployee")
     public ResponseEntity<ApiResponse> createEmployee(
             @RequestBody CreateEmployeeRequest createEmployeeRequest
@@ -103,7 +88,35 @@ public class UserController {
         }
     }
 
-    //แก้ไขพนักงาน , edit Employee
+    /**
+     * @สร้างRole
+     * @PostMapping
+     */
+    @PostMapping("/createRole")
+    public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
+        Roles roleEnum = Roles.valueOf(roleName);
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        try {
+            Role role = userService.createRole(roleEnum);
+            if (role == null) {
+                response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
+                return ResponseEntity.badRequest().body(response);
+            }
+            data.setResult(roleEnum);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (IllegalArgumentException e) {
+            response.setResponseMessage("Invalid role name: " + roleName);
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * @แก้ไขEmployee
+     * @PutMapping
+     */
     @PutMapping("/editEmployee")
     public ResponseEntity<ApiResponse> editEmployee(
             @RequestParam Long userId,
@@ -133,29 +146,176 @@ public class UserController {
         }
     }
 
-    //สร้างยศ , สร้าง Role
-    @PostMapping("/createRole")
-    public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
-        Roles roleEnum = Roles.valueOf(roleName);
+    /**
+     * @ลบUser,Employeeด้วยId
+     * @DeleteMapping
+     */
+    @DeleteMapping("deleteById")
+    public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
-        try {
-            Role role = userService.createRole(roleEnum);
-            if (role == null) {
-                response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
-                return ResponseEntity.badRequest().body(response);
-            }
-            data.setResult(roleEnum);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
+        String user = userService.deleteData(id);
+        if (user != null) {
+            data.setResult(user);
+            response.setResponseMessage("ลบข้อมูลเรียบร้อย");
             response.setResponseData(data);
             return ResponseEntity.ok().body(response);
-        } catch (IllegalArgumentException e) {
-            response.setResponseMessage("Invalid role name: " + roleName);
-            return ResponseEntity.internalServerError().body(response);
+        } else {
+            response.setResponseMessage("ไม่พบข้อมูลที่ตรงกับ ID ที่ระบุ");
+            return ResponseEntity.badRequest().body(response);
         }
     }
 
-    //เพิ่ม Role ให้ User
+    /**
+     * @หาUser,Employeeด้วยempCode,name,position,email,deptName,deptCode,company
+     * @GetMapping
+     */
+    @GetMapping("/searchUser")
+
+    public Object search(
+            @RequestParam(required = false) String empCode,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String position,
+            @RequestParam(required = false) String email,
+            //@RequestParam(required = false) String department,
+            @RequestParam(required = false) String deptName,
+            @RequestParam(required = false) String deptCode,
+            @RequestParam(required = false) String company,
+            @RequestParam(required = false) String sectorName,
+            @RequestParam(required = false) String sectorCode
+    ) throws JsonProcessingException {
+        return userService.searchUser(
+                empCode,
+                name,
+                position,
+                email,
+                deptName,
+                deptCode,
+                company,
+                sectorCode,
+                sectorName
+        );
+    }
+
+    /**
+     * @หาพนักงานทั้งหมด,หาEmployeeทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllEmployee")
+    public List<User> getAllEmployee() {
+        return userService.findAllEmployee();
+    }
+
+    /**
+     * @หาหาEmployeeทั้งหมดที่ทำงานอยู่
+     * @GetMapping
+     */
+    @GetMapping("/findActiveEmployees")
+    public List<User> findActiveEmployees() {
+        return userService.findActiveEmployees();
+    }
+
+    /**
+     * @หาPersonnelทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllPersonnel")
+    public List<User> getAllPersonnel() {
+        return userService.findAllPersonnel();
+    }
+
+    /**
+     * @หาVicePresidentทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllVicePresident")
+    public List<User> getAllVicePresident() {
+        return userService.findAllVicePresident();
+    }
+
+    /**
+     * @หาApproverทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllApprover")
+    public List<User> getAllApprover() {
+        return userService.findAllApprover();
+    }
+
+    /**
+     * @หาAdminทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllAdmin")
+    public List<User> getAllAdmin() {
+        return userService.findAllAdmin();
+    }
+
+    /**
+     * @หาVicePresidentAndApproverทั้งหมด
+     * @GetMapping
+     */
+    @GetMapping("/findAllVicePresidentAndApprover")
+    public List<User> getAllVicePresidentAndApprover() {
+        List<User> vicePresidents = userService.findAllVicePresident();
+        List<User> approvers = userService.findAllApprover();
+
+        List<User> allVicePresidentAndApprover = new ArrayList<>();
+        allVicePresidentAndApprover.addAll(vicePresidents);
+        allVicePresidentAndApprover.addAll(approvers);
+
+        return allVicePresidentAndApprover;
+    }
+
+    /**
+     * @หาUserด้วยId
+     * @GetMapping
+     */
+    @GetMapping("/findUserById")
+    public ResponseEntity<ApiResponse> findUserById(@RequestParam Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        if (user != null) {
+            data.setResult(user);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } else {
+            response.setResponseMessage("ไม่สามารถทำรายการได้");
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * @เพิ่มStatusให้User
+     * @อัพเดตStatusให้User
+     * @PutMapping
+     */
+    @PutMapping("/setStatusToUser")
+    public ResponseEntity<ApiResponse> addStatusToUser(
+            @RequestParam Long User_id,
+            StatusUser statusUser
+    ) {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        try {
+            User user = userService.setStatusToUser(User_id, statusUser);
+            data.setResult(user);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    /**
+     * @เพิ่มRoleให้User
+     * @อัพเดตRoleให้User
+     * @PutMapping
+     */
     @PostMapping("/addRoleToUser")
     public ResponseEntity<ApiResponse> addRoleToUser(
             @RequestParam Long userId,
@@ -176,104 +336,4 @@ public class UserController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
-
-    //ลบ User ด้วย Id
-    @DeleteMapping("deleteById")
-    public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        String user = userService.deleteData(id);
-        if (user != null) {
-            data.setResult(user);
-            response.setResponseMessage("ลบข้อมูลเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่พบข้อมูลที่ตรงกับ ID ที่ระบุ");
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    //หา User ด้วย empCode,name,position,email,deptName,deptCode,company
-    @GetMapping("/searchUser")
-    public Object search(@RequestParam(required = false) String empCode,
-                         @RequestParam(required = false) String name,
-                         @RequestParam(required = false) String position,
-                         @RequestParam(required = false) String email,
-                         //@RequestParam(required = false) String department,
-                         @RequestParam(required = false) String deptName,
-                         @RequestParam(required = false) String deptCode,
-                         @RequestParam(required = false) String company
-    ) throws JsonProcessingException {
-        return userService.searchUser(empCode, name, position, email, deptName, deptCode, company);
-    }
-
-    //หาพนักงานทั้งหมด , หา Employee ทั้งหมด
-    @GetMapping("/findAllEmployee")
-    public List<User> getAllEmployee() {
-        return userService.findAllEmployee();
-    }
-
-    //หาพนักงานทั้งหมด , หา Employee ทั้งหมด
-    @GetMapping("/findActiveEmployees")
-    public List<User> findActiveEmployees() {
-        return userService.findActiveEmployees();
-    }
-
-    //หา Personnel ทั้งหมด
-    @GetMapping("/findAllPersonnel")
-    public List<User> getAllPersonnel() {
-        return userService.findAllPersonnel();
-    }
-
-    //หา VicePresident ทั้งหมด
-    @GetMapping("/findAllVicePresident")
-    public List<User> getAllVicePresident() {
-        return userService.findAllVicePresident();
-    }
-
-    //หา Approver ทั้งหมด
-    @GetMapping("/findAllApprover")
-    public List<User> getAllApprover() {
-        return userService.findAllApprover();
-    }
-
-    //หา Admin ทั้งหมด
-    @GetMapping("/findAllAdmin")
-    public List<User> getAllAdmin() {
-        return userService.findAllAdmin();
-    }
-
-    @GetMapping("/findAllVicePresidentAndApprover")
-    public List<User> getAllVicePresidentAndApprover() {
-        List<User> vicePresidents = userService.findAllVicePresident();
-        List<User> approvers = userService.findAllApprover();
-
-        List<User> allVicePresidentAndApprover = new ArrayList<>();
-        allVicePresidentAndApprover.addAll(vicePresidents);
-        allVicePresidentAndApprover.addAll(approvers);
-
-        return allVicePresidentAndApprover;
-    }
-
-    //set Status ให้ User
-    @PutMapping("/setStatusToUser")
-    public ResponseEntity<ApiResponse> addStatusToUser(@RequestParam Long User_id, StatusUser statusUser) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        try {
-            User user = userService.setStatusToUser(User_id, statusUser);
-            data.setResult(user);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-
-    }
-
-
-
 }

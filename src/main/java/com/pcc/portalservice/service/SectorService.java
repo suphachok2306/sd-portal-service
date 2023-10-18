@@ -19,16 +19,9 @@ public class SectorService {
   private final SectorRepository sectorRepository;
   private final CompanyRepository companyRepository;
 
-  public boolean isSectorNull(CreateSectorRequest request) {
-    return (
-      request == null ||
-      request.getSectorCode() == null ||
-      request.getSectorCode().isEmpty() ||
-      request.getSectorName() == null ||
-      request.getSectorName().isEmpty()
-    );
-  }
-
+  /**
+   * @สร้างSector
+   */
   public Sector create(CreateSectorRequest createSectorRequest) {
     Company companyID = companyRepository
       .findById(createSectorRequest.getCompanyId())
@@ -47,11 +40,18 @@ public class SectorService {
     return sectorRepository.save(sector);
   }
 
+  /**
+   * @หาSectorทั้งหมด
+   */
   public List<Sector> findAll() {
     return sectorRepository.findAll();
   }
 
-  public Optional<Sector> findBySectorCodeAndSectorNameAndCompanyCompanyName(
+
+  /**
+   * @หาSectorด้วยSectorCodeและSectorNameและCompanyName
+   */
+  public Optional<Sector> findBySectorCodeAndSectorNameAndCompanyName(
     String sectorCode,
     String sectorName,
     String companyName
@@ -60,6 +60,19 @@ public class SectorService {
       sectorCode,
       sectorName,
       companyName
+    );
+  }
+
+  /**
+   * @เช็คNullของSector
+   */
+  public boolean isSectorNull(CreateSectorRequest request) {
+    return (
+      request == null ||
+      request.getSectorCode() == null ||
+      request.getSectorCode().isEmpty() ||
+      request.getSectorName() == null ||
+      request.getSectorName().isEmpty()
     );
   }
 }

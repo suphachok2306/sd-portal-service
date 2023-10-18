@@ -28,7 +28,7 @@ public class BudgetController {
   private final BudgetService budgetService;
 
   /**
-   * @สร้าง Budget
+   * @สร้างBudget
    * @PostMapping
    */
   @PostMapping("/createBudget")
@@ -58,8 +58,9 @@ public class BudgetController {
       return ResponseEntity.internalServerError().body(response);
     }
   }
-     /**
-   * @ลบ Budget ด้วย Id
+
+  /**
+   * @ลบBudgetด้วยId
    * @DeleteMapping
    */
   @DeleteMapping("/deleteBudgetById")
@@ -78,8 +79,8 @@ public class BudgetController {
     }
   }
 
-     /**
-   * @แก้ไข Budget
+  /**
+   * @แก้ไขBudget
    * @PutMapping
    */
   @PutMapping("/editBudget")
@@ -110,7 +111,10 @@ public class BudgetController {
     }
   }
 
-  //หางบทั้งหมดของแต่ละ Year และ Department
+  /**
+   * @หางบทั้งหมดของแต่ละYearและDepartment
+   * @GetMapping
+   */
   @GetMapping("/findTotalBudget")
   public LinkedHashMap<String, Object> findTotal(
     @RequestParam String Year,
@@ -125,10 +129,9 @@ public class BudgetController {
   }
 
   /**
-   * @หา งบท่ี่เหลือของแต่ละ Year และ Department
+   * @หางบท่ี่เหลือของแต่ละYearและDepartment
    * @GetMapping
    */
-  //หางบท่ี่เหลือของแต่ละ Year และ Department
   @GetMapping("/findRemainBudget")
   public LinkedHashMap<String, Object> findRemain(
     @RequestParam int Year,
@@ -143,7 +146,7 @@ public class BudgetController {
   }
 
   /**
-   * @หา Budget
+   * @หาBudgetทั้งหมด
    * @GetMapping
    */
   @GetMapping("/findAllBudget")
@@ -151,8 +154,8 @@ public class BudgetController {
     return budgetService.findAll();
   }
 
-     /**
-   * @หา Budget ด้วย Id
+  /**
+   * @หาBudgetด้วยId
    * @GetMapping
    */
   @GetMapping("/findBudgetById")

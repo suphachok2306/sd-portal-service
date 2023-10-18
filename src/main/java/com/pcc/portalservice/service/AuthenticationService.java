@@ -24,6 +24,9 @@ public class AuthenticationService {
 
   //private final RefreshTokenRepository refreshTokenRepository;
 
+  /**
+   * @Login
+   */
   public JwtAuthenticationResponse login(User user, String plainPassword) {
     try {
       authenticationManager.authenticate(
@@ -69,7 +72,9 @@ public class AuthenticationService {
   //        return token;
   //    }
 
-  // hash password
+  /**
+   * @HashPassword
+   */
   public String hashPassword(String plaingPassword) {
     return passwordEncoder.encode(plaingPassword);
   }

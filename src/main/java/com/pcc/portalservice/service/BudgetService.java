@@ -25,22 +25,9 @@ public class BudgetService {
   private final CompanyRepository companyRepository;
   private final EntityManager entityManager;
 
-  public boolean isBudgetNull(CreateBudgetRequest request) {
-    return (
-      request == null ||
-      request.getYear() == null ||
-      request.getYear().isEmpty() ||
-      request.getClassName() == null ||
-      request.getClassName().isEmpty()
-    );
-  }
-
-  public float totalExp(float fee, float airAcc) {
-    float total = fee + airAcc;
-
-    return total;
-  }
-
+  /**
+   * @Create
+   */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
     Sector sectorId = sectorRepository
       .findById(createBudgetRequest.getSectorId())
@@ -76,24 +63,9 @@ public class BudgetService {
     return budgetRepository.save(budget);
   }
 
-  public List<Budget> findAll() {
-    return budgetRepository.findAll();
-  }
-
-  public Budget findById(Long id) {
-    return budgetRepository
-      .findById(id)
-      .orElseThrow(() ->
-        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
-      );
-  }
-
-  //    public Budget deleteData(Long id) {
-  //        Budget budget = budgetRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
-  //        budgetRepository.delete(budget);
-  //        return budget;
-  //    }
-
+  /**
+   * @Delete
+   */
   public String deleteData(Long id) {
     Optional<Budget> optionalBudget = budgetRepository.findById(id);
     if (optionalBudget.isPresent()) {
@@ -104,6 +76,9 @@ public class BudgetService {
     }
   }
 
+  /**
+   * @Edit
+   */
   public Budget editBudget(CreateBudgetRequest createBudgetRequest) {
     Company companyName = companyRepository
       .findById(createBudgetRequest.getCompanyId())
@@ -137,8 +112,15 @@ public class BudgetService {
     return budgetRepository.save(budget);
   }
 
-  public LinkedHashMap<String, Object> total_exp(String year, long department_id) {
-    String jpql = "SELECT SUM(b.exp) AS total_exp FROM Budget b WHERE b.department.id = :department_id AND b.year = :year";
+  /**
+   * @หารวมงบทั้งหมดของแต่ละปี
+   */
+  public LinkedHashMap<String, Object> total_exp(
+    String year,
+    long department_id
+  ) {
+    String jpql =
+      "SELECT SUM(b.exp) AS total_exp FROM Budget b WHERE b.department.id = :department_id AND b.year = :year";
 
     Query query = entityManager.createQuery(jpql);
     query.setParameter("department_id", department_id);
@@ -149,15 +131,17 @@ public class BudgetService {
     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
 
     if (!resultList.isEmpty()) {
-        result.put("Year", year);
-        result.put("Department", departmentRepository.findById(department_id));
-        result.put("Total_exp", resultList.get(0));
+      result.put("Year", year);
+      result.put("Department", departmentRepository.findById(department_id));
+      result.put("Total_exp", resultList.get(0));
     }
 
     return result;
-}
+  }
 
-
+  /**
+   * @หางบที่เหลือ
+   */
   public LinkedHashMap<String, Object> totalPriceRemaining(
     int year,
     long department_id
@@ -194,7 +178,10 @@ public class BudgetService {
 
           if (!resultList.isEmpty()) {
             result.put("Year", year);
-            result.put("Department", departmentRepository.findById(department_id));
+            result.put(
+              "Department",
+              departmentRepository.findById(department_id)
+            );
             result.put("Remaining", difference);
           }
         } catch (Exception e) {
@@ -209,5 +196,45 @@ public class BudgetService {
       System.out.print(e);
     }
     return null;
+  }
+
+  /**
+   * @คำนวณงบ
+   */
+  public float totalExp(float fee, float airAcc) {
+    float total = fee + airAcc;
+
+    return total;
+  }
+
+  /**
+   * @หางบทั้งหมด
+   */
+  public List<Budget> findAll() {
+    return budgetRepository.findAll();
+  }
+
+  /**
+   * @หางบด้วยId
+   */
+  public Budget findById(Long id) {
+    return budgetRepository
+      .findById(id)
+      .orElseThrow(() ->
+        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
+      );
+  }
+
+  /**
+   * @เช็คNullของBudget
+   */
+  public boolean isBudgetNull(CreateBudgetRequest request) {
+    return (
+      request == null ||
+      request.getYear() == null ||
+      request.getYear().isEmpty() ||
+      request.getClassName() == null ||
+      request.getClassName().isEmpty()
+    );
   }
 }

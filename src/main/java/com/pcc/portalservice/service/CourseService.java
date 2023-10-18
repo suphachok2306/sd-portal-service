@@ -21,22 +21,9 @@ public class CourseService {
   // Services
   private final CourseRepository courseRepository;
 
-  public boolean isCourseNull(CreateCourseRequest request) {
-    return (
-      request == null ||
-      request.getCourseName() == null ||
-      request.getCourseName().isEmpty() ||
-      request.getStartDate() == null ||
-      request.getStartDate().isEmpty() ||
-      request.getEndDate() == null ||
-      request.getEndDate().isEmpty() ||
-      request.getTime() == null ||
-      request.getTime().isEmpty() ||
-      request.getPlace() == null ||
-      request.getPlace().isEmpty()
-    );
-  }
-
+  /**
+   * @สร้างCourse
+   */
   public Course create(CreateCourseRequest createCourseRequest)
     throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -60,18 +47,9 @@ public class CourseService {
     return courseRepository.save(course);
   }
 
-  public Course findById(Long id) {
-    return courseRepository
-      .findById(id)
-      .orElseThrow(() ->
-        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
-      );
-  }
-
-  public List<Course> findAllCourse() {
-    return courseRepository.findAll();
-  }
-
+  /**
+   * @แก้ไขCourse
+   */
   public Course editCourse(CreateCourseRequest createCourseRequest)
     throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -93,14 +71,9 @@ public class CourseService {
     return courseRepository.save(course);
   }
 
-  //    public Course deleteData(Long id) {
-  //        Course course = courseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
-  //
-  //        courseRepository.delete(course);
-  //
-  //        return course;
-  //    }
-
+  /**
+   * @ลบCourseด้วยId
+   */
   public String deleteData(Long id) {
     Optional<Course> optionalCourse = courseRepository.findById(id);
     if (optionalCourse.isPresent()) {
@@ -109,5 +82,42 @@ public class CourseService {
     } else {
       return null;
     }
+  }
+
+  /**
+   * @หาCourseด้วยId
+   */
+  public Course findById(Long id) {
+    return courseRepository
+      .findById(id)
+      .orElseThrow(() ->
+        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
+      );
+  }
+
+  /**
+   * @หาCourseทั้งหมด
+   */
+  public List<Course> findAllCourse() {
+    return courseRepository.findAll();
+  }
+
+  /**
+   * @เช็คNullของCourse
+   */
+  public boolean isCourseNull(CreateCourseRequest request) {
+    return (
+      request == null ||
+      request.getCourseName() == null ||
+      request.getCourseName().isEmpty() ||
+      request.getStartDate() == null ||
+      request.getStartDate().isEmpty() ||
+      request.getEndDate() == null ||
+      request.getEndDate().isEmpty() ||
+      request.getTime() == null ||
+      request.getTime().isEmpty() ||
+      request.getPlace() == null ||
+      request.getPlace().isEmpty()
+    );
   }
 }
