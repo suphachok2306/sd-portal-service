@@ -97,7 +97,7 @@ public class TrainingService {
     Result result = Result
       .builder()
       .training(training)
-      .evaluator(approve1)
+      //.evaluator(approve1)
       .result1(null)
       .result2(null)
       .result3(null)
@@ -263,7 +263,7 @@ public class TrainingService {
         )
       );
 
-    result_id.setEvaluator(evaluator_id);
+    //result_id.setEvaluator(evaluator_id);
     result_id.setResult1(editTraining.getResult1());
     result_id.setResult2(editTraining.getResult2());
     result_id.setResult3(editTraining.getResult3());
