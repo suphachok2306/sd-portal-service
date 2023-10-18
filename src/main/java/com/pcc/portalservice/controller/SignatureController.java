@@ -1,7 +1,4 @@
 package com.pcc.portalservice.controller;
-
-import com.pcc.portalservice.response.ApiResponse;
-import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.SignatureService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;

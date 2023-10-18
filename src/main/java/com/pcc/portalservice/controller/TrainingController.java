@@ -181,6 +181,11 @@ public class TrainingController {
         return trainingService.searchTraining(name, position, department, startDate, endDate, courseName);
     }
 
+    @GetMapping("/Report")
+    public String porDB(@RequestParam Long trainId) {
+        return trainingService.printByJson(trainId);
+    }
+
 
     // @GetMapping("/findAllApprove")
     // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {

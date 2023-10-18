@@ -1,5 +1,6 @@
 package com.pcc.portalservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pcc.portalservice.model.*;
 import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
@@ -8,6 +9,10 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,6 +20,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JsonDataSource;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -759,6 +768,79 @@ public class TrainingService {
 
     return results;
   }
+
+  public static String convertByteToBase64(byte[] imageBytes) {
+    return java.util.Base64.getEncoder().encodeToString(imageBytes);
+  }
+
+
+  public String printByJson(Long trainId) {
+    try {
+      Training training_id = trainingRepository.findById(trainId)
+              .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
+      System.out.println("1111111");
+      System.out.println(training_id.getUser().getPosition().getPositionName());
+
+
+      if (training_id == null) {
+        return null;
+      }
+      List<Map<String, Object>> dataList = new ArrayList<>();
+
+      Map<String, Object> params = new HashMap<>();
+      String imageBase64 = convertByteToBase64(training_id.getUser().getSignature().getImage());
+
+      params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
+      params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
+      params.put("date_save", training_id.getDateSave());
+
+      params.put("course_name", training_id.getCourses().get(0).getCourseName());
+      params.put("objective", training_id.getCourses().get(0).getObjective());
+      params.put("start_date",training_id.getCourses().get(0).getStartDate());
+      params.put("end_date",training_id.getCourses().get(0).getEndDate());
+      params.put("price", training_id.getCourses().get(0).getPrice());
+      params.put("institute", training_id.getCourses().get(0).getInstitute());
+      params.put("place", training_id.getCourses().get(0).getPlace());
+      //checkbox budget
+
+      params.put("emp_code", training_id.getUser().getEmpCode());
+      params.put("firstname", training_id.getUser().getFirstname());
+      params.put("lastname", training_id.getUser().getLastname());
+      params.put("position", training_id.getUser().getPosition().getPositionName());
+
+      //approve1
+      params.put("imageBase64Ap1", imageBase64);
+      params.put("positionAp1", training_id.getApprove1().getPosition().getPositionName());
+      //approve2
+      //approve3
+
+      params.put("action", training_id.getAction());
+      params.put("actionDate", training_id.getActionDate());
+
+      dataList.add(params);
+
+      // Load the JasperReport from a JRXML file
+      InputStream reportInput = UserService.class.getClassLoader().getResourceAsStream("report/OF1-report.jrxml");
+      JasperReport jasperReport = JasperCompileManager.compileReport(reportInput);
+
+      // Create a JRDataSource from the user data
+      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+
+      // Fill the report with data
+      JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+
+      // Export the report to PDF
+      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+
+      // Convert the byte array to Base64
+      return Base64.encodeBase64String(bytes);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
+
 }
 // public List<Map<String, Object>> findbyAllCountApprove(Long count) {
 //     String jpql = "SELECT t FROM Training t " +

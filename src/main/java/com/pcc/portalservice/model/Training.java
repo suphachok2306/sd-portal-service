@@ -40,7 +40,7 @@ public class Training {
 
 
     @ManyToMany
-    private Collection<Course> courses = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "approve1_id")

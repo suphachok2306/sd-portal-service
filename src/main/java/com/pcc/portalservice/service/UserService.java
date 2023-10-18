@@ -8,12 +8,16 @@ import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
 
+import java.io.InputStream;
 import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -431,6 +435,9 @@ public class UserService {
     return results;
   }
 
+
+
+
   @Component
   public class RoleAutoInserter {
 
@@ -454,5 +461,6 @@ public class UserService {
         }
       }
     }
+
   }
 }
