@@ -38,8 +38,8 @@ public class Result {
   @JsonIgnore
   private Training training;
 
-  @ManyToOne
-  @JoinColumn(name = "evaluator_id")
-  @JsonIgnore
-  private User evaluator;
+//  @ManyToOne
+//  @JoinColumn(name = "evaluator_id")
+//  @JsonIgnore
+//  private User evaluator;
 }
