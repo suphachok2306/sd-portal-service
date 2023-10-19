@@ -21,6 +21,7 @@ public class CreateTrainingRequest {
     StatusApprove status1;
 
     //////////////////////////////
+    Float budget;
     Long evaluatorId;
     String result1;
     String result2;

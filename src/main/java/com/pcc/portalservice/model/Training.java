@@ -29,6 +29,8 @@ public class Training {
     @Builder.Default
     private int day = 0;
 
+    private float budget;
+
     private String action;
 
     @Temporal(TemporalType.DATE)
@@ -37,7 +39,6 @@ public class Training {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
 
     @ManyToMany
     private List<Course> courses = new ArrayList<>();
