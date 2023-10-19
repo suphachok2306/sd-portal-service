@@ -1,6 +1,5 @@
 package com.pcc.portalservice.requests;
 
-import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import lombok.Builder;
 import lombok.Data;
@@ -19,11 +18,11 @@ public class CreateTrainingRequest {
     String actionDate;
 
     Long approve1_id;
-    //User approve1_id;
     StatusApprove status1;
 
     //////////////////////////////
-    //Long evaluatorId;
+    Float budget;
+    Long evaluatorId;
     String result1;
     String result2;
     String result3;

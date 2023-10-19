@@ -86,6 +86,7 @@ public class TrainingService {
       .dateSave(new Date())
       .day(daysDifference)
       .courses(Arrays.asList(course))
+      .budget(createTrainingRequest.getBudget())
       //      .action(createTrainingRequest.getAction())
       //      .actionDate(actionDateFormat)
       .action(null)
@@ -187,17 +188,12 @@ public class TrainingService {
    */
   public Training editTrainingSection1(
     Long trainingId,
-    Long statusId,
     EditTrainingSection1Request editTraining
   ) throws ParseException {
     Training training_id = trainingRepository
       .findById(trainingId)
       .orElseThrow(() ->
         new RuntimeException("TrainingId not found: " + trainingId)
-      );
-    Status status_id = statusRepository
-      .findById(statusId)
-      .orElseThrow(() -> new RuntimeException("StatusId not found: " + statusId)
       );
     Course course_id = courseRepository
       .findById(editTraining.getCourseId())
@@ -224,8 +220,10 @@ public class TrainingService {
     training_id.getCourses().clear();
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
-    status_id.setApproveId(editTraining.getApprove1_id());
-    statusRepository.save(status_id);
+    training_id.setBudget(editTraining.getBudget());
+    if(editTraining.getApprove1_id() != training_id.getApprove1().getId()){
+      changeApprover(editTraining, trainingId);
+   }
     Training updatedTraining = trainingRepository.save(training_id);
     return updatedTraining;
   }
@@ -891,6 +889,94 @@ public class TrainingService {
       request.getResult().isEmpty()
     );
   }
+  /**
+   * @changeApprover
+   */
+
+   private void changeApprover(
+    EditTrainingSection1Request editTraining,
+    long trainingId
+  ) {
+
+      String sql = "DELETE FROM Status WHERE training_id = :trainingId";
+       entityManager
+      .createNativeQuery(sql)
+      .setParameter("trainingId", trainingId)
+      .executeUpdate();
+    
+    User approve1 = userRepository
+      .findById(editTraining.getApprove1_id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + editTraining.getApprove1_id()
+        )
+      );
+    Role vicePresidentRole = approve1
+      .getRoles()
+      .stream()
+      .filter(role -> role.getRole().equals(Roles.VicePresident))
+      .findFirst()
+      .orElse(null);
+
+    Training training = trainingRepository
+      .findById(trainingId)
+      .orElseThrow(() ->
+        new RuntimeException("TrainingId not found: " + trainingId)
+      );
+
+    if (vicePresidentRole != null) {
+      Status status1 = Status
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(editTraining.getApprove1_id())
+        .active(1)
+        .build();
+
+      Status status2 = Status
+        .builder()
+        .status(null)
+        .training(training)
+        .active(0)
+        .build();
+
+      statusRepository.save(status1);
+      statusRepository.save(status2);
+      training.getStatus().add(status1);
+      training.getStatus().add(status2);
+    } else {
+      Status status1 = Status
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(editTraining.getApprove1_id())
+        .active(1)
+        .build();
+
+      Status status2 = Status
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(Long.valueOf(3))
+        .active(0)
+        .build();
+
+      Status status3 = Status
+        .builder()
+        .status(null)
+        .training(training)
+        .active(0)
+        .build();
+
+      statusRepository.save(status1);
+      statusRepository.save(status2);
+      statusRepository.save(status3);
+      training.getStatus().add(status1);
+      training.getStatus().add(status2);
+      training.getStatus().add(status3);
+    }
+  }
+  
 }
 // public List<Map<String, Object>> findbyAllCountApprove(Long count) {
 //     String jpql = "SELECT t FROM Training t " +

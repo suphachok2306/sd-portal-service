@@ -69,7 +69,6 @@ public class TrainingController {
   @PostMapping("/editTrainingSection1")
   public ResponseEntity<ApiResponse> editTrainingSection1(
           @RequestParam Long trainingId,
-          Long statusId,
           @RequestBody EditTrainingSection1Request editTraining
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
@@ -81,7 +80,6 @@ public class TrainingController {
     try {
       Training training = trainingService.editTrainingSection1(
               trainingId,
-              statusId,
               editTraining
       );
       data.setResult(training);
