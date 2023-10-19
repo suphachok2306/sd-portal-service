@@ -208,7 +208,7 @@ public class TrainingService {
         new RuntimeException("UserId not found: " + editTraining.getUserId())
       );
     User approve1_id = userRepository
-      .findById(editTraining.getApprove1_id().getId())
+      .findById(editTraining.getApprove1_id())
       .orElseThrow(() ->
         new RuntimeException(
           "Approve1Id not found: " + editTraining.getApprove1_id()
@@ -262,15 +262,7 @@ public class TrainingService {
       .findById(resultId)
       .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId)
       );
-//    User evaluator_id = userRepository
-//      .findById(editTraining.getEvaluatorId())
-//      .orElseThrow(() ->
-//        new RuntimeException(
-//          "EvaluatorId not found: " + editTraining.getEvaluatorId()
-//        )
-//      );
-
-    //result_id.setEvaluator(evaluator_id);
+      
     result_id.setResult1(editTraining.getResult1());
     result_id.setResult2(editTraining.getResult2());
     result_id.setResult3(editTraining.getResult3());
@@ -296,6 +288,7 @@ public class TrainingService {
 
     StatusApprove statusApprove
   ) {
+
     Training training = trainingRepository
       .findById(trainingId)
       .orElseThrow(() ->
@@ -307,12 +300,16 @@ public class TrainingService {
             .orElseThrow(() ->
                     new RuntimeException("Training not found with ID: " + trainingId)
             );
-    Optional<Status> optionalStatus = training
-      .getStatus()
-      .stream()
-      .filter(status -> approveId.equals(status.getApproveId()))
-      .findFirst();
 
+    Optional<Status> optionalStatus = training
+            .getStatus()
+            .stream()
+            .filter(status -> {
+                User approveIdObj = status.getApproveId();
+                return approveIdObj != null && approveId.equals(approveIdObj.getId());
+            })
+            .findFirst();
+      
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
         Status existingStatus = optionalStatus.get();
@@ -911,6 +908,15 @@ public class TrainingService {
           "Approve1Id not found: " + editTraining.getApprove1_id()
         )
       );
+     
+    User approve3 = userRepository
+      .findById(Long.valueOf(3))
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + editTraining.getApprove1_id()
+        )
+      );
+
     Role vicePresidentRole = approve1
       .getRoles()
       .stream()
@@ -929,7 +935,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(editTraining.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
@@ -949,7 +955,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(editTraining.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
@@ -957,7 +963,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(Long.valueOf(3))
+        .approveId(approve3)
         .active(0)
         .build();
 

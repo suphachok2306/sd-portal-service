@@ -18,6 +18,7 @@ public class EditTrainingSection1Request {
     int day;
     Long courseId;
     //Long approve1_id;
-    User approve1_id;
+    Long approve1_id;
+    float budget;
 }
 
