@@ -48,6 +48,8 @@ public class TrainingService {
           "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
         )
       );
+
+
     User approve1 = userRepository
       .findById(createTrainingRequest.getApprove1_id())
       .orElseThrow(() ->
@@ -122,7 +124,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(createTrainingRequest.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
@@ -138,11 +140,18 @@ public class TrainingService {
       training.getStatus().add(status1);
       training.getStatus().add(status2);
     } else {
+      User ap1 = userRepository
+              .findById(Long.valueOf(3))
+              .orElseThrow(() ->
+                      new RuntimeException(
+                              "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+                      )
+              );
       Status status1 = Status
         .builder()
         .status(null)
         .training(training)
-        .approveId(createTrainingRequest.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
@@ -150,7 +159,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(Long.valueOf(3))
+        .approveId(ap1)
         .active(0)
         .build();
 
@@ -203,10 +212,10 @@ public class TrainingService {
         new RuntimeException("UserId not found: " + editTraining.getUserId())
       );
     User approve1_id = userRepository
-      .findById(editTraining.getApprove1_id())
+      .findById(editTraining.getApprove1_id().getId())
       .orElseThrow(() ->
         new RuntimeException(
-          "Approve1Id not found: " + editTraining.getCourseId()
+          "Approve1Id not found: " + editTraining.getApprove1_id()
         )
       );
 
@@ -255,13 +264,13 @@ public class TrainingService {
       .findById(resultId)
       .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId)
       );
-    User evaluator_id = userRepository
-      .findById(editTraining.getEvaluatorId())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "EvaluatorId not found: " + editTraining.getEvaluatorId()
-        )
-      );
+//    User evaluator_id = userRepository
+//      .findById(editTraining.getEvaluatorId())
+//      .orElseThrow(() ->
+//        new RuntimeException(
+//          "EvaluatorId not found: " + editTraining.getEvaluatorId()
+//        )
+//      );
 
     //result_id.setEvaluator(evaluator_id);
     result_id.setResult1(editTraining.getResult1());
@@ -286,6 +295,7 @@ public class TrainingService {
   public Training setStatusToTraining(
     Long trainingId,
     Long approveId,
+
     StatusApprove statusApprove
   ) {
     Training training = trainingRepository
@@ -293,6 +303,12 @@ public class TrainingService {
       .orElseThrow(() ->
         new RuntimeException("Training not found with ID: " + trainingId)
       );
+
+    User approve = userRepository
+            .findById(approveId)
+            .orElseThrow(() ->
+                    new RuntimeException("Training not found with ID: " + trainingId)
+            );
     Optional<Status> optionalStatus = training
       .getStatus()
       .stream()
@@ -343,7 +359,7 @@ public class TrainingService {
         .findFirst();
       Status UpdateStatus = updateStatus.get();
       UpdateStatus.setStatus(statusApprove);
-      UpdateStatus.setApproveId(approveId);
+      UpdateStatus.setApproveId(approve);
       UpdateStatus.setActive(3);
       statusRepository.save(UpdateStatus);
     }
@@ -593,7 +609,7 @@ public class TrainingService {
         }
         if (status.getActive() == active) {
           if (status.getStatus() != null) {
-            if (status.getApproveId() == approve1Id) {
+            if (status.getApproveId().getId() == approve1Id) {
               if ("อนุมัติ".equals(status.getStatus().toString())) {
                 isDo = "อนุมัติ";
               } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
@@ -767,7 +783,10 @@ public class TrainingService {
       List<Map<String, Object>> dataList = new ArrayList<>();
 
       Map<String, Object> params = new HashMap<>();
-      String imageBase64 = convertByteToBase64(training_id.getUser().getSignature().getImage());
+//      String imageBase64Ap1 = convertByteToBase64(training_id.getApprove1().getSignature().getImage());
+      String imageBase64Ap1 = convertByteToBase64(training_id.getStatus().get(0).getApproveId().getSignature().getImage());
+      String imageBase64Ap2 = convertByteToBase64(training_id.getStatus().get(1).getApproveId().getSignature().getImage());
+      String imageBase64Ap3 = convertByteToBase64(training_id.getStatus().get(2).getApproveId().getSignature().getImage());
 
       params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
       params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
@@ -788,10 +807,16 @@ public class TrainingService {
       params.put("position", training_id.getUser().getPosition().getPositionName());
 
       //approve1
-      params.put("imageBase64Ap1", imageBase64);
-      params.put("positionAp1", training_id.getApprove1().getPosition().getPositionName());
+      params.put("imageBase64Ap1", imageBase64Ap1);
+      //params.put("positionAp1", training_id.getApprove1().getPosition().getPositionName());
+      params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
       //approve2
+      params.put("imageBase64Ap2", imageBase64Ap2);
+      params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
       //approve3
+
+      params.put("imageBase64Ap3", imageBase64Ap3);
+      params.put("positionAp3", training_id.getStatus().get(2).getApproveId().getPosition().getPositionName());
 
       params.put("action", training_id.getAction());
       params.put("actionDate", training_id.getActionDate());

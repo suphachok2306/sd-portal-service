@@ -26,7 +26,10 @@ public class Status {
     
     private int active;
 
-    private Long approveId;
+//    private Long approveId;
+    @ManyToOne
+    @JoinColumn(name = "approve_id")
+    private User approveId;
 
     @ManyToOne
     @JsonIgnore

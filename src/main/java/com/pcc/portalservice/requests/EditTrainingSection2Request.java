@@ -8,7 +8,7 @@ import lombok.Data;
 public class EditTrainingSection2Request {
     
     //////////////////////////////
-    Long evaluatorId;
+    //Long evaluatorId;
     String result1;
     String result2;
     String result3;
