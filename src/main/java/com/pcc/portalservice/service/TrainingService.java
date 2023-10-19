@@ -210,7 +210,7 @@ public class TrainingService {
         new RuntimeException("UserId not found: " + editTraining.getUserId())
       );
     User approve1_id = userRepository
-      .findById(editTraining.getApprove1_id().getId())
+      .findById(editTraining.getApprove1_id())
       .orElseThrow(() ->
         new RuntimeException(
           "Approve1Id not found: " + editTraining.getApprove1_id()
@@ -223,7 +223,7 @@ public class TrainingService {
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
     training_id.setBudget(editTraining.getBudget());
-    if(editTraining.getApprove1_id().getId() != training_id.getApprove1().getId()){
+    if(editTraining.getApprove1_id() != training_id.getApprove1().getId()){
       changeApprover(editTraining, trainingId);
    }
     Training updatedTraining = trainingRepository.save(training_id);
@@ -908,7 +908,7 @@ public class TrainingService {
       .executeUpdate();
     
     User approve1 = userRepository
-      .findById(editTraining.getApprove1_id().getId())
+      .findById(editTraining.getApprove1_id())
       .orElseThrow(() ->
         new RuntimeException(
           "Approve1Id not found: " + editTraining.getApprove1_id()
@@ -942,7 +942,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(editTraining.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
@@ -964,7 +964,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(editTraining.getApprove1_id())
+        .approveId(approve1)
         .active(1)
         .build();
 
