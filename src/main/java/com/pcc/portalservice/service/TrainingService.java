@@ -7,6 +7,8 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -262,7 +264,15 @@ public class TrainingService {
       .findById(resultId)
       .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId)
       );
+//    User evaluator_id = userRepository
+//      .findById(editTraining.getEvaluatorId())
+//      .orElseThrow(() ->
+//        new RuntimeException(
+//          "EvaluatorId not found: " + editTraining.getEvaluatorId()
+//        )
+//      );
 
+    //result_id.setEvaluator(evaluator_id);
     result_id.setResult1(editTraining.getResult1());
     result_id.setResult2(editTraining.getResult2());
     result_id.setResult3(editTraining.getResult3());
@@ -288,7 +298,6 @@ public class TrainingService {
 
     StatusApprove statusApprove
   ) {
-
     Training training = trainingRepository
       .findById(trainingId)
       .orElseThrow(() ->
@@ -300,16 +309,12 @@ public class TrainingService {
             .orElseThrow(() ->
                     new RuntimeException("Training not found with ID: " + trainingId)
             );
-
     Optional<Status> optionalStatus = training
-            .getStatus()
-            .stream()
-            .filter(status -> {
-                User approveIdObj = status.getApproveId();
-                return approveIdObj != null && approveId.equals(approveIdObj.getId());
-            })
-            .findFirst();
-      
+      .getStatus()
+      .stream()
+      .filter(status -> approveId.equals(status.getApproveId()))
+      .findFirst();
+
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
         Status existingStatus = optionalStatus.get();
@@ -803,13 +808,11 @@ public class TrainingService {
 
       //approve1
       params.put("imageBase64Ap1", imageBase64Ap1);
-      //params.put("positionAp1", training_id.getApprove1().getPosition().getPositionName());
       params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
       //approve2
       params.put("imageBase64Ap2", imageBase64Ap2);
       params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
       //approve3
-
       params.put("imageBase64Ap3", imageBase64Ap3);
       params.put("positionAp3", training_id.getStatus().get(2).getApproveId().getPosition().getPositionName());
 
@@ -917,6 +920,7 @@ public class TrainingService {
         )
       );
 
+   
     Role vicePresidentRole = approve1
       .getRoles()
       .stream()
@@ -935,7 +939,7 @@ public class TrainingService {
         .builder()
         .status(null)
         .training(training)
-        .approveId(approve1)
+        .approveId(editTraining.getApprove1_id())
         .active(1)
         .build();
 
@@ -951,11 +955,13 @@ public class TrainingService {
       training.getStatus().add(status1);
       training.getStatus().add(status2);
     } else {
+
+
       Status status1 = Status
         .builder()
         .status(null)
         .training(training)
-        .approveId(approve1)
+        .approveId(editTraining.getApprove1_id())
         .active(1)
         .build();
 
