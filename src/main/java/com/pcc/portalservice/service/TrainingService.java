@@ -310,10 +310,13 @@ public class TrainingService {
                     new RuntimeException("Training not found with ID: " + trainingId)
             );
     Optional<Status> optionalStatus = training
-      .getStatus()
-      .stream()
-      .filter(status -> approveId.equals(status.getApproveId()))
-      .findFirst();
+            .getStatus()
+            .stream()
+            .filter(status -> {
+              User approveIdObj = status.getApproveId();
+              return approveIdObj != null && approveId.equals(approveIdObj.getId());
+            })
+            .findFirst();
 
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
