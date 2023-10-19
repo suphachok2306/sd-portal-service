@@ -7,6 +7,8 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -806,13 +808,11 @@ public class TrainingService {
 
       //approve1
       params.put("imageBase64Ap1", imageBase64Ap1);
-      //params.put("positionAp1", training_id.getApprove1().getPosition().getPositionName());
       params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
       //approve2
       params.put("imageBase64Ap2", imageBase64Ap2);
       params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
       //approve3
-
       params.put("imageBase64Ap3", imageBase64Ap3);
       params.put("positionAp3", training_id.getStatus().get(2).getApproveId().getPosition().getPositionName());
 
@@ -834,14 +834,33 @@ public class TrainingService {
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
 
-      // Convert the byte array to Base64
-      return Base64.encodeBase64String(bytes);
+      String fileName = "your_report_name.pdf";
+
+      // Save the PDF file to a specific location
+      String filename = trainId + "_signature.";
+
+      String filePath = System.getProperty("user.home") + "/Downloads/uploads/" + filename;
+      FileOutputStream fos = new FileOutputStream(filePath);
+      fos.write(bytes);
+      fos.close();
+
+      // Return the file name or the file path if needed
+      return filePath;
     } catch (Exception e) {
       e.printStackTrace();
     }
 
     return null;
   }
+
+//      // Convert the byte array to Base64
+//      return Base64.encodeBase64String(bytes);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    return null;
+//  }
 
   /**
    * @เช็คNullของTraining1
@@ -905,7 +924,7 @@ public class TrainingService {
       .executeUpdate();
     
     User approve1 = userRepository
-      .findById(editTraining.getApprove1_id())
+      .findById(editTraining.getApprove1_id().getId())
       .orElseThrow(() ->
         new RuntimeException(
           "Approve1Id not found: " + editTraining.getApprove1_id()
@@ -945,6 +964,8 @@ public class TrainingService {
       training.getStatus().add(status1);
       training.getStatus().add(status2);
     } else {
+
+
       Status status1 = Status
         .builder()
         .status(null)

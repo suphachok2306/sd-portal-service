@@ -19,5 +19,6 @@ public class EditTrainingSection1Request {
     Long courseId;
     //Long approve1_id;
     User approve1_id;
+    Float budget;
 }
 
