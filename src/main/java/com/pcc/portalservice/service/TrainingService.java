@@ -223,7 +223,7 @@ public class TrainingService {
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
     training_id.setBudget(editTraining.getBudget());
-    if(editTraining.getApprove1_id() != training_id.getApprove1().getId()){
+    if(editTraining.getApprove1_id().getId() != training_id.getApprove1().getId()){
       changeApprover(editTraining, trainingId);
    }
     Training updatedTraining = trainingRepository.save(training_id);
@@ -834,33 +834,14 @@ public class TrainingService {
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
 
-      String fileName = "your_report_name.pdf";
-
-      // Save the PDF file to a specific location
-      String filename = trainId + "_signature.";
-
-      String filePath = System.getProperty("user.home") + "/Downloads/uploads/" + filename;
-      FileOutputStream fos = new FileOutputStream(filePath);
-      fos.write(bytes);
-      fos.close();
-
-      // Return the file name or the file path if needed
-      return filePath;
+      // Convert the byte array to Base64
+      return Base64.encodeBase64String(bytes);
     } catch (Exception e) {
       e.printStackTrace();
     }
 
     return null;
   }
-
-//      // Convert the byte array to Base64
-//      return Base64.encodeBase64String(bytes);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//    return null;
-//  }
 
   /**
    * @เช็คNullของTraining1
@@ -922,7 +903,7 @@ public class TrainingService {
       .createNativeQuery(sql)
       .setParameter("trainingId", trainingId)
       .executeUpdate();
-    
+
     User approve1 = userRepository
       .findById(editTraining.getApprove1_id().getId())
       .orElseThrow(() ->
