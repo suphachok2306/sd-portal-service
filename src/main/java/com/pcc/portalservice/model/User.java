@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 
 @Entity
 @Table(name = "USERS")
@@ -39,6 +37,7 @@ public class User {
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Role> roles = new HashSet<>();
 
+  @ToString.Exclude//ใส่มาแก้ loop .hashcode()
   @OneToOne
   @JoinColumn(name = "sector_id")
   private Sector sector;

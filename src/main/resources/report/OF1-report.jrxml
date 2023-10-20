@@ -129,6 +129,9 @@
 	<field name="action" class="java.lang.String"/>
 	<field name="actionDate" class="java.sql.Date"/>
 	<field name="positionAp1" class="java.lang.String"/>
+	<field name="imageBase64Ap2" class="java.lang.String"/>
+	<field name="imageBase64Ap3" class="java.lang.String"/>
+	<field name="positionAp2" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -361,7 +364,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{position}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
 			</textField>
 			<rectangle>
 				<reportElement x="0" y="460" width="557" height="50" uuid="52010d10-c10e-4b4c-8da3-cc37b029843c"/>
@@ -477,7 +480,7 @@
 			</staticText>
 			<image>
 				<reportElement x="60" y="415" width="40" height="40" uuid="cb556b22-26c9-411f-9e54-ffdb9e237f6b"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap1}))]]></imageExpression>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap2}))]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="11" y="420" width="38" height="30" uuid="d7909973-8219-48d1-9b46-cd912185f949"/>
@@ -495,7 +498,7 @@
 			</staticText>
 			<image>
 				<reportElement x="60" y="465" width="40" height="40" uuid="c7f22dca-0c49-4c63-9bf8-5003dc64cd9c"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap1}))]]></imageExpression>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap3}))]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="10" y="465" width="38" height="30" uuid="d9383aef-a443-46d3-ba1e-b98b3085815d"/>

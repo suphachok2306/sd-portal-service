@@ -8,7 +8,6 @@ import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,9 +18,7 @@ import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JsonDataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -192,11 +189,13 @@ public class TrainingService {
     Long trainingId,
     EditTrainingSection1Request editTraining
   ) throws ParseException {
-    Training training_id = trainingRepository
-      .findById(trainingId)
-      .orElseThrow(() ->
-        new RuntimeException("TrainingId not found: " + trainingId)
-      );
+//    Training training_id = trainingRepository
+//      .findById(trainingId)
+//      .orElseThrow(() ->
+//        new RuntimeException("TrainingId not found: " + trainingId)
+//      );
+    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
+
     Course course_id = courseRepository
       .findById(editTraining.getCourseId())
       .orElseThrow(() ->
@@ -237,11 +236,12 @@ public class TrainingService {
     Long trainingId,
     EditTrainingSection1PersonRequest editTraining
   ) throws ParseException {
-    Training training_id = trainingRepository
-      .findById(trainingId)
-      .orElseThrow(() ->
-        new RuntimeException("TrainingId not found: " + trainingId)
-      );
+//    Training training_id = trainingRepository
+//      .findById(trainingId)
+//      .orElseThrow(() ->
+//        new RuntimeException("TrainingId not found: " + trainingId)
+//      );
+    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
@@ -298,18 +298,19 @@ public class TrainingService {
 
     StatusApprove statusApprove
   ) {
-    Training training = trainingRepository
-      .findById(trainingId)
-      .orElseThrow(() ->
-        new RuntimeException("Training not found with ID: " + trainingId)
-      );
+//    Training training = trainingRepository
+//      .findById(trainingId)
+//      .orElseThrow(() ->
+//        new RuntimeException("Training not found with ID: " + trainingId)
+//      );
+    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
 
     User approve = userRepository
             .findById(approveId)
             .orElseThrow(() ->
                     new RuntimeException("Training not found with ID: " + trainingId)
             );
-    Optional<Status> optionalStatus = training
+    Optional<Status> optionalStatus = training_id
             .getStatus()
             .stream()
             .filter(status -> {
@@ -325,7 +326,7 @@ public class TrainingService {
         existingStatus.setActive(2);
         statusRepository.save(existingStatus);
 
-        Optional<Status> updateStatusNext = training
+        Optional<Status> updateStatusNext = training_id
           .getStatus()
           .stream()
           .filter(status ->
@@ -352,7 +353,7 @@ public class TrainingService {
         statusRepository.save(existingStatus);
       }
     } else {
-      Optional<Status> updateStatus = training
+      Optional<Status> updateStatus = training_id
         .getStatus()
         .stream()
         .filter(status ->
@@ -367,21 +368,53 @@ public class TrainingService {
       statusRepository.save(UpdateStatus);
     }
 
-    return trainingRepository.save(training);
+    return trainingRepository.save(training_id);
   }
 
   /**
    * @หาTrainingด้วยId
    */
+
+  public Training findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(Long id) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Training> query = builder.createQuery(Training.class);
+    Root<Training> root = query.from(Training.class);
+
+    // Fetch statuses without duplicates
+    root.fetch("status", JoinType.INNER);
+
+    query.where(builder.equal(root.get("id"), id));
+
+    List<Training> trainingList = entityManager
+            .createQuery(query)
+            .getResultList();
+
+    if (!trainingList.isEmpty()) {
+      List<Status> statusListCopy = new ArrayList<>(trainingList.get(0).getStatus());
+      statusListCopy.sort(Comparator.comparing(Status::getId));
+      trainingList.get(0).setStatus(statusListCopy);
+
+      return trainingList.get(0);
+    } else {
+      return null;
+    }
+  }
+
+
+
   public Map<String, Object> findById(Long id) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
 
+    // Fetch statuses without duplicates
+    root.fetch("status", JoinType.INNER);
+
     query.where(builder.equal(root.get("id"), id));
+
     List<Training> trainingList = entityManager
-      .createQuery(query)
-      .getResultList();
+            .createQuery(query)
+            .getResultList();
 
     Map<String, Object> resultWithStatus = new HashMap<>();
 
@@ -441,41 +474,48 @@ public class TrainingService {
 
 
 
+
   /**
    * @หาTrainingด้วยUserId
    */
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
-    String jpql = "SELECT t FROM Training t WHERE user_id = :id";
+    String jpql = "SELECT t FROM Training t JOIN FETCH t.status s WHERE t.user.id = :id";
 
-    TypedQuery<Training> query = entityManager.createQuery(
-      jpql,
-      Training.class
-    );
+    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
 
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
 
-    return calculateTrainingResultStatus(resultList);
+    // Create a map to keep track of unique trainings by their IDs
+    Map<Long, Training> uniqueTrainings = new HashMap<>();
+
+    // Filter and keep only unique trainings
+    for (Training training : resultList) {
+      uniqueTrainings.putIfAbsent(training.getId(), training);
+    }
+
+    // Convert the unique trainings to a list for further processing
+    List<Training> uniqueTrainingList = new ArrayList<>(uniqueTrainings.values());
+
+    return calculateTrainingResultStatus(uniqueTrainingList);
   }
+
+
 
   /**
    * @หาTrainingด้วยApproveId
    */
+
   public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
     String jpql =
-      "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
-      "approve1_id,user_id,active " + //
-      "FROM status s " + //
-      "JOIN training t ON training_id = t.id " + //
-      "WHERE s.approve_id = :id and active != 0";
+            "SELECT DISTINCT t FROM Training t " + //
+                    "JOIN FETCH t.status s " + //
+                    "WHERE s.approveId.id = :id and s.active != 0";
 
-    NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
-      jpql,
-      Training.class
-    );
+    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
 
     query.setParameter("id", approve1Id);
-    List<Training> resultList = (List<Training>) query.getResultList();
+    List<Training> resultList = query.getResultList();
 
     return calculateTrainingResultStatus(resultList, approve1Id, 2);
   }
@@ -484,37 +524,34 @@ public class TrainingService {
    * @หาTrainingทั้งหมด
    */
   public List<Map<String, Object>> findAllTraining() {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Training> query = builder.createQuery(Training.class);
-    Root<Training> root = query.from(Training.class);
-    List<Training> trainingList = entityManager
-      .createQuery(query)
-      .getResultList();
+    String jpql = "SELECT DISTINCT t FROM Training t JOIN FETCH t.status " +
+            "ORDER BY t.id";
+
+    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+    List<Training> trainingList = query.getResultList();
 
     return calculateTrainingResultStatus(trainingList);
   }
 
+
   /**
    * @หาTrainingด้วยPersonnelId
    */
+
   public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
     String jpql =
-      "SELECT DISTINCT t.id, action, action_date, date_save, day," + //
-      "approve1_id,user_id,active " + //
-      "FROM status s " + //
-      "JOIN training t ON training_id = t.id " + //
-      "WHERE (active = 3 and approve_id = :id) or (active = 3 and approve_id is null)";
+            "SELECT DISTINCT t FROM Training t " + //
+                    "JOIN FETCH t.status s " + //
+                    "WHERE (s.active = 3 and s.approveId.id = :id) or (s.active = 3 and s.approveId is null)";
 
-    NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
-      jpql,
-      Training.class
-    );
+    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
 
     query.setParameter("id", approve1Id);
     List<Training> resultList = (List<Training>) query.getResultList();
 
     return calculateTrainingResultStatus(resultList, approve1Id, 3);
   }
+
 
   /**
    * @OutputForTraining1
@@ -674,6 +711,7 @@ public class TrainingService {
   /**
    * @หาtrainingด้วยName,Position,Department,StartDate,Enddate,CourseName
    */
+
   public Object searchTraining(
     String name,
     String position,
@@ -685,6 +723,7 @@ public class TrainingService {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
+
 
     List<Predicate> predicates = new ArrayList<>();
 
@@ -753,7 +792,8 @@ public class TrainingService {
     }
 
     query.where(predicates.toArray(new Predicate[0]));
-
+    root.fetch("status", JoinType.INNER);
+    query.distinct(true);
     List<Training> trainings = entityManager.createQuery(query).getResultList();
 
     if (trainings.isEmpty()) {
@@ -777,8 +817,11 @@ public class TrainingService {
 
   public String printReport(Long trainId) {
     try {
-      Training training_id = trainingRepository.findById(trainId)
-              .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
+//      Training training_id = trainingRepository.findById(trainId)
+//              .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
+
+      Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainId);
+
 
       if (training_id == null) {
         return null;
@@ -786,7 +829,6 @@ public class TrainingService {
       List<Map<String, Object>> dataList = new ArrayList<>();
 
       Map<String, Object> params = new HashMap<>();
-//      String imageBase64Ap1 = convertByteToBase64(training_id.getApprove1().getSignature().getImage());
       String imageBase64Ap1 = convertByteToBase64(training_id.getStatus().get(0).getApproveId().getSignature().getImage());
       String imageBase64Ap2 = convertByteToBase64(training_id.getStatus().get(1).getApproveId().getSignature().getImage());
       String imageBase64Ap3 = convertByteToBase64(training_id.getStatus().get(2).getApproveId().getSignature().getImage());
@@ -817,7 +859,6 @@ public class TrainingService {
       params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
       //approve3
       params.put("imageBase64Ap3", imageBase64Ap3);
-      params.put("positionAp3", training_id.getStatus().get(2).getApproveId().getPosition().getPositionName());
 
       params.put("action", training_id.getAction());
       params.put("actionDate", training_id.getActionDate());
@@ -931,17 +972,19 @@ public class TrainingService {
       .findFirst()
       .orElse(null);
 
-    Training training = trainingRepository
-      .findById(trainingId)
-      .orElseThrow(() ->
-        new RuntimeException("TrainingId not found: " + trainingId)
-      );
+//    Training training = trainingRepository
+//      .findById(trainingId)
+//      .orElseThrow(() ->
+//        new RuntimeException("TrainingId not found: " + trainingId)
+//      );
+
+    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
 
     if (vicePresidentRole != null) {
       Status status1 = Status
         .builder()
         .status(null)
-        .training(training)
+        .training(training_id)
         .approveId(approve1)
         .active(1)
         .build();
@@ -949,21 +992,21 @@ public class TrainingService {
       Status status2 = Status
         .builder()
         .status(null)
-        .training(training)
+        .training(training_id)
         .active(0)
         .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
-      training.getStatus().add(status1);
-      training.getStatus().add(status2);
+      training_id.getStatus().add(status1);
+      training_id.getStatus().add(status2);
     } else {
 
 
       Status status1 = Status
         .builder()
         .status(null)
-        .training(training)
+        .training(training_id)
         .approveId(approve1)
         .active(1)
         .build();
@@ -971,7 +1014,7 @@ public class TrainingService {
       Status status2 = Status
         .builder()
         .status(null)
-        .training(training)
+        .training(training_id)
         .approveId(approve3)
         .active(0)
         .build();
@@ -979,16 +1022,16 @@ public class TrainingService {
       Status status3 = Status
         .builder()
         .status(null)
-        .training(training)
+        .training(training_id)
         .active(0)
         .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
       statusRepository.save(status3);
-      training.getStatus().add(status1);
-      training.getStatus().add(status2);
-      training.getStatus().add(status3);
+      training_id.getStatus().add(status1);
+      training_id.getStatus().add(status2);
+      training_id.getStatus().add(status3);
     }
   }
   
