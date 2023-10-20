@@ -165,7 +165,7 @@ public class DatabaseInitializer implements CommandLineRunner {
       "('4@pccth.com',null,'Approver 4', '4', '" + hashpassword + "', '1',1,1,4,1)," +
       "('5@pccth.com',null,'Approver 5', '5', '" + hashpassword + "', '1',1,1,4,1)," +
       "('6@pccth.com',null,'Approver 6', '6', '" + hashpassword + "', '1',1,1,4,1)," +
-      "('kunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1)";
+      "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1)";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
