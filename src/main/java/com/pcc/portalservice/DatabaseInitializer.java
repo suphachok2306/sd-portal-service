@@ -154,17 +154,18 @@ public class DatabaseInitializer implements CommandLineRunner {
     String hashpassword = passwordEncoder.encode("1234");
 
     String sql =
-      "INSERT INTO public.users (email, firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id) VALUES" +
-      "('admin@pccth.com', 'Admin', 'Admin','" + hashpassword + "', '+15555555555',1,1,8,1)," +
-      "('approver@pccth.com', 'Approver 1', 'Approver','" + hashpassword + "', '+15555555555', 1, 1, 4, 1)," +
-      "('vicepresident@pccth.com', 'VicePresident', 'VicePresident','" + hashpassword + "','+15555555555',1, 1, 1, 1)," +
-      "('personnel@pccth.com', 'Personnel', 'Personnel','" + hashpassword + "', '+15555555555', 1, 1, 4, 1)," +
-      "('user@pccth.com', 'User', 'User','" + hashpassword + "', '+15555555555',1,1,13,1)," +
-      "('2@pccth.com','Approver 2', '2', '" + hashpassword + "', '1',1,1,4,1)," +
-      "('3@pccth.com','Approver 3', '3', '" + hashpassword + "', '1',1,1,4,1)," +
-      "('4@pccth.com','Approver 4', '4', '" + hashpassword + "', '1',1,1,4,1)," +
-      "('5@pccth.com','Approver 5', '5', '" + hashpassword + "', '1',1,1,4,1)," +
-      "('6@pccth.com','Approver 6', '6', '" + hashpassword + "', '1',1,1,4,1);";
+      "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id) VALUES" +
+      "('admin@pccth.com',null,'Admin', 'Admin','" + hashpassword + "', '+15555555555',1,1,8,1)," +
+      "('approver@pccth.com',null,'Approver 1', 'Approver','" + hashpassword + "', '+15555555555', 1, 1, 4, 1)," +
+      "('vicepresident@pccth.com',null,'VicePresident', 'VicePresident','" + hashpassword + "','+15555555555',1, 1, 1, 1)," +
+      "('personnel@pccth.com',null,'Personnel', 'Personnel','" + hashpassword + "', '+15555555555', 1, 1, 4, 1)," +
+      "('user@pccth.com',null ,'User', 'User','" + hashpassword + "', '+15555555555',1,1,13,1)," +
+      "('2@pccth.com',null ,'Approver 2', '2', '" + hashpassword + "', '1',1,1,4,1)," +
+      "('3@pccth.com',null ,'Approver 3', '3', '" + hashpassword + "', '1',1,1,4,1)," +
+      "('4@pccth.com',null,'Approver 4', '4', '" + hashpassword + "', '1',1,1,4,1)," +
+      "('5@pccth.com',null,'Approver 5', '5', '" + hashpassword + "', '1',1,1,4,1)," +
+      "('6@pccth.com',null,'Approver 6', '6', '" + hashpassword + "', '1',1,1,4,1)," +
+      "('kunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1)";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
