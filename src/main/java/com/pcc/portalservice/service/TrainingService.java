@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -407,7 +408,6 @@ public class TrainingService {
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
 
-    // Fetch statuses without duplicates
     root.fetch("status", JoinType.INNER);
 
     query.where(builder.equal(root.get("id"), id));
@@ -427,6 +427,7 @@ public class TrainingService {
       int count = 0;
 
       for (Status status : training.getStatus()) {
+        System.out.println(count);
         if (status.getStatus() != null) {
           if ("อนุมัติ".equals(status.getStatus().toString())) {
             approvedCount++;
@@ -486,15 +487,12 @@ public class TrainingService {
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
 
-    // Create a map to keep track of unique trainings by their IDs
     Map<Long, Training> uniqueTrainings = new HashMap<>();
 
-    // Filter and keep only unique trainings
     for (Training training : resultList) {
       uniqueTrainings.putIfAbsent(training.getId(), training);
     }
 
-    // Convert the unique trainings to a list for further processing
     List<Training> uniqueTrainingList = new ArrayList<>(uniqueTrainings.values());
 
     return calculateTrainingResultStatus(uniqueTrainingList);
@@ -508,14 +506,19 @@ public class TrainingService {
 
   public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
     String jpql =
-            "SELECT DISTINCT t FROM Training t " + //
-                    "JOIN FETCH t.status s " + //
-                    "WHERE s.approveId.id = :id and s.active != 0";
+      "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
+      "approve1_id,user_id,active " + //
+      "FROM status s " + //
+      "JOIN training t ON training_id = t.id " + //
+      "WHERE s.approve_id = :id and active != 0";
 
-    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+    NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
+      jpql,
+      Training.class
+    );
 
     query.setParameter("id", approve1Id);
-    List<Training> resultList = query.getResultList();
+    List<Training> resultList = (List<Training>) query.getResultList();
 
     return calculateTrainingResultStatus(resultList, approve1Id, 2);
   }
@@ -538,13 +541,18 @@ public class TrainingService {
    * @หาTrainingด้วยPersonnelId
    */
 
-  public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
+   public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
     String jpql =
-            "SELECT DISTINCT t FROM Training t " + //
-                    "JOIN FETCH t.status s " + //
-                    "WHERE (s.active = 3 and s.approveId.id = :id) or (s.active = 3 and s.approveId is null)";
+      "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
+      "approve1_id,user_id,active " + //
+      "FROM status s " + //
+      "JOIN training t ON training_id = t.id " + //
+      "WHERE (active = 3 and approve_id = :id) or (active = 3 and approve_id is null)";
 
-    TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
+    NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
+      jpql,
+      Training.class
+    );
 
     query.setParameter("id", approve1Id);
     List<Training> resultList = (List<Training>) query.getResultList();
@@ -621,92 +629,105 @@ public class TrainingService {
    * @OutputForTraining2
    */
 
-  public static List<Map<String, Object>> calculateTrainingResultStatus(
+   public static List<Map<String, Object>> calculateTrainingResultStatus(
     List<Training> trainingList,
     long approve1Id,
     int active
-  ) {
+) {
     List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
 
     for (Training training : trainingList) {
-      int approvedCount = 0;
-      int disapprovedCount = 0;
-      int cancalapprovedCount = 0;
-      String result_status;
-      String isDo = "รอประเมิน";
-      String isDoResult = "ไม่";
-      int count = 0;
+        int approvedCount = 0;
+        int disapprovedCount = 0;
+        int cancelApprovedCount = 0;
+        String resultStatus = "รอประเมิน";
+        String isDo = "รอประเมิน";
+        String isDoResult = "ไม่";
+        int count = 0;
 
-      for (Status status : training.getStatus()) {
-        if (status.getStatus() != null) {
-          if ("อนุมัติ".equals(status.getStatus().toString())) {
-            approvedCount++;
-          } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-            disapprovedCount++;
-          } else if ("ยกเลิก".equals(status.getStatus().toString())) {
-            cancalapprovedCount++;
-          }
-        }
-        if (status.getActive() == active) {
-          if (status.getStatus() != null) {
-            if (status.getApproveId().getId() == approve1Id) {
-              if ("อนุมัติ".equals(status.getStatus().toString())) {
-                isDo = "อนุมัติ";
-              } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-                isDo = "ไม่อนุมัติ";
-              } else if ("ยกเลิก".equals(status.getStatus().toString())) {
-                isDo = "ยกเลิก";
-              }
+        
+        List<Status> uniqueStatusList = removeDuplicateStatus(training.getStatus());
+
+        for (Status status : uniqueStatusList) {
+            if (status.getStatus() != null) {
+                if ("อนุมัติ".equals(status.getStatus().toString())) {
+                    approvedCount++;
+                } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                    disapprovedCount++;
+                } else if ("ยกเลิก".equals(status.getStatus().toString())) {
+                    cancelApprovedCount++;
+                }
             }
-          } else {
-            isDo = "รอประเมิน";
-          }
-        }
-        count++;
-      }
 
-      if (count == 3) {
+            if (status.getActive() == active && status.getApproveId().getId() == approve1Id) {
+                if ("อนุมัติ".equals(status.getStatus().toString())) {
+                    isDo = "อนุมัติ";
+                } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
+                    isDo = "ไม่อนุมัติ";
+                } else if ("ยกเลิก".equals(status.getStatus().toString())) {
+                    isDo = "ยกเลิก";
+                }
+            }
+            count++;
+        }
+
+        if (count == 3) {
         if (approvedCount == 3) {
-          result_status = "อนุมัติ";
+          resultStatus = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
+          resultStatus = "ไม่อนุมัติ";
+        } else if (cancelApprovedCount >= 1) {
+          resultStatus = "ยกเลิก";
         } else {
-          result_status = "รอประเมิน";
+          resultStatus = "รอประเมิน";
         }
       } else {
         if (approvedCount == 2) {
-          result_status = "อนุมัติ";
+          resultStatus = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
+          resultStatus = "ไม่อนุมัติ";
+        } else if (cancelApprovedCount >= 1) {
+          resultStatus = "ยกเลิก";
         } else {
-          result_status = "รอประเมิน";
+          resultStatus = "รอประเมิน";
         }
       }
-      if (
-        result_status == "อนุมัติ" &&
-        training.getApprove1().getId() == approve1Id
-      ) {
-        isDoResult = "ใช่";
-      }
-      if (result_status != "ยกเลิก") {
-        List<Status> statusListCopy = new ArrayList<>(training.getStatus());
-        statusListCopy.sort(Comparator.comparing(Status::getId));
-        training.setStatus(statusListCopy);
-        Map<String, Object> resultWithStatus = new HashMap<>();
-        resultWithStatus.put("training", training);
-        resultWithStatus.put("result_status", result_status);
-        resultWithStatus.put("isDo", isDo);
-        resultWithStatus.put("isDoResult", isDoResult);
-        resultWithStatusList.add(resultWithStatus);
-      }
+
+        if (resultStatus.equals("อนุมัติ") && training.getApprove1().getId() == approve1Id) {
+            isDoResult = "ใช่";
+        }
+
+        if (!resultStatus.equals("ยกเลิก")) {
+            Map<String, Object> resultWithStatus = new HashMap<>();
+            resultWithStatus.put("training", training);
+            resultWithStatus.put("result_status", resultStatus);
+            resultWithStatus.put("isDo", isDo);
+            resultWithStatus.put("isDoResult", isDoResult);
+            resultWithStatusList.add(resultWithStatus);
+        }
     }
 
     return resultWithStatusList;
+}
+
+public static List<Status> removeDuplicateStatus(List<Status> statusList) {
+  Set<Long> statusIds = new HashSet<>();
+  List<Status> uniqueStatusList = new ArrayList<>();
+  for (Status status : statusList) {
+      if (!statusIds.contains(status.getId())) {
+          System.out.println(status.getId());
+          uniqueStatusList.add(status);
+          statusIds.add(status.getId());
+      }
+      else{
+        continue;
+      }
+      System.out.println(statusIds);
   }
+
+  return uniqueStatusList;
+}
+
 
   /**
    * @หาtrainingด้วยName,Position,Department,StartDate,Enddate,CourseName
