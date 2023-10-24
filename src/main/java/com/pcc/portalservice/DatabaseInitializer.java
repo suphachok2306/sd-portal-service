@@ -170,7 +170,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2),(11, 3)"
       );
       System.out.println("Data inserted into public.users table.");
     } else {

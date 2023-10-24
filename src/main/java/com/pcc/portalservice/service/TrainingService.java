@@ -194,7 +194,7 @@ public class TrainingService {
 //      .orElseThrow(() ->
 //        new RuntimeException("TrainingId not found: " + trainingId)
 //      );
-    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
+    Training training_id = findByTrainingId(trainingId);
 
     Course course_id = courseRepository
       .findById(editTraining.getCourseId())
@@ -241,7 +241,7 @@ public class TrainingService {
 //      .orElseThrow(() ->
 //        new RuntimeException("TrainingId not found: " + trainingId)
 //      );
-    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
+    Training training_id = findByTrainingId(trainingId);
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
@@ -303,7 +303,7 @@ public class TrainingService {
 //      .orElseThrow(() ->
 //        new RuntimeException("Training not found with ID: " + trainingId)
 //      );
-    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
+    Training training_id = findByTrainingId(trainingId);
 
     User approve = userRepository
             .findById(approveId)
@@ -375,7 +375,7 @@ public class TrainingService {
    * @หาTrainingด้วยId
    */
 
-  public Training findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(Long id) {
+  public Training findByTrainingId(Long id) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
@@ -844,7 +844,7 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 //      Training training_id = trainingRepository.findById(trainId)
 //              .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
 
-      Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainId);
+      Training training_id = findByTrainingId(trainId);
 
 
       if (training_id == null) {
@@ -1002,7 +1002,7 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 //        new RuntimeException("TrainingId not found: " + trainingId)
 //      );
 
-    Training training_id = findByTrainingIdByMEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE(trainingId);
+    Training training_id = findByTrainingId(trainingId);
 
     if (vicePresidentRole != null) {
       Status status1 = Status
