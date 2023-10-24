@@ -658,7 +658,7 @@ public class TrainingService {
                 }
             }
 
-            if (status.getActive() == active && status.getApproveId().getId() == approve1Id) {
+            if (status.getActive() == active && status.getApproveId() != null && status.getApproveId().getId() == approve1Id) {
                 if ("อนุมัติ".equals(status.getStatus().toString())) {
                     isDo = "อนุมัติ";
                 } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
@@ -698,7 +698,9 @@ public class TrainingService {
 
         if (!resultStatus.equals("ยกเลิก")) {
             training.setStatus(null);
-            training.setStatus(uniqueStatusList);
+            List<Status> statusListCopy = new ArrayList<>(uniqueStatusList);
+            statusListCopy.sort(Comparator.comparing(Status::getId));
+            training.setStatus(statusListCopy);
             Map<String, Object> resultWithStatus = new HashMap<>();
             resultWithStatus.put("training", training);
             resultWithStatus.put("result_status", resultStatus);
