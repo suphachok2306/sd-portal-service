@@ -7,7 +7,6 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -698,6 +697,8 @@ public class TrainingService {
         }
 
         if (!resultStatus.equals("ยกเลิก")) {
+            training.setStatus(null);
+            training.setStatus(uniqueStatusList);
             Map<String, Object> resultWithStatus = new HashMap<>();
             resultWithStatus.put("training", training);
             resultWithStatus.put("result_status", resultStatus);
