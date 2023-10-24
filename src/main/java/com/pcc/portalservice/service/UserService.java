@@ -92,13 +92,13 @@ public class UserService {
     String empCode = createEmployeeRequest.getEmpCode();
 
     if (email == null || email.isEmpty() || email.equals("")) {
-      if (userRepository.existsByempCode(empCode)) {
+      if (userRepository.existsByEmpCode(empCode)) {
         throw new RuntimeException("EmpCode is already in use.");
       }
     } else {
       if (
         (userRepository.existsByEmail(email)) &&
-        userRepository.existsByempCode(empCode)
+        userRepository.existsByEmpCode(empCode)
       ) {
         throw new RuntimeException(
           "Both Email and EmpCode are already in use."
@@ -107,7 +107,7 @@ public class UserService {
         if (userRepository.existsByEmail(email)) {
           throw new RuntimeException("Email is already in use.");
         }
-        if (userRepository.existsByempCode(empCode)) {
+        if (userRepository.existsByEmpCode(empCode)) {
           throw new RuntimeException("EmpCode is already in use.");
         }
       }
@@ -185,13 +185,11 @@ public class UserService {
    * @แก้ไขUser,Employee
    */
   public User editUser(Long id, EditEmployeeRequest editEmployeeRequest) {
+    String email = editEmployeeRequest.getEmail();
+    String empCode = editEmployeeRequest.getEmpCode();
     User user = userRepository
       .findById(id)
-      .orElseThrow(() ->
-        new RuntimeException(
-          "UserId not found: " + editEmployeeRequest.getCompanyName()
-        )
-      );
+      .orElseThrow(() -> new RuntimeException("UserId not found: "));
     Company companyName = companyRepository
       .findByCompanyName(editEmployeeRequest.getCompanyName())
       .orElseThrow(() ->
@@ -227,25 +225,29 @@ public class UserService {
       new RuntimeException("Position not found")
     );
 
-    String email = editEmployeeRequest.getEmail();
-    if (
-      userRepository.existsByEmail(email) &&
-      (email != null && !email.isEmpty() && !email.equals(user.getEmail()))
-    ) {
+    if ((email == null || email.isEmpty()) && userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
+      throw new RuntimeException("EmpCode is already in use.");
+  } else if (userRepository.existsByEmail(email) && !user.getEmail().equals(email) && 
+             userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
+      throw new RuntimeException("Both Email and EmpCode are already in use.");
+  } else if (userRepository.existsByEmail(email) && !user.getEmail().equals(email)) {
       throw new RuntimeException("Email is already in use.");
-    } else {
-      user.setEmail(editEmployeeRequest.getEmail());
-    }
+  } else if (userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
+      throw new RuntimeException("EmpCode is already in use.");
+  }
+  
 
     user.setEmpCode(editEmployeeRequest.getEmpCode());
     user.setFirstname(editEmployeeRequest.getFirstname());
     user.setLastname(editEmployeeRequest.getLastname());
+    user.setEmail(editEmployeeRequest.getEmail());
     user.setPosition(position);
     user.setSector(sector);
     user.setDepartment(department);
     user.setCompany(companyName);
     return userRepository.save(user);
   }
+
 
   public Role createRole(Roles roleName) {
     if (!roleRepository.existsByRole(roleName)) {
@@ -280,7 +282,8 @@ public class UserService {
       request.getLastname().isEmpty()
     );
   }
-/**
+
+  /**
    * @เช็คNullของEditEmployee
    */
   public boolean isEditEmpNull(EditEmployeeRequest request) {
@@ -292,7 +295,8 @@ public class UserService {
       request.getLastname().isEmpty()
     );
   }
-/**
+
+  /**
    * @เช็คNullของUser
    */
   public boolean isUserNull(CreateUserRequest request) {
@@ -306,7 +310,8 @@ public class UserService {
       request.getTelephone().isEmpty()
     );
   }
-/**
+
+  /**
    * @เช็คว่ามีRoleนี้ในระบบไหม
    */
   public boolean hasRole(Long userId, String roleName) {
@@ -381,6 +386,7 @@ public class UserService {
         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found")
       );
   }
+
   /**
    * @หาUserด้วยempcode,name,position,email,deptname,deptcode,company
    */
@@ -467,16 +473,18 @@ public class UserService {
       predicates.add(
         builder.like(
           builder.lower(sectorJoin.get("sectorName")),
-          "%" + sectorName.toLowerCase() + "%")
-        );
+          "%" + sectorName.toLowerCase() + "%"
+        )
+      );
     }
     if (sectorCode != null) {
       Join<User, Sector> sectorJoin = root.join("sector");
       predicates.add(
         builder.like(
           builder.lower(sectorJoin.get("sectorCode")),
-          "%" + sectorCode.toLowerCase() + "%")
-        );
+          "%" + sectorCode.toLowerCase() + "%"
+        )
+      );
     }
 
     if (
@@ -503,7 +511,6 @@ public class UserService {
 
     return users;
   }
-
 
   /**
    * @SetStatusลาออกให้Employee
@@ -565,6 +572,5 @@ public class UserService {
         }
       }
     }
-
   }
 }
