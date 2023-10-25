@@ -583,7 +583,7 @@
 			<textField>
 				<reportElement x="69" y="240" width="13" height="20" uuid="eac37707-b001-4230-a7e5-ec7aa94e159d"/>
 				<textElement verticalAlignment="Middle" markup="html">
-					<font fontName="Arial Unicode MS" size="14"/>
+					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{budget} > 0 ? "  ✓  " : " "]]></textFieldExpression>
 			</textField>
@@ -1211,6 +1211,26 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{result}.equals( "fail") ?$F{cause} : "  "]]></textFieldExpression>
 			</textField>
+			<frame>
+				<reportElement x="102" y="253" width="12" height="12" uuid="64d3a7e7-0d50-4299-9500-539650a3c1ce"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<line>
+					<reportElement x="2" y="7" width="2" height="2" uuid="fbd52c08-2e59-445a-9802-966fdf64c40b">
+						<printWhenExpression><![CDATA[$F{budget} == 0]]></printWhenExpression>
+					</reportElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement x="4" y="3" width="6" height="6" uuid="97cad9fc-f3b6-4e7e-816e-dd3b3c4d048b">
+						<printWhenExpression><![CDATA[$F{budget} == 0]]></printWhenExpression>
+					</reportElement>
+				</line>
+			</frame>
 			<textField>
 				<reportElement x="220" y="524" width="337" height="30" uuid="0e055579-8f14-4f98-a66d-10367bee1249"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -1241,7 +1261,7 @@
 			</textField>
 			<image>
 				<reportElement x="131" y="587" width="40" height="40" uuid="a689bb76-1ec2-49d1-9861-b2743c7b6ec8"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap1})]]></imageExpression>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap1}))]]></imageExpression>
 			</image>
 		</band>
 	</detail>

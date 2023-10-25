@@ -310,6 +310,11 @@ public class TrainingController {
     return trainingService.printReport(trainId);
   }
 
+//    @GetMapping("/Report")
+//  public String report(@RequestParam Long trainId,Long userId1,Long userId2,Long userId3,Long userId4) {
+//    return trainingService.printReport(trainId,userId1,userId2,userId3,userId4);
+//  }
+
 
 
 //  @GetMapping("/Report")
