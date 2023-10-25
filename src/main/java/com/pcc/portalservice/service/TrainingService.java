@@ -1030,11 +1030,13 @@ public class TrainingService {
 
         Map<String, Object> params = new HashMap<>();
 
+
         if (userId1 != null) {
           User user_id1 = userRepository.findById(userId1).orElse(null);
           if (user_id1 != null) {
             params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
             params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
+            params.put("date_saveUser1",training_id.getDateSave());
           }
         }
         if (userId2 != null) {
@@ -1042,12 +1044,14 @@ public class TrainingService {
           if (user_id2 != null) {
             params.put("imageBase64User2", convertByteToBase64(user_id2.getSignature().getImage()));
             params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
+            params.put("date_saveUser2",training_id.getDateSave());
           }
         }
         if (userId3 != null) {
           User user_id3 = userRepository.findById(userId3).orElse(null);
           if (user_id3 != null) {
             params.put("imageBase64User3", convertByteToBase64(user_id3.getSignature().getImage()));
+            params.put("date_saveUser3",training_id.getDateSave());
           }
         }
         if (userId4 != null) {
@@ -1057,6 +1061,7 @@ public class TrainingService {
           }
         }
 
+
         params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
         params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
         params.put("date_save", training_id.getDateSave());
@@ -1064,6 +1069,9 @@ public class TrainingService {
         params.put("objective", training_id.getCourses().get(0).getObjective());
         params.put("start_date", training_id.getCourses().get(0).getStartDate());
         params.put("end_date", training_id.getCourses().get(0).getEndDate());
+        params.put("time", training_id.getCourses().get(0).getTime());
+        params.put("note", training_id.getCourses().get(0).getNote());
+
         params.put("price", training_id.getCourses().get(0).getPrice());
         params.put("institute", training_id.getCourses().get(0).getInstitute());
         params.put("place", training_id.getCourses().get(0).getPlace());
@@ -1073,6 +1081,7 @@ public class TrainingService {
         params.put("firstname", training_id.getUser().getFirstname());
         params.put("lastname", training_id.getUser().getLastname());
         params.put("position", training_id.getUser().getPosition().getPositionName());
+
 
         params.put("action", training_id.getAction());
         params.put("actionDate", training_id.getActionDate());
