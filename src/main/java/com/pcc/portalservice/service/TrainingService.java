@@ -891,7 +891,7 @@ public class TrainingService {
                         .getSignature()
                         .getImage()
         );
-        String approve1 = convertByteToBase64(training_id.getApprove1().getSignature().getImage());
+
 
         params.put(
                 "dept_code",
@@ -972,7 +972,7 @@ public class TrainingService {
         params.put("plan", training_id.getResult().get(0).getPlan());
         params.put("result", training_id.getResult().get(0).getResult());
         params.put("budget", training_id.getBudget());
-        params.put("approve1", approve1);
+//        params.put("approve1", approve1);
 
         dataList.add(params);
 

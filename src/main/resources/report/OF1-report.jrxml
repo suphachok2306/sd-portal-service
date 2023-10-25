@@ -1241,7 +1241,7 @@
 			</textField>
 			<image>
 				<reportElement x="131" y="587" width="40" height="40" uuid="a689bb76-1ec2-49d1-9861-b2743c7b6ec8"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{approve1}))]]></imageExpression>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64Ap1})]]></imageExpression>
 			</image>
 		</band>
 	</detail>
