@@ -856,6 +856,7 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
       String imageBase64Ap1 = convertByteToBase64(training_id.getStatus().get(0).getApproveId().getSignature().getImage());
       String imageBase64Ap2 = convertByteToBase64(training_id.getStatus().get(1).getApproveId().getSignature().getImage());
       String imageBase64Ap3 = convertByteToBase64(training_id.getStatus().get(2).getApproveId().getSignature().getImage());
+      String approve1 = convertByteToBase64(training_id.getApprove1().getSignature().getImage());
 
       params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
       params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
@@ -886,6 +887,27 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 
       params.put("action", training_id.getAction());
       params.put("actionDate", training_id.getActionDate());
+
+      //section2
+      params.put("app_name", training_id.getApprove1().getFirstname());
+      params.put("app_lastname", training_id.getApprove1().getLastname());
+      params.put("app_position", training_id.getApprove1().getPosition().getPositionName());
+      params.put("app_dept_name", training_id.getApprove1().getDepartment().getDeptName());
+      params.put("app_sector_name", training_id.getApprove1().getSector().getSectorName());
+      params.put("result1", training_id.getResult().get(0).getResult1());
+      params.put("result2", training_id.getResult().get(0).getResult2());
+      params.put("result3", training_id.getResult().get(0).getResult3());
+      params.put("result4", training_id.getResult().get(0).getResult4());
+      params.put("result5", training_id.getResult().get(0).getResult5());
+      params.put("result6", training_id.getResult().get(0).getResult6());
+      params.put("result7", training_id.getResult().get(0).getResult7());
+      params.put("comment", training_id.getResult().get(0).getComment());
+      params.put("cause", training_id.getResult().get(0).getCause());
+      params.put("plan", training_id.getResult().get(0).getPlan());
+      params.put("result", training_id.getResult().get(0).getResult());
+      params.put("budget", training_id.getBudget());
+      //params.put("approve1", training_id.getApprove1().getId());
+      params.put("approve1", approve1);
 
       dataList.add(params);
 
