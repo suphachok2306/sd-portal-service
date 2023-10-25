@@ -7,21 +7,37 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-// import com.pcc.portalservice.requests.CreateTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.core.io.Resource;
+import org.springframework.web.util.UriUtils;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @AllArgsConstructor
@@ -293,6 +309,57 @@ public class TrainingController {
   public String report(@RequestParam Long trainId) {
     return trainingService.printReport(trainId);
   }
+
+
+
+//  @GetMapping("/Report")
+//  public void report(@RequestParam Long trainId, @RequestParam String fileName, HttpServletResponse response) {
+//    String base64Pdf = trainingService.printReport(trainId, fileName);
+//
+//    if (base64Pdf != null) {
+//      try {
+//        byte[] pdfBytes = Base64.decodeBase64(base64Pdf);
+//
+//
+//        response.setContentType("application/pdf");
+//        response.setHeader("Content-Disposition", "inline; filename=" + fileName + ".pdf");
+//
+//        try (ServletOutputStream outputStream = response.getOutputStream()) {
+//          outputStream.write(pdfBytes);
+//          outputStream.flush();
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+//    }
+//  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // @GetMapping("/findAllApprove")
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {

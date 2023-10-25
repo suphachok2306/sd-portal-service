@@ -7,7 +7,15 @@ import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-import java.io.InputStream;
+
+import java.io.*;
+
+//import java.nio.file.Files;
+//import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,10 +23,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -838,14 +848,9 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
     return java.util.Base64.getEncoder().encodeToString(imageBytes);
   }
 
-
   public String printReport(Long trainId) {
     try {
-//      Training training_id = trainingRepository.findById(trainId)
-//              .orElseThrow(() -> new RuntimeException("TrainId not found: " + trainId));
-
       Training training_id = findByTrainingId(trainId);
-
 
       if (training_id == null) {
         return null;
@@ -901,8 +906,7 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-
-      // Convert the byte array to Base64
+      
       return Base64.encodeBase64String(bytes);
     } catch (Exception e) {
       e.printStackTrace();
@@ -910,6 +914,86 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 
     return null;
   }
+
+
+
+//  public String printReport(Long trainId,String fileName) {
+//    try {
+//      Training training_id = findByTrainingId(trainId);
+//
+//      if (training_id == null) {
+//        return null;
+//      }
+//      List<Map<String, Object>> dataList = new ArrayList<>();
+//
+//      Map<String, Object> params = new HashMap<>();
+//      String imageBase64Ap1 = convertByteToBase64(training_id.getStatus().get(0).getApproveId().getSignature().getImage());
+//      String imageBase64Ap2 = convertByteToBase64(training_id.getStatus().get(1).getApproveId().getSignature().getImage());
+//      String imageBase64Ap3 = convertByteToBase64(training_id.getStatus().get(2).getApproveId().getSignature().getImage());
+//
+//      params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
+//      params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
+//      params.put("date_save", training_id.getDateSave());
+//
+//      params.put("course_name", training_id.getCourses().get(0).getCourseName());
+//      params.put("objective", training_id.getCourses().get(0).getObjective());
+//      params.put("start_date",training_id.getCourses().get(0).getStartDate());
+//      params.put("end_date",training_id.getCourses().get(0).getEndDate());
+//      params.put("price", training_id.getCourses().get(0).getPrice());
+//      params.put("institute", training_id.getCourses().get(0).getInstitute());
+//      params.put("place", training_id.getCourses().get(0).getPlace());
+//      //checkbox budget
+//
+//      params.put("emp_code", training_id.getUser().getEmpCode());
+//      params.put("firstname", training_id.getUser().getFirstname());
+//      params.put("lastname", training_id.getUser().getLastname());
+//      params.put("position", training_id.getUser().getPosition().getPositionName());
+//
+//      //approve1
+//      params.put("imageBase64Ap1", imageBase64Ap1);
+//      params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
+//      //approve2
+//      params.put("imageBase64Ap2", imageBase64Ap2);
+//      params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
+//      //approve3
+//      params.put("imageBase64Ap3", imageBase64Ap3);
+//
+//      params.put("action", training_id.getAction());
+//      params.put("actionDate", training_id.getActionDate());
+//
+//      dataList.add(params);
+//
+//      // Load the JasperReport from a JRXML file
+//      InputStream reportInput = UserService.class.getClassLoader().getResourceAsStream("report/OF1-report.jrxml");
+//      JasperReport jasperReport = JasperCompileManager.compileReport(reportInput);
+//
+//      // Create a JRDataSource from the user data
+//      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+//
+//      // Fill the report with data
+//      JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+//
+//      // Export the report to PDF
+//      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//      JasperExportManager.exportReportToPdfStream(jasperPrint, byteArrayOutputStream);
+//      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+//
+//      // Save the PDF with the provided filename
+//      String pdfFilePath = System.getProperty("user.home") + "/Downloads/jasperPdf/" + fileName + ".pdf";
+//      try (FileOutputStream fos = new FileOutputStream(pdfFilePath)) {
+//        fos.write(bytes);
+//      }
+//
+//      return Base64.encodeBase64String(bytes);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//
+//    return null;
+//  }
+
+
+
 
   /**
    * @เช็คNullของTraining1
@@ -966,35 +1050,35 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
     long trainingId
   ) {
 
-      String sql = "DELETE FROM Status WHERE training_id = :trainingId";
-       entityManager
-      .createNativeQuery(sql)
-      .setParameter("trainingId", trainingId)
-      .executeUpdate();
-    
-    User approve1 = userRepository
-      .findById(editTraining.getApprove1_id())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "Approve1Id not found: " + editTraining.getApprove1_id()
-        )
-      );
-     
-    User approve3 = userRepository
-      .findById(Long.valueOf(3))
-      .orElseThrow(() ->
-        new RuntimeException(
-          "Approve1Id not found: " + editTraining.getApprove1_id()
-        )
-      );
+     String sql = "DELETE FROM Status WHERE training_id = :trainingId";
+     entityManager
+             .createNativeQuery(sql)
+             .setParameter("trainingId", trainingId)
+             .executeUpdate();
 
-   
-    Role vicePresidentRole = approve1
-      .getRoles()
-      .stream()
-      .filter(role -> role.getRole().equals(Roles.VicePresident))
-      .findFirst()
-      .orElse(null);
+     User approve1 = userRepository
+             .findById(editTraining.getApprove1_id())
+             .orElseThrow(() ->
+                     new RuntimeException(
+                             "Approve1Id not found: " + editTraining.getApprove1_id()
+                     )
+             );
+
+     User approve3 = userRepository
+             .findById(Long.valueOf(3))
+             .orElseThrow(() ->
+                     new RuntimeException(
+                             "Approve1Id not found: " + editTraining.getApprove1_id()
+                     )
+             );
+
+
+     Role vicePresidentRole = approve1
+             .getRoles()
+             .stream()
+             .filter(role -> role.getRole().equals(Roles.VicePresident))
+             .findFirst()
+             .orElse(null);
 
 //    Training training = trainingRepository
 //      .findById(trainingId)
@@ -1002,64 +1086,64 @@ public static List<Status> removeDuplicateStatus(List<Status> statusList) {
 //        new RuntimeException("TrainingId not found: " + trainingId)
 //      );
 
-    Training training_id = findByTrainingId(trainingId);
+     Training training_id = findByTrainingId(trainingId);
 
-    if (vicePresidentRole != null) {
-      Status status1 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .approveId(approve1)
-        .active(1)
-        .build();
+     if (vicePresidentRole != null) {
+       Status status1 = Status
+               .builder()
+               .status(null)
+               .training(training_id)
+               .approveId(approve1)
+               .active(1)
+               .build();
 
-      Status status2 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .active(0)
-        .build();
+       Status status2 = Status
+               .builder()
+               .status(null)
+               .training(training_id)
+               .active(0)
+               .build();
 
-      statusRepository.save(status1);
-      statusRepository.save(status2);
-      training_id.getStatus().add(status1);
-      training_id.getStatus().add(status2);
-    } else {
+       statusRepository.save(status1);
+       statusRepository.save(status2);
+       training_id.getStatus().add(status1);
+       training_id.getStatus().add(status2);
+     } else {
 
 
-      Status status1 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .approveId(approve1)
-        .active(1)
-        .build();
+       Status status1 = Status
+               .builder()
+               .status(null)
+               .training(training_id)
+               .approveId(approve1)
+               .active(1)
+               .build();
 
-      Status status2 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .approveId(approve3)
-        .active(0)
-        .build();
+       Status status2 = Status
+               .builder()
+               .status(null)
+               .training(training_id)
+               .approveId(approve3)
+               .active(0)
+               .build();
 
-      Status status3 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .active(0)
-        .build();
+       Status status3 = Status
+               .builder()
+               .status(null)
+               .training(training_id)
+               .active(0)
+               .build();
 
-      statusRepository.save(status1);
-      statusRepository.save(status2);
-      statusRepository.save(status3);
-      training_id.getStatus().add(status1);
-      training_id.getStatus().add(status2);
-      training_id.getStatus().add(status3);
-    }
-  }
-  
+       statusRepository.save(status1);
+       statusRepository.save(status2);
+       statusRepository.save(status3);
+       training_id.getStatus().add(status1);
+       training_id.getStatus().add(status2);
+       training_id.getStatus().add(status3);
+     }
+   }
 }
+
 // public List<Map<String, Object>> findbyAllCountApprove(Long count) {
 //     String jpql = "SELECT t FROM Training t " +
 //                   "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count ";
