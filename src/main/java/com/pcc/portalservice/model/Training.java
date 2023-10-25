@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class Training {
 
     @ManyToMany
     private List<Course> courses = new ArrayList<>();
-
+    
+    @ToString.Exclude//ใส่มาแก้ loop .hashcode()
     @ManyToOne
     @JoinColumn(name = "approve1_id")
     private User approve1;

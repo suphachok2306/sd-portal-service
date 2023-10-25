@@ -2,6 +2,7 @@ package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -42,6 +43,7 @@ public class User {
   @JoinColumn(name = "sector_id")
   private Sector sector;
 
+  
   @OneToOne
   @JoinColumn(name = "department_id")
   private Department department;
@@ -61,5 +63,11 @@ public class User {
   @OneToOne(mappedBy = "user")
   @JsonIgnore
   private Signature signature;
+
+
+  @Override
+  public int hashCode() {
+      return Objects.hash(id, empCode, firstname, lastname, email, roles);
+  }
 
 }

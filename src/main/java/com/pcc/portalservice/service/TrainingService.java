@@ -215,6 +215,12 @@ public class TrainingService {
                             "Approve1Id not found: " + editTraining.getApprove1_id()
                     )
             );
+    if (editTraining.getApprove1_id() != training_id.getApprove1().getId()) {
+      System.out.println(editTraining.getApprove1_id());
+      System.out.println(training_id.getApprove1().getId());
+      changeApprover(editTraining, trainingId);
+    }
+    
 
     training_id.setUser(user_id);
     training_id.setDateSave(new Date());
@@ -222,12 +228,11 @@ public class TrainingService {
     training_id.getCourses().add(course_id);
     training_id.setApprove1(approve1_id);
     training_id.setBudget(editTraining.getBudget());
-    if (editTraining.getApprove1_id() != training_id.getApprove1().getId()) {
-      changeApprover(editTraining, trainingId);
-    }
+
     Training updatedTraining = trainingRepository.save(training_id);
     return updatedTraining;
   }
+  
 
   /**
    * @EditTrainingSection3
@@ -1278,11 +1283,14 @@ public class TrainingService {
           EditTrainingSection1Request editTraining,
           long trainingId
   ) {
-    String sql = "DELETE FROM Status WHERE training_id = :trainingId";
+    System.out.println(trainingId);
+    String jpql = "DELETE FROM Status s WHERE training_id = :training_id";
     entityManager
-            .createNativeQuery(sql)
-            .setParameter("trainingId", trainingId)
+            .createQuery(jpql)
+            .setParameter("training_id", trainingId)
             .executeUpdate();
+    
+
 
     User approve1 = userRepository
             .findById(editTraining.getApprove1_id())
@@ -1307,27 +1315,29 @@ public class TrainingService {
             .findFirst()
             .orElse(null);
 
-    //    Training training = trainingRepository
-    //      .findById(trainingId)
-    //      .orElseThrow(() ->
-    //        new RuntimeException("TrainingId not found: " + trainingId)
-    //      );
+    // //    Training training = trainingRepository
+    // //      .findById(trainingId)
+    // //      .orElseThrow(() ->
+    // //        new RuntimeException("TrainingId not found: " + trainingId)
+    // //      );
 
-    Training training_id = findByTrainingId(trainingId);
-
+    Training training_id = findByTrainingIdEdit(trainingId);
+    if (training_id.getStatus() == null) {
+      training_id.setStatus(new ArrayList<>());
+    }
     if (vicePresidentRole != null) {
       Status status1 = Status
               .builder()
-              .status(null)
               .training(training_id)
+              .status(null)
               .approveId(approve1)
               .active(1)
               .build();
 
       Status status2 = Status
               .builder()
-              .status(null)
               .training(training_id)
+              .status(null)
               .active(0)
               .build();
 
@@ -1354,20 +1364,36 @@ public class TrainingService {
 
       Status status3 = Status
               .builder()
-              .status(null)
               .training(training_id)
+              .status(null)
               .active(0)
               .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
       statusRepository.save(status3);
+
       training_id.getStatus().add(status1);
       training_id.getStatus().add(status2);
       training_id.getStatus().add(status3);
     }
   }
+
+
+  public Training findByTrainingIdEdit(Long id) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Training> query = builder.createQuery(Training.class);
+    Root<Training> root = query.from(Training.class);
+    query.where(builder.equal(root.get("id"), id));
+
+    List<Training> trainingList = entityManager
+            .createQuery(query)
+            .getResultList();
+      return trainingList.get(0);
+  }
 }
+
+
 // public List<Map<String, Object>> findbyAllCountApprove(Long count) {
 //     String jpql = "SELECT t FROM Training t " +
 //                   "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status = 'อนุมัติ') = :count ";
