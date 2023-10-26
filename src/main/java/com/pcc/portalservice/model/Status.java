@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "Status")
@@ -26,7 +27,9 @@ public class Status {
     
     private int active;
 
-//    private Long approveId;
+    @Temporal(TemporalType.DATE)
+    private Date approvalDate;
+
     @ManyToOne
     @JoinColumn(name = "approve_id")
     private User approveId;

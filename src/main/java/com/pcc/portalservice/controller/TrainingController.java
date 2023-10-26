@@ -323,32 +323,6 @@ public class TrainingController {
 
 
 
-//  @GetMapping("/Report")
-//  public void report(@RequestParam Long trainId, @RequestParam String fileName, HttpServletResponse response) {
-//    String base64Pdf = trainingService.printReport(trainId, fileName);
-//
-//    if (base64Pdf != null) {
-//      try {
-//        byte[] pdfBytes = Base64.decodeBase64(base64Pdf);
-//
-//
-//        response.setContentType("application/pdf");
-//        response.setHeader("Content-Disposition", "inline; filename=" + fileName + ".pdf");
-//
-//        try (ServletOutputStream outputStream = response.getOutputStream()) {
-//          outputStream.write(pdfBytes);
-//          outputStream.flush();
-//        } catch (IOException e) {
-//          e.printStackTrace();
-//        }
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//      }
-//    }
-//  }
-
-
-
 
 
 

@@ -302,11 +302,6 @@ public class TrainingService {
           Long approveId,
           StatusApprove statusApprove
   ) {
-    //    Training training = trainingRepository
-    //      .findById(trainingId)
-    //      .orElseThrow(() ->
-    //        new RuntimeException("Training not found with ID: " + trainingId)
-    //      );
     Training training_id = findByTrainingId(trainingId);
 
     User approve = userRepository
@@ -328,6 +323,7 @@ public class TrainingService {
         Status existingStatus = optionalStatus.get();
         existingStatus.setStatus(statusApprove);
         existingStatus.setActive(2);
+        existingStatus.setApprovalDate(new Date());
         statusRepository.save(existingStatus);
 
         Optional<Status> updateStatusNext = training_id
@@ -354,6 +350,7 @@ public class TrainingService {
       } else {
         Status existingStatus = optionalStatus.get();
         existingStatus.setStatus(statusApprove);
+        existingStatus.setApprovalDate(new Date());
         statusRepository.save(existingStatus);
       }
     } else {
@@ -369,6 +366,7 @@ public class TrainingService {
       UpdateStatus.setStatus(statusApprove);
       UpdateStatus.setApproveId(approve);
       UpdateStatus.setActive(3);
+      UpdateStatus.setApprovalDate(new Date());
       statusRepository.save(UpdateStatus);
     }
 
@@ -852,19 +850,8 @@ public class TrainingService {
 
 //  public String printReport(Long trainId) {
 //    Training training_id = findByTrainingId(trainId);
-//    User approve = userRepository
-//            .findById(training_id.getApprove1().getId())
-//            .orElseThrow(() ->
-//                    new RuntimeException(
-//                            "Approve1Id not found: " + training_id.getApprove1().getId()
-//                    )
-//            );
-//    Role vicePresidentRole = approve
-//            .getRoles()
-//            .stream()
-//            .filter(role -> role.getRole().equals(Roles.VicePresident))
-//            .findFirst()
-//            .orElse(null);
+//    User approve = userRepository.findById(training_id.getApprove1().getId()).orElseThrow(() -> new RuntimeException("Approve1Id not found: " + training_id.getApprove1().getId()));
+//    Role vicePresidentRole = approve.getRoles().stream().filter(role -> role.getRole().equals(Roles.VicePresident)).findFirst().orElse(null);
 //
 //    if (vicePresidentRole == null) {
 //      System.out.println("Approver");
@@ -873,94 +860,49 @@ public class TrainingService {
 //
 //        Map<String, Object> params = new HashMap<>();
 //        String imageBase64Ap1 = convertByteToBase64(
-//                training_id
-//                        .getStatus()
-//                        .get(0)
-//                        .getApproveId()
-//                        .getSignature()
-//                        .getImage()
+//                training_id.getStatus().get(0).getApproveId().getSignature().getImage()
 //        );
-//
 //
 //        String imageBase64Ap2 = convertByteToBase64(
-//                training_id
-//                        .getStatus()
-//                        .get(1)
-//                        .getApproveId()
-//                        .getSignature()
-//                        .getImage()
+//                training_id.getStatus().get(1).getApproveId().getSignature().getImage()
 //        );
 //        String imageBase64Ap3 = convertByteToBase64(
-//                training_id
-//                        .getStatus()
-//                        .get(2)
-//                        .getApproveId()
-//                        .getSignature()
-//                        .getImage()
+//                training_id.getStatus().get(2).getApproveId().getSignature().getImage()
 //        );
 //
 //
-//        params.put(
-//                "dept_code",
-//                training_id.getUser().getDepartment().getDeptCode()
-//        );
-//        params.put(
-//                "dept_name",
-//                training_id.getUser().getDepartment().getDeptName()
-//        );
+//
+//
+//        params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
+//        params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
 //        params.put("date_save", training_id.getDateSave());
 //
-//        params.put(
-//                "course_name",
-//                training_id.getCourses().get(0).getCourseName()
-//        );
+//        params.put("course_name", training_id.getCourses().get(0).getCourseName());
 //        params.put("objective", training_id.getCourses().get(0).getObjective());
-//        params.put(
-//                "start_date",
-//                training_id.getCourses().get(0).getStartDate()
-//        );
+//        params.put("start_date", training_id.getCourses().get(0).getStartDate());
 //        params.put("end_date", training_id.getCourses().get(0).getEndDate());
 //        params.put("price", training_id.getCourses().get(0).getPrice());
 //        params.put("institute", training_id.getCourses().get(0).getInstitute());
 //        params.put("place", training_id.getCourses().get(0).getPlace());
-//        //checkbox budget
+//        params.put("budget", training_id.getBudget());
 //
 //        params.put("emp_code", training_id.getUser().getEmpCode());
 //        params.put("firstname", training_id.getUser().getFirstname());
 //        params.put("lastname", training_id.getUser().getLastname());
-//        params.put(
-//                "position",
-//                training_id.getUser().getPosition().getPositionName()
-//        );
+//        params.put("position", training_id.getUser().getPosition().getPositionName());
 //
 //        //approve1
 //        params.put("imageBase64Ap1", imageBase64Ap1);
-//        params.put(
-//                "positionAp1",
-//                training_id
-//                        .getStatus()
-//                        .get(0)
-//                        .getApproveId()
-//                        .getPosition()
-//                        .getPositionName()
-//        );
+//        params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
 //        //approve2
 //        params.put("imageBase64Ap2", imageBase64Ap2);
-//        params.put(
-//                "positionAp2",
-//                training_id
-//                        .getStatus()
-//                        .get(1)
-//                        .getApproveId()
-//                        .getPosition()
-//                        .getPositionName()
-//        );
+//        params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
 //        //approve3
 //        params.put("imageBase64Ap3", imageBase64Ap3);
 //
-//
 //        params.put("action", training_id.getAction());
 //        params.put("actionDate", training_id.getActionDate());
+//
 //        //section2
 //        params.put("app_name", training_id.getApprove1().getFirstname());
 //        params.put("app_lastname", training_id.getApprove1().getLastname());
@@ -978,8 +920,6 @@ public class TrainingService {
 //        params.put("cause", training_id.getResult().get(0).getCause());
 //        params.put("plan", training_id.getResult().get(0).getPlan());
 //        params.put("result", training_id.getResult().get(0).getResult());
-//        params.put("budget", training_id.getBudget());
-////        params.put("approve1", approve1);
 //
 //        dataList.add(params);
 //
@@ -995,11 +935,7 @@ public class TrainingService {
 //        JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
 //
 //        // Fill the report with data
-//        JasperPrint jasperPrint = JasperFillManager.fillReport(
-//                jasperReport,
-//                params,
-//                dataSource
-//        );
+//        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
 //
 //        // Export the report to PDF
 //        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -1028,8 +964,8 @@ public class TrainingService {
             .findFirst()
             .orElse(null);
 
-    if (vicePresidentRole == null) {
-      System.out.println("Approver");
+//    if (vicePresidentRole == null) {
+//      System.out.println("Approver");
       try {
         List<Map<String, Object>> dataList = new ArrayList<>();
 
@@ -1041,7 +977,7 @@ public class TrainingService {
           if (user_id1 != null) {
             params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
             params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
-            params.put("date_saveUser1",training_id.getDateSave());
+            params.put("date_saveUser1",training_id.getStatus().get(0).getApprovalDate());
           }
         }
         if (userId2 != null) {
@@ -1049,14 +985,14 @@ public class TrainingService {
           if (user_id2 != null) {
             params.put("imageBase64User2", convertByteToBase64(user_id2.getSignature().getImage()));
             params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
-            params.put("date_saveUser2",training_id.getDateSave());
+            params.put("date_saveUser2",training_id.getStatus().get(1).getApprovalDate());
           }
         }
         if (userId3 != null) {
           User user_id3 = userRepository.findById(userId3).orElse(null);
           if (user_id3 != null) {
             params.put("imageBase64User3", convertByteToBase64(user_id3.getSignature().getImage()));
-            params.put("date_saveUser3",training_id.getDateSave());
+            params.put("date_saveUser3",training_id.getStatus().get(2).getApprovalDate());
           }
         }
         if (userId4 != null) {
@@ -1068,6 +1004,7 @@ public class TrainingService {
 
 
         params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
+        params.put("sector_name",training_id.getUser().getSector().getSectorName());
         params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
         params.put("date_save", training_id.getDateSave());
         params.put("course_name", training_id.getCourses().get(0).getCourseName());
@@ -1138,89 +1075,8 @@ public class TrainingService {
       } catch (Exception e) {
         e.printStackTrace();
       }
-    }
     return null;
   }
-
-
-
-    ////////////////////////////////////
-
-    //  public String printReport(Long trainId,String fileName) {
-//    try {
-//      Training training_id = findByTrainingId(trainId);
-//
-//      if (training_id == null) {
-//        return null;
-//      }
-//      List<Map<String, Object>> dataList = new ArrayList<>();
-//
-//      Map<String, Object> params = new HashMap<>();
-//      String imageBase64Ap1 = convertByteToBase64(training_id.getStatus().get(0).getApproveId().getSignature().getImage());
-//      String imageBase64Ap2 = convertByteToBase64(training_id.getStatus().get(1).getApproveId().getSignature().getImage());
-//      String imageBase64Ap3 = convertByteToBase64(training_id.getStatus().get(2).getApproveId().getSignature().getImage());
-//
-//      params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
-//      params.put("dept_name", training_id.getUser().getDepartment().getDeptName());
-//      params.put("date_save", training_id.getDateSave());
-//
-//      params.put("course_name", training_id.getCourses().get(0).getCourseName());
-//      params.put("objective", training_id.getCourses().get(0).getObjective());
-//      params.put("start_date",training_id.getCourses().get(0).getStartDate());
-//      params.put("end_date",training_id.getCourses().get(0).getEndDate());
-//      params.put("price", training_id.getCourses().get(0).getPrice());
-//      params.put("institute", training_id.getCourses().get(0).getInstitute());
-//      params.put("place", training_id.getCourses().get(0).getPlace());
-//      //checkbox budget
-//
-//      params.put("emp_code", training_id.getUser().getEmpCode());
-//      params.put("firstname", training_id.getUser().getFirstname());
-//      params.put("lastname", training_id.getUser().getLastname());
-//      params.put("position", training_id.getUser().getPosition().getPositionName());
-//
-//      //approve1
-//      params.put("imageBase64Ap1", imageBase64Ap1);
-//      params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
-//      //approve2
-//      params.put("imageBase64Ap2", imageBase64Ap2);
-//      params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
-//      //approve3
-//      params.put("imageBase64Ap3", imageBase64Ap3);
-//
-//      params.put("action", training_id.getAction());
-//      params.put("actionDate", training_id.getActionDate());
-//
-//      dataList.add(params);
-//
-//      // Load the JasperReport from a JRXML file
-//      InputStream reportInput = UserService.class.getClassLoader().getResourceAsStream("report/OF1-report.jrxml");
-//      JasperReport jasperReport = JasperCompileManager.compileReport(reportInput);
-//
-//      // Create a JRDataSource from the user data
-//      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
-//
-//      // Fill the report with data
-//      JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
-//
-//      // Export the report to PDF
-//      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//      JasperExportManager.exportReportToPdfStream(jasperPrint, byteArrayOutputStream);
-//      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-//
-//      // Save the PDF with the provided filename
-//      String pdfFilePath = System.getProperty("user.home") + "/Downloads/jasperPdf/" + fileName + ".pdf";
-//      try (FileOutputStream fos = new FileOutputStream(pdfFilePath)) {
-//        fos.write(bytes);
-//      }
-//
-//      return Base64.encodeBase64String(bytes);
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//    }
-//
-//    return null;
-//  }
-
 
 
 

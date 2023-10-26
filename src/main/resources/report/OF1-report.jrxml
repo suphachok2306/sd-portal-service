@@ -150,6 +150,7 @@
 	<field name="date_saveUser3" class="java.sql.Date"/>
 	<field name="time" class="java.lang.String"/>
 	<field name="note" class="java.lang.String"/>
+	<field name="sector_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -233,7 +234,7 @@
 				<text><![CDATA[วันเวลาฝึกอบรม : ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="160" width="100" height="30" uuid="8585b5ef-1cb5-4168-b404-936efb229519"/>
+				<reportElement x="376" y="160" width="52" height="30" uuid="8585b5ef-1cb5-4168-b404-936efb229519"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
@@ -254,21 +255,21 @@
 				<text><![CDATA[สถานที่ฝึกอบรม]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="91" y="240" width="100" height="30" uuid="a810f31a-2a52-484c-8f7a-3197adb8fb1a"/>
+				<reportElement x="91" y="230" width="100" height="30" uuid="a810f31a-2a52-484c-8f7a-3197adb8fb1a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["(    )  อยู่ในงบประมาณ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="210" y="240" width="140" height="30" uuid="2cd73b5a-586c-499e-ace9-a6363b6d0589"/>
+				<reportElement x="210" y="230" width="140" height="30" uuid="2cd73b5a-586c-499e-ace9-a6363b6d0589"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["(    ) อื่นๆ (กรุณาระบุรายละเอียด) "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="460" y="160" width="97" height="30" uuid="5bb8b0ff-bfcb-433a-bd9d-dba1b60ab379"/>
+				<reportElement x="490" y="160" width="66" height="30" uuid="5bb8b0ff-bfcb-433a-bd9d-dba1b60ab379"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
@@ -307,7 +308,7 @@
 			</rectangle>
 			<textField>
 				<reportElement x="410" y="370" width="134" height="30" uuid="4008a034-a7da-439c-ac44-bb5034c32364"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
@@ -317,7 +318,7 @@
 			</rectangle>
 			<textField>
 				<reportElement x="410" y="420" width="134" height="30" uuid="b64fec6c-f508-4da8-8724-f11d7e4e9564"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
@@ -385,14 +386,14 @@
 			</staticText>
 			<textField>
 				<reportElement x="239" y="370" width="140" height="30" uuid="9a5857f5-5e42-4b14-a7e6-02e21af7c629"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="240" y="420" width="138" height="30" uuid="f3862437-5a5d-452a-8a3e-137ceeba500e"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
@@ -402,7 +403,7 @@
 			</rectangle>
 			<textField>
 				<reportElement x="410" y="470" width="134" height="30" uuid="6f30f4a2-2078-4b5e-8957-7774c3df6ec2"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_saveUser3} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser3}) : ""]]></textFieldExpression>
@@ -410,10 +411,11 @@
 			<textField>
 				<reportElement x="0" y="60" width="180" height="30" uuid="08b5f138-357e-4b2e-8bf9-3edbc338cd9d"/>
 				<box>
+					<pen lineWidth="0.75" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
@@ -431,7 +433,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{dept_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sector_name}+" / "+$F{dept_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="140" y="100" width="416" height="30" uuid="8f89b18c-0d1a-482c-ad50-e0796bddd834"/>
@@ -448,7 +450,7 @@
 				<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="91" y="160" width="136" height="30" uuid="887df066-f0a8-4935-9266-96dcfc708814"/>
+				<reportElement x="91" y="160" width="156" height="30" uuid="887df066-f0a8-4935-9266-96dcfc708814"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
@@ -462,15 +464,15 @@
 				<textFieldExpression><![CDATA[$F{institute}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="190" width="196" height="50" uuid="534f5d0d-dbfd-4edf-af28-6ef19e4ade9c"/>
+				<reportElement x="360" y="190" width="196" height="30" uuid="534f5d0d-dbfd-4edf-af28-6ef19e4ade9c"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="160" width="70" height="30" uuid="3656fce0-543f-4bef-8cbc-84baaaa84280"/>
-				<textElement verticalAlignment="Middle">
+				<reportElement x="428" y="160" width="62" height="30" uuid="3656fce0-543f-4bef-8cbc-84baaaa84280"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
@@ -498,72 +500,58 @@
 			</textField>
 			<staticText>
 				<reportElement x="11" y="370" width="38" height="30" uuid="1179eb5c-a993-4ea2-a36b-056be92a44e8"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[ลงชื่อ]]></text>
 			</staticText>
 			<image>
-				<reportElement x="60" y="365" width="40" height="40" uuid="4b94e7ab-a5c7-4000-86fc-f4ede4308473"/>
+				<reportElement x="60" y="375" width="40" height="40" uuid="4b94e7ab-a5c7-4000-86fc-f4ede4308473"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User1}))]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="120" y="370" width="100" height="30" uuid="d0ab5d66-946c-430c-96a1-b34ae918c717"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[ผู้บังคับบัญชา]]></text>
 			</staticText>
 			<image>
-				<reportElement x="60" y="415" width="40" height="40" uuid="cb556b22-26c9-411f-9e54-ffdb9e237f6b"/>
+				<reportElement x="60" y="425" width="40" height="40" uuid="cb556b22-26c9-411f-9e54-ffdb9e237f6b"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User2}))]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="11" y="420" width="38" height="30" uuid="d7909973-8219-48d1-9b46-cd912185f949"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[ลงชื่อ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="420" width="100" height="30" uuid="692dd6cf-900f-470a-83df-18cbd4746dd0"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[ผู้บริหาร]]></text>
 			</staticText>
 			<image>
-				<reportElement x="60" y="465" width="40" height="40" uuid="c7f22dca-0c49-4c63-9bf8-5003dc64cd9c"/>
+				<reportElement x="60" y="475" width="40" height="40" uuid="c7f22dca-0c49-4c63-9bf8-5003dc64cd9c"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User3}))]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="10" y="465" width="38" height="30" uuid="d9383aef-a443-46d3-ba1e-b98b3085815d"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement x="11" y="470" width="38" height="30" uuid="d9383aef-a443-46d3-ba1e-b98b3085815d"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[ลงชื่อ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="120" y="470" width="100" height="30" uuid="b97b5d85-9d7a-4498-89b3-59f6b7155efc"/>
-				<textElement verticalAlignment="Middle">
+				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<text><![CDATA[กรรมการผู้จัดการ]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="36" y="552" width="13" height="20" uuid="a810f31a-2a52-484c-8f7a-3197adb8fb1a"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{action}.equals( "training") ? " X " : "  "]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="308" y="552" width="11" height="20" uuid="5f5a832a-da44-48d5-8db7-b30ebf6b64f8"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{action}.equals( "getCertificate") ? " X " : "  "]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="139" y="547" width="159" height="30" uuid="529057c9-de90-4ded-8148-8c97d4e6788b"/>
 				<textElement verticalAlignment="Middle">
@@ -584,88 +572,54 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_save})]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="215" y="245" width="13" height="20" uuid="6256b5fd-3723-4bd2-a1dc-ef7155c49c68"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{budget} < 0 ? "\u2713" : "\u2713"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="69" y="240" width="13" height="20" uuid="eac37707-b001-4230-a7e5-ec7aa94e159d"/>
-				<textElement verticalAlignment="Middle" markup="html">
-					<font fontName="Arial" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{budget} > 0 ? "\u2713" : "\u2713"]]></textFieldExpression>
-			</textField>
-			<frame>
-				<reportElement x="211" y="251" width="12" height="12" uuid="7a502827-9957-4164-99db-9d47fe022798">
-					<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
-				</reportElement>
-				<line>
-					<reportElement x="2" y="7" width="2" height="2" uuid="2869473f-6c28-4ded-a8f6-7077ed24d6f5">
-						<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
-					</reportElement>
-				</line>
-				<line direction="BottomUp">
-					<reportElement x="4" y="3" width="6" height="6" uuid="c2c4b359-f219-40f0-b78d-b2e3a2d3d585">
-						<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
-					</reportElement>
-				</line>
-			</frame>
-			<frame>
-				<reportElement x="88" y="251" width="12" height="12" uuid="35bfadd9-a1b0-4b8c-9309-1700cce827d4">
-					<printWhenExpression><![CDATA[$F{budget} > 0]]></printWhenExpression>
-				</reportElement>
-				<line>
-					<reportElement x="2" y="7" width="2" height="2" uuid="05d0be56-71fa-4806-a0ee-b0e2d22b66e6">
-						<printWhenExpression><![CDATA[$F{budget} > 0]]></printWhenExpression>
-					</reportElement>
-				</line>
-				<line direction="BottomUp">
-					<reportElement x="4" y="3" width="6" height="6" uuid="e4bf3b22-1441-4f9a-9153-f3a93d2d9bdf">
-						<printWhenExpression><![CDATA[$F{budget} > 0]]></printWhenExpression>
-					</reportElement>
-				</line>
-			</frame>
-			<line direction="BottomUp">
-				<reportElement x="44" y="558" width="6" height="6" uuid="dad15473-3934-41c8-80e2-17bf87f7ceaa">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="42" y="562" width="2" height="2" uuid="f552c229-ac4b-416d-92c7-3860cafb0bc0">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="317" y="564" width="2" height="2" uuid="ebf4fd36-9ac2-4354-a3a2-7654cf65a721">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="319" y="560" width="6" height="6" uuid="091b57b7-968e-4265-89c5-926cbae21ba9">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
 			<image>
-				<reportElement x="175" y="365" width="40" height="40" uuid="b6f9575e-114a-4be3-b604-496c49a32cbf"/>
+				<reportElement x="143" y="365" width="40" height="40" uuid="b6f9575e-114a-4be3-b604-496c49a32cbf"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User4}))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="228" y="160" width="60" height="30" uuid="6f0e3815-bd6d-4ee5-82ef-2ac690338b21"/>
+				<reportElement x="248" y="160" width="128" height="30" uuid="6f0e3815-bd6d-4ee5-82ef-2ac690338b21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["เวลา " + $F{time}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["เวลา " + $F{time} + " น."]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="125" y="150" width="166" height="30" uuid="0a5a7c31-afc2-41aa-93b5-0f6d000dfa87"/>
+				<reportElement x="160" y="146" width="166" height="30" uuid="0a5a7c31-afc2-41aa-93b5-0f6d000dfa87"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="0" y="73" width="180" height="20" uuid="d8c9e523-0639-422a-9c54-8c9551058939"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.........................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="73" width="180" height="20" uuid="10cdf78e-a7c0-4e65-bbea-2b873effeb14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="73" width="180" height="20" uuid="68198269-24c8-4a94-ac55-c3e09698ac43"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="114" width="412" height="20" uuid="cd885089-a8e4-432f-ad4c-7b88660e139e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.........................................................................................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="174" y="144" width="380" height="20" uuid="633eaaa3-a89e-4442-ae62-a60ebaf91460"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.........................................................................................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="204" width="180" height="20" uuid="7c685a03-5eaa-40d6-b5ed-e9c15c169a78"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
 		</band>
 		<band height="690">
 			<staticText>
@@ -1244,176 +1198,84 @@
 				<reportElement x="131" y="587" width="40" height="40" uuid="a689bb76-1ec2-49d1-9861-b2743c7b6ec8"/>
 				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{approve1}))]]></imageExpression>
 			</image>
-			<line>
-				<reportElement x="117" y="476" width="2" height="2" uuid="8eed7b31-fbf7-4cf9-8116-6de5edce6479">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="119" y="472" width="6" height="6" uuid="5702230c-1e8d-4bad-9568-07d67986bbbc">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="113" y="507" width="2" height="2" uuid="76cccb2b-7c7b-480b-be6e-ca182f67aed3">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="115" y="503" width="6" height="6" uuid="57eab366-b5f4-4cf6-af96-ea913c638ae8">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="113" y="538" width="2" height="2" uuid="48de1474-e533-49aa-b8ba-c8cdd846fdba">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="115" y="534" width="6" height="6" uuid="c5948aff-1dac-43fc-b040-ae1c3291c643">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="221" width="6" height="6" uuid="a747b1e4-4ed3-452f-9443-cfd80cb15929">
-					<printWhenExpression><![CDATA[$F{result2}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="465" y="221" width="6" height="6" uuid="4d838dcc-0049-4015-b246-d8cc69876919">
-					<printWhenExpression><![CDATA[$F{result2}.equals("fail")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="524" y="222" width="6" height="6" uuid="56901526-f05a-4b61-b78a-4ce4c38463ae">
-					<printWhenExpression><![CDATA[$F{result2}.equals("none")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="405" y="255" width="2" height="2" uuid="85e04332-eb69-40a9-a89e-64b78c5d316b">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="251" width="6" height="6" uuid="6c67ee4f-ad24-4481-8094-26eac7515305">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="465" y="255" width="2" height="2" uuid="1b437c5a-ba98-42e5-b972-3fb04a7f7aee">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="467" y="251" width="6" height="6" uuid="17782e4b-1da3-4dc8-8771-8ba6855bc75c">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="405" y="315" width="2" height="2" uuid="23e2140e-aba3-45a1-9ac3-41406ed526ec">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="311" width="6" height="6" uuid="8cab291f-b1df-4559-90df-89706f9cd523">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="465" y="315" width="2" height="2" uuid="2b885f4d-00c3-4bf9-8b5d-2363f02e5df4">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="467" y="311" width="6" height="6" uuid="7786e1f5-79d9-40f0-b4f4-ec947da568e6">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="522" y="315" width="2" height="2" uuid="4868ab25-0b86-4bc0-b52d-5c8621862d06">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="524" y="311" width="6" height="6" uuid="74954698-0c31-4ead-946c-a84268010bf6">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="405" y="345" width="2" height="2" uuid="d5dc6e97-ca5a-4114-8eb6-4cd6e995c37a">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="341" width="6" height="6" uuid="9b1196db-4005-4b33-b424-cc1e6fe5f8db">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="405" y="374" width="2" height="2" uuid="ebd0dc81-517e-4734-957d-90e6ec7c0329">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="370" width="6" height="6" uuid="6795e9b0-b029-448c-ac3d-6c96e18fd050">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="463" y="376" width="2" height="2" uuid="44b5774d-50b4-4cc3-bc8b-e3cb46c95b78">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="465" y="372" width="6" height="6" uuid="c8f105c8-0a15-4806-ba0b-81e1893b7c9e">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="465" y="346" width="2" height="2" uuid="d3ef0aad-688c-4bd3-808d-21796d8d6d80">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="467" y="342" width="6" height="6" uuid="158116d2-3edb-439d-b5f6-c11eb93c1446">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="523" y="346" width="2" height="2" uuid="2a447857-a6db-4fe6-9d0e-19cad6c89243">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="525" y="342" width="6" height="6" uuid="a1eb0de6-04db-4bcb-ad2d-da93c86252f5">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="524" y="376" width="2" height="2" uuid="bcf7d1fc-1f70-4c27-b48e-0ba105a4ea9b">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="526" y="372" width="6" height="6" uuid="21123b69-2c96-4d1f-aead-69b54fe5a598">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="407" y="191" width="6" height="6" uuid="a35f4ea7-39f3-45dd-9466-7da39b9b1282">
-					<printWhenExpression><![CDATA[$F{result1}.equals("pass")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="467" y="191" width="6" height="6" uuid="c68c6fdc-8ad2-4576-9e19-b6def07cb3c6">
-					<printWhenExpression><![CDATA[$F{result1}.equals("fail")]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<line direction="BottomUp">
-				<reportElement x="525" y="191" width="6" height="6" uuid="55c50e32-4209-435b-a078-d50213ec2afb">
-					<printWhenExpression><![CDATA[$F{result1}.equals("none")]]></printWhenExpression>
-				</reportElement>
-			</line>
+			<textField>
+				<reportElement x="380" y="209" width="60" height="30" uuid="0ffc2968-c357-43f6-a440-0bdb6932b420"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result2}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="179" width="60" height="30" uuid="e0e9a111-9b6b-4e1b-bc02-cf41fbf86bd4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result1}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="209" width="60" height="30" uuid="2cc76a35-c0f0-4277-90ae-b8f2af8c841b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result2}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="179" width="60" height="30" uuid="6d4be1aa-a9cb-4d7e-8630-b21a2aeb75e1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result1}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="209" width="57" height="30" uuid="5d596c67-dafa-419e-abf0-bfa28160bca7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result2}.equals( "none") ? "  " : "  "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="500" y="179" width="57" height="30" uuid="920f5fac-42b3-4fce-8060-bcb7b3b549a0"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{result1}.equals( "none") ? "  " : "  "]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
