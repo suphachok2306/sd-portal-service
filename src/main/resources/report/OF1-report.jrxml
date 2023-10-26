@@ -495,7 +495,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new DecimalFormat("0.00").format($F{price})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="490" y="160" width="66" height="30" uuid="2c6b0f33-0de4-48f0-a30e-d6aa4af171d4"/>
@@ -650,21 +650,21 @@
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("วันที่ dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="420" width="134" height="30" uuid="5a6a6710-876a-4696-87f0-ee2a2ecf6376"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("วันที่ dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="470" width="134" height="30" uuid="98c65c09-f3cb-4b3c-af73-7788100fbf57"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser3} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser3}) : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{date_saveUser3} != null ? new SimpleDateFormat("วันที่ dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser3}) : ""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="428" y="173" width="62" height="20" uuid="c8877d59-4e79-4475-8481-0109aa91aed6"/>
@@ -1707,6 +1707,97 @@
 				<reportElement x="93" y="600" width="179" height="20" uuid="0b9dc72e-5ca2-42d7-8071-2ab552919d5f"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[.............................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="179" width="49" height="30" uuid="9fb1b16a-53be-4f55-8bce-1b0209c058d5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="209" width="49" height="30" uuid="6f593720-be01-4b89-bf7f-c1678095ac2b"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="239" width="49" height="30" uuid="303cc7d6-3b2e-4446-80f4-66b376afb841"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="269" width="49" height="30" uuid="d9dc30c3-040c-4b01-ac49-2b182b26a26d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="299" width="49" height="30" uuid="4b4730e4-f076-4c9c-b6bd-65adb44ce45a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="329" width="49" height="30" uuid="279a5574-9d43-4901-9607-717de97dbd91"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="359" width="49" height="30" uuid="bf1076fc-6744-4a21-aab4-c1395dcfa44e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[7]]></text>
 			</staticText>
 		</band>
 	</detail>

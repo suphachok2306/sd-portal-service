@@ -856,7 +856,26 @@ public class TrainingService {
         List<Map<String, Object>> dataList = new ArrayList<>();
 
         Map<String, Object> params = new HashMap<>();
-        User evaluator1 = userRepository.findById(userId1).orElse(null);
+//        User evaluator1 = userRepository.findById(userId1).orElse(null);
+
+        if (userId1 == null) {
+          if (userId4 != null){
+            User evaluator4 = userRepository.findById(userId4).orElse(null);
+            params.put("approve1", convertByteToBase64(evaluator4.getSignature().getImage()));
+          }
+          else if (userId1 == null && userId4 == null){
+            User evaluator2 = userRepository.findById(userId2).orElse(null);
+            params.put("approve1", convertByteToBase64(evaluator2.getSignature().getImage()));
+          }
+        }
+        else if (userId1 != null){
+          User evaluator1 = userRepository.findById(userId1).orElse(null);
+          params.put("approve1", convertByteToBase64(evaluator1.getSignature().getImage()));
+        }
+
+
+
+
 
 
         if (userId1 != null) {
@@ -865,6 +884,7 @@ public class TrainingService {
             params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
             params.put("positionAp1", user_id1.getPosition().getPositionName());
             params.put("date_saveUser1",training_id.getStatus().get(0).getApprovalDate());
+
           }
         }
         if (userId2 != null) {
@@ -888,6 +908,8 @@ public class TrainingService {
             params.put("imageBase64User4", convertByteToBase64(user_id4.getSignature().getImage()));
           }
         }
+
+
 
 
         params.put("dept_code", training_id.getUser().getDepartment().getDeptCode());
@@ -934,7 +956,6 @@ public class TrainingService {
         params.put("plan", training_id.getResult().get(0).getPlan());
         params.put("result", training_id.getResult().get(0).getResult());
         params.put("date_saveEvaluation",training_id.getResult().get(0).getEvaluationDate());
-        params.put("approve1", convertByteToBase64(evaluator1.getSignature().getImage()));
         dataList.add(params);
 
         // Load the JasperReport from a JRXML file
