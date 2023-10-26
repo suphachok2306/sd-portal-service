@@ -156,21 +156,22 @@ public class DatabaseInitializer implements CommandLineRunner {
     String sql =
       "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status) VALUES" +
       "('admin@pccth.com',null,'Admin', 'Admin','" + hashpassword + "', '+15555555555',1,1,8,1, 'เป็นพนักงานอยู่')," +
-      "('approver@pccth.com',null,'Approver 1', 'Approver','" + hashpassword + "', '+15555555555', 1, 1, 4, 1, 'เป็นพนักงานอยู่')," +
+      "('approver@pccth.com',null,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+15555555555', 1, 1, 4, 1, 'เป็นพนักงานอยู่')," +
       "('vicepresident@pccth.com',null,'VicePresident', 'VicePresident','" + hashpassword + "','+15555555555',1, 1, 1, 1, 'เป็นพนักงานอยู่')," +
       "('personnel@pccth.com',null,'Personnel', 'Personnel','" + hashpassword + "', '+15555555555', 1, 1, 4, 1, 'เป็นพนักงานอยู่')," +
       "('user@pccth.com',null ,'User', 'User','" + hashpassword + "', '+15555555555',1,1,13,1, 'เป็นพนักงานอยู่')," +
-      "('2@pccth.com',null ,'Approver 2', '2', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('3@pccth.com',null ,'Approver 3', '3', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('4@pccth.com',null,'Approver 4', '4', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('5@pccth.com',null,'Approver 5', '5', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('6@pccth.com',null,'Approver 6', '6', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
+      "('2@pccth.com',null ,'สุริยา', ' จันทร', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
+      "('3@pccth.com',null ,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
+      "('4@pccth.com',null,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
+      "('5@pccth.com',null,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
+      "('6@pccth.com',null,'เสาวภา', '6', '" + hashpassword + "', '1',1,2,4,1, 'เป็นพนักงานอยู่')," +
+      "('7@pccth.com',null,'ณัฐวรรณ', '7', '" + hashpassword + "', '1',1,3,4,1, 'เป็นพนักงานอยู่'),"+
       "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1, 'เป็นพนักงานอยู่')";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2),(11, 5)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5, 5),(6, 2),(7, 2),(8, 2),(9, 2),(10, 2),(11, 5),(12,2)"
       );
       System.out.println("Data inserted into public.users table.");
     } else {

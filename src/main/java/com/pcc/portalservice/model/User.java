@@ -35,6 +35,8 @@ public class User {
 
   private String status;
 
+  // private String title;
+
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Role> roles = new HashSet<>();
 
