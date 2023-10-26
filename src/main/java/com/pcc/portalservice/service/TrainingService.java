@@ -852,6 +852,7 @@ public class TrainingService {
 
   public String printReport(Long trainId,Long userId1,Long userId2,Long userId3,Long userId4) {
     Training training_id = findByTrainingId(trainId);
+
       try {
         List<Map<String, Object>> dataList = new ArrayList<>();
 
@@ -867,6 +868,10 @@ public class TrainingService {
             User evaluator2 = userRepository.findById(userId2).orElse(null);
             params.put("approve1", convertByteToBase64(evaluator2.getSignature().getImage()));
           }
+          else if (userId1 == null && userId2 == null && userId4 == null){
+            User evaluator3 = userRepository.findById(userId3).orElse(null);
+            params.put("approve1", convertByteToBase64(evaluator3.getSignature().getImage()));
+          }
         }
         else if (userId1 != null){
           User evaluator1 = userRepository.findById(userId1).orElse(null);
@@ -878,13 +883,36 @@ public class TrainingService {
 
 
 
+//        if (userId1 != null) {
+//          User user_id1 = userRepository.findById(userId1).orElse(null);
+//          if (user_id1 != null) {
+//            params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
+//            params.put("positionAp1", user_id1.getPosition().getPositionName());
+//            params.put("date_saveUser1",training_id.getStatus().get(0).getApprovalDate());
+//
+//          }
+//        }
+//        if (userId2 != null) {
+//          User user_id2 = userRepository.findById(userId2).orElse(null);
+//          if (user_id2 != null) {
+//            params.put("imageBase64User2", convertByteToBase64(user_id2.getSignature().getImage()));
+//            params.put("positionAp2", user_id2.getPosition().getPositionName());
+//            params.put("date_saveUser2",training_id.getStatus().get(1).getApprovalDate());
+//          }
+//        }
+//        if (userId3 != null) {
+//          User user_id3 = userRepository.findById(userId3).orElse(null);
+//          if (user_id3 != null) {
+//            params.put("imageBase64User3", convertByteToBase64(user_id3.getSignature().getImage()));
+//            params.put("date_saveUser3",training_id.getStatus().get(2).getApprovalDate());
+//          }
+//        }
         if (userId1 != null) {
           User user_id1 = userRepository.findById(userId1).orElse(null);
           if (user_id1 != null) {
             params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
             params.put("positionAp1", user_id1.getPosition().getPositionName());
-            params.put("date_saveUser1",training_id.getStatus().get(0).getApprovalDate());
-
+            params.put("date_saveUser1", training_id.getStatus().get(0).getApprovalDate());
           }
         }
         if (userId2 != null) {
@@ -892,16 +920,27 @@ public class TrainingService {
           if (user_id2 != null) {
             params.put("imageBase64User2", convertByteToBase64(user_id2.getSignature().getImage()));
             params.put("positionAp2", user_id2.getPosition().getPositionName());
-            params.put("date_saveUser2",training_id.getStatus().get(1).getApprovalDate());
+            if (training_id.getStatus().size() == 2) {
+              params.put("date_saveUser2", training_id.getStatus().get(0).getApprovalDate());
+            }
+            else if (training_id.getStatus().size() > 1) {
+              params.put("date_saveUser2", training_id.getStatus().get(1).getApprovalDate());
+            }
           }
         }
         if (userId3 != null) {
           User user_id3 = userRepository.findById(userId3).orElse(null);
           if (user_id3 != null) {
             params.put("imageBase64User3", convertByteToBase64(user_id3.getSignature().getImage()));
-            params.put("date_saveUser3",training_id.getStatus().get(2).getApprovalDate());
+            if (training_id.getStatus().size() > 2) {
+              params.put("date_saveUser3", training_id.getStatus().get(2).getApprovalDate());
+            }
+            else if (training_id.getStatus().size() == 2) {
+              params.put("date_saveUser3", training_id.getStatus().get(1).getApprovalDate());
+            }
           }
         }
+
         if (userId4 != null) {
           User user_id4 = userRepository.findById(userId4).orElse(null);
           if (user_id4 != null) {
