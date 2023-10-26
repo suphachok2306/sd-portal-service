@@ -633,14 +633,17 @@
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{positionAp2}!= null ? $F{positionAp2}: ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{positionAp2} != null) ? $F{positionAp2} : ""
+]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="273" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{positionAp1}!= null ? $F{positionAp1}: ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{positionAp1} != null) ? $F{positionAp1} : ""
+
+]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="370" width="134" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
