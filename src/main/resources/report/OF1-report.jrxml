@@ -474,7 +474,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{note} != null ? $F{note}: "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="248" y="160" width="128" height="30" uuid="722c0394-21ba-4c13-b895-b527fcdc2b3a"/>
