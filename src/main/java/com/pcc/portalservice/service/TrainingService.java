@@ -856,6 +856,7 @@ public class TrainingService {
         List<Map<String, Object>> dataList = new ArrayList<>();
 
         Map<String, Object> params = new HashMap<>();
+        User evaluator1 = userRepository.findById(userId1).orElse(null);
 
 
         if (userId1 != null) {
@@ -933,7 +934,7 @@ public class TrainingService {
         params.put("plan", training_id.getResult().get(0).getPlan());
         params.put("result", training_id.getResult().get(0).getResult());
         params.put("date_saveEvaluation",training_id.getResult().get(0).getEvaluationDate());
-        params.put("approve1", convertByteToBase64(training_id.getApprove1().getSignature().getImage()));
+        params.put("approve1", convertByteToBase64(evaluator1.getSignature().getImage()));
         dataList.add(params);
 
         // Load the JasperReport from a JRXML file

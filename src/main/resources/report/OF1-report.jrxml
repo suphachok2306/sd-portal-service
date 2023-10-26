@@ -373,7 +373,7 @@
 				<textFieldExpression><![CDATA[$F{position}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="139" y="547" width="159" height="30" uuid="529057c9-de90-4ded-8148-8c97d4e6788b"/>
+				<reportElement x="136" y="547" width="159" height="30" uuid="529057c9-de90-4ded-8148-8c97d4e6788b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
@@ -629,18 +629,18 @@
 				<text><![CDATA[กรรมการผู้จัดการ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="240" y="420" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
+				<reportElement x="274" y="420" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{positionAp2}!= null ? $F{positionAp2}: ""]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="239" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
+				<reportElement x="273" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{positionAp1}!= null ? $F{positionAp1}: ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="370" width="134" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
@@ -719,12 +719,12 @@
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="387" width="112" height="20" uuid="7a2ec8ad-8a82-4c2f-93ef-4ee9b4f24945"/>
+				<reportElement x="287" y="385" width="112" height="20" uuid="7a2ec8ad-8a82-4c2f-93ef-4ee9b4f24945"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="440" width="115" height="20" uuid="e68596a3-8992-4b54-9d54-c73a36d79be6"/>
+				<reportElement x="288" y="435" width="115" height="20" uuid="e68596a3-8992-4b54-9d54-c73a36d79be6"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
@@ -742,6 +742,20 @@
 				<reportElement x="412" y="488" width="132" height="20" uuid="8134e7de-6a72-4b9e-a8ff-a68e05a2aaf4"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="370" width="39" height="30" uuid="b5961403-5461-4cc8-8647-ae0f3defa6c5"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="248" y="420" width="39" height="30" uuid="4e4ccbe3-1c0b-4fb9-8852-18a39837f696"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง]]></text>
 			</staticText>
 		</band>
 		<band height="690">
@@ -1146,7 +1160,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result5}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result5}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="329" width="60" height="30" uuid="acd80fed-b1c7-4d40-b5cc-ad03fb53b78c"/>
@@ -1198,7 +1212,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result5}.equals( "none") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result5}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="329" width="57" height="30" uuid="5e4b9418-ec28-4965-9abc-2cc6767318eb"/>
