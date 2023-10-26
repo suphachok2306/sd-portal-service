@@ -37,7 +37,7 @@ public class CourseService {
       .endDate(endDateFormat)
       .time(createCourseRequest.getTime())
       .note(createCourseRequest.getNote())
-      .objective(createCourseRequest.getObjective())
+      .objective("เพื่อนำมาใช้ในการปฎิบัติงาน")
       .price(createCourseRequest.getPrice())
       .priceProject(createCourseRequest.getPriceProject())
       .place(createCourseRequest.getPlace())
@@ -62,7 +62,6 @@ public class CourseService {
     course.setEndDate(endDateFormat);
     course.setTime(createCourseRequest.getTime());
     course.setNote(createCourseRequest.getNote());
-    course.setObjective(createCourseRequest.getObjective());
     course.setPrice(createCourseRequest.getPrice());
     course.setPriceProject(createCourseRequest.getPriceProject());
     course.setPlace(createCourseRequest.getPlace());

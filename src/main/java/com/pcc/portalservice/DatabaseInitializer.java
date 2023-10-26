@@ -45,16 +45,16 @@ public class DatabaseInitializer implements CommandLineRunner {
     if (isTableEmpty("public.course")) {
       jdbcTemplate.execute(
         "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time, objective) VALUES " +
-        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', ''), " +
-        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', ''), " +
-        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', ''), " +
-        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', ''), " +
-        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', ''), " +
-        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', ''), " +
-        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', ''), " +
-        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', ''), " +
-        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', ''), " +
-        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', '');"
+        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
+        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน');"
       );
       System.out.println("Data inserted into public.course table.");
     } else {
@@ -154,19 +154,19 @@ public class DatabaseInitializer implements CommandLineRunner {
     String hashpassword = passwordEncoder.encode("1234");
 
     String sql =
-      "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status) VALUES" +
-      "('admin@pccth.com',null,'Admin', 'Admin','" + hashpassword + "', '+15555555555',1,1,8,1, 'เป็นพนักงานอยู่')," +
-      "('approver@pccth.com',null,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+15555555555', 1, 1, 4, 1, 'เป็นพนักงานอยู่')," +
-      "('vicepresident@pccth.com',null,'VicePresident', 'VicePresident','" + hashpassword + "','+15555555555',1, 1, 1, 1, 'เป็นพนักงานอยู่')," +
-      "('personnel@pccth.com',null,'Personnel', 'Personnel','" + hashpassword + "', '+15555555555', 1, 1, 4, 1, 'เป็นพนักงานอยู่')," +
-      "('user@pccth.com',null ,'User', 'User','" + hashpassword + "', '+15555555555',1,1,13,1, 'เป็นพนักงานอยู่')," +
-      "('2@pccth.com',null ,'สุริยา', ' จันทร', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('3@pccth.com',null ,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('4@pccth.com',null,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('5@pccth.com',null,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '1',1,1,4,1, 'เป็นพนักงานอยู่')," +
-      "('6@pccth.com',null,'เสาวภา', '6', '" + hashpassword + "', '1',1,2,4,1, 'เป็นพนักงานอยู่')," +
-      "('7@pccth.com',null,'ณัฐวรรณ', '7', '" + hashpassword + "', '1',1,3,4,1, 'เป็นพนักงานอยู่'),"+
-      "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1, 'เป็นพนักงานอยู่')";
+      "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status,title) VALUES" +
+      "('admin@pccth.com',null,'Admin', 'Admin','" + hashpassword + "', '+1111111111',1,1,8,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('approver@pccth.com',null,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('vicepresident@pccth.com',null,'VicePresident', 'VicePresident','" + hashpassword + "','+3333333333',1, 1, 1, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('personnel@pccth.com',null,'Personnel', 'Personnel','" + hashpassword + "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('user@pccth.com',null ,'User', 'User','" + hashpassword + "', '+55555555555',1,1,13,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('2@pccth.com',null ,'สุริยา', ' จันทร', '" + hashpassword + "', '+6666666666',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('3@pccth.com',null ,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '+7777777777',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('4@pccth.com',null,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '+8888888888',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('5@pccth.com',null,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '+9999999999',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('6@pccth.com',null,'เสาวภา', '6', '" + hashpassword + "', '+0000000000',1,2,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('7@pccth.com',null,'ณัฐวรรณ', '7', '" + hashpassword + "', '1234567890',1,3,4,1, 'เป็นพนักงานอยู่','นาย'),"+
+      "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1, 'เป็นพนักงานอยู่','นาย')";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);

@@ -11,7 +11,6 @@ public class CreateCourseRequest {
     private String endDate;
     private String time;
     private String note;
-    private String objective;
     private float price;
     private float priceProject;
     private String place;
