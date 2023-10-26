@@ -852,9 +852,6 @@ public class TrainingService {
 
   public String printReport(Long trainId,Long userId1,Long userId2,Long userId3,Long userId4) {
     Training training_id = findByTrainingId(trainId);
-
-    User approve = userRepository.findById(training_id.getApprove1().getId()).orElseThrow(() -> new RuntimeException("Approve1Id not found: " + training_id.getApprove1().getId()));
-
       try {
         List<Map<String, Object>> dataList = new ArrayList<>();
 
@@ -865,7 +862,7 @@ public class TrainingService {
           User user_id1 = userRepository.findById(userId1).orElse(null);
           if (user_id1 != null) {
             params.put("imageBase64User1", convertByteToBase64(user_id1.getSignature().getImage()));
-            params.put("positionAp1", training_id.getStatus().get(0).getApproveId().getPosition().getPositionName());
+            params.put("positionAp1", user_id1.getPosition().getPositionName());
             params.put("date_saveUser1",training_id.getStatus().get(0).getApprovalDate());
           }
         }
@@ -873,7 +870,7 @@ public class TrainingService {
           User user_id2 = userRepository.findById(userId2).orElse(null);
           if (user_id2 != null) {
             params.put("imageBase64User2", convertByteToBase64(user_id2.getSignature().getImage()));
-            params.put("positionAp2", training_id.getStatus().get(1).getApproveId().getPosition().getPositionName());
+            params.put("positionAp2", user_id2.getPosition().getPositionName());
             params.put("date_saveUser2",training_id.getStatus().get(1).getApprovalDate());
           }
         }
