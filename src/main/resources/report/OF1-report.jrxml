@@ -377,7 +377,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{action}.equals( "training") ? new SimpleDateFormat("dd-MM-yyyy").format($F{actionDate}) : "...... / ...... / ......"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{action}.equals( "training") ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{actionDate}) : "...... / ...... / ......"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="380" y="60" width="176" height="30" uuid="4356bde0-661a-47b8-9ccb-e11a59653424"/>
@@ -1094,7 +1094,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result5}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result5}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="380" y="329" width="60" height="30" uuid="dc75c709-bd43-4fee-8f32-f81af2cc28ae"/>
@@ -1107,7 +1107,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result6}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result6}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="380" y="359" width="60" height="29" uuid="aae72b9d-7ada-4d6a-a532-fff5084fe2af"/>
@@ -1120,7 +1120,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result7}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result7}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="269" width="60" height="30" uuid="0113a523-686b-4aec-99cf-ad24151c9be4"/>
@@ -1133,7 +1133,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result4}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result4}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="299" width="60" height="30" uuid="f928fa51-b672-4e3b-a92e-88ccba193ae1"/>
@@ -1159,7 +1159,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result6}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result6}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="359" width="60" height="29" uuid="8dba1c00-52c1-4e6b-b99e-62f9ca4c48c5"/>
@@ -1172,7 +1172,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result7}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result7}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="269" width="57" height="30" uuid="1c18dec9-e0d9-41f9-af21-3ef5d2a68ab9"/>
@@ -1211,7 +1211,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result6}.equals( "none") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result6}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="359" width="57" height="29" uuid="34d82fc2-6927-4bed-8a2a-444aff769db6"/>
@@ -1224,7 +1224,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result7}.equals( "none") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result7}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="111" y="461" width="446" height="30" uuid="4f8d8d40-0a45-491c-91ef-41a9bc9ba9af"/>
