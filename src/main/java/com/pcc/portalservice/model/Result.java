@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -32,6 +34,9 @@ public class Result {
   private String comment;
   private String cause;
   private String plan;
+
+  @Temporal(TemporalType.DATE)
+  private Date evaluationDate;
 
   @ManyToOne
   @JoinColumn(name = "training_id")

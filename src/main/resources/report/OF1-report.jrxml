@@ -151,6 +151,7 @@
 	<field name="time" class="java.lang.String"/>
 	<field name="note" class="java.lang.String"/>
 	<field name="sector_name" class="java.lang.String"/>
+	<field name="date_saveEvaluation" class="java.sql.Date"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -212,69 +213,20 @@
 				</textElement>
 				<text><![CDATA[วัน เดือน ปี]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="10" y="100" width="130" height="30" uuid="4ba3f041-d82a-4f62-8202-458633c2615e"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[หัวข้อการฝึกอบรม/ สัมมนา :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="130" width="160" height="30" uuid="1ac6ca04-6ed4-45c0-88e6-744a495d9803"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[วัตถุประสงค์ในการฝึกอบรม/ สัมมนา : ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="160" width="70" height="30" uuid="4cba9446-877d-485e-b411-8a6b63c4cb23"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[วันเวลาฝึกอบรม : ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="376" y="160" width="52" height="30" uuid="8585b5ef-1cb5-4168-b404-936efb229519"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ค่าใช้จ่าย : ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="10" y="190" width="50" height="30" uuid="2d717a72-0d1e-4b9b-ac50-7c8912ce1810"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[สถาบันที่จัด :]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="260" y="190" width="100" height="30" uuid="349febc5-75fd-4ca0-a669-c6471422e8a0"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[สถานที่ฝึกอบรม]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="91" y="230" width="100" height="30" uuid="a810f31a-2a52-484c-8f7a-3197adb8fb1a"/>
+				<reportElement x="91" y="240" width="100" height="30" uuid="a810f31a-2a52-484c-8f7a-3197adb8fb1a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(    )  อยู่ในงบประมาณ"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(    ) อยู่ในงบประมาณ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="210" y="230" width="140" height="30" uuid="2cd73b5a-586c-499e-ace9-a6363b6d0589"/>
+				<reportElement x="210" y="240" width="140" height="30" uuid="2cd73b5a-586c-499e-ace9-a6363b6d0589"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(    ) อื่นๆ (กรุณาระบุรายละเอียด) "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(     ) อื่นๆ (กรุณาระบุรายละเอียด) "]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="490" y="160" width="66" height="30" uuid="5bb8b0ff-bfcb-433a-bd9d-dba1b60ab379"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[บาท]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="8" y="272" width="143" height="30" uuid="b8969f83-cc8c-472c-a53b-a67e1ecd2221"/>
 				<textElement>
@@ -306,23 +258,9 @@
 			<rectangle>
 				<reportElement x="0" y="360" width="557" height="50" uuid="ba949276-580d-42ac-bdfc-7dcb11825cb3"/>
 			</rectangle>
-			<textField>
-				<reportElement x="410" y="370" width="134" height="30" uuid="4008a034-a7da-439c-ac44-bb5034c32364"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement x="0" y="410" width="557" height="50" uuid="35c82520-ab0e-4bd6-902c-f0dc34c942ec"/>
 			</rectangle>
-			<textField>
-				<reportElement x="410" y="420" width="134" height="30" uuid="b64fec6c-f508-4da8-8724-f11d7e4e9564"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement x="0" y="510" width="557" height="79" uuid="3fc8b0b4-426d-4998-a4a0-d2691faaa6bf">
 					<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
@@ -333,21 +271,21 @@
 				<textElement>
 					<font fontName="TH Sarabun New" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[แผนกฝ่ายบุคคล]]></text>
+				<text><![CDATA[แผนกบุคคล]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="34" y="547" width="96" height="30" uuid="2cd73b5a-586c-499e-ace9-a6363b6d0589"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(   ) ฝึกอบรม/สัมมนา"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(    ) ฝึกอบรม/สัมมนา"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="305" y="547" width="100" height="30" uuid="b21a3ade-80b2-4d44-8d55-c04b2720289b"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["(   )  รับ Certificate"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["(    )  รับ Certificate"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="547" width="139" height="30" uuid="b7908efb-32eb-4815-9211-8cffa7bad0e7"/>
@@ -384,38 +322,16 @@
 				</textElement>
 				<text><![CDATA[ส่วนที่ 1: การส่งพนักงานเข้ารับการฝึกอบรม]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="239" y="370" width="140" height="30" uuid="9a5857f5-5e42-4b14-a7e6-02e21af7c629"/>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="240" y="420" width="138" height="30" uuid="f3862437-5a5d-452a-8a3e-137ceeba500e"/>
-				<textElement textAlignment="Center" verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement x="0" y="460" width="557" height="50" uuid="52010d10-c10e-4b4c-8da3-cc37b029843c"/>
 			</rectangle>
 			<textField>
-				<reportElement x="410" y="470" width="134" height="30" uuid="6f30f4a2-2078-4b5e-8957-7774c3df6ec2"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{date_saveUser3} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser3}) : ""]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="0" y="60" width="180" height="30" uuid="08b5f138-357e-4b2e-8bf9-3edbc338cd9d"/>
 				<box>
-					<pen lineWidth="0.75" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
@@ -434,48 +350,6 @@
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sector_name}+" / "+$F{dept_name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="140" y="100" width="416" height="30" uuid="8f89b18c-0d1a-482c-ad50-e0796bddd834"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{course_name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="170" y="130" width="386" height="30" uuid="f1b55e59-78d9-4f0c-b047-6741524f7713"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="91" y="160" width="156" height="30" uuid="887df066-f0a8-4935-9266-96dcfc708814"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{start_date}) + " - " + new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{end_date})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="70" y="190" width="190" height="30" uuid="28c78ef1-1e29-47dc-8aea-8717a461a980"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{institute}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="360" y="190" width="196" height="30" uuid="534f5d0d-dbfd-4edf-af28-6ef19e4ade9c"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="428" y="160" width="62" height="30" uuid="3656fce0-543f-4bef-8cbc-84baaaa84280"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="11" y="330" width="100" height="30" uuid="e0c088be-bd95-4a89-a476-27cab5c0f204"/>
@@ -498,60 +372,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{position}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="11" y="370" width="38" height="30" uuid="1179eb5c-a993-4ea2-a36b-056be92a44e8"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ลงชื่อ]]></text>
-			</staticText>
-			<image>
-				<reportElement x="60" y="375" width="40" height="40" uuid="4b94e7ab-a5c7-4000-86fc-f4ede4308473"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User1}))]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="120" y="370" width="100" height="30" uuid="d0ab5d66-946c-430c-96a1-b34ae918c717"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ผู้บังคับบัญชา]]></text>
-			</staticText>
-			<image>
-				<reportElement x="60" y="425" width="40" height="40" uuid="cb556b22-26c9-411f-9e54-ffdb9e237f6b"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User2}))]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="11" y="420" width="38" height="30" uuid="d7909973-8219-48d1-9b46-cd912185f949"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ลงชื่อ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="420" width="100" height="30" uuid="692dd6cf-900f-470a-83df-18cbd4746dd0"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ผู้บริหาร]]></text>
-			</staticText>
-			<image>
-				<reportElement x="60" y="475" width="40" height="40" uuid="c7f22dca-0c49-4c63-9bf8-5003dc64cd9c"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User3}))]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="11" y="470" width="38" height="30" uuid="d9383aef-a443-46d3-ba1e-b98b3085815d"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[ลงชื่อ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="120" y="470" width="100" height="30" uuid="b97b5d85-9d7a-4498-89b3-59f6b7155efc"/>
-				<textElement verticalAlignment="Bottom">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<text><![CDATA[กรรมการผู้จัดการ]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="139" y="547" width="159" height="30" uuid="529057c9-de90-4ded-8148-8c97d4e6788b"/>
 				<textElement verticalAlignment="Middle">
@@ -572,51 +392,354 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_save})]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="143" y="365" width="40" height="40" uuid="b6f9575e-114a-4be3-b604-496c49a32cbf"/>
-				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User4}))]]></imageExpression>
-			</image>
-			<textField>
-				<reportElement x="248" y="160" width="128" height="30" uuid="6f0e3815-bd6d-4ee5-82ef-2ac690338b21"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+			<line direction="BottomUp">
+				<reportElement x="97" y="250" width="6" height="9" uuid="8abb3e12-5011-4400-ab67-81c69b9325e0">
+					<printWhenExpression><![CDATA[$F{budget} >= 0]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="95" y="257" width="2" height="2" uuid="b5b937d7-e9e0-4d81-b12b-c552536aa768">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{budget} >= 0]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="216" y="250" width="6" height="9" uuid="3f5e3760-385c-487b-8bbd-18235eae872d">
+					<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="214" y="257" width="2" height="2" uuid="c1bfecfc-5444-48b9-aead-e6f35e72f271">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{budget} < 0]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="39" y="557" width="6" height="9" uuid="694e7439-509d-476f-9317-496aff2e1eeb">
+					<printWhenExpression><![CDATA[$F{action}.equals( "training" )]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="37" y="564" width="2" height="2" uuid="be2e1dd3-26ef-4233-8c39-2a6d2e3e3f48">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{action}.equals( "training" )]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="310" y="557" width="6" height="9" uuid="e202215f-3f37-4c8a-b078-c415e5f7ecde">
+					<printWhenExpression><![CDATA[$F{action}.equals( "getCertificate" )]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="308" y="564" width="2" height="2" uuid="00da6eae-0fa9-44e6-b453-4f76e9bc93a8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{action}.equals( "getCertificate" )]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="73" width="180" height="20" uuid="502642a7-a950-48c4-9591-e911d2a36522"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.........................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="188" y="73" width="180" height="20" uuid="8aa375fe-5f28-42b1-96c1-a294c1310504"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="73" width="180" height="20" uuid="34f6f455-f363-43a5-9ccf-09ee645efd85"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="160" width="70" height="30" uuid="cdf88192-b716-473e-bf41-29e13e263cf4"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["เวลา " + $F{time} + " น."]]></textFieldExpression>
+				<text><![CDATA[วันเวลาฝึกอบรม : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="91" y="160" width="156" height="30" uuid="be8c1a08-0bf4-475b-a732-73c894aa7d63"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{start_date}) + " - " + new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{end_date})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="160" y="146" width="166" height="30" uuid="0a5a7c31-afc2-41aa-93b5-0f6d000dfa87"/>
+				<reportElement x="160" y="146" width="166" height="30" uuid="ad9cd584-78c0-42ac-b021-149fb7055b5c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="248" y="160" width="128" height="30" uuid="722c0394-21ba-4c13-b895-b527fcdc2b3a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["เวลา " + $F{time} + " น."]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="0" y="73" width="180" height="20" uuid="d8c9e523-0639-422a-9c54-8c9551058939"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[.........................................................]]></text>
+				<reportElement x="376" y="160" width="52" height="30" uuid="f2ef748e-5946-4ba3-b05d-1872538f9871"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ค่าใช้จ่าย : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="428" y="160" width="62" height="30" uuid="3c198345-db6f-4739-8be5-81388fa9e553"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="490" y="160" width="66" height="30" uuid="2c6b0f33-0de4-48f0-a30e-d6aa4af171d4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[บาท]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="188" y="73" width="180" height="20" uuid="10cdf78e-a7c0-4e65-bbea-2b873effeb14"/>
+				<reportElement x="10" y="190" width="50" height="30" uuid="be5e2a53-6d04-4de6-9c10-2165c75460af"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[สถาบันที่จัด :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="190" width="190" height="30" uuid="6fc2cc56-cdc0-4c5c-b464-a97e8a9ba627"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institute}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="260" y="190" width="100" height="30" uuid="769c6056-db13-424b-90b2-08c4f70caee8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[สถานที่ฝึกอบรม]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="360" y="190" width="196" height="30" uuid="4949e8ff-7c5b-4456-aad0-472f2f547808"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="364" y="204" width="180" height="20" uuid="911995f9-e052-40df-810d-561c2e349bd2"/>
 				<textElement textAlignment="Center"/>
-				<text><![CDATA[............................................................]]></text>
+				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="73" width="180" height="20" uuid="68198269-24c8-4a94-ac55-c3e09698ac43"/>
-				<textElement textAlignment="Center"/>
-				<text><![CDATA[............................................................]]></text>
+				<reportElement x="10" y="100" width="130" height="30" uuid="e5efd478-1888-4b6f-bbe1-d53252fb7f48"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[หัวข้อการฝึกอบรม/ สัมมนา :]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="140" y="100" width="416" height="30" uuid="5d2e6c9c-e040-4157-bc59-d2591eafbc9f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course_name}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="142" y="114" width="412" height="20" uuid="cd885089-a8e4-432f-ad4c-7b88660e139e"/>
+				<reportElement x="142" y="114" width="406" height="20" uuid="0b6a31ad-b16b-4634-894c-634ae88f79a2"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[.........................................................................................................................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="174" y="144" width="380" height="20" uuid="633eaaa3-a89e-4442-ae62-a60ebaf91460"/>
+				<reportElement x="10" y="130" width="160" height="30" uuid="fecc005d-a38c-4678-a34b-6212c82cd086"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[วัตถุประสงค์ในการฝึกอบรม/ สัมมนา : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="170" y="130" width="386" height="30" uuid="e7297342-7763-41f7-a866-b1c5984a9738"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{objective}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="370" width="38" height="30" uuid="178d1c58-75e9-4c8c-8122-2678efc0f701"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ลงชื่อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="420" width="38" height="30" uuid="4d1c834d-30ac-4b3c-93db-c24aff53dda0"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ลงชื่อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="470" width="38" height="30" uuid="6dfe475c-e9c5-4960-88f5-9c0b3c507e91"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ลงชื่อ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="60" y="475" width="40" height="40" uuid="f17f45e6-a904-4488-b677-055947fafcd2"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User3}))]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="60" y="425" width="40" height="40" uuid="d9cc7140-a37f-4fba-b718-8f7e9cd59547"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User2}))]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="60" y="375" width="40" height="40" uuid="1d9df0be-2965-49be-9a23-f6e4677edc6d"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User1}))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="120" y="370" width="100" height="30" uuid="f79cc882-1816-4485-b53b-e65a13551bde"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ผู้บังคับบัญชา]]></text>
+			</staticText>
+			<image>
+				<reportElement x="143" y="365" width="40" height="40" uuid="553e2b40-1bb8-49c9-8674-da213ae1529d"/>
+				<imageExpression><![CDATA[net.sf.jasperreports.engine.util.JRImageLoader.getInstance(new SimpleJasperReportsContext()).loadAwtImageFromBytes(Base64.getDecoder().decode($F{imageBase64User4}))]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="120" y="420" width="100" height="30" uuid="1f5e433a-612c-4f45-a542-1c5441111d9c"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[ผู้บริหาร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="470" width="100" height="30" uuid="afa67fc9-ba0e-48a7-89d2-55709d0fc9ea"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[กรรมการผู้จัดการ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="240" y="420" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="370" width="134" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="420" width="134" height="30" uuid="5a6a6710-876a-4696-87f0-ee2a2ecf6376"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="470" width="134" height="30" uuid="98c65c09-f3cb-4b3c-af73-7788100fbf57"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_saveUser3} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser3}) : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="428" y="173" width="62" height="20" uuid="c8877d59-4e79-4475-8481-0109aa91aed6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="68" y="204" width="192" height="20" uuid="daa7694b-9c86-4f1d-854e-44c7beef3ee9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[..................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="173" width="287" height="20" uuid="0856cc1c-f02a-49cb-bb8c-7ca4ad9de5b5"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[..................................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="171" y="142" width="378" height="20" uuid="07932ab2-c9ea-4521-bf3d-a85259a94aa2"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[.........................................................................................................................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="364" y="204" width="180" height="20" uuid="7c685a03-5eaa-40d6-b5ed-e9c15c169a78"/>
+				<reportElement x="352" y="249" width="192" height="20" uuid="f5a042f8-fcce-479b-abaa-1748b2fbbb7c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="342" width="190" height="20" uuid="ce2d4afb-c136-4bca-8a4d-1da32717f988"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="342" width="190" height="20" uuid="cc09870b-d613-4795-81ba-e6cab6a27b45"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="342" width="104" height="20" uuid="96daec6e-62e1-42f7-9aed-6f52907d4b94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="387" width="82" height="20" uuid="2b54f52e-a3db-4493-ba03-d8479c0fafa1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="435" width="82" height="20" uuid="667e6e98-8d09-4b5b-b799-0f2b81d57f27"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="35" y="484" width="82" height="20" uuid="6f1f3beb-669d-4e06-8235-d3513fa9e47c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="387" width="112" height="20" uuid="7a2ec8ad-8a82-4c2f-93ef-4ee9b4f24945"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="440" width="115" height="20" uuid="e68596a3-8992-4b54-9d54-c73a36d79be6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="388" width="132" height="20" uuid="f39a854b-4575-468b-8fac-604b651d2ccd"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="413" y="438" width="132" height="20" uuid="b3374a01-8d82-4d09-ae2f-a4c1c283b633"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="488" width="132" height="20" uuid="8134e7de-6a72-4b9e-a8ff-a68e05a2aaf4"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
@@ -853,7 +976,7 @@
 				<text><![CDATA[2.   จัดส่งสำเนาใบรับรอง หรือใบประกาศนียบัตร (ถ้ามี) ส่งให้แผนกบุคคลด้วย]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="461" width="98" height="30" uuid="e1c0345d-d911-4786-9412-5eb2d3c7b698"/>
+				<reportElement x="10" y="461" width="100" height="30" uuid="e1c0345d-d911-4786-9412-5eb2d3c7b698"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14" isBold="true"/>
 				</textElement>
@@ -864,7 +987,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ข้อคิดเห็นเพิ่มเติม]]></text>
+				<text><![CDATA[ข้อคิดเห็นเพิ่มเติม :]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="40" width="70" height="30" uuid="83dcdcb1-835b-4a12-b3f4-d23bcc7e8930"/>
@@ -919,7 +1042,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result3}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result3}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="440" y="239" width="60" height="30" uuid="85ea000f-53c1-4bee-b640-75c471ecc880"/>
@@ -932,7 +1055,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result3}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result3}.equals( "fail") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="239" width="57" height="30" uuid="af357e98-5f70-49b8-b9d8-66632b7e2288"/>
@@ -945,7 +1068,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result3}.equals( "none") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result3}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="380" y="269" width="60" height="30" uuid="96d1364e-b32f-4024-8ecb-6dcda2885b3e"/>
@@ -958,7 +1081,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result4}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result4}.equals( "pass") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="380" y="299" width="60" height="30" uuid="0936122f-c7aa-441b-bdae-3842c230c7f3"/>
@@ -1062,7 +1185,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{result4}.equals( "none") ? " X " : "  "]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{result4}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="299" width="57" height="30" uuid="4ff568d5-3f53-43f9-aa7c-f2c0b292788a"/>
@@ -1103,47 +1226,26 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{result7}.equals( "none") ? " X " : "  "]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="108" y="461" width="19" height="28" uuid="ef7cd3f5-89e0-4a78-9c9f-e48376c37cdb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{result}.equals( "pass") ? " X " : "  "]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="107" y="493" width="18" height="30" uuid="dd37c018-997b-4f53-9834-044e5fd63836"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{result}.equals( "fail") ? " X " : "  "]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="111" y="461" width="446" height="28" uuid="4f8d8d40-0a45-491c-91ef-41a9bc9ba9af"/>
+				<reportElement x="111" y="461" width="446" height="30" uuid="4f8d8d40-0a45-491c-91ef-41a9bc9ba9af"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<text><![CDATA[(   ) ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="108" y="524" width="18" height="30" uuid="3ef3f3ec-ca38-42df-b489-b3221c8be602"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH Sarabun New" size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{result}.equals( "noResult") ? " X " : "  "]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="110" y="493" width="60" height="28" uuid="6b7d591a-2b5c-4e77-9e62-e1f4ea0ab222"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="THSarabunNew" size="14"/>
-				</textElement>
-				<text><![CDATA[(   ) ไม่ผ่าน เหตุผล]]></text>
+				<text><![CDATA[(    ) ผ่าน (ต้องมีผลการประเมิน ประสิทธิผลการฝึกอบรม ในระดับ “ผ่าน”มากกว่าครึ่งหนึ่งของหัวข้อที่ทำการประเมิน)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="111" y="525" width="108" height="28" uuid="5b5a7273-bd82-4184-b8a7-37fea070afba"/>
+				<reportElement x="111" y="491" width="62" height="30" uuid="6b7d591a-2b5c-4e77-9e62-e1f4ea0ab222"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<text><![CDATA[(   ) ไม่ประเมิณผล เหตุผล]]></text>
+				<text><![CDATA[(    ) ไม่ผ่าน เหตุผล]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="521" width="108" height="28" uuid="5b5a7273-bd82-4184-b8a7-37fea070afba"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[(    ) ไม่ประเมินผล เหตุผล]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="13" y="557" width="156" height="28" uuid="0e3f780b-2b90-445b-8286-7cacf07da651"/>
@@ -1153,28 +1255,28 @@
 				<text><![CDATA[แผนการพัฒนาพนักงาน (กรณีไม่ผ่าน)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="175" y="556" width="382" height="30" uuid="ac368d44-19d1-44c4-bc78-c2fd8608aaed"/>
+				<reportElement x="169" y="557" width="388" height="28" uuid="ac368d44-19d1-44c4-bc78-c2fd8608aaed"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{plan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="174" y="492" width="382" height="30" uuid="e5d24966-c24c-4111-ae42-60ee00b2a133"/>
+				<reportElement x="173" y="491" width="383" height="30" uuid="e5d24966-c24c-4111-ae42-60ee00b2a133"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{result}.equals( "fail") ?$F{cause} : "  "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="220" y="524" width="337" height="30" uuid="0e055579-8f14-4f98-a66d-10367bee1249"/>
+				<reportElement x="220" y="521" width="337" height="28" uuid="0e055579-8f14-4f98-a66d-10367bee1249"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{result}.equals( "noResult") ? $F{cause} : "  "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="10" y="589" width="90" height="28" uuid="f8c3ca3e-96fa-4ef3-b425-328d9a86369a"/>
+				<reportElement x="14" y="589" width="90" height="28" uuid="f8c3ca3e-96fa-4ef3-b425-328d9a86369a"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
@@ -1192,7 +1294,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{date_save})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveEvaluation})]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="131" y="587" width="40" height="40" uuid="a689bb76-1ec2-49d1-9861-b2743c7b6ec8"/>
@@ -1276,6 +1378,319 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{result1}.equals( "none") ? "  " : "  "]]></textFieldExpression>
 			</textField>
+			<line direction="BottomUp">
+				<reportElement x="407" y="189" width="6" height="9" uuid="b7625e01-9668-44cf-a3f8-018ead6f3582">
+					<printWhenExpression><![CDATA[$F{result1}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="405" y="196" width="2" height="2" uuid="761af30e-fb57-4808-8ad2-f49f7d67f5db">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result1}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="116" y="470" width="6" height="9" uuid="55ac207a-4244-4bd2-9905-1d1399f1b0a4">
+					<printWhenExpression><![CDATA[$F{result}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="114" y="477" width="2" height="2" uuid="54626560-73ce-406d-ba95-1097c6f5c665">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="117" y="500" width="6" height="9" uuid="13d1fb72-b86c-43b2-ab06-8aa1394a4a8c">
+					<printWhenExpression><![CDATA[$F{result}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="115" y="507" width="2" height="2" uuid="666292b7-81f0-464d-bb07-6308f1a8d44d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="117" y="530" width="6" height="9" uuid="00c3b895-1b15-4102-ba64-eda89ecce6dc">
+					<printWhenExpression><![CDATA[$F{result}.equals( "noResult")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="115" y="537" width="2" height="2" uuid="83c8a9c9-83ea-495f-8de9-0cf66706e21f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result}.equals( "noResult")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="467" y="189" width="6" height="9" uuid="3cb08f0e-0fbd-42ab-95c0-ee885fa6dd6b">
+					<printWhenExpression><![CDATA[$F{result1}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="465" y="196" width="2" height="2" uuid="46514076-e8ba-4aae-9041-36f03171c4bd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result1}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="526" y="189" width="6" height="9" uuid="d4b28856-c4ff-4e09-af47-0d2a23e0f9c6">
+					<printWhenExpression><![CDATA[$F{result1}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="524" y="196" width="2" height="2" uuid="843ea049-beef-4e4e-9906-c5e5ddceb0df">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result1}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="220" width="6" height="9" uuid="eb9e2b7d-f38b-40f8-ba5e-2c6cf8b4974f">
+					<printWhenExpression><![CDATA[$F{result2}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="227" width="2" height="2" uuid="e808e153-2162-4c32-8680-caee7f28e9e2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result2}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="466" y="220" width="6" height="9" uuid="073b02ac-1d5b-4edc-8643-61b9e4fa0507">
+					<printWhenExpression><![CDATA[$F{result2}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="464" y="227" width="2" height="2" uuid="15ea9c34-d28d-43f1-910b-c15edf69a9b9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result2}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="406" y="220" width="6" height="9" uuid="d7f2c1ac-ade1-4986-90e6-9964b6b44500">
+					<printWhenExpression><![CDATA[$F{result2}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="404" y="227" width="2" height="2" uuid="70deb8fd-e19b-4287-8277-0538790d746e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result2}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="406" y="250" width="6" height="9" uuid="026287a1-cf47-4cb4-ab49-853a72213e39">
+					<printWhenExpression><![CDATA[$F{result3}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="404" y="257" width="2" height="2" uuid="71067998-e452-4959-8066-7073fefff42f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result3}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="466" y="250" width="6" height="9" uuid="253a6b0c-b423-4a01-9b37-ef0c80da4258">
+					<printWhenExpression><![CDATA[$F{result3}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="464" y="257" width="2" height="2" uuid="4e7a71cc-a08f-4421-8205-9f2fb737e6d2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result3}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="250" width="6" height="9" uuid="e6abf089-ac82-4d1a-847a-6385616194c5">
+					<printWhenExpression><![CDATA[$F{result3}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="257" width="2" height="2" uuid="10d2cb39-40cc-4d22-a4d2-9cefe32dead7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result3}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="280" width="6" height="9" uuid="7cea57d6-da0a-41cb-a63b-9007a430a6cf">
+					<printWhenExpression><![CDATA[$F{result4}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="287" width="2" height="2" uuid="7929b623-d2f2-4726-8a6a-3eca4fb7b7e7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result4}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="466" y="280" width="6" height="9" uuid="058c787c-228e-48e5-938f-bb1d753130b1">
+					<printWhenExpression><![CDATA[$F{result4}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="464" y="287" width="2" height="2" uuid="91770dac-74aa-40b1-a290-5ef2c847fd98">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result4}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="407" y="280" width="6" height="9" uuid="e63f3a28-2e37-482a-a38f-7ab9627e2842">
+					<printWhenExpression><![CDATA[$F{result4}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="405" y="287" width="2" height="2" uuid="2376982e-f679-4d56-97da-0d74a82798ea">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result4}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="406" y="311" width="6" height="9" uuid="ceeac937-03fe-4ca9-9ff2-fce6abd2a4bb">
+					<printWhenExpression><![CDATA[$F{result5}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="404" y="318" width="2" height="2" uuid="eb35de88-8cbb-4ef9-b572-5331b1287cce">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result5}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="466" y="310" width="6" height="9" uuid="a8d617c7-dfc8-439e-94b4-7f85f0506050">
+					<printWhenExpression><![CDATA[$F{result5}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="464" y="317" width="2" height="2" uuid="4432602e-7577-4f24-b1dc-360e13abfcb0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result5}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="310" width="6" height="9" uuid="6c08cc7f-fd8a-486d-83a0-40534fd24a11">
+					<printWhenExpression><![CDATA[$F{result5}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="317" width="2" height="2" uuid="21b908b8-84e9-4039-b535-6c6abf031e0c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result5}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="340" width="6" height="9" uuid="7f938dca-801c-42d9-8614-40004871d603">
+					<printWhenExpression><![CDATA[$F{result6}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="347" width="2" height="2" uuid="03b0b8ce-1ca5-42b7-9362-4850fc6d742f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result6}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="467" y="340" width="6" height="9" uuid="a5479497-893a-4418-bb3b-921d0bc93913">
+					<printWhenExpression><![CDATA[$F{result6}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="465" y="347" width="2" height="2" uuid="f3e59374-c461-4d9c-8f19-aee5132c770d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result6}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="406" y="341" width="6" height="9" uuid="13a2589d-1ce9-4e18-8e24-3c0e55bceac0">
+					<printWhenExpression><![CDATA[$F{result6}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="404" y="348" width="2" height="2" uuid="8c08d390-0bd8-4efb-8493-0d99ab6c3d1f">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result6}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="406" y="370" width="6" height="9" uuid="b33a3c58-60a6-4e8e-9c68-1d863f55b03c">
+					<printWhenExpression><![CDATA[$F{result7}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="404" y="377" width="2" height="2" uuid="20d59fb6-23c6-429b-a5e4-e4d54cb16e60">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result7}.equals( "pass")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="466" y="370" width="6" height="9" uuid="a3c1141c-0b73-4fbe-a174-fd53ff56d59f">
+					<printWhenExpression><![CDATA[$F{result7}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="464" y="377" width="2" height="2" uuid="0e464c08-cf28-4fdb-a6d0-9d1b655e6d00">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result7}.equals( "fail")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line direction="BottomUp">
+				<reportElement x="525" y="370" width="6" height="9" uuid="7ee0e1e8-e906-4544-9d8e-dffa26042673">
+					<printWhenExpression><![CDATA[$F{result7}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="523" y="377" width="2" height="2" uuid="64dd5cc4-44e5-483f-9a7f-0f23eaaeff84">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$F{result7}.equals( "none")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="68" y="53" width="212" height="20" uuid="2c8e851a-1f85-43b8-b82d-ca1ae24dc51f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="53" width="221" height="20" uuid="536beee1-e4f2-4e57-af14-4d481b43e187"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="84" width="239" height="20" uuid="696e9bb9-1ad2-4424-8ee0-59e0ee042102"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[......................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="83" width="245" height="20" uuid="30995c58-1444-4876-ac95-50fa95611a6f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.............................................................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="93" y="600" width="179" height="20" uuid="0b9dc72e-5ca2-42d7-8071-2ab552919d5f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[.............................................................................................]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<pageFooter>

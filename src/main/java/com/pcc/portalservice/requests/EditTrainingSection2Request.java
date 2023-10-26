@@ -3,6 +3,8 @@ package com.pcc.portalservice.requests;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Date;
+
 @Builder
 @Data
 public class EditTrainingSection2Request {
@@ -20,6 +22,7 @@ public class EditTrainingSection2Request {
     String comment;
     String cause;
     String plan;
+    Date evaluationDate;
 
 
 
