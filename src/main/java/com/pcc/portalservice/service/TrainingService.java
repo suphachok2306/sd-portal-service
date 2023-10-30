@@ -78,6 +78,8 @@ public class TrainingService {
             differenceInMilliseconds / (1000 * 60 * 60 * 24)
     ) +
             1;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date actionDateFormat = dateFormat.parse(createTrainingRequest.getActionDate());
 
     Training training = Training
             .builder()
@@ -86,10 +88,10 @@ public class TrainingService {
             .day(daysDifference)
             .courses(Arrays.asList(course))
             .budget(createTrainingRequest.getBudget())
-            //      .action(createTrainingRequest.getAction())
-            //      .actionDate(actionDateFormat)
-            .action(null)
-            .actionDate(null)
+            .action(createTrainingRequest.getAction())
+            .actionDate(actionDateFormat)
+//            .action(null)
+//            .actionDate(null)
             .approve1(approve1)
             .build();
 
@@ -220,12 +222,15 @@ public class TrainingService {
       System.out.println(training_id.getApprove1().getId());
       changeApprover(editTraining, trainingId);
     }
-    
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
 
     training_id.setUser(user_id);
     training_id.setDateSave(new Date());
     training_id.getCourses().clear();
     training_id.getCourses().add(course_id);
+    training_id.setAction(editTraining.getAction());
+    training_id.setActionDate(actionDateFormat);
     training_id.setApprove1(approve1_id);
     training_id.setBudget(editTraining.getBudget());
 
@@ -237,26 +242,26 @@ public class TrainingService {
   /**
    * @EditTrainingSection3
    */
-  public Training editTrainingSection1Person(
-          Long trainingId,
-          EditTrainingSection1PersonRequest editTraining
-  ) throws ParseException {
-    //    Training training_id = trainingRepository
-    //      .findById(trainingId)
-    //      .orElseThrow(() ->
-    //        new RuntimeException("TrainingId not found: " + trainingId)
-    //      );
-    Training training_id = findByTrainingId(trainingId);
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
-
-    training_id.setAction(editTraining.getAction());
-    training_id.setActionDate(actionDateFormat);
-
-    Training updatedTraining = trainingRepository.save(training_id);
-    return updatedTraining;
-  }
+//  public Training editTrainingSection1Person(
+//          Long trainingId,
+//          EditTrainingSection1PersonRequest editTraining
+//  ) throws ParseException {
+//    //    Training training_id = trainingRepository
+//    //      .findById(trainingId)
+//    //      .orElseThrow(() ->
+//    //        new RuntimeException("TrainingId not found: " + trainingId)
+//    //      );
+//    Training training_id = findByTrainingId(trainingId);
+//
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//    Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
+//
+//    training_id.setAction(editTraining.getAction());
+//    training_id.setActionDate(actionDateFormat);
+//
+//    Training updatedTraining = trainingRepository.save(training_id);
+//    return updatedTraining;
+//  }
 
   /**
    * @EditTrainingSection2
