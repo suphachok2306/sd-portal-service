@@ -27,6 +27,7 @@ public class Course {
   @Temporal(TemporalType.DATE)
   private Date endDate;
 
+  private String hours;
   private String time;
   private String note;
   private String objective;
@@ -34,4 +35,6 @@ public class Course {
   private float priceProject;
   private String place;
   private String institute;
+
+  private String active;
 }

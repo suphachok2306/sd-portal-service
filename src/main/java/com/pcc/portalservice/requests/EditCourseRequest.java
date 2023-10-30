@@ -1,10 +1,10 @@
-package com.pcc.portalservice.requests;
+﻿package com.pcc.portalservice.requests;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
-public class CreateCourseRequest {
+@Builder
+public class EditCourseRequest {
     private String courseName;
     private String startDate;
     private String endDate;
@@ -14,5 +14,5 @@ public class CreateCourseRequest {
     private float price;
     private float priceProject;
     private String place;
-    private String institute;
+    private String institute;  
 }
