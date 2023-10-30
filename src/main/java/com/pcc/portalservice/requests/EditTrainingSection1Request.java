@@ -16,6 +16,8 @@ public class EditTrainingSection1Request {
 
     Date dateSave;
     int day;
+    String action;
+    String actionDate;
     Long courseId;
     //Long approve1_id;
     Long approve1_id;
