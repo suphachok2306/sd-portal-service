@@ -85,7 +85,8 @@ public class BudgetController {
    */
   @PutMapping("/editBudget")
   public ResponseEntity<ApiResponse> updateBudget(
-    @RequestBody CreateBudgetRequest createbudgetRequest
+    @RequestBody CreateBudgetRequest createbudgetRequest,
+    @RequestParam Long budgetID
   ) {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
@@ -94,7 +95,7 @@ public class BudgetController {
       return ResponseEntity.badRequest().body(response);
     }
     try {
-      Budget budget = budgetService.editBudget(createbudgetRequest);
+      Budget budget = budgetService.editBudget(createbudgetRequest,budgetID);
       data.setResult(budget);
       response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
       response.setResponseData(data);

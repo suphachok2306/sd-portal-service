@@ -29,11 +29,11 @@ public class BudgetService {
    * @Create
    */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
-    Sector sectorId = sectorRepository
-      .findById(createBudgetRequest.getSectorId())
-      .orElseThrow(() ->
+    Department departmentId = departmentRepository
+    .findById(createBudgetRequest.getDepartmentId())
+    .orElseThrow(() ->
         new RuntimeException(
-          "sectorId not found: " + createBudgetRequest.getSectorId()
+          "sectorId not found: " + createBudgetRequest.getDepartmentId()
         )
       );
 
@@ -47,7 +47,8 @@ public class BudgetService {
 
     Budget budget = Budget
       .builder()
-      .sector(sectorId)
+      .type(createBudgetRequest.getType())
+      .department(departmentId)
       .company(companyId)
       .class_name(createBudgetRequest.getClassName())
       .remark(createBudgetRequest.getRemark())
@@ -79,7 +80,7 @@ public class BudgetService {
   /**
    * @Edit
    */
-  public Budget editBudget(CreateBudgetRequest createBudgetRequest) {
+  public Budget editBudget(CreateBudgetRequest createBudgetRequest,Long budgetID) {
     Company companyName = companyRepository
       .findById(createBudgetRequest.getCompanyId())
       .orElseThrow(() ->
@@ -88,16 +89,19 @@ public class BudgetService {
         )
       );
 
-    Sector sector = sectorRepository
-      .findById(createBudgetRequest.getSectorId())
-      .orElseThrow(() ->
+    Department departmentId = departmentRepository
+    .findById(createBudgetRequest.getDepartmentId())
+    .orElseThrow(() ->
         new RuntimeException(
-          "Sector not found / SectorCode or SectorName wrong"
+          "sectorId not found: " + createBudgetRequest.getDepartmentId()
         )
       );
 
-    Budget budget = findById(createBudgetRequest.getBudgetId());
-    budget.setSector(sector);
+
+
+    Budget budget = findById(budgetID);
+    budget.setType(createBudgetRequest.getType());
+    budget.setDepartment(departmentId);
     budget.setCompany(companyName);
     budget.setClass_name(createBudgetRequest.getClassName());
     budget.setYear(createBudgetRequest.getYear());

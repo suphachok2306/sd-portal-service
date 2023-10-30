@@ -26,10 +26,7 @@ public class Budget {
   private float fee;
   private float airAcc;
   private float exp;
-
-  @ManyToOne
-  @JoinColumn(name = "sector_id")
-  private Sector sector;
+  private String type;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "company_id")
