@@ -1096,11 +1096,6 @@ public class TrainingService {
             .findFirst()
             .orElse(null);
 
-    // //    Training training = trainingRepository
-    // //      .findById(trainingId)
-    // //      .orElseThrow(() ->
-    // //        new RuntimeException("TrainingId not found: " + trainingId)
-    // //      );
 
     Training training_id = findByTrainingIdEdit(trainingId);
     if (training_id.getStatus() == null) {

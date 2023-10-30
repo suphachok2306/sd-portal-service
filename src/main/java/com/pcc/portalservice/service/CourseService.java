@@ -1,8 +1,11 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Course;
+import com.pcc.portalservice.model.enums.StatusCourse;
 import com.pcc.portalservice.repository.CourseRepository;
+import com.pcc.portalservice.repository.TrainingRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
+import com.pcc.portalservice.requests.EditCourseRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +23,7 @@ public class CourseService {
 
   // Services
   private final CourseRepository courseRepository;
+  private final TrainingService trainingService;
 
   /**
    * @สร้างCourse
@@ -32,6 +36,8 @@ public class CourseService {
 
     Course course = Course
       .builder()
+      .hours(createCourseRequest.getHours())
+      .active("ดำเนินการอยู่")
       .courseName(createCourseRequest.getCourseName())
       .startDate(startDateFormat)
       .endDate(endDateFormat)
@@ -50,22 +56,23 @@ public class CourseService {
   /**
    * @แก้ไขCourse
    */
-  public Course editCourse(CreateCourseRequest createCourseRequest)
+  public Course editCourse(EditCourseRequest editCourseRequest, Long courseId)
     throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Date startDateFormat = dateFormat.parse(createCourseRequest.getStartDate());
-    Date endDateFormat = dateFormat.parse(createCourseRequest.getEndDate());
+    Date startDateFormat = dateFormat.parse(editCourseRequest.getStartDate());
+    Date endDateFormat = dateFormat.parse(editCourseRequest.getEndDate());
 
-    Course course = findById(createCourseRequest.getCourseId());
-    course.setCourseName(createCourseRequest.getCourseName());
+    Course course = findById(courseId);
+    course.setCourseName(editCourseRequest.getCourseName());
     course.setStartDate(startDateFormat);
     course.setEndDate(endDateFormat);
-    course.setTime(createCourseRequest.getTime());
-    course.setNote(createCourseRequest.getNote());
-    course.setPrice(createCourseRequest.getPrice());
-    course.setPriceProject(createCourseRequest.getPriceProject());
-    course.setPlace(createCourseRequest.getPlace());
-    course.setInstitute(createCourseRequest.getInstitute());
+    course.setTime(editCourseRequest.getTime());
+    course.setNote(editCourseRequest.getNote());
+    course.setPrice(editCourseRequest.getPrice());
+    course.setPriceProject(editCourseRequest.getPriceProject());
+    course.setPlace(editCourseRequest.getPlace());
+    course.setInstitute(editCourseRequest.getInstitute());
+    course.setHours(editCourseRequest.getHours());
 
     return courseRepository.save(course);
   }
@@ -118,5 +125,15 @@ public class CourseService {
       request.getPlace() == null ||
       request.getPlace().isEmpty()
     );
+  }
+
+  public Course setStatusToUser(Long courseId, StatusCourse statuscourse) {
+    Course course = courseRepository
+      .findById(courseId)
+      .orElseThrow(() ->
+        new RuntimeException("Course not found with ID: " + courseId)
+      );
+    course.setActive(statuscourse.toString());
+    return courseRepository.save(course);
   }
 }

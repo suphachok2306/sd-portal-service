@@ -44,21 +44,18 @@ public class DatabaseInitializer implements CommandLineRunner {
   private void insertDataIntoCourseTable() {
     if (isTableEmpty("public.course")) {
       jdbcTemplate.execute(
-        "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time, objective) VALUES " +
-        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน'), " +
-        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน');"
+        "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time, objective,active) VALUES " +
+        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
+        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ยกเลิก');"
       );
-      System.out.println("Data inserted into public.course table.");
-    } else {
-      System.out.println("public.course table is not empty. No data inserted.");
     }
   }
 
@@ -66,11 +63,6 @@ public class DatabaseInitializer implements CommandLineRunner {
     if (isTableEmpty("public.company")) {
       jdbcTemplate.execute(
         "INSERT INTO public.company (id, company_name) VALUES(1, 'PCCTH'),(2, 'WiseSoft');"
-      );
-      System.out.println("Data inserted into public.company table.");
-    } else {
-      System.out.println(
-        "public.company table is not empty. No data inserted."
       );
     }
   }
@@ -80,9 +72,6 @@ public class DatabaseInitializer implements CommandLineRunner {
       jdbcTemplate.execute(
         "INSERT INTO public.sector (id, sector_code, sector_name,company_id) VALUES(1, 'SD', 'SD',1),(2, 'SD', 'SD',2);"
       );
-      System.out.println("Data inserted into public.sector table.");
-    } else {
-      System.out.println("public.sector table is not empty. No data inserted.");
     }
   }
 
@@ -91,11 +80,7 @@ public class DatabaseInitializer implements CommandLineRunner {
       jdbcTemplate.execute(
         "INSERT INTO public.department (id, dept_name, dept_code, sector_id) VALUES(1, 'SD1', '4011', 1),(2, 'SD2', '4012', 1),(3, 'SQA', '4013', 1),(4, 'SD1', '5000', 2);"
       );
-      System.out.println("Data inserted into public.department table.");
-    } else {
-      System.out.println(
-        "public.department table is not empty. No data inserted."
-      );
+      
     }
   }
 
@@ -142,11 +127,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('SR.SYSTEM ANALYST II',4),\r\n" + //
         "('PROGRAMMER III',4);"
       );
-      System.out.println("Data inserted into public.position table.");
-    } else {
-      System.out.println(
-        "public.position table is not empty. No data inserted."
-      );
     }
   }
 
@@ -172,9 +152,6 @@ public class DatabaseInitializer implements CommandLineRunner {
       jdbcTemplate.execute(
         "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5)"
       );
-      System.out.println("Data inserted into public.users table.");
-    } else {
-      System.out.println("public.users table is not empty. No data inserted.");
     }
   }
 
@@ -200,9 +177,6 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     if (isTableEmpty("public.budget")) {
       jdbcTemplate.execute(sql);
-      System.out.println("Data inserted into public.budget table.");
-    } else {
-      System.out.println("public.budget table is not empty. No data inserted.");
     }
   }
 }

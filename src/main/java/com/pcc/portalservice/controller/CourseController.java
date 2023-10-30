@@ -1,7 +1,11 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Course;
+import com.pcc.portalservice.model.User;
+import com.pcc.portalservice.model.enums.StatusCourse;
+import com.pcc.portalservice.model.enums.StatusUser;
 import com.pcc.portalservice.requests.CreateCourseRequest;
+import com.pcc.portalservice.requests.EditCourseRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.CourseService;
@@ -59,11 +63,12 @@ public class CourseController {
    */
   @PutMapping("/editCourse")
   public ResponseEntity<ApiResponse> updateCourse(
-    @RequestBody CreateCourseRequest createCourseRequest
+    @RequestBody EditCourseRequest editCourseRequest,
+    @RequestParam Long courseID
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
-    Course updatedCourse = courseService.editCourse(createCourseRequest);
+    Course updatedCourse = courseService.editCourse(editCourseRequest,courseID);
     if (updatedCourse != null) {
       data.setResult(updatedCourse);
       response.setResponseMessage("ทำรายการเรียบร้อย");
@@ -125,4 +130,23 @@ public class CourseController {
       return ResponseEntity.badRequest().body(response);
     }
   }
+
+  @PutMapping("/setStatusToCourse")
+    public ResponseEntity<ApiResponse> setStatusToCourse(
+            @RequestParam Long course_id,
+            StatusCourse statuscourse
+    ) {
+        ApiResponse response = new ApiResponse();
+        ResponseData data = new ResponseData();
+        try {
+            Course course = courseService.setStatusToUser(course_id,statuscourse);
+            data.setResult(course);
+            response.setResponseMessage("ทำรายการเรียบร้อย");
+            response.setResponseData(data);
+            return ResponseEntity.ok().body(response);
+        } catch (Exception e) {
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }
