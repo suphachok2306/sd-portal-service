@@ -69,7 +69,7 @@ public class BudgetService {
 
     budget = budgetRepository.save(budget);
 
-    checkBudget(budget);
+    checkBudget(createBudgetRequest.getDepartment_Id(),createBudgetRequest.getYear());
 
     return budget;
   }
@@ -157,18 +157,9 @@ public class BudgetService {
   }
 
   public Float getTotalBudgetTotalExp(Long departmentId, String year) {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Float> criteriaQuery = builder.createQuery(Float.class);
-    Root<Budget> bd = criteriaQuery.from(Budget.class);
-
-    criteriaQuery.select(builder.sum(bd.get("total_exp").as(Float.class)));
-    criteriaQuery.where(
-      builder.equal(bd.get("department").get("id"), departmentId),
-      builder.equal(bd.get("year"), year)
-    );
-
-    TypedQuery<Float> typedQuery = entityManager.createQuery(criteriaQuery);
-    return typedQuery.getSingleResult();
+    float x = getTotalBudgetCer(departmentId,year);
+    float y = getTotalBudgetTraining(departmentId,year);
+    return x+y;
   }
 
   public void insertBudgetDepartment(
@@ -195,7 +186,6 @@ public class BudgetService {
       .findById(budgetId)
       .orElseThrow(() -> new RuntimeException("budgetId not found: " + budgetId)
       );
-
     budget_Department.setTotal_exp(value);
 
     budget_DepartmentRepository.save(budget_Department);
@@ -239,18 +229,18 @@ public class BudgetService {
     );
   }
 
-  private void checkBudget(Budget budget) {
-    if (budget != null) {
+  private void checkBudget(Long department_id,String year) {
+    if (department_id != null && year != null) {
       CriteriaBuilder builder = entityManager.getCriteriaBuilder();
       CriteriaQuery<Budget_Department> criteriaQuery = builder.createQuery(
         Budget_Department.class
       );
       Root<Budget_Department> bd = criteriaQuery.from(Budget_Department.class);
 
-      Predicate yearPredicate = builder.equal(bd.get("year"), budget.getYear());
+      Predicate yearPredicate = builder.equal(bd.get("year"), year);
       Predicate departmentPredicate = builder.equal(
         bd.get("department"),
-        budget.getDepartment()
+        departmentRepository.findById(department_id).get()
       );
 
       Predicate predicate = builder.and(yearPredicate, departmentPredicate);
@@ -261,18 +251,19 @@ public class BudgetService {
       );
       if (typedQuery != null) {
         Float x = getTotalBudgetCer(
-          budget.getDepartment().getId(),
-          budget.getYear()
+         department_id,
+         year
         );
         Float y = getTotalBudgetTraining(
-          budget.getDepartment().getId(),
-          budget.getYear()
+          department_id,
+         year
         );
         Float z = getTotalBudgetTotalExp(
-          budget.getDepartment().getId(),
-          budget.getYear()
+         department_id,
+         year
         );
-
+        Department department = departmentRepository.findById(department_id).get();
+        Company company = companyRepository.findById(department.getId()).get();
         List<Budget_Department> resultList = typedQuery.getResultList();
         resultList.sort(Comparator.comparing(Budget_Department::getId));
         if (resultList.size() == 3) {
@@ -292,23 +283,23 @@ public class BudgetService {
         } else if (resultList.size() <= 0) {
           insertBudgetDepartment(
             x,
-            budget.getCompany(),
-            budget.getDepartment(),
-            budget.getYear(),
+            company,
+            department,
+            year,
             "อบรม"
           );
           insertBudgetDepartment(
             y,
-            budget.getCompany(),
-            budget.getDepartment(),
-            budget.getYear(),
+            company,
+            department,
+            year,
             "certificate"
           );
           insertBudgetDepartment(
             z,
-            budget.getCompany(),
-            budget.getDepartment(),
-            budget.getYear(),
+            company,
+            department,
+            year,
             "ยอดรวม"
           );
         }
@@ -320,6 +311,7 @@ public class BudgetService {
     String year,
     long department_id
   ) {
+    checkBudget(department_id,year);
     String jpqlBudgetCer =
       "SELECT SUM(b.budgetCer) AS total_budget_cer " +
       "FROM Budget b " +
@@ -330,10 +322,6 @@ public class BudgetService {
       "FROM Budget b " +
       "WHERE b.department.id = :department_id AND b.year = :year";
 
-    String jpqlTotalExp =
-      "SELECT SUM(b.total_exp) AS total_total_exp " +
-      "FROM Budget b " +
-      "WHERE b.department.id = :department_id AND b.year = :year";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
     queryBudgetCer.setParameter("department_id", department_id);
@@ -343,26 +331,21 @@ public class BudgetService {
     queryBudgetTraining.setParameter("department_id", department_id);
     queryBudgetTraining.setParameter("year", year);
 
-    Query queryTotalExp = entityManager.createQuery(jpqlTotalExp);
-    queryTotalExp.setParameter("department_id", department_id);
-    queryTotalExp.setParameter("year", year);
-
+  
     List<Object> resultListBudgetCer = queryBudgetCer.getResultList();
     List<Object> resultListBudgetTraining = queryBudgetTraining.getResultList();
-    List<Object> resultListTotalExp = queryTotalExp.getResultList();
 
     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
 
     if (
       !resultListBudgetCer.isEmpty() &&
-      !resultListBudgetTraining.isEmpty() &&
-      !resultListTotalExp.isEmpty()
+      !resultListBudgetTraining.isEmpty()
     ) {
       result.put("Year", year);
       result.put("Department", departmentRepository.findById(department_id));
       result.put("งบ Certificate", resultListBudgetCer.get(0));
       result.put("งบ อบรม", resultListBudgetTraining.get(0));
-      result.put("งบยอดรวม", resultListTotalExp.get(0));
+      result.put("งบยอดรวม", (Double)resultListBudgetCer.get(0) + (Double) resultListBudgetTraining.get(0));
     }
 
     return result;
@@ -372,50 +355,57 @@ public class BudgetService {
     String year,
     long department_id
   ) {
-    String jpqlBudgetCer = " SELECT SUM(c.price) AS total_price FROM training t JOIN training_courses tc ON tc.training_id = t.id "+
-    "JOIN course c ON c.id = tc.courses_id JOIN users u ON u.id = t.user_id "+ 
-    "WHERE u.department_id = :departmentId AND EXTRACT(YEAR FROM t.date_save) = :year and c.type = 'สอบ' ";
-      
-    String jpqlBudgetTraining =
-    " SELECT SUM(c.price) AS total_price FROM training t JOIN training_courses tc ON tc.training_id = t.id "+
-    "JOIN course c ON c.id = tc.courses_id JOIN users u ON u.id = t.user_id "+ 
-    "WHERE u.department_id = :departmentId AND EXTRACT(YEAR FROM t.date_save) = :year and c.type = 'course' ";
+    checkBudget(department_id,year);
+    String jpqlBudgetCer =
+      "SELECT SUM(c.price) AS total_price FROM Training t JOIN t.courses c " +
+      "WHERE t.user.department.id = :departmentId AND EXTRACT(YEAR FROM t.dateSave) = :year AND c.type = 'สอบ' ";
 
-    String jpqlTotalExp =
-      "SELECT SUM(b.total_exp) AS total_total_exp " +
-      "FROM Budget b " +
-      "WHERE b.department.id = :department_id AND b.year = :year";
+    String jpqlBudgetTraining =
+      "SELECT SUM(c.price) AS total_price FROM Training t JOIN t.courses c " +
+      "WHERE t.user.department.id = :departmentId AND EXTRACT(YEAR FROM t.dateSave) = :year AND c.type = 'course' ";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
-    queryBudgetCer.setParameter("department_id", department_id);
-    queryBudgetCer.setParameter("year", year);
+    queryBudgetCer.setParameter("departmentId", department_id);
+    queryBudgetCer.setParameter("year", Integer.parseInt(year));
 
     Query queryBudgetTraining = entityManager.createQuery(jpqlBudgetTraining);
-    queryBudgetTraining.setParameter("department_id", department_id);
-    queryBudgetTraining.setParameter("year", year);
-
-    Query queryTotalExp = entityManager.createQuery(jpqlTotalExp);
-    queryTotalExp.setParameter("department_id", department_id);
-    queryTotalExp.setParameter("year", year);
+    queryBudgetTraining.setParameter("departmentId", department_id);
+    queryBudgetTraining.setParameter("year", Integer.parseInt(year));
 
     List<Object> resultListBudgetCer = queryBudgetCer.getResultList();
     List<Object> resultListBudgetTraining = queryBudgetTraining.getResultList();
-    List<Object> resultListTotalExp = queryTotalExp.getResultList();
 
     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+    try {
+      LinkedHashMap<String, Object> all_budget = total_exp(year, department_id);
 
-    if (
-      !resultListBudgetCer.isEmpty() &&
-      !resultListBudgetTraining.isEmpty() &&
-      !resultListTotalExp.isEmpty()
-    ) {
-      result.put("Year", year);
-      result.put("Department", departmentRepository.findById(department_id));
-      result.put("งบ Certificate", resultListBudgetCer.get(0));
-      result.put("งบ อบรม", resultListBudgetTraining.get(0));
-      result.put("งบยอดรวม", resultListTotalExp.get(0));
+      Double certificate = (Double) all_budget.get("งบ Certificate") -
+      (
+        resultListBudgetCer.get(0) != null
+          ? ((Double) resultListBudgetCer.get(0))
+          : 0
+      );
+      Double train = (Double) all_budget.get("งบ อบรม") -
+      (
+        resultListBudgetTraining.get(0) != null
+          ? ((Double) resultListBudgetTraining.get(0))
+          : 0
+      );
+      Double total_use = certificate +train;
+      if (
+        !resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()
+      ) {
+        result.put("Year", year);
+        result.put("Department", departmentRepository.findById(department_id));
+        result.put("งบ Certificate", certificate);
+        result.put("งบ อบรม", train);
+        result.put("งบยอดรวม", total_use);
+      }
+
+      return result;
+    } catch (Exception e) {
+      System.out.println(e);
     }
-
     return result;
   }
 }
