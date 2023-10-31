@@ -22,7 +22,7 @@ public class Budget {
   private String year;
   private float budgetTraining;
   private float budgetCer;
-  private float totalExp;
+  private float total_exp;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "company_id")

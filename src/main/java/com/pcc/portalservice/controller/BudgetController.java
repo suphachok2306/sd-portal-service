@@ -184,4 +184,23 @@ public class BudgetController {
     Budget budget = budgetService.findById(budgetID);
     return ResponseEntity.ok(budget);
   }
+
+   /**
+   * @หางบทั้งหมดของแต่ละYearและDepartment
+   * @GetMapping
+   */
+  @GetMapping("/findBudget")
+  public List<LinkedHashMap<String, Object>> findBudget(
+    String Year,
+    Long department_id,
+    Long company_id
+  ) {
+    List<LinkedHashMap<String, Object>> resultList = budgetService.find_budget(
+      company_id,
+      Year,
+      department_id
+    );
+
+    return resultList;
+  }
 }
