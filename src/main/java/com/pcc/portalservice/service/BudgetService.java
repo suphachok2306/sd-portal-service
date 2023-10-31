@@ -59,7 +59,7 @@ public class BudgetService {
       .year(createBudgetRequest.getYear())
       .budgetCer(createBudgetRequest.getBudgetCer())
       .budgetTraining(createBudgetRequest.getBudgetTraining())
-      .total_exp(
+      .totalExp(
         totalExp(
           createBudgetRequest.getBudgetCer(),
           createBudgetRequest.getBudgetTraining()
@@ -116,7 +116,7 @@ public class BudgetService {
     budget.setYear(createBudgetRequest.getYear());
     budget.setBudgetCer(createBudgetRequest.getBudgetCer());
     budget.setBudgetTraining(createBudgetRequest.getBudgetTraining());
-    budget.setTotal_exp(
+    budget.setTotalExp(
       totalExp(
         createBudgetRequest.getBudgetCer(),
         createBudgetRequest.getBudgetTraining()
@@ -204,6 +204,7 @@ public class BudgetService {
    * @หางบทั้งหมด
    */
   public List<Budget> findAll() {
+    
     return budgetRepository.findAll();
   }
 
@@ -342,6 +343,7 @@ public class BudgetService {
       !resultListBudgetTraining.isEmpty()
     ) {
       result.put("Year", year);
+      result.put("Company",companyRepository.findById(departmentRepository.findById(department_id).get().getSector().getCompany().getId()));
       result.put("Department", departmentRepository.findById(department_id));
       result.put("งบ Certificate", resultListBudgetCer.get(0));
       result.put("งบ อบรม", resultListBudgetTraining.get(0));
@@ -396,6 +398,7 @@ public class BudgetService {
         !resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()
       ) {
         result.put("Year", year);
+        result.put("Company",companyRepository.findById(departmentRepository.findById(department_id).get().getSector().getCompany().getId()));
         result.put("Department", departmentRepository.findById(department_id));
         result.put("งบ Certificate", certificate);
         result.put("งบ อบรม", train);

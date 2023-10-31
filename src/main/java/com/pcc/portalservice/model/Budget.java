@@ -22,15 +22,13 @@ public class Budget {
   private String year;
   private float budgetTraining;
   private float budgetCer;
-  private float total_exp;
+  private float totalExp;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "company_id")
-  @JsonIgnore
   private Company company;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "department_id")
-  @JsonIgnore
   private Department department;
 }
