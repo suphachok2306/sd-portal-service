@@ -130,17 +130,9 @@ public class TrainingService {
               .active(1)
               .build();
 
-      Status status2 = Status
-              .builder()
-              .status(null)
-              .training(training)
-              .active(0)
-              .build();
 
       statusRepository.save(status1);
-      statusRepository.save(status2);
       training.getStatus().add(status1);
-      training.getStatus().add(status2);
     } else {
       User ap1 = userRepository
               .findById(Long.valueOf(3))
@@ -165,19 +157,11 @@ public class TrainingService {
               .active(0)
               .build();
 
-      Status status3 = Status
-              .builder()
-              .status(null)
-              .training(training)
-              .active(0)
-              .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
-      statusRepository.save(status3);
       training.getStatus().add(status1);
       training.getStatus().add(status2);
-      training.getStatus().add(status3);
     }
 
     Training savedTraining = trainingRepository.save(training);
@@ -359,21 +343,6 @@ public class TrainingService {
         existingStatus.setApprovalDate(new Date());
         statusRepository.save(existingStatus);
       }
-    } else {
-      Optional<Status> updateStatus = training_id
-              .getStatus()
-              .stream()
-              .filter(status ->
-                      trainingId.equals(status.getTraining().getId()) &&
-                              status.getApproveId() == null
-              )
-              .findFirst();
-      Status UpdateStatus = updateStatus.get();
-      UpdateStatus.setStatus(statusApprove);
-      UpdateStatus.setApproveId(approve);
-      UpdateStatus.setActive(3);
-      UpdateStatus.setApprovalDate(new Date());
-      statusRepository.save(UpdateStatus);
     }
 
     return trainingRepository.save(training_id);
@@ -447,8 +416,8 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 3) {
-        if (approvedCount == 3) {
+      if (count == 2) {
+        if (approvedCount == 2) {
           result_status = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           result_status = "ไม่อนุมัติ";
@@ -458,7 +427,7 @@ public class TrainingService {
           result_status = "รอประเมิน";
         }
       } else {
-        if (approvedCount == 2) {
+        if (approvedCount == 1) {
           result_status = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           result_status = "ไม่อนุมัติ";
@@ -504,10 +473,6 @@ public class TrainingService {
     List<Training> uniqueTrainingList = new ArrayList<>(
             uniqueTrainings.values()
     );
-    System.out.println(uniqueTrainingList.get(0).getAction());
-    System.out.println(uniqueTrainingList.get(0).getCourses().get(0).getType());
-    System.out.println(uniqueTrainingList.get(1).getAction());
-    System.out.println(uniqueTrainingList.get(1).getCourses().get(0).getType());
 
     return calculateTrainingResultStatus(uniqueTrainingList);
   }
@@ -604,8 +569,8 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 3) {
-        if (approvedCount == 3) {
+      if (count == 2) {
+        if (approvedCount == 2) {
           result_status = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           result_status = "ไม่อนุมัติ";
@@ -615,7 +580,7 @@ public class TrainingService {
           result_status = "รอประเมิน";
         }
       } else {
-        if (approvedCount == 2) {
+        if (approvedCount == 1) {
           result_status = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           result_status = "ไม่อนุมัติ";
@@ -1114,17 +1079,10 @@ public class TrainingService {
               .active(1)
               .build();
 
-      Status status2 = Status
-              .builder()
-              .training(training_id)
-              .status(null)
-              .active(0)
-              .build();
 
       statusRepository.save(status1);
-      statusRepository.save(status2);
-      training_id.getStatus().add(status1);
-      training_id.getStatus().add(status2);
+      
+      training_id.getStatus().add(status1);;
     } else {
       Status status1 = Status
               .builder()
@@ -1142,20 +1100,11 @@ public class TrainingService {
               .active(0)
               .build();
 
-      Status status3 = Status
-              .builder()
-              .training(training_id)
-              .status(null)
-              .active(0)
-              .build();
-
       statusRepository.save(status1);
       statusRepository.save(status2);
-      statusRepository.save(status3);
 
       training_id.getStatus().add(status1);
       training_id.getStatus().add(status2);
-      training_id.getStatus().add(status3);
     }
   }
 
