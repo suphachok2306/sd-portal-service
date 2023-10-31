@@ -119,7 +119,7 @@ public class BudgetController {
   @GetMapping("/findTotalBudget")
   public LinkedHashMap<String, Object> findTotal(
     @RequestParam String Year,
-    Long department_id
+    @RequestParam Long department_id
   ) {
     LinkedHashMap<String, Object> resultList = budgetService.total_exp(
       Year,
@@ -129,14 +129,14 @@ public class BudgetController {
     return resultList;
   }
 
-  /**
-   * @หางบท่ี่เหลือของแต่ละYearและDepartment
+    /**
+   * @หางบทั้งหมดของแต่ละYearและDepartment
    * @GetMapping
    */
-  @GetMapping("/findRemainBudget")
-  public LinkedHashMap<String, Object> findRemain(
-    @RequestParam int Year,
-    Long department_id
+  @GetMapping("/findTotalRemain")
+  public LinkedHashMap<String, Object> findtotalPriceRemaining(
+    @RequestParam String Year,
+    @RequestParam Long department_id
   ) {
     LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(
       Year,
@@ -145,6 +145,26 @@ public class BudgetController {
 
     return resultList;
   }
+
+
+  // /**
+  //  * @หางบท่ี่เหลือของแต่ละYearและDepartment
+  //  * @GetMapping
+  //  */
+  // @GetMapping("/findRemainBudget")
+  // public LinkedHashMap<String, Object> findRemain(
+  //   @RequestParam int Year,
+  //   @RequestParam Long department_id,
+  //   @RequestParam String type
+  // ) {
+  //   LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(
+  //     Year,
+  //     department_id,
+  //     type   
+  //   );
+
+  //   return resultList;
+  // }
 
   /**
    * @หาBudgetทั้งหมด

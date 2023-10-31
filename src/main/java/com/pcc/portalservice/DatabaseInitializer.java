@@ -41,20 +41,21 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
   }
 
-  private void insertDataIntoCourseTable() {
+ private void insertDataIntoCourseTable() {
     if (isTableEmpty("public.course")) {
       jdbcTemplate.execute(
-        "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time, objective,active) VALUES " +
-        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่'), " +
-        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ยกเลิก');"
+        "INSERT INTO public.course (course_name, end_date, institute, note, place, price, price_project, start_date, time, objective,active,type) VALUES " +
+        "('BA Fundamental', '2023-11-01 07:00:00.000', 'คุณนิทัศน์ ,คุณเงาะ ,คุณนักสู้ ,คุณชำนาญ', '5-6/10,10-12/10,16-30/10,1-10/11/2566', '102/99 ถนน ณ ระนอง คลองเตย กรุงเทพฯ', 0.0, 0.0, '2023-10-05 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Introduction to Microservice รุ่น 5', '2023-08-11 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'Online ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-08-10 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Soft Skillathon for IT Professional (Business Mindset and Diversity Mindset)', '2023-08-18 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 10000.0, 0.0, '2023-08-17 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('DevOps : From Development to Deployment/Production', '2023-08-18 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 11900.0, 0.0, '2023-08-16 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Docker for Developers in Practice from Source Code to CI/CD', '2023-07-25 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 9900.0, 0.0, '2023-07-24 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('ChatGPT for Management', '2023-06-26 07:00:00.000', 'IMC Institute', NULL, '141/7 Skulthai Surawong Tower 8th FL,Surawong Road, · Suriyawong, Bangrak, Bangkok,Bangkok 10500', 5900.0, 0.0, '2023-06-26 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Python for Programmers', '2023-03-31 07:00:00.000', 'Software Park Thailand', '', 'Software Park Training Room 3rd floor', 13000.0, 0.0, '2023-03-28 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Workshop Design Thinking', '2023-02-05 07:00:00.000', 'คุณเกรียงไกร  นิตรานนท์', '', 'อาคารพหลโยธินเพลส ชั้น 41', 726.89, 0.0, '2023-02-04 07:00:00.000', '09:00-16:30', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Basic Software Testing', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','course'), " +
+        "('Basic Software สอบ', '2023-02-28 07:00:00.000', 'IMC Institute', NULL, 'ผ่านโปรแกรม Zoom', 6900.0, 0.0, '2023-02-27 07:00:00.000', '09:00-16:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ดำเนินการอยู่','สอบ'), " +
+        "('Advance SQL', '2023-02-23 07:00:00.000', 'คุณนิทัศน์ หวังวิบูลย์กิจ', NULL, 'ออนไลน์ ผ่าน Program Microsoft Teams', 0.0, 0.0, '2023-02-02 07:00:00.000', '09:00-17:00', 'เพื่อนำมาใช้ในการปฎิบัติงาน','ยกเลิก','course');"
       );
     }
   }
@@ -157,23 +158,23 @@ public class DatabaseInitializer implements CommandLineRunner {
 
   private void insertBudgetTable() {
     String sql =
-      "INSERT INTO public.budget (air_acc, class_name, \"exp\", fee, number_of_person, remark, \"year\",company_id, department_id)\n" +
+      "INSERT INTO public.budget (budget_cer, budget_training, total_exp, \"year\", company_id, department_id)\n" +
       "VALUES\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2022', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,1),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023',1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (10.0, 'test', 20.0, 10.0, 100, '', '2023', 1,2),\n" +
-      "    (1000.0, 'string', 2000.0, 1000.0, 0, 'string', '2023',1,2),\n" +
-      "    (15000.0, 'string', 30000.0, 15000.0, 999, 'string', '2023', 1,1);";
+      "    (10.0,10,20,'2022', 1,1),\n" +
+      "    (10.0,10,20,'2022', 1,1),\n" +
+      "    (10.0,10,20,'2022', 1,1),\n" +
+      "    (10.0,10,20,'2023', 1,1),\n" +
+      "    (10.0,10,20,'2023', 1,1),\n" +
+      "    (10.0,10,20,'2023', 1,1),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (10.0,10,20,'2023', 1,2),\n" +
+      "    (1000.0,500,1500,'2023',1,2),\n" +
+      "    (15000.0,1500,3000, '2023', 1,1);";
 
     if (isTableEmpty("public.budget")) {
       jdbcTemplate.execute(sql);

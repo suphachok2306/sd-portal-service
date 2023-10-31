@@ -7,13 +7,8 @@ import lombok.Data;
 @Data
 public class CreateBudgetRequest {
     String year;
-    String className;
-    String remark;
-    int numberOfPerson;
-    float fee;
-    float airAcc;
-    long departmentId;
-    long companyId;
-    String type;
-
+    Long department_Id;
+    Long company_Id;
+    float budgetTraining;
+    float budgetCer;
 }

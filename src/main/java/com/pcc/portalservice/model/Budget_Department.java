@@ -1,4 +1,4 @@
-package com.pcc.portalservice.model;
+﻿package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
@@ -8,21 +8,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "BUDGET")
+@Table(name = "Budget_Department")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Budget {
+public class Budget_Department {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String year;
-  private float budgetTraining;
-  private float budgetCer;
   private float total_exp;
+  private String type;
 
   @ManyToOne(optional = false)
   @JoinColumn(name = "company_id")

@@ -504,6 +504,10 @@ public class TrainingService {
     List<Training> uniqueTrainingList = new ArrayList<>(
             uniqueTrainings.values()
     );
+    System.out.println(uniqueTrainingList.get(0).getAction());
+    System.out.println(uniqueTrainingList.get(0).getCourses().get(0).getType());
+    System.out.println(uniqueTrainingList.get(1).getAction());
+    System.out.println(uniqueTrainingList.get(1).getCourses().get(0).getType());
 
     return calculateTrainingResultStatus(uniqueTrainingList);
   }

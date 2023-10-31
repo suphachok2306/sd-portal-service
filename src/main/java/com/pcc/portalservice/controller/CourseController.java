@@ -108,6 +108,14 @@ public class CourseController {
   public List<Course> getCourseAll() {
     return courseService.findAllCourse();
   }
+   /**
+   * @หาCourseทั้งหมด
+   * @GetMapping
+   */
+  @GetMapping("/findAllTest")
+  public List<Course> getTest() {
+    return courseService.findAllTest();
+  }
 
   /**
    * @หาCourseด้วยId

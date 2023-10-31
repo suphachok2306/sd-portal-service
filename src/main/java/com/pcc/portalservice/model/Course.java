@@ -37,4 +37,5 @@ public class Course {
   private String institute;
 
   private String active;
+  private String type;
 }

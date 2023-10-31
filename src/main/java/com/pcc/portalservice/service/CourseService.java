@@ -8,6 +8,7 @@ import com.pcc.portalservice.requests.CreateCourseRequest;
 import com.pcc.portalservice.requests.EditCourseRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -105,8 +106,31 @@ public class CourseService {
    * @หาCourseทั้งหมด
    */
   public List<Course> findAllCourse() {
-    return courseRepository.findAll();
-  }
+    List<Course> allCourses = courseRepository.findAll();
+    List<Course> filteredCourses = new ArrayList<>();
+
+    for (Course course : allCourses) {
+        if (!"สอบ".equals(course.getType())) {
+            filteredCourses.add(course);
+        }
+    }
+
+    return filteredCourses;
+}
+
+public List<Course> findAllTest() {
+    List<Course> allCourses = courseRepository.findAll();
+    List<Course> filteredCourses = new ArrayList<>();
+
+    for (Course course : allCourses) {
+        if ("สอบ".equals(course.getType())) {
+            filteredCourses.add(course);
+        }
+    }
+
+    return filteredCourses;
+}
+
 
   /**
    * @เช็คNullของCourse
