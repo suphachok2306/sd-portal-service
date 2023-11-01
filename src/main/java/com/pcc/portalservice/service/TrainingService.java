@@ -905,7 +905,7 @@ public class TrainingService {
             convertByteToBase64(user_id2.getSignature().getImage())
           );
           params.put("positionAp2", user_id2.getPosition().getPositionName());
-          if (training_id.getStatus().size() == 2) {
+          if (training_id.getStatus().size() == 1) {
             params.put(
               "date_saveUser2",
               training_id.getStatus().get(0).getApprovalDate()
@@ -925,15 +925,15 @@ public class TrainingService {
             "imageBase64User3",
             convertByteToBase64(user_id3.getSignature().getImage())
           );
-          if (training_id.getStatus().size() > 2) {
-            params.put(
-              "date_saveUser3",
-              training_id.getStatus().get(2).getApprovalDate()
-            );
-          } else if (training_id.getStatus().size() == 2) {
+          if (training_id.getStatus().size() > 1) {
             params.put(
               "date_saveUser3",
               training_id.getStatus().get(1).getApprovalDate()
+            );
+          } else if (training_id.getStatus().size() == 1) {
+            params.put(
+              "date_saveUser3",
+              training_id.getStatus().get(0).getApprovalDate()
             );
           }
         }

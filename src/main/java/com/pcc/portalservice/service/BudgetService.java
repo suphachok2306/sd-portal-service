@@ -39,7 +39,6 @@ public class BudgetService {
    * @Create
    */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
-    System.out.println("0");
     Company companyName = companyRepository
       .findById(createBudgetRequest.getCompany_Id())
       .orElseThrow(() ->
@@ -47,7 +46,6 @@ public class BudgetService {
           "companyName not found: " + createBudgetRequest.getCompany_Id()
         )
       );
-    System.out.println("1");
     Department departmentId = departmentRepository
       .findById(createBudgetRequest.getDepartment_Id())
       .orElseThrow(() ->
@@ -55,7 +53,6 @@ public class BudgetService {
           "departmentId not found: " + createBudgetRequest.getDepartment_Id()
         )
       );
-    System.out.println("2");
     Budget budget = Budget
       .builder()
       .department(departmentId)
@@ -70,9 +67,7 @@ public class BudgetService {
         )
       )
       .build();
-    System.out.println("3");
     budget = budgetRepository.save(budget);
-    System.out.println("4");
     checkBudget(
       createBudgetRequest.getDepartment_Id(),
       createBudgetRequest.getYear()
@@ -369,7 +364,7 @@ public class BudgetService {
       "JOIN t.status s " +
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.type = 'course'" +
+      "AND c.type = 'อบรม'" +
       "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);

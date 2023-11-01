@@ -4,6 +4,7 @@ import com.pcc.portalservice.model.Course;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.StatusCourse;
 import com.pcc.portalservice.model.enums.StatusUser;
+import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.requests.CreateCourseRequest;
 import com.pcc.portalservice.requests.EditCourseRequest;
 import com.pcc.portalservice.response.ApiResponse;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class CourseController {
 
   private final CourseService courseService;
+  private final CourseRepository courseRepository;
 
   /**
    * @สร้างCourse
@@ -115,6 +117,15 @@ public class CourseController {
   @GetMapping("/findAllTest")
   public List<Course> getTest() {
     return courseService.findAllTest();
+  }
+
+  /**
+   * @หาCourseทั้งหมด
+   * @GetMapping
+   */
+  @GetMapping("/findAllCourses")
+  public List<Course> getCourses() {
+    return courseRepository.findAll();
   }
 
   /**

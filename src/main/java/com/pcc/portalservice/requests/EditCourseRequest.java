@@ -15,4 +15,5 @@ public class EditCourseRequest {
     private float priceProject;
     private String place;
     private String institute;  
+    private String type;
 }

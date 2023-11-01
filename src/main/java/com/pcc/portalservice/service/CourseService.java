@@ -46,6 +46,7 @@ public class CourseService {
 
     Course course = Course
       .builder()
+      .type(createCourseRequest.getType())
       .hours(createCourseRequest.getHours())
       .active("ดำเนินการอยู่")
       .courseName(createCourseRequest.getCourseName())
@@ -73,6 +74,7 @@ public class CourseService {
     Date endDateFormat = dateFormat.parse(editCourseRequest.getEndDate());
 
     Course course = findById(courseId);
+    course.setType(editCourseRequest.getType());
     course.setCourseName(editCourseRequest.getCourseName());
     course.setStartDate(startDateFormat);
     course.setEndDate(endDateFormat);
