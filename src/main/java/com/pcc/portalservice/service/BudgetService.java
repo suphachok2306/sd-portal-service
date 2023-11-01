@@ -39,6 +39,7 @@ public class BudgetService {
    * @Create
    */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
+    System.out.println("0");
     Company companyName = companyRepository
       .findById(createBudgetRequest.getCompany_Id())
       .orElseThrow(() ->
@@ -46,7 +47,7 @@ public class BudgetService {
           "companyName not found: " + createBudgetRequest.getCompany_Id()
         )
       );
-
+    System.out.println("1");
     Department departmentId = departmentRepository
       .findById(createBudgetRequest.getDepartment_Id())
       .orElseThrow(() ->
@@ -54,6 +55,7 @@ public class BudgetService {
           "departmentId not found: " + createBudgetRequest.getDepartment_Id()
         )
       );
+    System.out.println("2");
     Budget budget = Budget
       .builder()
       .department(departmentId)
@@ -68,9 +70,9 @@ public class BudgetService {
         )
       )
       .build();
-
+    System.out.println("3");
     budget = budgetRepository.save(budget);
-
+    System.out.println("4");
     checkBudget(
       createBudgetRequest.getDepartment_Id(),
       createBudgetRequest.getYear()
@@ -235,6 +237,7 @@ public class BudgetService {
   }
 
   private void checkBudget(Long department_id, String year) {
+    System.out.println("5");
     if (department_id != null && year != null) {
       CriteriaBuilder builder = entityManager.getCriteriaBuilder();
       CriteriaQuery<Budget_Department> criteriaQuery = builder.createQuery(
@@ -254,16 +257,21 @@ public class BudgetService {
       TypedQuery<Budget_Department> typedQuery = entityManager.createQuery(
         criteriaQuery
       );
+      System.out.println("6");
       if (typedQuery != null) {
+        System.out.println("7");
         Float x = getTotalBudgetCer(department_id, year);
         Float y = getTotalBudgetTraining(department_id, year);
         Float z = getTotalBudgetTotalExp(department_id, year);
         Department department = departmentRepository
           .findById(department_id)
           .get();
-        Company company = companyRepository.findById(department.getId()).get();
+        System.out.println("8");
+        Optional<Company> company = companyRepository.findById(department.getSector().getCompany().getId());
         List<Budget_Department> resultList = typedQuery.getResultList();
+        System.out.println("9");
         resultList.sort(Comparator.comparing(Budget_Department::getId));
+        System.out.println("10");
         if (resultList.size() == 3) {
           for (int i = 0; i < resultList.size(); i++) {
             if (resultList.get(i).getType().toString().equals("อบรม")) {
@@ -279,9 +287,9 @@ public class BudgetService {
             }
           }
         } else if (resultList.size() <= 0) {
-          insertBudgetDepartment(x, company, department, year, "อบรม");
-          insertBudgetDepartment(y, company, department, year, "certificate");
-          insertBudgetDepartment(z, company, department, year, "ยอดรวม");
+          insertBudgetDepartment(x, company.get(), department, year, "อบรม");
+          insertBudgetDepartment(y, company.get(), department, year, "certificate");
+          insertBudgetDepartment(z, company.get(), department, year, "ยอดรวม");
         }
       }
     }
