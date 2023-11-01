@@ -147,7 +147,7 @@ public class CourseController {
         ApiResponse response = new ApiResponse();
         ResponseData data = new ResponseData();
         try {
-            Course course = courseService.setStatusToUser(course_id,statuscourse);
+            Course course = courseService.setStatusToCourse(course_id,statuscourse);
             data.setResult(course);
             response.setResponseMessage("ทำรายการเรียบร้อย");
             response.setResponseData(data);

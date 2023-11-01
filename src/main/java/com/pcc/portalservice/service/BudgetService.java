@@ -329,10 +329,10 @@ public class BudgetService {
         )
       );
       result.put("Department", departmentRepository.findById(department_id));
-      result.put("งบ Certificate", resultListBudgetCer.get(0));
-      result.put("งบ อบรม", resultListBudgetTraining.get(0));
+      result.put("budgetCer", resultListBudgetCer.get(0));
+      result.put("budgetTrain", resultListBudgetTraining.get(0));
       result.put(
-        "งบยอดรวม",
+        "budgetTotal",
         (Double) resultListBudgetCer.get(0) +
         (Double) resultListBudgetTraining.get(0)
       );
@@ -369,13 +369,13 @@ public class BudgetService {
     try {
       LinkedHashMap<String, Object> all_budget = total_exp(year, department_id);
 
-      Double certificate = (Double) all_budget.get("งบ Certificate") -
+      Double certificate = (Double) all_budget.get("budgetCer") -
       (
         resultListBudgetCer.get(0) != null
           ? ((Double) resultListBudgetCer.get(0))
           : 0
       );
-      Double train = (Double) all_budget.get("งบ อบรม") -
+      Double train = (Double) all_budget.get("budgetTrain") -
       (
         resultListBudgetTraining.get(0) != null
           ? ((Double) resultListBudgetTraining.get(0))
@@ -398,9 +398,9 @@ public class BudgetService {
           )
         );
         result.put("Department", departmentRepository.findById(department_id));
-        result.put("งบ Certificate", certificate);
-        result.put("งบ อบรม", train);
-        result.put("งบยอดรวม", total_use);
+        result.put("budgetCer", certificate);
+        result.put("budgetTrain", train);
+        result.put("budgetTotal", total_use);
       }
 
       return result;

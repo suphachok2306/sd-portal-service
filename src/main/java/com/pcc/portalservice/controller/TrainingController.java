@@ -215,6 +215,30 @@ public class TrainingController {
   }
 
   /**
+   * @แก้ไขStatusของTraining
+   * @PostMapping
+   */
+  @PutMapping("/setCancelToTraining")
+  public ResponseEntity<ApiResponse> setCancelToTraining(
+          @RequestParam Long trainingId
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      Training training = trainingService.setCancelToTraining(
+              trainingId
+      );
+      data.setResult(training);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.badRequest().body(response);
+    }
+  }
+
+  /**
    * @หาTrainingด้วยId
    * @GetMapping
    */
@@ -254,19 +278,19 @@ public class TrainingController {
     return ResponseEntity.ok(trainings);
   }
 
-  /**
-   * @หาTrainingด้วยPersonnelId
-   * @GetMapping
-   */
-  @GetMapping("/findTrainingByPersonnelId")
-  public ResponseEntity<List<Map<String, Object>>> findTrainingByPersonnelId(
-          @RequestParam Long PersonnelId
-  ) {
-    List<Map<String, Object>> trainings = trainingService.findTrainingByPersonnelId(
-            PersonnelId
-    );
-    return ResponseEntity.ok(trainings);
-  }
+  // /**
+  //  * @หาTrainingด้วยPersonnelId
+  //  * @GetMapping
+  //  */
+  // @GetMapping("/findTrainingByPersonnelId")
+  // public ResponseEntity<List<Map<String, Object>>> findTrainingByPersonnelId(
+  //         @RequestParam Long PersonnelId
+  // ) {
+  //   List<Map<String, Object>> trainings = trainingService.findTrainingByPersonnelId(
+  //           PersonnelId
+  //   );
+  //   return ResponseEntity.ok(trainings);
+  // }
 
   /**
    * @หาTrainingทั้งหมด

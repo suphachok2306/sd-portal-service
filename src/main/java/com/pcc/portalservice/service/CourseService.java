@@ -1,6 +1,7 @@
 package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Course;
+import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.enums.StatusCourse;
 import com.pcc.portalservice.repository.CourseRepository;
 import com.pcc.portalservice.repository.TrainingRepository;
@@ -12,9 +13,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -25,6 +33,7 @@ public class CourseService {
   // Services
   private final CourseRepository courseRepository;
   private final TrainingService trainingService;
+  private final EntityManager entityManager;
 
   /**
    * @สร้างCourse
@@ -110,27 +119,26 @@ public class CourseService {
     List<Course> filteredCourses = new ArrayList<>();
 
     for (Course course : allCourses) {
-        if (!"สอบ".equals(course.getType())) {
-            filteredCourses.add(course);
-        }
+      if (!"สอบ".equals(course.getType())) {
+        filteredCourses.add(course);
+      }
     }
 
     return filteredCourses;
-}
+  }
 
-public List<Course> findAllTest() {
+  public List<Course> findAllTest() {
     List<Course> allCourses = courseRepository.findAll();
     List<Course> filteredCourses = new ArrayList<>();
 
     for (Course course : allCourses) {
-        if ("สอบ".equals(course.getType())) {
-            filteredCourses.add(course);
-        }
+      if ("สอบ".equals(course.getType())) {
+        filteredCourses.add(course);
+      }
     }
 
     return filteredCourses;
-}
-
+  }
 
   /**
    * @เช็คNullของCourse
@@ -151,12 +159,32 @@ public List<Course> findAllTest() {
     );
   }
 
-  public Course setStatusToUser(Long courseId, StatusCourse statuscourse) {
+  public Course setStatusToCourse(Long courseId, StatusCourse statuscourse) {
     Course course = courseRepository
       .findById(courseId)
       .orElseThrow(() ->
         new RuntimeException("Course not found with ID: " + courseId)
       );
+    if (statuscourse.toString() == "ยกเลิก") {
+      CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+      CriteriaQuery<Training> criteriaQuery = criteriaBuilder.createQuery(
+        Training.class
+      );
+
+      Root<Training> trainingRoot = criteriaQuery.from(Training.class);
+      Join<Training, Course> courseJoin = trainingRoot.join("courses");
+
+      criteriaQuery.select(trainingRoot);
+      criteriaQuery.where(
+        criteriaBuilder.equal(courseJoin.get("id"), courseId)
+      );
+
+      TypedQuery<Training> query = entityManager.createQuery(criteriaQuery);
+      List<Training> resultList = query.getResultList();
+      for (Training training : resultList) {
+        trainingService.setCancelToTraining(Long.valueOf(training.getId()));
+      }
+    }
     course.setActive(statuscourse.toString());
     return courseRepository.save(course);
   }
