@@ -464,7 +464,7 @@ public class BudgetService {
       LinkedHashMap<String, Object> budgetMap = new LinkedHashMap<>();
 
       budgetMap.put("id", budget.getId());
-      budgetMap.put("year", year); 
+      budgetMap.put("year", budget.getYear()); 
       budgetMap.put("budgetTraining", budget.getBudgetTraining());
       budgetMap.put("budgetCer", budget.getBudgetTraining());
       budgetMap.put("total_exp", budget.getTotal_exp());
