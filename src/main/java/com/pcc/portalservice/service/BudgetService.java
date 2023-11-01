@@ -352,7 +352,7 @@ public class BudgetService {
       "JOIN t.status s " +
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.type = 'สอบ'"+
+      "AND c.type = 'สอบ'" +
       "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
 
     String jpqlBudgetTraining =
@@ -361,7 +361,7 @@ public class BudgetService {
       "JOIN t.status s " +
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.type = 'course'"+
+      "AND c.type = 'course'" +
       "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
@@ -421,21 +421,41 @@ public class BudgetService {
   }
 
   public List<LinkedHashMap<String, Object>> find_budget(
-    long company_id,
+    Long company_id,
     String year,
-    long department_id
+    Long department_id
   ) {
-    String jpql =
-      "select * from budget where year = :year and company_id = :company_id and department_id = :department_id";
+    String jpql = "select * from budget where 1=1";
+
+    if (year != null) {
+      jpql += " and year = :year";
+    }
+
+    if (company_id != null) {
+      jpql += " and company_id = :company_id";
+    }
+
+    if (department_id != null) {
+      jpql += " and department_id = :department_id";
+    }
 
     NativeQuery<Budget> query = (NativeQuery<Budget>) entityManager.createNativeQuery(
       jpql,
       Budget.class
     );
 
-    query.setParameter("year", year);
-    query.setParameter("company_id", company_id);
-    query.setParameter("department_id", department_id);
+    if (year != null) {
+      query.setParameter("year", year);
+    }
+
+    if (company_id != null) {
+      query.setParameter("company_id", company_id);
+    }
+
+    if (department_id != null) {
+      query.setParameter("department_id", department_id);
+    }
+
     List<Budget> resultList = (List<Budget>) query.getResultList();
 
     List<LinkedHashMap<String, Object>> budgetMapList = new ArrayList<>();
@@ -444,15 +464,21 @@ public class BudgetService {
       LinkedHashMap<String, Object> budgetMap = new LinkedHashMap<>();
 
       budgetMap.put("id", budget.getId());
-      budgetMap.put("year", year);
+      budgetMap.put("year", year); 
       budgetMap.put("budgetTraining", budget.getBudgetTraining());
       budgetMap.put("budgetCer", budget.getBudgetTraining());
       budgetMap.put("total_exp", budget.getTotal_exp());
-      budgetMap.put("company", budget.getCompany());
-      budgetMap.put("department", budget.getDepartment());
+      budgetMap.put("company", budget.getCompany().getCompanyName());
+      Map<String, Object> departmentMap = new HashMap<>();
+      departmentMap.put("deptid", budget.getDepartment().getId());
+      departmentMap.put("deptname", budget.getDepartment().getDeptName());
+      departmentMap.put("deptcode", budget.getDepartment().getDeptCode());
+
+      budgetMap.put("department", departmentMap);
 
       budgetMapList.add(budgetMap);
     }
+
     return budgetMapList;
   }
 }

@@ -216,9 +216,9 @@ public class BudgetController {
    */
   @GetMapping("/findBudget")
   public List<LinkedHashMap<String, Object>> findBudget(
-    String Year,
-    Long department_id,
-    Long company_id
+    @RequestParam(required = false)String Year,
+    @RequestParam(required = false) Long department_id,
+    @RequestParam(required = false) Long company_id
   ) {
     List<LinkedHashMap<String, Object>> resultList = budgetService.find_budget(
       company_id,
