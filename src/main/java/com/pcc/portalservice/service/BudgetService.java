@@ -347,12 +347,22 @@ public class BudgetService {
   ) {
     checkBudget(department_id, year);
     String jpqlBudgetCer =
-      "SELECT SUM(c.price) AS total_price FROM Training t JOIN t.courses c " +
-      "WHERE t.user.department.id = :departmentId AND EXTRACT(YEAR FROM t.dateSave) = :year AND c.type = 'สอบ' ";
+      "SELECT SUM(c.price) AS total_price FROM Training t " +
+      "JOIN t.courses c " +
+      "JOIN t.status s " +
+      "WHERE t.user.department.id = :departmentId " +
+      "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
+      "AND c.type = 'สอบ'"+
+      "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
 
     String jpqlBudgetTraining =
-      "SELECT SUM(c.price) AS total_price FROM Training t JOIN t.courses c " +
-      "WHERE t.user.department.id = :departmentId AND EXTRACT(YEAR FROM t.dateSave) = :year AND c.type = 'course' ";
+      "SELECT SUM(c.price) AS total_price FROM Training t " +
+      "JOIN t.courses c " +
+      "JOIN t.status s " +
+      "WHERE t.user.department.id = :departmentId " +
+      "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
+      "AND c.type = 'course'"+
+      "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
     queryBudgetCer.setParameter("departmentId", department_id);
