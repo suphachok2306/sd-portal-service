@@ -176,7 +176,11 @@ public class CourseService {
 
       criteriaQuery.select(trainingRoot);
       criteriaQuery.where(
-        criteriaBuilder.equal(courseJoin.get("id"), courseId)
+        criteriaBuilder.equal(courseJoin.get("id"), courseId),
+        criteriaBuilder.greaterThanOrEqualTo(
+            criteriaBuilder.function("TO_CHAR", String.class, trainingRoot.get("dateSave"), criteriaBuilder.literal("YYYY-MM-DD")),
+            criteriaBuilder.function("TO_CHAR", String.class, criteriaBuilder.currentDate(), criteriaBuilder.literal("YYYY-MM-DD"))
+        )
       );
 
       TypedQuery<Training> query = entityManager.createQuery(criteriaQuery);

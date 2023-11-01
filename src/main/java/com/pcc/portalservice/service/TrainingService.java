@@ -359,8 +359,8 @@ public class TrainingService {
 
     query.executeUpdate();
 
-    entityManager.flush();
     return null;
+
   }
 
 
@@ -673,8 +673,8 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 3) {
-        if (approvedCount == 3) {
+      if (count == 2) {
+        if (approvedCount == 2) {
           resultStatus = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           resultStatus = "ไม่อนุมัติ";
@@ -684,7 +684,7 @@ public class TrainingService {
           resultStatus = "รอประเมิน";
         }
       } else {
-        if (approvedCount == 2) {
+        if (approvedCount == 1) {
           resultStatus = "อนุมัติ";
         } else if (disapprovedCount >= 1) {
           resultStatus = "ไม่อนุมัติ";
