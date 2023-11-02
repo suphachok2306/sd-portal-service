@@ -1,28 +1,18 @@
 package com.pcc.portalservice.controller;
 
-import com.pcc.portalservice.model.*;
+import com.pcc.portalservice.model.Budget;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.BudgetService;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.*;
 
 @RestController
 @AllArgsConstructor
@@ -120,17 +110,51 @@ public class BudgetController {
    * @หางบทั้งหมดของแต่ละYearและDepartment
    * @GetMapping
    */
+//  @GetMapping("/findTotalBudget")
+//  public LinkedHashMap<String, Object> findTotal(
+//    @RequestParam String Year,
+//    @RequestParam Long department_id
+//  ) {
+//    LinkedHashMap<String, Object> resultList = budgetService.total_exp(
+//      Year,
+//      department_id
+//    );
+//
+//    return resultList;
+//  }
   @GetMapping("/findTotalBudget")
-  public LinkedHashMap<String, Object> findTotal(
-    @RequestParam String Year,
-    @RequestParam Long department_id
+  public Object findTotal(
+          @RequestParam String Year,
+          @RequestParam Long department_id
   ) {
-    LinkedHashMap<String, Object> resultList = budgetService.total_exp(
-      Year,
-      department_id
-    );
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
 
-    return resultList;
+    try {
+      LinkedHashMap<String, Object> resultList = budgetService.total_exp(
+              Year,
+              department_id
+      );
+
+      if (resultList == null) {
+        // department_id เกินจากฐานข้อมูลที่มีอยู่
+        response.setResponseMessage("department_id เกินจากฐานข้อมูลที่มีอยู่");
+        response.setResponseData((ResponseData) Collections.emptyList());
+        return response;
+      }
+
+      data.setResult(resultList);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+
+      return resultList;
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      if (e.getMessage().equals("Cannot invoke \"java.lang.Float.floatValue()\" because the return value of \"com.pcc.portalservice.service.BudgetService.getTotalBudgetCer(java.lang.Long, String)\" is null")) {
+        response.setResponseMessage("ยังไม่มีงบในระบบ");
+      }
+      return ResponseEntity.badRequest().body(response);
+    }
   }
 
   /**
