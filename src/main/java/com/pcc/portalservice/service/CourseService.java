@@ -38,31 +38,53 @@ public class CourseService {
   /**
    * @สร้างCourse
    */
-  public Course create(CreateCourseRequest createCourseRequest)
-    throws ParseException {
+  public Course create(CreateCourseRequest createCourseRequest) throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date startDateFormat = dateFormat.parse(createCourseRequest.getStartDate());
     Date endDateFormat = dateFormat.parse(createCourseRequest.getEndDate());
+    
+    Course course = null;
 
-    Course course = Course
-      .builder()
-      .type(createCourseRequest.getType())
-      .hours(createCourseRequest.getHours())
-      .active("ดำเนินการอยู่")
-      .courseName(createCourseRequest.getCourseName())
-      .startDate(startDateFormat)
-      .endDate(endDateFormat)
-      .time(createCourseRequest.getTime())
-      .note(createCourseRequest.getNote())
-      .objective("เพื่อนำมาใช้ในการปฎิบัติงาน")
-      .price(createCourseRequest.getPrice())
-      .priceProject(createCourseRequest.getPriceProject())
-      .place(createCourseRequest.getPlace())
-      .institute(createCourseRequest.getInstitute())
-      .build();
-
+    if (createCourseRequest.getType().toString().equals("อบรม")) {
+        course = Course
+            .builder()
+            .type(createCourseRequest.getType())
+            .hours(createCourseRequest.getHours())
+            .active("ดำเนินการอยู่")
+            .courseName(createCourseRequest.getCourseName())
+            .startDate(startDateFormat)
+            .endDate(endDateFormat)
+            .time(createCourseRequest.getTime())
+            .note(createCourseRequest.getNote())
+            .objective("เพื่อนำมาใช้ในการปฎิบัติงาน")
+            .price(createCourseRequest.getPrice())
+            .priceProject(createCourseRequest.getPriceProject())
+            .place(createCourseRequest.getPlace())
+            .institute(createCourseRequest.getInstitute())
+            .build();
+    } else if (createCourseRequest.getType().toString().equals("สอบ")) {
+        String objectiveString = "เพื่อสอบ " + createCourseRequest.getCourseName();
+        course = Course
+            .builder()
+            .type(createCourseRequest.getType())
+            .hours(createCourseRequest.getHours())
+            .active("ดำเนินการอยู่")
+            .courseName(createCourseRequest.getCourseName())
+            .startDate(startDateFormat)
+            .endDate(endDateFormat)
+            .time(createCourseRequest.getTime())
+            .note(createCourseRequest.getNote())
+            .objective(objectiveString)
+            .price(createCourseRequest.getPrice())
+            .priceProject(createCourseRequest.getPriceProject())
+            .place(createCourseRequest.getPlace())
+            .institute(createCourseRequest.getInstitute())
+            .build();
+    }
+    
     return courseRepository.save(course);
-  }
+}
+
 
   /**
    * @แก้ไขCourse
@@ -72,8 +94,14 @@ public class CourseService {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date startDateFormat = dateFormat.parse(editCourseRequest.getStartDate());
     Date endDateFormat = dateFormat.parse(editCourseRequest.getEndDate());
-
     Course course = findById(courseId);
+    if(editCourseRequest.getType().toString().equals("อบรม")){
+      course.setObjective("เพื่อนำมาใช้ในการปฎิบัติงาน");
+    }
+    else if(editCourseRequest.getType().toString().equals("สอบ")){
+      String objectiveString = "เพื่อสอบ " + editCourseRequest.getCourseName();
+      course.setObjective(objectiveString);
+    }
     course.setType(editCourseRequest.getType());
     course.setCourseName(editCourseRequest.getCourseName());
     course.setStartDate(startDateFormat);
