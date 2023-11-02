@@ -1105,10 +1105,12 @@ public class TrainingService {
     Root<Training> trainingRoot = query.from(Training.class);
 
     query.multiselect(
+        trainingRoot.get("user").get("id").alias("user_id"),
         trainingRoot.get("user").get("empCode").alias("emp_code"),
         trainingRoot.get("user").get("title").alias("title"),
         trainingRoot.get("user").get("firstname").alias("firstname"),
         trainingRoot.get("user").get("lastname").alias("lastname"),
+        trainingRoot.join("courses").get("id").alias("course_id"),
         trainingRoot.join("courses").get("courseName").alias("course_name"),
         trainingRoot.join("courses").get("place").alias("place"),
         trainingRoot.join("courses").get("price").alias("price"),
@@ -1142,6 +1144,7 @@ public class TrainingService {
                 currentUser.put("total", totalAll);
             }
             currentUser = new LinkedHashMap<>();
+            currentUser.put("user_id",row.get("user_id"));
             currentUser.put("emp_code", row.get("emp_code"));
             currentUser.put("title", row.get("title"));
             currentUser.put("firstname", row.get("firstname"));
@@ -1152,6 +1155,7 @@ public class TrainingService {
         }
 
         LinkedHashMap<String, Object> course = new LinkedHashMap<>();
+        course.put("course_id",row.get("course_id"));
         course.put("course_name", row.get("course_name"));
         course.put("place", row.get("place"));
         course.put("price", row.get("price"));
