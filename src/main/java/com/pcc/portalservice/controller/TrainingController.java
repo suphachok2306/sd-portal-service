@@ -158,10 +158,6 @@ public class TrainingController {
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
-    if (trainingService.isEditTrainingNull2(editTraining)) {
-      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-      return ResponseEntity.badRequest().body(response);
-    }
     try {
       Result training = trainingService.editTrainingSection2(
         resultId,
