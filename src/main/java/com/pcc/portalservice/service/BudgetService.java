@@ -232,7 +232,6 @@ public class BudgetService {
   }
 
   private void checkBudget(Long department_id, String year) {
-    System.out.println("5");
     if (department_id != null && year != null) {
       CriteriaBuilder builder = entityManager.getCriteriaBuilder();
       CriteriaQuery<Budget_Department> criteriaQuery = builder.createQuery(
@@ -252,21 +251,19 @@ public class BudgetService {
       TypedQuery<Budget_Department> typedQuery = entityManager.createQuery(
         criteriaQuery
       );
-      System.out.println("6");
+
       if (typedQuery != null) {
-        System.out.println("7");
         Float x = getTotalBudgetCer(department_id, year);
         Float y = getTotalBudgetTraining(department_id, year);
         Float z = getTotalBudgetTotalExp(department_id, year);
         Department department = departmentRepository
           .findById(department_id)
           .get();
-        System.out.println("8");
-        Optional<Company> company = companyRepository.findById(department.getSector().getCompany().getId());
+        Optional<Company> company = companyRepository.findById(
+          department.getSector().getCompany().getId()
+        );
         List<Budget_Department> resultList = typedQuery.getResultList();
-        System.out.println("9");
         resultList.sort(Comparator.comparing(Budget_Department::getId));
-        System.out.println("10");
         if (resultList.size() == 3) {
           for (int i = 0; i < resultList.size(); i++) {
             if (resultList.get(i).getType().toString().equals("อบรม")) {
@@ -283,7 +280,13 @@ public class BudgetService {
           }
         } else if (resultList.size() <= 0) {
           insertBudgetDepartment(x, company.get(), department, year, "อบรม");
-          insertBudgetDepartment(y, company.get(), department, year, "certificate");
+          insertBudgetDepartment(
+            y,
+            company.get(),
+            department,
+            year,
+            "certificate"
+          );
           insertBudgetDepartment(z, company.get(), department, year, "ยอดรวม");
         }
       }
@@ -349,80 +352,117 @@ public class BudgetService {
     long department_id
   ) {
     checkBudget(department_id, year);
-    String jpqlBudgetCer =
-      "SELECT SUM(c.price) AS total_price FROM Training t " +
+    String trainingIdsQuery =
+      "SELECT DISTINCT t.id " +
+      "FROM Training t " +
       "JOIN t.courses c " +
-      "JOIN t.status s " +
+      "LEFT JOIN t.status s " +
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.type = 'สอบ'" +
-      "AND (s.status IS NULL OR s.status != 'ยกเลิก')"+
-      "AND (c.priceProject IS NULL)";
+      "AND (c.type = 'สอบ' AND c.active != 'ยกเลิก' " +
+      "AND (s IS NULL OR s.status != 'ยกเลิก') " +
+      "AND c.priceProject IS NULL)";
 
-    String jpqlBudgetTraining =
-      "SELECT SUM(c.price) AS total_price FROM Training t " +
-      "JOIN t.courses c " +
-      "JOIN t.status s " +
-      "WHERE t.user.department.id = :departmentId " +
-      "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.type = 'อบรม'" +
-      "AND (s.status IS NULL OR s.status != 'ยกเลิก')"+
-      "AND (c.priceProject IS NULL)";
+    Query query = entityManager.createQuery(trainingIdsQuery);
+    query.setParameter("departmentId", department_id);
+    query.setParameter("year", Integer.parseInt(year));
 
-    Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
-    queryBudgetCer.setParameter("departmentId", department_id);
-    queryBudgetCer.setParameter("year", Integer.parseInt(year));
-
-    Query queryBudgetTraining = entityManager.createQuery(jpqlBudgetTraining);
-    queryBudgetTraining.setParameter("departmentId", department_id);
-    queryBudgetTraining.setParameter("year", Integer.parseInt(year));
-
-    List<Object> resultListBudgetCer = queryBudgetCer.getResultList();
-    List<Object> resultListBudgetTraining = queryBudgetTraining.getResultList();
-
-    LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-    try {
-      LinkedHashMap<String, Object> all_budget = total_exp(year, department_id);
-
-      Double certificate = (Double) all_budget.get("budgetCer") -
-      (
-        resultListBudgetCer.get(0) != null
-          ? ((Double) resultListBudgetCer.get(0))
-          : 0
-      );
-      Double train = (Double) all_budget.get("budgetTrain") -
-      (
-        resultListBudgetTraining.get(0) != null
-          ? ((Double) resultListBudgetTraining.get(0))
-          : 0
-      );
-      Double total_use = certificate + train;
-      if (
-        !resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()
-      ) {
-        result.put("Year", year);
-        result.put(
-          "Company",
-          companyRepository.findById(
-            departmentRepository
-              .findById(department_id)
-              .get()
-              .getSector()
-              .getCompany()
-              .getId()
-          )
-        );
-        result.put("Department", departmentRepository.findById(department_id));
-        result.put("budgetCer", certificate);
-        result.put("budgetTrain", train);
-        result.put("budgetTotal", total_use);
-      }
-
-      return result;
-    } catch (Exception e) {
-      System.out.println(e);
+    List<Long> trainingIds = query.getResultList();
+    for (Long train : trainingIds) {
+      System.out.println(train);
     }
-    return result;
+
+    // List<Object> resultListBudgetCer = queryBudgetCer.getResultList();
+
+    // String jpqlBudgetCer =
+    //   "SELECT SUM(c.price) " +
+    //   "FROM Training t " +
+    //   "JOIN training_courses tc ON t.id = tc.training_id " +
+    //   "JOIN course c ON c.id = tc.courses_id " +
+    //   "WHERE t.id IN (SELECT DISTINCT ON (t.id) " +
+    //   "t.id " +
+    //   "FROM Training t " +
+    //   "JOIN training_courses tc ON tc.training_id = t.id " +
+    //   "JOIN course c ON c.id = tc.courses_id " +
+    //   "LEFT JOIN status s ON t.id = s.training_id " +
+    //   "JOIN users u ON u.id = t.user_id " +
+    //   "WHERE u.department_id = :departmentId " +
+    //   "AND EXTRACT(YEAR FROM t.date_save) = :year " +
+    //   "AND c.type = 'สอบ' " +
+    //   "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
+    //   "AND c.price_project IS NULL)";
+    // String jpqlBudgetTraining =
+    //   "SELECT SUM(c.price) " +
+    //   "FROM Training t " +
+    //   "JOIN training_courses tc ON t.id = tc.training_id " +
+    //   "JOIN course c ON c.id = tc.courses_id " +
+    //   "WHERE t.id IN (SELECT DISTINCT ON (t.id) " +
+    //   "t.id " +
+    //   "FROM Training t " +
+    //   "JOIN training_courses tc ON tc.training_id = t.id " +
+    //   "JOIN course c ON c.id = tc.courses_id " +
+    //   "LEFT JOIN status s ON t.id = s.training_id " +
+    //   "JOIN users u ON u.id = t.user_id " +
+    //   "WHERE u.department_id = :departmentId " +
+    //   "AND EXTRACT(YEAR FROM t.date_save) = :year " +
+    //   "AND c.type = 'อบรม' " +
+    //   "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
+    //   "AND c.price_project IS NULL)";
+
+    // Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
+    // queryBudgetCer.setParameter("departmentId", department_id);
+    // queryBudgetCer.setParameter("year", Integer.parseInt(year));
+
+    // Query queryBudgetTraining = entityManager.createQuery(jpqlBudgetTraining);
+    // queryBudgetTraining.setParameter("departmentId", department_id);
+    // queryBudgetTraining.setParameter("year", Integer.parseInt(year));
+
+    // List<Object> resultListBudgetCer = queryBudgetCer.getResultList();
+    // List<Object> resultListBudgetTraining = queryBudgetTraining.getResultList();
+
+    // LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+    // try {
+    //   LinkedHashMap<String, Object> all_budget = total_exp(year, department_id);
+
+    //   Double certificate = (Double) all_budget.get("budgetCer") -
+    //   (
+    //     resultListBudgetCer.get(0) != null
+    //       ? ((Double) resultListBudgetCer.get(0))
+    //       : 0
+    //   );
+    //   Double train = (Double) all_budget.get("budgetTrain") -
+    //   (
+    //     resultListBudgetTraining.get(0) != null
+    //       ? ((Double) resultListBudgetTraining.get(0))
+    //       : 0
+    //   );
+    //   Double total_use = certificate + train;
+    //   if (
+    //     !resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()
+    //   ) {
+    //     result.put("Year", year);
+    //     result.put(
+    //       "Company",
+    //       companyRepository.findById(
+    //         departmentRepository
+    //           .findById(department_id)
+    //           .get()
+    //           .getSector()
+    //           .getCompany()
+    //           .getId()
+    //       )
+    //     );
+    //     result.put("Department", departmentRepository.findById(department_id));
+    //     result.put("budgetCer", certificate);
+    //     result.put("budgetTrain", train);
+    //     result.put("budgetTotal", total_use);
+    //   }
+
+    //   return result;
+    // } catch (Exception e) {
+    //   System.out.println(e);
+    // }
+    return null;
   }
 
   public List<LinkedHashMap<String, Object>> find_budget(
@@ -469,7 +509,7 @@ public class BudgetService {
       LinkedHashMap<String, Object> budgetMap = new LinkedHashMap<>();
 
       budgetMap.put("id", budget.getId());
-      budgetMap.put("year", budget.getYear()); 
+      budgetMap.put("year", budget.getYear());
       budgetMap.put("budgetTraining", budget.getBudgetTraining());
       budgetMap.put("budgetCer", budget.getBudgetCer());
       budgetMap.put("total_exp", budget.getTotal_exp());
