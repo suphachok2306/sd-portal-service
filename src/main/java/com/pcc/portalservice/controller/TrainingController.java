@@ -361,7 +361,7 @@ public class TrainingController {
   }
   
   @GetMapping("/SV")
-  public List<LinkedHashMap<String, Object>> SV(
+  public LinkedHashMap<String, Object> SV(
     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
     @RequestParam Long deptID,

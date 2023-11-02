@@ -1057,7 +1057,7 @@ public class TrainingService {
     return null;
   }
 
-  public List<LinkedHashMap<String, Object>> SV1(
+  public LinkedHashMap<String, Object> SV1(
     Date startDate,
     Date endDate,
     Long deptID,
@@ -1094,18 +1094,24 @@ public class TrainingService {
     TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
 
     List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
-    List<LinkedHashMap<String, Object>> result = new ArrayList<>();
+    LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+    List<LinkedHashMap<String, Object>> users = new ArrayList<>();
     LinkedHashMap<String, Object> currentUser = null;
+    float totalAll = 0;
 
     for (Tuple row : resultListBudgetTraining) {
         if (currentUser == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
+            if (currentUser != null) {
+                currentUser.put("total", totalAll);
+            }
             currentUser = new LinkedHashMap<>();
             currentUser.put("emp_code", row.get("emp_code"));
             currentUser.put("title", row.get("title"));
             currentUser.put("firstname", row.get("firstname"));
             currentUser.put("lastname", row.get("lastname"));
             currentUser.put("course", new ArrayList<>());
-            result.add(currentUser);
+            users.add(currentUser);
+            totalAll = 0;
         }
 
         LinkedHashMap<String, Object> course = new LinkedHashMap<>();
@@ -1115,15 +1121,21 @@ public class TrainingService {
         course.put("start_date", row.get("start_date"));
         course.put("end_date", row.get("end_date"));
         course.put("note", row.get("note"));
-
-        // Add the course to the current user's courses list
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(course);
+        
+        totalAll += (Float) row.get("price");
     }
+
+    if (currentUser != null) {
+        currentUser.put("total", totalAll);
+    }
+
+    double totalAllValue = users.stream().mapToDouble(user -> (Float) user.get("total")).sum();
+    result.put("total_All", totalAllValue);
+    result.put("data", users);
 
     return result;
 }
-
-
 
 
   /**
