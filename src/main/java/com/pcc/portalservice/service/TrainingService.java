@@ -12,6 +12,7 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -1047,21 +1048,29 @@ public class TrainingService {
   }
 
   public String printReportSV(
-    Date startDate,
-    Date endDate,
+    @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
     Long deptID,
     Long sectorID
     //Long trainId
   ) {
-    //Training training_id = findByTrainingId(trainId);
-    //Training user_id = findByTrainingId(deptID);
-    //User user_id = fin
+    // Training training_id = findByTrainingId(trainId);
+    // Training user_id = findByTrainingId(deptID);
+    // User user_id = fin
+
+    LinkedHashMap<String, Object> sv = SV1(startDate, endDate, deptID, sectorID);
+
     try {
       List<Map<String, Object>> dataList = new ArrayList<>();
 
       Map<String, Object> params = new HashMap<>();
+      
+      
+      params.put("sector","1");
+      params.put("department","2");
 
-      //params.put("emp_code", deptID.getUser().getDepartment().getDeptCode();
+      // params.put("start_date",startDate);
+      // params.put("end_date",endDate);
 
       dataList.add(params);
 

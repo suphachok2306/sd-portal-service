@@ -32,7 +32,7 @@ public class Course {
   private String note;
   private String objective;
   private float price;
-  private float priceProject;
+  private String priceProject;
   private String place;
   private String institute;
 

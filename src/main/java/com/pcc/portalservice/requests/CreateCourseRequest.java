@@ -12,7 +12,7 @@ public class CreateCourseRequest {
     private String time;
     private String note;
     private float price;
-    private float priceProject;
+    private String priceProject;
     private String place;
     private String institute;
     private String type;
