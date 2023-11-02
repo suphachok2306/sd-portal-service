@@ -356,7 +356,8 @@ public class BudgetService {
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
       "AND c.type = 'สอบ'" +
-      "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
+      "AND (s.status IS NULL OR s.status != 'ยกเลิก')"+
+      "AND (c.priceProject IS NULL)";
 
     String jpqlBudgetTraining =
       "SELECT SUM(c.price) AS total_price FROM Training t " +
@@ -365,7 +366,8 @@ public class BudgetService {
       "WHERE t.user.department.id = :departmentId " +
       "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
       "AND c.type = 'อบรม'" +
-      "AND (s.status IS NULL OR s.status != 'ยกเลิก')";
+      "AND (s.status IS NULL OR s.status != 'ยกเลิก')"+
+      "AND (c.priceProject IS NULL)";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
     queryBudgetCer.setParameter("departmentId", department_id);
@@ -469,7 +471,7 @@ public class BudgetService {
       budgetMap.put("id", budget.getId());
       budgetMap.put("year", budget.getYear()); 
       budgetMap.put("budgetTraining", budget.getBudgetTraining());
-      budgetMap.put("budgetCer", budget.getBudgetTraining());
+      budgetMap.put("budgetCer", budget.getBudgetCer());
       budgetMap.put("total_exp", budget.getTotal_exp());
       budgetMap.put("company", budget.getCompany().getCompanyName());
       Map<String, Object> departmentMap = new HashMap<>();

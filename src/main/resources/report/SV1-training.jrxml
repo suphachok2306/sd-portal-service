@@ -20,8 +20,6 @@
 	</subDataset>
 	<parameter name="course" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<parameter name="sector" class="java.lang.String"/>
-	<parameter name="start_date" class="java.util.Date"/>
-	<parameter name="end_date" class="java.util.Date"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
