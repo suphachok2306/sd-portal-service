@@ -10,7 +10,6 @@ import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,26 +17,24 @@ import java.net.URI;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.core.io.Resource;
 import org.springframework.web.util.UriUtils;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @AllArgsConstructor
@@ -52,7 +49,7 @@ public class TrainingController {
    */
   @PostMapping("/createTraining")
   public ResponseEntity<ApiResponse> createTraining(
-          @RequestBody CreateTrainingRequest createTrainingRequest
+    @RequestBody CreateTrainingRequest createTrainingRequest
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
@@ -66,10 +63,10 @@ public class TrainingController {
       response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
       response.setResponseData(data);
       URI uri = URI.create(
-              ServletUriComponentsBuilder
-                      .fromCurrentContextPath()
-                      .path("/createTraining")
-                      .toUriString()
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/createTraining")
+          .toUriString()
       );
       return ResponseEntity.created(uri).body(response);
     } catch (Exception e) {
@@ -84,8 +81,8 @@ public class TrainingController {
    */
   @PostMapping("/editTrainingSection1")
   public ResponseEntity<ApiResponse> editTrainingSection1(
-          @RequestParam Long trainingId,
-          @RequestBody EditTrainingSection1Request editTraining
+    @RequestParam Long trainingId,
+    @RequestBody EditTrainingSection1Request editTraining
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
@@ -95,17 +92,17 @@ public class TrainingController {
     }
     try {
       Training training = trainingService.editTrainingSection1(
-              trainingId,
-              editTraining
+        trainingId,
+        editTraining
       );
       data.setResult(training);
       response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
       response.setResponseData(data);
       URI uri = URI.create(
-              ServletUriComponentsBuilder
-                      .fromCurrentContextPath()
-                      .path("/editTraining")
-                      .toUriString()
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/editTraining")
+          .toUriString()
       );
       return ResponseEntity.created(uri).body(response);
     } catch (Exception e) {
@@ -118,37 +115,37 @@ public class TrainingController {
    * @แก้ไขTrainingส่วนที่3
    * @PostMapping
    */
-//  @PostMapping("/editTrainingSection1Person")
-//  public ResponseEntity<ApiResponse> editTrainingSection1Person(
-//          @RequestParam Long trainingId,
-//          @RequestBody EditTrainingSection1PersonRequest editTraining
-//  ) throws ParseException {
-//    ApiResponse response = new ApiResponse();
-//    ResponseData data = new ResponseData();
-//    //        if (trainingService.isEditTrainingNull3(editTraining)) {
-//    //            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-//    //            return ResponseEntity.badRequest().body(response);
-//    //        }
-//    try {
-//      Training training = trainingService.editTrainingSection1Person(
-//              trainingId,
-//              editTraining
-//      );
-//      data.setResult(training);
-//      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-//      response.setResponseData(data);
-//      URI uri = URI.create(
-//              ServletUriComponentsBuilder
-//                      .fromCurrentContextPath()
-//                      .path("/editTraining")
-//                      .toUriString()
-//      );
-//      return ResponseEntity.created(uri).body(response);
-//    } catch (Exception e) {
-//      response.setResponseMessage(e.getMessage());
-//      return ResponseEntity.internalServerError().body(response);
-//    }
-//  }
+  //  @PostMapping("/editTrainingSection1Person")
+  //  public ResponseEntity<ApiResponse> editTrainingSection1Person(
+  //          @RequestParam Long trainingId,
+  //          @RequestBody EditTrainingSection1PersonRequest editTraining
+  //  ) throws ParseException {
+  //    ApiResponse response = new ApiResponse();
+  //    ResponseData data = new ResponseData();
+  //    //        if (trainingService.isEditTrainingNull3(editTraining)) {
+  //    //            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+  //    //            return ResponseEntity.badRequest().body(response);
+  //    //        }
+  //    try {
+  //      Training training = trainingService.editTrainingSection1Person(
+  //              trainingId,
+  //              editTraining
+  //      );
+  //      data.setResult(training);
+  //      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+  //      response.setResponseData(data);
+  //      URI uri = URI.create(
+  //              ServletUriComponentsBuilder
+  //                      .fromCurrentContextPath()
+  //                      .path("/editTraining")
+  //                      .toUriString()
+  //      );
+  //      return ResponseEntity.created(uri).body(response);
+  //    } catch (Exception e) {
+  //      response.setResponseMessage(e.getMessage());
+  //      return ResponseEntity.internalServerError().body(response);
+  //    }
+  //  }
 
   /**
    * @แก้ไขTrainingส่วนที่2
@@ -156,8 +153,8 @@ public class TrainingController {
    */
   @PostMapping("/editTrainingSection2")
   public ResponseEntity<ApiResponse> editTrainingSection2(
-          @RequestParam Long resultId,
-          @RequestBody EditTrainingSection2Request editTraining
+    @RequestParam Long resultId,
+    @RequestBody EditTrainingSection2Request editTraining
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
@@ -167,17 +164,17 @@ public class TrainingController {
     }
     try {
       Result training = trainingService.editTrainingSection2(
-              resultId,
-              editTraining
+        resultId,
+        editTraining
       );
       data.setResult(training);
       response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
       response.setResponseData(data);
       URI uri = URI.create(
-              ServletUriComponentsBuilder
-                      .fromCurrentContextPath()
-                      .path("/editTraining")
-                      .toUriString()
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/editTraining")
+          .toUriString()
       );
       return ResponseEntity.created(uri).body(response);
     } catch (Exception e) {
@@ -192,17 +189,17 @@ public class TrainingController {
    */
   @PutMapping("/setStatusToTraining")
   public ResponseEntity<ApiResponse> addStatusToTraining(
-          @RequestParam Long trainingId,
-          Long approveId,
-          StatusApprove statusApprove
+    @RequestParam Long trainingId,
+    Long approveId,
+    StatusApprove statusApprove
   ) {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
     try {
       Training training = trainingService.setStatusToTraining(
-              trainingId,
-              approveId,
-              statusApprove
+        trainingId,
+        approveId,
+        statusApprove
       );
       data.setResult(training);
       response.setResponseMessage("ทำรายการเรียบร้อย");
@@ -220,14 +217,12 @@ public class TrainingController {
    */
   @PutMapping("/setCancelToTraining")
   public ResponseEntity<ApiResponse> setCancelToTraining(
-          @RequestParam Long trainingId
+    @RequestParam Long trainingId
   ) {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
     try {
-      Training training = trainingService.setCancelToTraining(
-              trainingId
-      );
+      Training training = trainingService.setCancelToTraining(trainingId);
       data.setResult(training);
       response.setResponseMessage("ทำรายการเรียบร้อย");
       response.setResponseData(data);
@@ -244,7 +239,7 @@ public class TrainingController {
    */
   @GetMapping("/findTrainingByTrainingId")
   public ResponseEntity<Map<String, Object>> findTrainingByTrainingId(
-          @RequestParam Long trainingId
+    @RequestParam Long trainingId
   ) {
     Map<String, Object> training = trainingService.findById(trainingId);
     return ResponseEntity.ok(training);
@@ -256,10 +251,10 @@ public class TrainingController {
    */
   @GetMapping("/findTrainingByUserId")
   public ResponseEntity<List<Map<String, Object>>> findTrainingByUserId(
-          @RequestParam Long userId
+    @RequestParam Long userId
   ) {
     List<Map<String, Object>> trainings = trainingService.findTrainingsByUserId(
-            userId
+      userId
     );
     return ResponseEntity.ok(trainings);
   }
@@ -270,10 +265,10 @@ public class TrainingController {
    */
   @GetMapping("/findTrainingByApprove1Id")
   public ResponseEntity<List<Map<String, Object>>> findTrainingByApprove1Id(
-          @RequestParam Long approve1Id
+    @RequestParam Long approve1Id
   ) {
     List<Map<String, Object>> trainings = trainingService.findTrainingsByApprove1Id(
-            approve1Id
+      approve1Id
     );
     return ResponseEntity.ok(trainings);
   }
@@ -307,70 +302,78 @@ public class TrainingController {
    */
   @GetMapping("/searchTraining")
   public Object search(
-          @RequestParam(required = false) String name,
-          @RequestParam(required = false) String position,
-          @RequestParam(required = false) String department,
-          @RequestParam(required = false) @DateTimeFormat(
-                  iso = DateTimeFormat.ISO.DATE
-          ) Date startDate,
-          @RequestParam(required = false) @DateTimeFormat(
-                  iso = DateTimeFormat.ISO.DATE
-          ) Date endDate,
-          @RequestParam(required = false) String courseName
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String position,
+    @RequestParam(required = false) String department,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE
+    ) Date startDate,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE
+    ) Date endDate,
+    @RequestParam(required = false) String courseName
   ) {
     return trainingService.searchTraining(
-            name,
-            position,
-            department,
-            startDate,
-            endDate,
-            courseName
+      name,
+      position,
+      department,
+      startDate,
+      endDate,
+      courseName
     );
   }
 
-
-//  @GetMapping("/Report")
-//  public String report(@RequestParam Long trainId) {
-//    return trainingService.printReport(trainId);
-//  }
-
+  //  @GetMapping("/Report")
+  //  public String report(@RequestParam Long trainId) {
+  //    return trainingService.printReport(trainId);
+  //  }
 
   @GetMapping("/Report")
-  public String report(@RequestParam Long trainId,
-                       @RequestParam(required = false) Long userId1,
-                       @RequestParam(required = false) Long userId2,
-                       @RequestParam(required = false) Long userId3,
-                       @RequestParam(required = false) Long userId4) {
-    return trainingService.printReport(trainId, userId1, userId2, userId3, userId4);
+  public String report(
+    @RequestParam Long trainId,
+    @RequestParam(required = false) Long userId1,
+    @RequestParam(required = false) Long userId2,
+    @RequestParam(required = false) Long userId3,
+    @RequestParam(required = false) Long userId4
+  ) {
+    return trainingService.printReport(
+      trainId,
+      userId1,
+      userId2,
+      userId3,
+      userId4
+    );
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // @GetMapping("/findAllApprove")
+  @GetMapping("/ReportSV")
+  public String reportSV(
+    @RequestParam Date startDate,
+    @RequestParam Date endDate,
+    @RequestParam Long deptID,
+    @RequestParam Long sectorID
+  ) {
+    return trainingService.printReportSV(
+      startDate,
+      endDate,
+      deptID,
+      sectorID
+    );
+  }
+  
+  @GetMapping("/SV")
+  public List<LinkedHashMap<String, Object>> SV(
+    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+    @RequestParam Long deptID,
+    @RequestParam Long sectorID
+  ) {
+    return trainingService.SV1(
+      startDate,
+      endDate,
+      deptID,
+      sectorID
+    );
+  }
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
   //     if (count > 3) {

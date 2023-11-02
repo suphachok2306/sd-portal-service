@@ -13,6 +13,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Service
@@ -360,11 +363,7 @@ public class TrainingService {
     query.executeUpdate();
 
     return null;
-
   }
-
-
-
 
   /**
    * @หาTrainingด้วยId
@@ -1048,6 +1047,84 @@ public class TrainingService {
     }
     return null;
   }
+
+  public String printReportSV(
+    Date startDate,
+    Date endDate,
+    Long deptID,
+    Long sectorID
+  ) {
+    return null;
+  }
+
+  public List<LinkedHashMap<String, Object>> SV1(
+    Date startDate,
+    Date endDate,
+    Long deptID,
+    Long sectorID
+) {
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Tuple> query = cb.createTupleQuery();
+    Root<Training> trainingRoot = query.from(Training.class);
+
+    query.multiselect(
+        trainingRoot.get("user").get("empCode").alias("emp_code"),
+        trainingRoot.get("user").get("title").alias("title"),
+        trainingRoot.get("user").get("firstname").alias("firstname"),
+        trainingRoot.get("user").get("lastname").alias("lastname"),
+        trainingRoot.join("courses").get("courseName").alias("course_name"),
+        trainingRoot.join("courses").get("place").alias("place"),
+        trainingRoot.join("courses").get("price").alias("price"),
+        trainingRoot.join("courses").get("startDate").alias("start_date"),
+        trainingRoot.join("courses").get("endDate").alias("end_date"),
+        trainingRoot.join("courses").get("note").alias("note")
+    );
+
+    Predicate startDatePredicate = cb.greaterThanOrEqualTo(trainingRoot.join("courses").get("startDate"), startDate);
+    Predicate endDatePredicate = cb.lessThanOrEqualTo(trainingRoot.join("courses").get("endDate"), endDate);
+    Predicate deptPredicate = cb.equal(trainingRoot.get("user").get("department").get("id"), deptID);
+    Predicate sectorPredicate = cb.equal(trainingRoot.get("user").get("sector").get("id"), sectorID);
+
+    query.where(
+        cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate)
+    );
+
+    query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
+
+    TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
+
+    List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+    List<LinkedHashMap<String, Object>> result = new ArrayList<>();
+    LinkedHashMap<String, Object> currentUser = null;
+
+    for (Tuple row : resultListBudgetTraining) {
+        if (currentUser == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
+            currentUser = new LinkedHashMap<>();
+            currentUser.put("emp_code", row.get("emp_code"));
+            currentUser.put("title", row.get("title"));
+            currentUser.put("firstname", row.get("firstname"));
+            currentUser.put("lastname", row.get("lastname"));
+            currentUser.put("course", new ArrayList<>());
+            result.add(currentUser);
+        }
+
+        LinkedHashMap<String, Object> course = new LinkedHashMap<>();
+        course.put("course_name", row.get("course_name"));
+        course.put("place", row.get("place"));
+        course.put("price", row.get("price"));
+        course.put("start_date", row.get("start_date"));
+        course.put("end_date", row.get("end_date"));
+        course.put("note", row.get("note"));
+
+        // Add the course to the current user's courses list
+        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(course);
+    }
+
+    return result;
+}
+
+
+
 
   /**
    * @เช็คNullของTraining1
