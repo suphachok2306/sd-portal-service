@@ -5,18 +5,8 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
-import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -24,7 +14,15 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -1053,7 +1051,46 @@ public class TrainingService {
     Date endDate,
     Long deptID,
     Long sectorID
+    //Long trainId
   ) {
+    //Training training_id = findByTrainingId(trainId);
+    //Training user_id = findByTrainingId(deptID);
+    //User user_id = fin
+    try {
+      List<Map<String, Object>> dataList = new ArrayList<>();
+
+      Map<String, Object> params = new HashMap<>();
+
+      //params.put("emp_code", deptID.getUser().getDepartment().getDeptCode();
+
+      dataList.add(params);
+
+      // Load the JasperReport from a JRXML file
+      InputStream reportInput =
+              UserService.class.getClassLoader()
+                      .getResourceAsStream("SV1-training.jrxml");
+      JasperReport jasperReport = JasperCompileManager.compileReport(
+              reportInput
+      );
+
+      // Create a JRDataSource from the user data
+      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+
+      // Fill the report with data
+      JasperPrint jasperPrint = JasperFillManager.fillReport(
+              jasperReport,
+              params,
+              dataSource
+      );
+
+      // Export the report to PDF
+      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+
+      // Convert the byte array to Base64
+      return Base64.encodeBase64String(bytes);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return null;
   }
 
@@ -1136,6 +1173,7 @@ public class TrainingService {
 
     return result;
 }
+
 
 
   /**

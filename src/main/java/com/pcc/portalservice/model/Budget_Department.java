@@ -1,4 +1,4 @@
-﻿package com.pcc.portalservice.model;
+package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
