@@ -341,14 +341,15 @@ public class TrainingController {
     );
   }
 
-  @GetMapping("/ReportSV")
-  public String reportSV(
-    @RequestParam Date startDate,
-    @RequestParam Date endDate,
+  @GetMapping("/ReportHistoryTraining")
+  public String reportHistoryTraining(
+    @RequestParam String startDate,
+    @RequestParam String endDate,
     @RequestParam Long deptID,
     @RequestParam Long sectorID
   ) {
-    return trainingService.printReportSV(
+    System.out.println("0");
+    return trainingService.printReportHistoryTraining(
       startDate,
       endDate,
       deptID,
@@ -357,13 +358,13 @@ public class TrainingController {
   }
   
   @GetMapping("/SV")
-  public LinkedHashMap<String, Object> SV(
-    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
+  public LinkedHashMap<String, Object> HistoryTraining(
+    @RequestParam String startDate,
+    @RequestParam String endDate,
     @RequestParam Long deptID,
     @RequestParam Long sectorID
   ) {
-    return trainingService.SV1(
+    return trainingService.HistoryTraining(
       startDate,
       endDate,
       deptID,
