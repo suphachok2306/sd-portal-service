@@ -162,16 +162,37 @@ public class BudgetController {
    * @GetMapping
    */
   @GetMapping("/findTotalRemain")
-  public LinkedHashMap<String, Object> findtotalPriceRemaining(
+  public Object  findtotalPriceRemaining(
     @RequestParam String Year,
     @RequestParam Long department_id
   ) {
-    LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(
-      Year,
-      department_id
-    );
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      LinkedHashMap<String, Object> resultList = budgetService.totalPriceRemaining(
+              Year,
+              department_id
+      );
 
-    return resultList;
+      if (resultList == null) {
+        // department_id เกินจากฐานข้อมูลที่มีอยู่
+        response.setResponseMessage("department_id เกินจากฐานข้อมูลที่มีอยู่");
+        response.setResponseData((ResponseData) Collections.emptyList());
+        return response;
+      }
+
+      data.setResult(resultList);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+
+      return resultList;
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      if (e.getMessage().equals("Cannot invoke \"java.lang.Float.floatValue()\" because the return value of \"com.pcc.portalservice.service.BudgetService.getTotalBudgetCer(java.lang.Long, String)\" is null")) {
+        response.setResponseMessage("ยังไม่มีงบในระบบ");
+      }
+      return ResponseEntity.badRequest().body(response);
+    }
   }
 
   // /**
