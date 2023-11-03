@@ -357,7 +357,7 @@ public class TrainingController {
     );
   }
   
-  @GetMapping("/SV")
+  @GetMapping("/HistoryTraining")
   public LinkedHashMap<String, Object> HistoryTraining(
     @RequestParam String startDate,
     @RequestParam String endDate,

@@ -971,7 +971,7 @@ public class TrainingService {
     // Training user_id = findByTrainingId(deptID);
     // User user_id = fin
     System.out.println("0");
-    LinkedHashMap<String, Object> sv = HistoryTraining(startDate, endDate, deptID, sectorID);
+    LinkedHashMap<String, Object> ht = HistoryTraining(startDate, endDate, deptID, sectorID);
     System.out.println("1");
     try {
       List<Map<String, Object>> dataList = new ArrayList<>();
