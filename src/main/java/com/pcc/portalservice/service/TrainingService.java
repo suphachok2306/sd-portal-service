@@ -225,16 +225,6 @@ public class TrainingService {
     result_id.setPlan(editTraining.getPlan());
     result_id.setEvaluationDate(new Date());
 
-    Training training_id = findByTrainingId(resultId);
-    if(editTraining.getResult().toString().equals("pass")){
-      training_id.setActive("pass");
-    }
-    else if(editTraining.getResult().toString().equals("fail")){
-      training_id.setActive("fail");
-    }
-    else if(editTraining.getResult().toString().equals("noResult")){
-      training_id.setActive("noResult");
-    }
 
     Result updatedTraining = resultRepository.save(result_id);
     return updatedTraining;
@@ -1079,7 +1069,6 @@ public class TrainingService {
       CriteriaQuery<Tuple> query = cb.createTupleQuery();
       Root<Training> trainingRoot = query.from(Training.class);
       query.multiselect(
-          trainingRoot.get("active").alias("active"),
           trainingRoot.get("user").get("id").alias("user_id"),
           trainingRoot.get("user").get("empCode").alias("emp_code"),
           trainingRoot.get("user").get("title").alias("title"),
@@ -1093,12 +1082,13 @@ public class TrainingService {
           trainingRoot.join("courses").get("endDate").alias("end_date"),
           trainingRoot.join("courses").get("note").alias("note"));
           trainingRoot.join("courses").get("active").alias("active");
+          trainingRoot.join("result").get("result").alias("result");
       Predicate startDatePredicate = cb.greaterThanOrEqualTo(trainingRoot.join("courses").get("startDate"), parsedStartDate);
       Predicate endDatePredicate = cb.lessThanOrEqualTo(trainingRoot.join("courses").get("endDate"), parsedEndDate);
       Predicate deptPredicate = cb.equal(trainingRoot.get("user").get("department").get("id"), deptID);
       Predicate sectorPredicate = cb.equal(trainingRoot.get("user").get("sector").get("id"), sectorID);
       Predicate cancelPredicate = cb.equal(trainingRoot.join("courses").get("active"),"ดำเนินการอยู่");
-      Predicate passPredicate = cb.equal(trainingRoot.get("active"),"pass");
+      Predicate passPredicate = cb.equal(trainingRoot.join("result").get("result"),"pass");
       query.where(
           cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate,cancelPredicate,passPredicate));
       query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
