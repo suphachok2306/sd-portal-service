@@ -262,34 +262,10 @@ public class TrainingService {
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
         Status existingStatus = optionalStatus.get();
-        if (statusApprove.toString().equals("ยกเลิก")){
-            training_id.setActive("ยกเลิก");
             existingStatus.setStatus(statusApprove);
             existingStatus.setActive(2);
             existingStatus.setApprovalDate(new Date());
-            trainingRepository.save(training_id);
             statusRepository.save(existingStatus);
-        }
-        else if(statusApprove.toString().equals("ไม่อนุมัติ")){
-          if(approveId == 3){
-            training_id.setActive("ไม่อนุมัติ");
-            trainingRepository.save(training_id);
-          }
-            existingStatus.setStatus(statusApprove);
-            existingStatus.setActive(2);
-            existingStatus.setApprovalDate(new Date());
-            statusRepository.save(existingStatus);  
-        }
-        else if(statusApprove.toString().equals("อนุมัติ")){
-           if(approveId == 3){
-            training_id.setActive("อนุมัติ");
-            trainingRepository.save(training_id);
-          }
-            existingStatus.setStatus(statusApprove);
-            existingStatus.setActive(2);
-            existingStatus.setApprovalDate(new Date());
-            statusRepository.save(existingStatus);  
-        }
 
         Optional<Status> updateStatusNext = training_id
             .getStatus()
