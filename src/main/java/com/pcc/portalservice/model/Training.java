@@ -30,6 +30,10 @@ public class Training {
 
     private String action;
 
+<<<<<<< HEAD
+=======
+    @JsonIgnore
+>>>>>>> df272967e26d108f7c659a71521dfa9d72b1e1e9
     private String active;
 
     @Temporal(TemporalType.DATE)

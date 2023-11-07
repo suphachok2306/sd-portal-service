@@ -199,29 +199,7 @@ public class TrainingService {
     return updatedTraining;
   }
 
-  /**
-   * @EditTrainingSection3
-   */
-  // public Training editTrainingSection1Person(
-  // Long trainingId,
-  // EditTrainingSection1PersonRequest editTraining
-  // ) throws ParseException {
-  // // Training training_id = trainingRepository
-  // // .findById(trainingId)
-  // // .orElseThrow(() ->
-  // // new RuntimeException("TrainingId not found: " + trainingId)
-  // // );
-  // Training training_id = findByTrainingId(trainingId);
-  //
-  // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  // Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
-  //
-  // training_id.setAction(editTraining.getAction());
-  // training_id.setActionDate(actionDateFormat);
-  //
-  // Training updatedTraining = trainingRepository.save(training_id);
-  // return updatedTraining;
-  // }
+ 
 
   /**
    * @EditTrainingSection2
@@ -232,13 +210,6 @@ public class TrainingService {
     Result result_id = resultRepository
         .findById(resultId)
         .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId));
-    // User evaluator_id = userRepository
-    // .findById(editTraining.getEvaluatorId())
-    // .orElseThrow(() ->
-    // new RuntimeException(
-    // "EvaluatorId not found: " + editTraining.getEvaluatorId()
-    // )
-    // );
 
     // result_id.setEvaluator(evaluator_id);
     result_id.setResult1(editTraining.getResult1());
@@ -254,6 +225,17 @@ public class TrainingService {
     result_id.setPlan(editTraining.getPlan());
     result_id.setEvaluationDate(new Date());
 
+    Training training_id = findByTrainingId(resultId);
+    if(editTraining.getResult().toString().equals("pass")){
+      training_id.setActive("pass");
+    }
+    else if(editTraining.getResult().toString().equals("fail")){
+      training_id.setActive("fail");
+    }
+    else if(editTraining.getResult().toString().equals("noResult")){
+      training_id.setActive("noResult");
+    }
+
     Result updatedTraining = resultRepository.save(result_id);
     return updatedTraining;
   }
@@ -267,9 +249,6 @@ public class TrainingService {
       StatusApprove statusApprove) {
     Training training_id = findByTrainingId(trainingId);
 
-    User approve = userRepository
-        .findById(approveId)
-        .orElseThrow(() -> new RuntimeException("Training not found with ID: " + trainingId));
     Optional<Status> optionalStatus = training_id
         .getStatus()
         .stream()
@@ -282,17 +261,16 @@ public class TrainingService {
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
         Status existingStatus = optionalStatus.get();
-        existingStatus.setStatus(statusApprove);
-        existingStatus.setActive(2);
-        existingStatus.setApprovalDate(new Date());
-        statusRepository.save(existingStatus);
+            existingStatus.setStatus(statusApprove);
+            existingStatus.setActive(2);
+            existingStatus.setApprovalDate(new Date());
+            statusRepository.save(existingStatus);
 
         Optional<Status> updateStatusNext = training_id
             .getStatus()
             .stream()
             .filter(status -> trainingId.equals(status.getTraining().getId()) &&
-                status.getActive() != 2 &&
-                status.getActive() != 3)
+                status.getActive() != 2)
             .findFirst();
 
         if (updateStatusNext.isPresent()) {
@@ -300,11 +278,7 @@ public class TrainingService {
             Status nextStatus = updateStatusNext.get();
             nextStatus.setActive(1);
             statusRepository.save(nextStatus);
-          } else {
-            Status nextStatus = updateStatusNext.get();
-            nextStatus.setActive(3);
-            statusRepository.save(nextStatus);
-          }
+          } 
         }
       } else {
         Status existingStatus = optionalStatus.get();
@@ -1105,6 +1079,7 @@ public class TrainingService {
       CriteriaQuery<Tuple> query = cb.createTupleQuery();
       Root<Training> trainingRoot = query.from(Training.class);
       query.multiselect(
+          trainingRoot.get("active").alias("active"),
           trainingRoot.get("user").get("id").alias("user_id"),
           trainingRoot.get("user").get("empCode").alias("emp_code"),
           trainingRoot.get("user").get("title").alias("title"),
@@ -1123,8 +1098,9 @@ public class TrainingService {
       Predicate deptPredicate = cb.equal(trainingRoot.get("user").get("department").get("id"), deptID);
       Predicate sectorPredicate = cb.equal(trainingRoot.get("user").get("sector").get("id"), sectorID);
       Predicate cancelPredicate = cb.equal(trainingRoot.join("courses").get("active"),"ดำเนินการอยู่");
+      Predicate passPredicate = cb.equal(trainingRoot.get("active"),"pass");
       query.where(
-          cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate,cancelPredicate));
+          cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate,cancelPredicate,passPredicate));
       query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
 
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
