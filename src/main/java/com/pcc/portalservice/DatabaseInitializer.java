@@ -136,16 +136,16 @@ private void insertDataIntoCourseTable() {
 
     String sql =
       "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status,title) VALUES" +
-      "('admin@pccth.com',null,'Admin', 'Admin','" + hashpassword + "', '+1111111111',1,1,8,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('approver@pccth.com',null,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('vicepresident@pccth.com',null,'VicePresident', 'VicePresident','" + hashpassword + "','+3333333333',1, 1, 1, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('personnel@pccth.com',null,'Personnel', 'Personnel','" + hashpassword + "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('2@pccth.com',null ,'สุริยา', ' จันทร', '" + hashpassword + "', '+6666666666',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('3@pccth.com',null ,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '+7777777777',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('4@pccth.com',null,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '+8888888888',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('5@pccth.com',null,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '+9999999999',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('6@pccth.com',null,'เสาวภา', '6', '" + hashpassword + "', '+0000000000',1,2,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('7@pccth.com',null,'ณัฐวรรณ', '7', '" + hashpassword + "', '1234567890',1,3,4,1, 'เป็นพนักงานอยู่','นาย'),"+
+      "('admin@pccth.com',000001,'Admin', 'Admin','" + hashpassword + "', '+1111111111',1,1,8,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('approver@pccth.com',000002,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('vicepresident@pccth.com',000003,'VicePresident', 'VicePresident','" + hashpassword + "','+3333333333',1, 1, 1, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('personnel@pccth.com',000004,'Personnel', 'Personnel','" + hashpassword + "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
+      "('2@pccth.com',000005,'สุริยา', ' จันทร', '" + hashpassword + "', '+6666666666',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('3@pccth.com',000006,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '+7777777777',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('4@pccth.com',000007,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '+8888888888',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('5@pccth.com',000008,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '+9999999999',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('6@pccth.com',000009,'เสาวภา', '6', '" + hashpassword + "', '+0000000000',1,2,4,1, 'เป็นพนักงานอยู่','นาย')," +
+      "('7@pccth.com',000010,'ณัฐวรรณ', '7', '" + hashpassword + "', '1234567890',1,3,4,1, 'เป็นพนักงานอยู่','นาย'),"+
       "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1, 'เป็นพนักงานอยู่','นาย')";
 
     if (isTableEmpty("public.users")) {

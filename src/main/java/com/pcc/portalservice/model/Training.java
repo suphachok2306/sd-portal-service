@@ -35,6 +35,9 @@ public class Training {
 
     private String action;
 
+    @JsonIgnore
+    private String active;
+
     @Temporal(TemporalType.DATE)
     private Date actionDate;
 
