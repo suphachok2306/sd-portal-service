@@ -1095,8 +1095,6 @@ public class TrainingService {
       String endDate,
       Long deptID,
       Long sectorID) {
-    System.out.println("0");
-    System.out.println("2");
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     System.out.println(startDate);
     System.out.println(endDate);
@@ -1106,7 +1104,6 @@ public class TrainingService {
       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> query = cb.createTupleQuery();
       Root<Training> trainingRoot = query.from(Training.class);
-      System.out.println("1");
       query.multiselect(
           trainingRoot.get("user").get("id").alias("user_id"),
           trainingRoot.get("user").get("empCode").alias("emp_code"),
@@ -1120,18 +1117,17 @@ public class TrainingService {
           trainingRoot.join("courses").get("startDate").alias("start_date"),
           trainingRoot.join("courses").get("endDate").alias("end_date"),
           trainingRoot.join("courses").get("note").alias("note"));
+          trainingRoot.join("courses").get("active").alias("active");
       Predicate startDatePredicate = cb.greaterThanOrEqualTo(trainingRoot.join("courses").get("startDate"), parsedStartDate);
       Predicate endDatePredicate = cb.lessThanOrEqualTo(trainingRoot.join("courses").get("endDate"), parsedEndDate);
       Predicate deptPredicate = cb.equal(trainingRoot.get("user").get("department").get("id"), deptID);
       Predicate sectorPredicate = cb.equal(trainingRoot.get("user").get("sector").get("id"), sectorID);
-      System.out.println("3");
+      Predicate cancelPredicate = cb.equal(trainingRoot.join("courses").get("active"),"ดำเนินการอยู่");
       query.where(
-          cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate));
-      System.out.println("4");
+          cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate,cancelPredicate));
       query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
 
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
-      System.out.println("5");
       List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
