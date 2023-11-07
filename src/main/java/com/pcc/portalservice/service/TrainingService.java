@@ -1049,7 +1049,7 @@ public class TrainingService {
         // Process courses for the user
         for (int i = 0; i < courseList.size(); i++) {
           Map<String, Object> course = courseList.get(i);
-          userParams.put("id" + i, course.get("id"));
+          userParams.put("course_id" + i, course.get("course_id"));
           userParams.put("course_name" + i, course.get("course_name"));
           userParams.put("place" + i, course.get("place"));
           userParams.put("price" + i, course.get("price"));

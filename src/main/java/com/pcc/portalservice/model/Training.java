@@ -1,14 +1,9 @@
 package com.pcc.portalservice.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -34,6 +29,8 @@ public class Training {
     private float budget;
 
     private String action;
+
+    private String active;
 
     @Temporal(TemporalType.DATE)
     private Date actionDate;
