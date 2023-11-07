@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ประวัติการฝึกอบรม" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e7222bc-ff08-4e75-95cb-533ae5588ce1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<subDataset name="course" uuid="fffd9c42-103c-4d8c-82bc-48541593928f">
@@ -18,15 +18,27 @@
 		<field name="price" class="java.lang.Float"/>
 		<field name="note" class="java.lang.String"/>
 	</subDataset>
-	<parameter name="course" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="course" class="java.lang.String"/>
 	<parameter name="sector" class="java.lang.String"/>
+	<parameter name="training_id" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="department" class="java.lang.String"/>
+	<parameter name="Parameter1" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="sector" class="java.lang.String"/>
-	<field name="department" class="java.lang.String"/>
-	<field name="start_date" class="java.util.Date"/>
-	<field name="end_date" class="java.util.Date"/>
+	<field name="start_date" class="java.lang.String"/>
+	<field name="end_date" class="java.lang.String"/>
+	<field name="emp_code" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<field name="firstname" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String"/>
+	<field name="course_name" class="java.lang.String"/>
+	<field name="place" class="java.lang.String"/>
+	<field name="price" class="java.lang.Float"/>
+	<field name="note" class="java.lang.String"/>
+	<field name="dept_name" class="java.lang.String"/>
+	<field name="sector_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -65,6 +77,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="30" y="140" width="70" height="30" uuid="b2a2bcf2-87dc-4cfc-9127-20b9b42169ab"/>
@@ -106,19 +119,19 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{sector_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="340" y="140" width="100" height="30" uuid="2774c435-ae8f-4f97-b680-03720c724a56"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{dept_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="329">
+		<band height="116">
 			<staticText>
 				<reportElement x="30" y="20" width="150" height="30" uuid="f715aa25-eb98-4b9d-8d45-31ad5e57fcff"/>
 				<box>
@@ -170,34 +183,46 @@
 				<text><![CDATA[ค่าใช่จ่าย]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="30" y="70" width="150" height="230" uuid="437207da-638a-4bd3-9ac6-00f4f43de8f0"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="30" y="70" width="150" height="40" uuid="437207da-638a-4bd3-9ac6-00f4f43de8f0"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_code} +" "+ $F{title} +" "+ $F{firstname} +" "+ $F{lastname}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="70" width="100" height="30" uuid="5e1533b8-8066-4f02-8312-e12b446dc359"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="180" y="70" width="100" height="40" uuid="5e1533b8-8066-4f02-8312-e12b446dc359"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{start_date} + " - " +$F{end_date}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="70" width="200" height="30" uuid="3fcaf610-5d05-41db-94bc-fe3ceee08297"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="280" y="70" width="200" height="40" uuid="3fcaf610-5d05-41db-94bc-fe3ceee08297"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{course_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="480" y="70" width="100" height="30" uuid="abf85bd6-49c3-476a-b500-48e44b63daaf"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="480" y="70" width="100" height="40" uuid="abf85bd6-49c3-476a-b500-48e44b63daaf"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="580" y="70" width="100" height="30" uuid="f2d7d564-39b6-4894-9887-80bf01d16b24"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="580" y="70" width="100" height="40" uuid="f2d7d564-39b6-4894-9887-80bf01d16b24"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="680" y="70" width="100" height="30" uuid="49289d44-6a2d-44ea-8edd-120afa66364d"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<reportElement x="680" y="70" width="100" height="40" uuid="49289d44-6a2d-44ea-8edd-120afa66364d"/>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="680" y="20" width="100" height="30" uuid="09f27e4a-ebda-4447-bcd3-865dd9807170"/>
@@ -222,7 +247,4 @@
 			</staticText>
 		</band>
 	</columnFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

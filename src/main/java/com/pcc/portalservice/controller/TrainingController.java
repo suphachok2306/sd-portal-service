@@ -4,37 +4,24 @@ import com.pcc.portalservice.model.Result;
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
-import com.pcc.portalservice.requests.EditTrainingSection1PersonRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import lombok.AllArgsConstructor;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriUtils;
 
 @RestController
 @AllArgsConstructor
@@ -341,22 +328,67 @@ public class TrainingController {
     );
   }
 
+//  @Value("${pdf.path}")
+//  private String pdfFilesPath;
+//
+//  // Modify the endpoint to accept parameters and generate the report
+//  @GetMapping("/generateReport/{trainId}/{userId1}/{userId2}/{userId3}/{userId4}")
+//  public ResponseEntity<?> generateAndDownloadReport(
+//          @PathVariable Long trainId,
+//          @PathVariable Long userId1,
+//          @PathVariable Long userId2,
+//          @PathVariable Long userId3,
+//          @PathVariable Long userId4) {
+//    File pdfFile = generatePdfReport(trainId, userId1, userId2, userId3, userId4);
+//
+//    if (pdfFile != null) {
+//      Resource resource = new FileSystemResource(pdfFile);
+//
+//      if (resource.exists() && resource.isReadable()) {
+//        String encodedFilename = UriUtils.encode(resource.getFilename(), "UTF-8");
+//
+//        String contentDisposition = String.format("inline; filename=\"%s\"", encodedFilename);
+//
+//        // Serve the temporary PDF file as a response
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+//                .body(resource);
+//      }
+//    }
+//
+//    return ResponseEntity.notFound().build();
+//  }
+
+
+
+//  @GetMapping("/ReportHistoryTraining")
+//  public String reportHistoryTraining(
+//    @RequestParam String startDate,
+//    @RequestParam String endDate,
+//    @RequestParam Long deptID,
+//    @RequestParam Long sectorID
+//  ) {
+//    System.out.println("0");
+//    return trainingService.printReportHistoryTraining(
+//      startDate,
+//      endDate,
+//      deptID,
+//      sectorID
+//    );
+//  }
   @GetMapping("/ReportHistoryTraining")
   public String reportHistoryTraining(
-    @RequestParam String startDate,
-    @RequestParam String endDate,
-    @RequestParam Long deptID,
-    @RequestParam Long sectorID
-  ) {
-    System.out.println("0");
-    return trainingService.printReportHistoryTraining(
-      startDate,
-      endDate,
-      deptID,
-      sectorID
-    );
+          //@RequestParam Long trainId
+          @RequestParam(required = false) String startDate,
+          @RequestParam(required = false) String endDate,
+          @RequestParam(required = false) Long deptID,
+          @RequestParam(required = false) Long sectorID
+
+
+  ) throws Exception {
+    //System.out.println("0");
+    return trainingService.printReportHistoryTraining(startDate,endDate,deptID,sectorID);
   }
-  
   @GetMapping("/HistoryTraining")
   public LinkedHashMap<String, Object> HistoryTraining(
     @RequestParam String startDate,

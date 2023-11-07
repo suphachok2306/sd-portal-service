@@ -12,7 +12,6 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -949,6 +948,13 @@ public class TrainingService {
           params,
           dataSource);
 
+//      File tempPdfFile = File.createTempFile("report", ".pdf");
+//
+//      // Export the report to the temporary PDF file
+//      JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdfFile.getAbsolutePath());
+//
+//      return tempPdfFile;
+
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
 
@@ -959,51 +965,122 @@ public class TrainingService {
     }
     return null;
   }
+
 
   public String printReportHistoryTraining(
       String startDate,
       String endDate,
       Long deptID,
       Long sectorID
-  // Long trainId
-  ) {
-    // Training training_id = findByTrainingId(trainId);
+      //Long trainId
+  ) throws Exception {
+    //Training training_id = findByTrainingId(trainId);
     // Training user_id = findByTrainingId(deptID);
     // User user_id = fin
-    System.out.println("0");
+//    System.out.println("0");
+//    Training department = findByTrainingId(deptID);
+
+//      Training User = (Training) findAllTraining();
     LinkedHashMap<String, Object> ht = HistoryTraining(startDate, endDate, deptID, sectorID);
-    System.out.println("1");
+//    System.out.println("1");
+
+
+      String spec = "report/SV1-training.jrxml";
+      assert spec != null;
+      System.out.println("0");
+      if (spec == null) {
+          throw new Exception("The spec variable is null");
+      }
+      //System.out.println("1");
     try {
       List<Map<String, Object>> dataList = new ArrayList<>();
-
       Map<String, Object> params = new HashMap<>();
 
       params.put("sector", "1");
       params.put("department", "2");
 
+      params.put("startDate", "2023-08-04");
+      params.put("endDate", "2023-08-06");
+//      params.put("sector", "1");
+//      params.put("department", "2");
       // params.put("start_date",startDate);
       // params.put("end_date",endDate);
+      //params.put("emp_code", );
+      //params.put("dept_name", department.getUser().getTraining().getUser().getDepartment().getDeptName());
+      //params.put("sector_name", sector.getUser().getTraining().getUser().getSector().getSectorName());
+      //params.put("emp_code", User.getUser().getTraining().getUser().getEmpCode());
+//      params.put("title", training_id.getUser().getTitle());
+//      params.put("firstname", training_id.getUser().getFirstname());
+//      params.put("lastname", training_id.getUser().getLastname());
+//      for (int i = 0; i < dataList.size(); i++){
+//      params.put("course_name", training_id.getUser().getTraining().getCourses().get(i).getCourseName());}
+//      params.put("place", training_id.getUser().getTraining().getCourses().get(0).getPlace());
+//      params.put("price", training_id.getUser().getTraining().getCourses().get(0).getPrice());
+//      params.put("note", training_id.getUser().getTraining().getCourses().get(0).getNote());
+//      params.put("start_date", training_id.getUser().getTraining().getCourses().get(0).getStartDate());
+//      params.put("end_date", training_id.getUser().getTraining().getCourses().get(0).getEndDate());
 
+      //params.put("emp_code", training_id.getUser().getEmpCode());
+
+        //System.out.println("2");
       dataList.add(params);
-
+        //System.out.println("3");
       // Load the JasperReport from a JRXML file
-      InputStream reportInput = UserService.class.getClassLoader()
-          .getResourceAsStream("SV1-training.jrxml");
-      JasperReport jasperReport = JasperCompileManager.compileReport(
-          reportInput);
+//      InputStream reportInput = UserService.class.getClassLoader()
+//          .getResourceAsStream("SV1-training.jrxml");
+//      JasperReport jasperReport = JasperCompileManager.compileReport(
+//          reportInput);
 
+////////////////////////////////////////////////////////////////////////////
+
+      // Process the data in 'data' from 'ht' and add to params and dataList
+      List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get("data");
+      for (Map<String, Object> userData : data) {
+        // Create a new map for each user's data
+        Map<String, Object> userParams = new HashMap<>();
+
+        userParams.put("user_id", userData.get("user_id"));
+        userParams.put("emp_code", userData.get("emp_code"));
+        userParams.put("title", userData.get("title"));
+        userParams.put("firstname", userData.get("firstname"));
+        userParams.put("lastname", userData.get("lastname"));
+
+        List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get("course");
+        // Process courses for the user
+        for (int i = 0; i < courseList.size(); i++) {
+          Map<String, Object> course = courseList.get(i);
+          userParams.put("id" + i, course.get("id"));
+          userParams.put("course_name" + i, course.get("course_name"));
+          userParams.put("place" + i, course.get("place"));
+          userParams.put("price" + i, course.get("price"));
+          userParams.put("start_date" + i, course.get("start_date"));
+          userParams.put("end_date" + i, course.get("end_date"));
+          userParams.put("note" + i, course.get("note"));
+        }
+
+        dataList.add(userParams);
+      }
+
+///////////////////////////////////////////////////////////////////////////
+
+        // Load the JRXML file
+        InputStream reportInput = UserService.class.getClassLoader()
+                .getResourceAsStream(spec);
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+                reportInput);
+        //System.out.println("4");
       // Create a JRDataSource from the user data
       JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
-
+        //System.out.println("5");
       // Fill the report with data
       JasperPrint jasperPrint = JasperFillManager.fillReport(
           jasperReport,
-          params,
+              params,
           dataSource);
-
+        //System.out.println("6");
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-
+        //System.out.println("7");
       // Convert the byte array to Base64
       return Base64.encodeBase64String(bytes);
     } catch (Exception e) {
@@ -1011,6 +1088,7 @@ public class TrainingService {
     }
     return null;
   }
+  
 
   public LinkedHashMap<String, Object> HistoryTraining(
       String startDate,
