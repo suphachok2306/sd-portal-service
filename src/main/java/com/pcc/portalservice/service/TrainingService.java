@@ -34,6 +34,8 @@ public class TrainingService {
   private final UserRepository userRepository;
   private final StatusRepository statusRepository;
   private final ResultRepository resultRepository;
+  private final DepartmentRepository departmentRepository;
+  private final SectorRepository sectorRepository;
 
   private final EntityManager entityManager;
 
@@ -726,15 +728,7 @@ public class TrainingService {
     if (trainings.isEmpty()) {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
-
-    List<Map<String, Object>> results = new ArrayList<>();
-    for (Training training : trainings) {
-      Map<String, Object> result = new HashMap<>();
-      result.put("training", training);
-      results.add(result);
-    }
-
-    return results;
+    return calculateTrainingResultStatus(trainings);
   }
 
   public static String convertByteToBase64(byte[] imageBytes) {
@@ -960,11 +954,16 @@ public class TrainingService {
       List<Map<String, Object>> dataList = new ArrayList<>();
       Map<String, Object> params = new HashMap<>();
 
-      params.put("sector", "1");
-      params.put("department", "2");
+      Optional<Sector> sector = sectorRepository.findById(sectorID);
+      Optional<Department> depOptional = departmentRepository.findById(deptID);
+      
+      
 
-      params.put("startDate", "2023-08-04");
-      params.put("endDate", "2023-08-06");
+      params.put("sector_name", sector.get().getSectorName());
+      params.put("dept_name", depOptional.get().getDeptName());
+
+      params.put("start_date", "2023-08-04");
+      params.put("end_date", "2023-08-06");
 //      params.put("sector", "1");
 //      params.put("department", "2");
       // params.put("start_date",startDate);
@@ -1269,62 +1268,3 @@ public class TrainingService {
     return trainingList.get(0);
   }
 }
-// public List<Map<String, Object>> findbyAllCountApprove(Long count) {
-// String jpql = "SELECT t FROM Training t " +
-// "WHERE (SELECT COUNT(s) FROM Status s WHERE s.training = t AND s.status =
-// 'อนุมัติ') = :count ";
-// TypedQuery<Training> query = entityManager.createQuery(jpql, Training.class);
-// query.setParameter("count", count);
-// List<Training> resultList = query.getResultList();
-// List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-// for (Training training : resultList) {
-// int approvedCount = 0;
-// int disapprovedCount = 0;
-// try {
-// for (Status status : training.getStatus()) {
-// if ("อนุมัติ".equals(status.getStatus().toString())) {
-// approvedCount++;
-// } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
-// disapprovedCount++;
-// }
-// }
-// String result_status;
-// if (approvedCount == 3) {
-// result_status = "อนุมัติ";
-// } else if (disapprovedCount >= 1) {
-// result_status = "ไม่อนุมัติ";
-// } else {
-// result_status = "รอประเมิน";
-// }
-// Map<String, Object> resultWithStatus = new HashMap<>();
-// resultWithStatus.put("training", training);
-// resultWithStatus.put("result_status", result_status);
-// resultWithStatusList.add(resultWithStatus);
-// }
-// catch(Exception e) {
-// continue;
-// }
-// }
-// return resultWithStatusList;
-// }
-// public List<Map<String, Object>> findNextApprove() {
-// String jpql = "SELECT DISTINCT s.training_id FROM Status s ORDER BY
-// s.training_id";
-// Query query = entityManager.createNativeQuery(jpql);
-// List<Object> listOfTrainId = query.getResultList();
-// List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
-// System.out.println(listOfTrainId);
-// for (Object training : listOfTrainId) {
-// String jpqlstatus = "SELECT approve_id,email,firstname,lastname FROM Status s
-// join users u on approve_id = u.id WHERE s.training_id = :training AND
-// s.active = 0 LIMIT 1";
-// Query statusQuery = entityManager.createNativeQuery(jpqlstatus);
-// statusQuery.setParameter("training", training);
-// List<Status> statusList = statusQuery.getResultList();
-// Map<String, Object> resultWithStatus = new HashMap<>();
-// resultWithStatus.put("trainingId", training);
-// resultWithStatus.put("statusList", statusList);
-// resultWithStatusList.add(resultWithStatus);
-// }
-// return resultWithStatusList;
-// }
