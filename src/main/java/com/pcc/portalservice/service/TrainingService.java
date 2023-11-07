@@ -962,8 +962,8 @@ public class TrainingService {
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
 
-      params.put("start_date", "2023-08-04");
-      params.put("end_date", "2023-08-06");
+      params.put("start_date", startDate);
+      params.put("end_date", endDate);
 //      params.put("sector", "1");
 //      params.put("department", "2");
       // params.put("start_date",startDate);
@@ -1001,12 +1001,13 @@ public class TrainingService {
       for (Map<String, Object> userData : data) {
         // Create a new map for each user's data
         Map<String, Object> userParams = new HashMap<>();
-
         userParams.put("user_id", userData.get("user_id"));
         userParams.put("emp_code", userData.get("emp_code"));
         userParams.put("title", userData.get("title"));
         userParams.put("firstname", userData.get("firstname"));
         userParams.put("lastname", userData.get("lastname"));
+
+        System.out.println(userData.get("firstname"));
 
         List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get("course");
         // Process courses for the user
