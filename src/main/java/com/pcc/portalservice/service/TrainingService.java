@@ -962,8 +962,8 @@ public class TrainingService {
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
 
-      params.put("start_date", startDate);
-      params.put("end_date", endDate);
+      params.put("startdate", startDate);
+      params.put("enddate", endDate);
 //      params.put("sector", "1");
 //      params.put("department", "2");
       // params.put("start_date",startDate);
@@ -1013,13 +1013,13 @@ public class TrainingService {
         // Process courses for the user
         for (int i = 0; i < courseList.size(); i++) {
           Map<String, Object> course = courseList.get(i);
-          userParams.put("course_id" + i, course.get("course_id"));
-          userParams.put("course_name" + i, course.get("course_name"));
-          userParams.put("place" + i, course.get("place"));
-          userParams.put("price" + i, course.get("price"));
-          userParams.put("start_date" + i, course.get("start_date"));
-          userParams.put("end_date" + i, course.get("end_date"));
-          userParams.put("note" + i, course.get("note"));
+          userParams.put("course_id", course.get("course_id"));
+          userParams.put("course_name", course.get("course_name"));
+          userParams.put("place" , course.get("place"));
+          userParams.put("price", course.get("price"));
+          userParams.put("start_date", course.get("start_date").toString());
+          userParams.put("end_date", course.get("end_date").toString());
+          userParams.put("note",course.get("note"));
         }
 
         dataList.add(userParams);
