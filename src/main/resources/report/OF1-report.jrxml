@@ -628,18 +628,19 @@
 				<text><![CDATA[กรรมการผู้จัดการ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="240" y="420" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
+				<reportElement x="271" y="422" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp2}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[((($F{positionAp2} != null) ? $F{positionAp2} : " "))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="239" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
+				<reportElement x="269" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ตำแหน่ง " + $F{positionAp1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[((($F{positionAp1} != null) ? $F{positionAp1} : " "))
+]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="410" y="370" width="134" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
@@ -741,6 +742,20 @@
 				<reportElement x="412" y="488" width="132" height="20" uuid="8134e7de-6a72-4b9e-a8ff-a68e05a2aaf4"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="371" width="56" height="30" uuid="09cc6e10-63b2-43ce-8238-db9fab3ec0d0"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="424" width="56" height="30" uuid="28da7e3e-fef0-4d17-88c8-57b709309911"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง ]]></text>
 			</staticText>
 		</band>
 		<band height="690">
