@@ -1053,7 +1053,6 @@ public class TrainingService {
         String formattedStartDate = "";
         String formattedEndDate = "";
 
-        // Check if the date strings are not empty before formatting
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
           try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1081,6 +1080,12 @@ public class TrainingService {
         sums += (float) course.get("price");
         sumall += (float) course.get("price");
       }
+       course_names.add("");
+       course_places.add("รวม");
+       course_prices.add(sums);
+       dates.add("");
+       course_priceProjects.add("");
+      
       coll.add(
         new BeanHistroy(
           course_names,

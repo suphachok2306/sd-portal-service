@@ -21,11 +21,6 @@
 			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
 		</field>
 	</subDataset>
-	<subDataset name="dataset5" uuid="84314466-16b6-47f6-9e27-49b9beafee96">
-		<field name="sum" class="java.lang.String">
-			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
-		</field>
-	</subDataset>
 	<subDataset name="dataset6" uuid="66895f76-803c-48db-8efd-b55ba423c379">
 		<field name="date" class="java.lang.String">
 			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
@@ -133,9 +128,9 @@
 		</band>
 	</title>
 	<columnHeader>
-		<band height="80">
+		<band height="40">
 			<staticText>
-				<reportElement x="35" y="50" width="150" height="30" uuid="2df89a4a-aca3-4072-89f8-650bd023ff79"/>
+				<reportElement x="35" y="10" width="150" height="30" uuid="2df89a4a-aca3-4072-89f8-650bd023ff79"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -145,7 +140,7 @@
 				<text><![CDATA[รายชื่อผู้เข้าอบรม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="185" y="50" width="100" height="30" uuid="a10d2ba7-6d37-4dcc-9617-c2f80a1f28f2"/>
+				<reportElement x="185" y="10" width="100" height="30" uuid="a10d2ba7-6d37-4dcc-9617-c2f80a1f28f2"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -155,7 +150,7 @@
 				<text><![CDATA[วดป.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="285" y="50" width="200" height="30" uuid="16e9f465-f074-4172-806d-5c9a89584a3c"/>
+				<reportElement x="285" y="10" width="200" height="30" uuid="16e9f465-f074-4172-806d-5c9a89584a3c"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -165,7 +160,7 @@
 				<text><![CDATA[หลักสูตรการอบรม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="485" y="50" width="100" height="30" uuid="20270c36-5df4-49cf-a395-19363116ec50"/>
+				<reportElement x="485" y="10" width="100" height="30" uuid="20270c36-5df4-49cf-a395-19363116ec50"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -175,7 +170,7 @@
 				<text><![CDATA[สถานที่จัด]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="585" y="50" width="100" height="30" uuid="91a37c31-4550-4a23-b1fe-48a3bb6d80cc"/>
+				<reportElement x="585" y="10" width="100" height="30" uuid="91a37c31-4550-4a23-b1fe-48a3bb6d80cc"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -185,7 +180,7 @@
 				<text><![CDATA[ค่าใช่จ่าย]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="685" y="50" width="100" height="30" uuid="26f8312a-2e1f-4647-8760-eaa69443c950"/>
+				<reportElement x="685" y="10" width="100" height="30" uuid="26f8312a-2e1f-4647-8760-eaa69443c950"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
