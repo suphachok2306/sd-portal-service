@@ -920,6 +920,7 @@ public class TrainingService {
       params.put("institute", training_id.getCourses().get(0).getInstitute());
       params.put("place", training_id.getCourses().get(0).getPlace());
       params.put("budget", training_id.getBudget());
+      params.put("priceProject", training_id.getCourses().get(0).getPriceProject());
 
       params.put("emp_code", training_id.getUser().getEmpCode());
       params.put("firstname", training_id.getUser().getFirstname());
