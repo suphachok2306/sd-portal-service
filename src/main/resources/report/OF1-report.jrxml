@@ -165,10 +165,31 @@
 				<text><![CDATA[แบบฟอร์มการส่งพนักงานเข้ารับการอบรม]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="0" width="100" height="30" uuid="160cc64b-c7cd-4bd7-b8b2-259af58e4836">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="197e10ff-6242-4ab0-baf3-5bb0d06891e5"/>
-				</reportElement>
-				<text><![CDATA[priceProject]]></text>
+				<reportElement x="-1" y="-23" width="556" height="30" uuid="a9098d20-e3be-4a10-86c9-51f6e053313c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Dashed" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="-10" width="136" height="30" uuid="81c00cf2-56e3-4604-a828-7ed890f8999a"/>
+				<textElement>
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[Professional Computor Co., Ltd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="-10" width="100" height="30" uuid="3a6d330f-155f-4f12-bcd4-b1eff1bea6e2"/>
+				<textElement textAlignment="Right">
+					<font fontName="TH Sarabun New" size="14"/>
+				</textElement>
+				<text><![CDATA[FTR-OF01]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
