@@ -852,6 +852,7 @@ public class TrainingService {
       params.put("institute", training_id.getCourses().get(0).getInstitute());
       params.put("place", training_id.getCourses().get(0).getPlace());
       params.put("budget", training_id.getBudget());
+      params.put("priceProject", training_id.getCourses().get(0).getPriceProject());
 
       params.put("emp_code", training_id.getUser().getEmpCode());
       params.put("firstname", training_id.getUser().getFirstname());
@@ -886,9 +887,8 @@ public class TrainingService {
       params.put("cause", training_id.getResult().get(0).getCause());
       params.put("plan", training_id.getResult().get(0).getPlan());
       params.put("result", training_id.getResult().get(0).getResult());
-      params.put(
-          "date_saveEvaluation",
-          training_id.getResult().get(0).getEvaluationDate());
+      params.put("date_saveEvaluation", training_id.getResult().get(0).getEvaluationDate());
+
       dataList.add(params);
 
       // Load the JasperReport from a JRXML file
