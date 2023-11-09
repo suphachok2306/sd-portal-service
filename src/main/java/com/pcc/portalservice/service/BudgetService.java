@@ -316,7 +316,7 @@ public class BudgetService {
         "AND c.active != 'ยกเลิก' " +
         "AND c.type = :courseType " +
         "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
-        "AND c.priceProject IS NULL";
+        "AND (c.priceProject IS NULL OR c.priceProject = '') ";
 
     Query query = entityManager.createQuery(trainingIdsQuery);
     query.setParameter("departmentId", department_id);
