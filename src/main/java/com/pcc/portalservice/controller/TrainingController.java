@@ -399,8 +399,7 @@ public class TrainingController {
     @RequestParam Long deptID,
     @RequestParam Long sectorID
   ) throws Exception {
-    //System.out.println("0");
-    return trainingService.testBuildPdf(
+    return trainingService.printReportHistoryTraining(
        startDate,
      endDate,
      deptID,

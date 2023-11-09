@@ -7,7 +7,7 @@ public class BeanHistroy {
     private List<String> course_names;
     private List<String> course_places;
     private List<Float> course_prices;
-    private List<String> course_notes;
+    private List<String> priceProjects;
     private List<String> dates;
     private Float sums; 
     private Float sumall;
@@ -17,11 +17,11 @@ public class BeanHistroy {
     public BeanHistroy() {
     }
 
-    public BeanHistroy(List<String> course_names, List<String> course_places, List<Float> course_prices, List<String> course_notes, List<String> dates, Float sums, Float sumall, String name, Long id) {
+    public BeanHistroy(List<String> course_names, List<String> course_places, List<Float> course_prices, List<String> priceProjects, List<String> dates, Float sums, Float sumall, String name, Long id) {
         this.course_names = course_names;
         this.course_places = course_places;
         this.course_prices = course_prices;
-        this.course_notes = course_notes;
+        this.priceProjects = priceProjects;
         this.dates = dates;
         this.sums = sums;
         this.sumall = sumall;
@@ -53,12 +53,12 @@ public class BeanHistroy {
         this.course_prices = course_prices;
     }
 
-    public List<String> getCourse_notes() {
-        return this.course_notes;
+    public List<String> getPriceProjects() {
+        return this.priceProjects;
     }
 
-    public void setCourse_notes(List<String> course_notes) {
-        this.course_notes = course_notes;
+    public void setPriceProjects(List<String> priceProjects) {
+        this.priceProjects = priceProjects;
     }
 
     public List<String> getDates() {
@@ -116,8 +116,8 @@ public class BeanHistroy {
         return this;
     }
 
-    public BeanHistroy course_notes(List<String> course_notes) {
-        setCourse_notes(course_notes);
+    public BeanHistroy priceProjects(List<String> priceProjects) {
+        setPriceProjects(priceProjects);
         return this;
     }
 
@@ -154,12 +154,12 @@ public class BeanHistroy {
             return false;
         }
         BeanHistroy beanHistroy = (BeanHistroy) o;
-        return Objects.equals(course_names, beanHistroy.course_names) && Objects.equals(course_places, beanHistroy.course_places) && Objects.equals(course_prices, beanHistroy.course_prices) && Objects.equals(course_notes, beanHistroy.course_notes) && Objects.equals(dates, beanHistroy.dates) && Objects.equals(sums, beanHistroy.sums) && Objects.equals(sumall, beanHistroy.sumall) && Objects.equals(name, beanHistroy.name) && Objects.equals(id, beanHistroy.id);
+        return Objects.equals(course_names, beanHistroy.course_names) && Objects.equals(course_places, beanHistroy.course_places) && Objects.equals(course_prices, beanHistroy.course_prices) && Objects.equals(priceProjects, beanHistroy.priceProjects) && Objects.equals(dates, beanHistroy.dates) && Objects.equals(sums, beanHistroy.sums) && Objects.equals(sumall, beanHistroy.sumall) && Objects.equals(name, beanHistroy.name) && Objects.equals(id, beanHistroy.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(course_names, course_places, course_prices, course_notes, dates, sums, sumall, name, id);
+        return Objects.hash(course_names, course_places, course_prices, priceProjects, dates, sums, sumall, name, id);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class BeanHistroy {
             " course_names='" + getCourse_names() + "'" +
             ", course_places='" + getCourse_places() + "'" +
             ", course_prices='" + getCourse_prices() + "'" +
-            ", course_notes='" + getCourse_notes() + "'" +
+            ", priceProjects='" + getPriceProjects() + "'" +
             ", dates='" + getDates() + "'" +
             ", sums='" + getSums() + "'" +
             ", sumall='" + getSumall() + "'" +

@@ -920,7 +920,10 @@ public class TrainingService {
       params.put("institute", training_id.getCourses().get(0).getInstitute());
       params.put("place", training_id.getCourses().get(0).getPlace());
       params.put("budget", training_id.getBudget());
-      params.put("priceProject", training_id.getCourses().get(0).getPriceProject());
+      params.put(
+        "priceProject",
+        training_id.getCourses().get(0).getPriceProject()
+      );
 
       params.put("emp_code", training_id.getUser().getEmpCode());
       params.put("firstname", training_id.getUser().getFirstname());
@@ -1010,7 +1013,7 @@ public class TrainingService {
       List<String> course_names = new ArrayList<>();
       List<String> course_places = new ArrayList<>();
       List<Float> course_prices = new ArrayList<>();
-      List<String> course_notes = new ArrayList<>();
+      List<String> course_priceProjects = new ArrayList<>();
       List<String> dates = new ArrayList<>();
       Float sums = 0.0f;
 
@@ -1029,14 +1032,51 @@ public class TrainingService {
       for (int i = 0; i < courseList.size(); i++) {
         Map<String, Object> course = courseList.get(i);
 
-        course_names.add(course.get("course_name") != null ? course.get("course_name").toString() : "");
-        course_places.add(course.get("place") != null ? course.get("place").toString() : "");
-        course_prices.add(course.get("price") != null ? (float) course.get("price") : 0.0f);
-        String startDate = course.get("start_date") != null ? course.get("start_date").toString() : "";
-        String endDate = course.get("end_date") != null ? course.get("end_date").toString() : "";
-        String dateCombined = startDate + " - " + endDate;
+        course_names.add(
+          course.get("course_name") != null
+            ? course.get("course_name").toString()
+            : ""
+        );
+        course_places.add(
+          course.get("place") != null ? course.get("place").toString() : ""
+        );
+        course_prices.add(
+          course.get("price") != null ? (float) course.get("price") : 0.0f
+        );
+        String startDate = course.get("start_date") != null
+          ? course.get("start_date").toString()
+          : "";
+        String endDate = course.get("end_date") != null
+          ? course.get("end_date").toString()
+          : "";
+
+        String formattedStartDate = "";
+        String formattedEndDate = "";
+
+        // Check if the date strings are not empty before formatting
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+          try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date startDateObj = dateFormat.parse(startDate);
+            Date endDateObj = dateFormat.parse(endDate);
+
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat(
+              "dd/MM/yyyy",
+              new Locale("TH", "th")
+            );
+            formattedStartDate = outputDateFormat.format(startDateObj);
+            formattedEndDate = outputDateFormat.format(endDateObj);
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
+
+        String dateCombined = formattedStartDate + " - " + formattedEndDate;
+
         dates.add(dateCombined);
-        course_notes.add(course.get("note") != null ? course.get("note").toString() : "");
+        course_priceProjects.add(
+          course.get("priceProject") != null ? course.get("priceProject").toString() : ""
+        );
 
         sums += (float) course.get("price");
         sumall += (float) course.get("price");
@@ -1046,7 +1086,7 @@ public class TrainingService {
           course_names,
           course_places,
           course_prices,
-          course_notes,
+          course_priceProjects,
           dates,
           sums,
           sumall,
@@ -1058,107 +1098,7 @@ public class TrainingService {
     return new JRBeanCollectionDataSource(coll);
   }
 
-  // public String printReportHistoryTraining(
-  //   String startDate,
-  //   String endDate,
-  //   Long deptID,
-  //   Long sectorID
-  //   //Long trainId
-  // ) throws Exception {
-  //   LinkedHashMap<String, Object> ht = HistoryTraining(
-  //     startDate,
-  //     endDate,
-  //     deptID,
-  //     sectorID
-  //   );
-
-  //   String spec = "report/SV1-training.jrxml";
-  //   assert spec != null;
-  //   System.out.println("0");
-  //   if (spec == null) {
-  //     throw new Exception("The spec variable is null");
-  //   }
-  //   //System.out.println("1");
-  //   try {
-  //     List<Map<String, Object>> dataList = new ArrayList<>();
-  //     Map<String, Object> params = new HashMap<>();
-  //     Optional<Sector> sector = sectorRepository.findById(sectorID);
-  //     Optional<Department> depOptional = departmentRepository.findById(deptID);
-
-  //     params.put("sector_name", sector.get().getSectorName());
-  //     params.put("dept_name", depOptional.get().getDeptName());
-
-  //     params.put("startdate", startDate);
-  //     params.put("enddate", endDate);
-  //     List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get(
-  //       "data"
-  //     );
-  //     for (Map<String, Object> userData : data) {
-  //       System.out.println(userData);
-  //       params.put("user_id", userData.get("user_id"));
-  //       params.put("emp_code", userData.get("emp_code"));
-  //       params.put("title", userData.get("title"));
-  //       params.put("firstname", userData.get("firstname"));
-  //       params.put("lastname", userData.get("lastname"));
-  //       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
-  //         "course"
-  //       );
-  //       // Process courses for the user
-  //       for (int i = 0; i < courseList.size(); i++) {
-  //         Map<String, Object> course = courseList.get(i);
-  //         params.put("course_id", course.get("course_id"));
-  //         params.put("course_name", course.get("course_name"));
-  //         params.put("place", course.get("place"));
-  //         params.put("price", course.get("price"));
-  //         params.put("start_date", course.get("start_date").toString());
-  //         params.put("end_date", course.get("end_date").toString());
-  //         params.put("note", course.get("note"));
-  //       }
-  //     }
-  //     dataList.add(params);
-
-  //     ///////////////////////////////////////////////////////////////////////////
-
-  //     // Load the JRXML file
-  //     InputStream reportInput =
-  //       UserService.class.getClassLoader().getResourceAsStream(spec);
-  //     JasperReport jasperReport = JasperCompileManager.compileReport(
-  //       reportInput
-  //     );
-
-  //     JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
-
-  //     JasperPrint jasperPrint = JasperFillManager.fillReport(
-  //       jasperReport,
-  //       params,
-  //       dataSource
-  //     );
-
-  //     byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-  //     //System.out.println("7");
-  //     // Convert the byte array to Base64
-  //     return Base64.encodeBase64String(bytes);
-  //   } catch (Exception e) {
-  //     e.printStackTrace();
-  //   }
-  //   return null;
-  // }
-  public void test(
-    String startDate,
-    String endDate,
-    Long deptID,
-    Long sectorID
-  ) {
-    LinkedHashMap<String, Object> ht = HistoryTraining(
-      startDate,
-      endDate,
-      deptID,
-      sectorID
-    );
-    getDataSource(ht);
-  }
-
-  public String testBuildPdf(
+  public String printReportHistoryTraining(
     String startDate,
     String endDate,
     Long deptID,
@@ -1179,8 +1119,16 @@ public class TrainingService {
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
 
-      params.put("startdate", startDate);
-      params.put("enddate", endDate);
+      params.put(
+        "startdate",
+        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+      );
+      params.put(
+        "enddate",
+        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+      );
 
       InputStream reportInput =
         UserService.class.getClassLoader().getResourceAsStream(spec);
@@ -1225,7 +1173,7 @@ public class TrainingService {
         trainingRoot.join("courses").get("price").alias("price"),
         trainingRoot.join("courses").get("startDate").alias("start_date"),
         trainingRoot.join("courses").get("endDate").alias("end_date"),
-        trainingRoot.join("courses").get("note").alias("note")
+        trainingRoot.join("courses").get("priceProject").alias("priceProject")
       );
       trainingRoot.join("courses").get("active").alias("active");
       trainingRoot.join("result").get("result").alias("result");
@@ -1298,7 +1246,7 @@ public class TrainingService {
         course.put("price", row.get("price"));
         course.put("start_date", row.get("start_date"));
         course.put("end_date", row.get("end_date"));
-        course.put("note", row.get("note"));
+        course.put("priceProject", row.get("priceProject"));
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );
