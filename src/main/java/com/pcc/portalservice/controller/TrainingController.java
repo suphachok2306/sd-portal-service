@@ -10,6 +10,8 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
+import net.sf.jasperreports.engine.JRException;
+
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -376,18 +378,34 @@ public class TrainingController {
 //      sectorID
 //    );
 //  }
+  // @GetMapping("/ReportHistoryTraining")
+  // public String reportHistoryTraining(
+  //         //@RequestParam Long trainId
+  //         @RequestParam(required = false) String startDate,
+  //         @RequestParam(required = false) String endDate,
+  //         @RequestParam(required = false) Long deptID,
+  //         @RequestParam(required = false) Long sectorID
+
+
+  // ) throws Exception {
+  //   //System.out.println("0");
+  //   return trainingService.printReportHistoryTraining(startDate,endDate,deptID,sectorID);
+  // }
+
   @GetMapping("/ReportHistoryTraining")
   public String reportHistoryTraining(
-          //@RequestParam Long trainId
-          @RequestParam(required = false) String startDate,
-          @RequestParam(required = false) String endDate,
-          @RequestParam(required = false) Long deptID,
-          @RequestParam(required = false) Long sectorID
-
-
+    @RequestParam String startDate,
+    @RequestParam String endDate,
+    @RequestParam Long deptID,
+    @RequestParam Long sectorID
   ) throws Exception {
     //System.out.println("0");
-    return trainingService.printReportHistoryTraining(startDate,endDate,deptID,sectorID);
+    return trainingService.testBuildPdf(
+       startDate,
+     endDate,
+     deptID,
+     sectorID
+    );
   }
   @GetMapping("/HistoryTraining")
   public LinkedHashMap<String, Object> HistoryTraining(

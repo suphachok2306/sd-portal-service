@@ -7,6 +7,14 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -14,15 +22,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -43,70 +42,82 @@ public class TrainingService {
    * @สร้างTraining
    */
   public Training createTraining(CreateTrainingRequest createTrainingRequest)
-      throws ParseException {
+    throws ParseException {
     User user = userRepository
-        .findById(createTrainingRequest.getUserId())
-        .orElseThrow(() -> new RuntimeException(
-            "Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
+      .findById(createTrainingRequest.getUserId())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+        )
+      );
 
     User approve1 = userRepository
-        .findById(createTrainingRequest.getApprove1_id())
-        .orElseThrow(() -> new RuntimeException(
-            "Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
+      .findById(createTrainingRequest.getApprove1_id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+        )
+      );
     Course course = courseRepository
-        .findById(createTrainingRequest.getCourseId())
-        .orElseThrow(() -> new RuntimeException(
-            "CourseId not found: " + createTrainingRequest.getCourseId()));
+      .findById(createTrainingRequest.getCourseId())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "CourseId not found: " + createTrainingRequest.getCourseId()
+        )
+      );
 
     Role vicePresidentRole = approve1
-        .getRoles()
-        .stream()
-        .filter(role -> role.getRole().equals(Roles.VicePresident))
-        .findFirst()
-        .orElse(null);
+      .getRoles()
+      .stream()
+      .filter(role -> role.getRole().equals(Roles.VicePresident))
+      .findFirst()
+      .orElse(null);
 
     Date startDate = course.getStartDate();
     Date endDate = course.getEndDate();
     long differenceInMilliseconds = endDate.getTime() - startDate.getTime();
-    int daysDifference = (int) (differenceInMilliseconds / (1000 * 60 * 60 * 24)) +
-        1;
+    int daysDifference = (int) (
+      differenceInMilliseconds / (1000 * 60 * 60 * 24)
+    ) +
+    1;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date actionDateFormat = dateFormat.parse(
-        createTrainingRequest.getActionDate());
+      createTrainingRequest.getActionDate()
+    );
 
     Training training = Training
-        .builder()
-        .user(user)
-        .dateSave(new Date())
-        .day(daysDifference)
-        .courses(Arrays.asList(course))
-        .budget(createTrainingRequest.getBudget())
-        .action(createTrainingRequest.getAction())
-        .actionDate(actionDateFormat)
-        // .action(null)
-        // .actionDate(null)
-        .approve1(approve1)
-        .build();
+      .builder()
+      .user(user)
+      .dateSave(new Date())
+      .day(daysDifference)
+      .courses(Arrays.asList(course))
+      .budget(createTrainingRequest.getBudget())
+      .action(createTrainingRequest.getAction())
+      .actionDate(actionDateFormat)
+      // .action(null)
+      // .actionDate(null)
+      .approve1(approve1)
+      .build();
 
     if (training.getResult() == null) {
       training.setResult(new ArrayList<>());
     }
     Result result = Result
-        .builder()
-        .training(training)
-        // .evaluator(approve1)
-        .result1(null)
-        .result2(null)
-        .result3(null)
-        .result4(null)
-        .result5(null)
-        .result6(null)
-        .result7(null)
-        .result(null)
-        .comment(null)
-        .cause(null)
-        .plan(null)
-        .build();
+      .builder()
+      .training(training)
+      // .evaluator(approve1)
+      .result1(null)
+      .result2(null)
+      .result3(null)
+      .result4(null)
+      .result5(null)
+      .result6(null)
+      .result7(null)
+      .result(null)
+      .comment(null)
+      .cause(null)
+      .plan(null)
+      .build();
     resultRepository.save(result);
     training.getResult().add(result);
 
@@ -116,35 +127,38 @@ public class TrainingService {
 
     if (vicePresidentRole != null) {
       Status status1 = Status
-          .builder()
-          .status(null)
-          .training(training)
-          .approveId(approve1)
-          .active(1)
-          .build();
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(approve1)
+        .active(1)
+        .build();
 
       statusRepository.save(status1);
       training.getStatus().add(status1);
     } else {
       User ap1 = userRepository
-          .findById(Long.valueOf(3))
-          .orElseThrow(() -> new RuntimeException(
-              "Approve1Id not found: " + createTrainingRequest.getApprove1_id()));
+        .findById(Long.valueOf(3))
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+          )
+        );
       Status status1 = Status
-          .builder()
-          .status(null)
-          .training(training)
-          .approveId(approve1)
-          .active(1)
-          .build();
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(approve1)
+        .active(1)
+        .build();
 
       Status status2 = Status
-          .builder()
-          .status(null)
-          .training(training)
-          .approveId(ap1)
-          .active(0)
-          .build();
+        .builder()
+        .status(null)
+        .training(training)
+        .approveId(ap1)
+        .active(0)
+        .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
@@ -160,8 +174,9 @@ public class TrainingService {
    * @EditTrainingSection1
    */
   public Training editTrainingSection1(
-      Long trainingId,
-      EditTrainingSection1Request editTraining) throws ParseException {
+    Long trainingId,
+    EditTrainingSection1Request editTraining
+  ) throws ParseException {
     // Training training_id = trainingRepository
     // .findById(trainingId)
     // .orElseThrow(() ->
@@ -170,19 +185,25 @@ public class TrainingService {
     Training training_id = findByTrainingId(trainingId);
 
     Course course_id = courseRepository
-        .findById(editTraining.getCourseId())
-        .orElseThrow(() -> new RuntimeException(
-            "CourseId not found: " + editTraining.getCourseId()));
+      .findById(editTraining.getCourseId())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "CourseId not found: " + editTraining.getCourseId()
+        )
+      );
     User user_id = userRepository
-        .findById(editTraining.getUserId())
-        .orElseThrow(() -> new RuntimeException("UserId not found: " + editTraining.getUserId()));
+      .findById(editTraining.getUserId())
+      .orElseThrow(() ->
+        new RuntimeException("UserId not found: " + editTraining.getUserId())
+      );
     User approve1_id = userRepository
-        .findById(editTraining.getApprove1_id())
-        .orElseThrow(() -> new RuntimeException(
-            "Approve1Id not found: " + editTraining.getApprove1_id()));
+      .findById(editTraining.getApprove1_id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + editTraining.getApprove1_id()
+        )
+      );
     if (editTraining.getApprove1_id() != training_id.getApprove1().getId()) {
-      System.out.println(editTraining.getApprove1_id());
-      System.out.println(training_id.getApprove1().getId());
       changeApprover(editTraining, trainingId);
     }
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -201,17 +222,17 @@ public class TrainingService {
     return updatedTraining;
   }
 
- 
-
   /**
    * @EditTrainingSection2
    */
   public Result editTrainingSection2(
-      Long resultId,
-      EditTrainingSection2Request editTraining) throws ParseException {
+    Long resultId,
+    EditTrainingSection2Request editTraining
+  ) throws ParseException {
     Result result_id = resultRepository
-        .findById(resultId)
-        .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId));
+      .findById(resultId)
+      .orElseThrow(() -> new RuntimeException("ResultId not found: " + resultId)
+      );
 
     // result_id.setEvaluator(evaluator_id);
     result_id.setResult1(editTraining.getResult1());
@@ -227,7 +248,6 @@ public class TrainingService {
     result_id.setPlan(editTraining.getPlan());
     result_id.setEvaluationDate(new Date());
 
-
     Result updatedTraining = resultRepository.save(result_id);
     return updatedTraining;
   }
@@ -236,41 +256,44 @@ public class TrainingService {
    * @SetStatus
    */
   public Training setStatusToTraining(
-      Long trainingId,
-      Long approveId,
-      StatusApprove statusApprove) {
+    Long trainingId,
+    Long approveId,
+    StatusApprove statusApprove
+  ) {
     Training training_id = findByTrainingId(trainingId);
 
     Optional<Status> optionalStatus = training_id
-        .getStatus()
-        .stream()
-        .filter(status -> {
-          User approveIdObj = status.getApproveId();
-          return approveIdObj != null && approveId.equals(approveIdObj.getId());
-        })
-        .findFirst();
+      .getStatus()
+      .stream()
+      .filter(status -> {
+        User approveIdObj = status.getApproveId();
+        return approveIdObj != null && approveId.equals(approveIdObj.getId());
+      })
+      .findFirst();
 
     if (optionalStatus.isPresent()) {
       if (optionalStatus.get().getActive() != 3) {
         Status existingStatus = optionalStatus.get();
-            existingStatus.setStatus(statusApprove);
-            existingStatus.setActive(2);
-            existingStatus.setApprovalDate(new Date());
-            statusRepository.save(existingStatus);
+        existingStatus.setStatus(statusApprove);
+        existingStatus.setActive(2);
+        existingStatus.setApprovalDate(new Date());
+        statusRepository.save(existingStatus);
 
         Optional<Status> updateStatusNext = training_id
-            .getStatus()
-            .stream()
-            .filter(status -> trainingId.equals(status.getTraining().getId()) &&
-                status.getActive() != 2)
-            .findFirst();
+          .getStatus()
+          .stream()
+          .filter(status ->
+            trainingId.equals(status.getTraining().getId()) &&
+            status.getActive() != 2
+          )
+          .findFirst();
 
         if (updateStatusNext.isPresent()) {
           if (updateStatusNext.get().getApproveId() != null) {
             Status nextStatus = updateStatusNext.get();
             nextStatus.setActive(1);
             statusRepository.save(nextStatus);
-          } 
+          }
         }
       } else {
         Status existingStatus = optionalStatus.get();
@@ -284,10 +307,12 @@ public class TrainingService {
   }
 
   public Training setCancelToTraining(Long trainingId) {
-    String jpql = "UPDATE public.status SET active=2 ,status='ยกเลิก' WHERE training_id = :training_id ;";
+    String jpql =
+      "UPDATE public.status SET active=2 ,status='ยกเลิก' WHERE training_id = :training_id ;";
     NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
-        jpql,
-        Training.class);
+      jpql,
+      Training.class
+    );
 
     query.setParameter("training_id", trainingId);
 
@@ -311,12 +336,13 @@ public class TrainingService {
     query.where(builder.equal(root.get("id"), id));
 
     List<Training> trainingList = entityManager
-        .createQuery(query)
-        .getResultList();
+      .createQuery(query)
+      .getResultList();
 
     if (!trainingList.isEmpty()) {
       List<Status> statusListCopy = new ArrayList<>(
-          trainingList.get(0).getStatus());
+        trainingList.get(0).getStatus()
+      );
       statusListCopy.sort(Comparator.comparing(Status::getId));
       trainingList.get(0).setStatus(statusListCopy);
 
@@ -336,8 +362,8 @@ public class TrainingService {
     query.where(builder.equal(root.get("id"), id));
 
     List<Training> trainingList = entityManager
-        .createQuery(query)
-        .getResultList();
+      .createQuery(query)
+      .getResultList();
 
     Map<String, Object> resultWithStatus = new HashMap<>();
 
@@ -350,7 +376,6 @@ public class TrainingService {
       int count = 0;
 
       for (Status status : training.getStatus()) {
-        System.out.println(count);
         if (status.getStatus() != null) {
           if ("อนุมัติ".equals(status.getStatus().toString())) {
             approvedCount++;
@@ -400,11 +425,13 @@ public class TrainingService {
    * @หาTrainingด้วยUserId
    */
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
-    String jpql = "SELECT t FROM Training t JOIN FETCH t.status s WHERE t.user.id = :id";
+    String jpql =
+      "SELECT t FROM Training t JOIN FETCH t.status s WHERE t.user.id = :id";
 
     TypedQuery<Training> query = entityManager.createQuery(
-        jpql,
-        Training.class);
+      jpql,
+      Training.class
+    );
 
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
@@ -416,7 +443,8 @@ public class TrainingService {
     }
 
     List<Training> uniqueTrainingList = new ArrayList<>(
-        uniqueTrainings.values());
+      uniqueTrainings.values()
+    );
 
     return calculateTrainingResultStatus(uniqueTrainingList);
   }
@@ -426,15 +454,17 @@ public class TrainingService {
    */
 
   public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
-    String jpql = "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
-        "approve1_id,user_id,active " + //
-        "FROM status s " + //
-        "JOIN training t ON training_id = t.id " + //
-        "WHERE s.approve_id = :id and active != 0";
+    String jpql =
+      "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
+      "approve1_id,user_id,active " + //
+      "FROM status s " + //
+      "JOIN training t ON training_id = t.id " + //
+      "WHERE s.approve_id = :id and active != 0";
 
     NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
-        jpql,
-        Training.class);
+      jpql,
+      Training.class
+    );
 
     query.setParameter("id", approve1Id);
     List<Training> resultList = (List<Training>) query.getResultList();
@@ -446,12 +476,14 @@ public class TrainingService {
    * @หาTrainingทั้งหมด
    */
   public List<Map<String, Object>> findAllTraining() {
-    String jpql = "SELECT DISTINCT t FROM Training t JOIN FETCH t.status " +
-        "ORDER BY t.id";
+    String jpql =
+      "SELECT DISTINCT t FROM Training t JOIN FETCH t.status " +
+      "ORDER BY t.id";
 
     TypedQuery<Training> query = entityManager.createQuery(
-        jpql,
-        Training.class);
+      jpql,
+      Training.class
+    );
     List<Training> trainingList = query.getResultList();
 
     return calculateTrainingResultStatus(trainingList);
@@ -462,15 +494,17 @@ public class TrainingService {
    */
 
   public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
-    String jpql = "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
-        "approve1_id,user_id,active " + //
-        "FROM status s " + //
-        "JOIN training t ON training_id = t.id " + //
-        "WHERE (active = 3 and approve_id = :id) or (active = 3 and approve_id is null)";
+    String jpql =
+      "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
+      "approve1_id,user_id,active " + //
+      "FROM status s " + //
+      "JOIN training t ON training_id = t.id " + //
+      "WHERE (active = 3 and approve_id = :id) or (active = 3 and approve_id is null)";
 
     NativeQuery<Training> query = (NativeQuery<Training>) entityManager.createNativeQuery(
-        jpql,
-        Training.class);
+      jpql,
+      Training.class
+    );
 
     query.setParameter("id", approve1Id);
     List<Training> resultList = (List<Training>) query.getResultList();
@@ -483,7 +517,8 @@ public class TrainingService {
    */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
-      List<Training> trainingList) {
+    List<Training> trainingList
+  ) {
     List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
 
     for (Training training : trainingList) {
@@ -546,9 +581,10 @@ public class TrainingService {
    */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
-      List<Training> trainingList,
-      long approve1Id,
-      int active) {
+    List<Training> trainingList,
+    long approve1Id,
+    int active
+  ) {
     List<Map<String, Object>> resultWithStatusList = new ArrayList<>();
 
     for (Training training : trainingList) {
@@ -561,7 +597,8 @@ public class TrainingService {
       int count = 0;
 
       List<Status> uniqueStatusList = removeDuplicateStatus(
-          training.getStatus());
+        training.getStatus()
+      );
 
       for (Status status : uniqueStatusList) {
         if (status.getStatus() != null) {
@@ -574,9 +611,11 @@ public class TrainingService {
           }
         }
 
-        if (status.getActive() == active &&
-            status.getApproveId() != null &&
-            status.getApproveId().getId() == approve1Id) {
+        if (
+          status.getActive() == active &&
+          status.getApproveId() != null &&
+          status.getApproveId().getId() == approve1Id
+        ) {
           if ("อนุมัติ".equals(status.getStatus().toString())) {
             isDo = "อนุมัติ";
           } else if ("ไม่อนุมัติ".equals(status.getStatus().toString())) {
@@ -610,8 +649,10 @@ public class TrainingService {
         }
       }
 
-      if (resultStatus.equals("อนุมัติ") &&
-          training.getApprove1().getId() == approve1Id) {
+      if (
+        resultStatus.equals("อนุมัติ") &&
+        training.getApprove1().getId() == approve1Id
+      ) {
         isDoResult = "ใช่";
       }
 
@@ -637,13 +678,11 @@ public class TrainingService {
     List<Status> uniqueStatusList = new ArrayList<>();
     for (Status status : statusList) {
       if (!statusIds.contains(status.getId())) {
-        System.out.println(status.getId());
         uniqueStatusList.add(status);
         statusIds.add(status.getId());
       } else {
         continue;
       }
-      System.out.println(statusIds);
     }
 
     return uniqueStatusList;
@@ -654,12 +693,13 @@ public class TrainingService {
    */
 
   public Object searchTraining(
-      String name,
-      String position,
-      String department,
-      Date startDate,
-      Date endDate,
-      String courseName) {
+    String name,
+    String position,
+    String department,
+    Date startDate,
+    Date endDate,
+    String courseName
+  ) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
@@ -669,28 +709,34 @@ public class TrainingService {
     if (name != null) {
       Join<Training, User> userJoin = root.join("user");
       Expression<String> fullName = builder.concat(
-          builder.concat(builder.lower(userJoin.get("firstname")), " "),
-          builder.lower(userJoin.get("lastname")));
+        builder.concat(builder.lower(userJoin.get("firstname")), " "),
+        builder.lower(userJoin.get("lastname"))
+      );
       predicates.add(
-          builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
+        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
+      );
     }
 
     if (position != null) {
       Join<Training, User> userJoin = root.join("user");
       Join<User, Position> positionJoin = userJoin.join("position");
       predicates.add(
-          builder.like(
-              builder.lower(positionJoin.get("positionName")),
-              "%" + position.toLowerCase() + "%"));
+        builder.like(
+          builder.lower(positionJoin.get("positionName")),
+          "%" + position.toLowerCase() + "%"
+        )
+      );
     }
 
     if (department != null) {
       Join<Training, User> userJoin = root.join("user");
       Join<User, Department> departmentJoin = userJoin.join("department");
       predicates.add(
-          builder.like(
-              builder.lower(departmentJoin.get("deptName")),
-              "%" + department.toLowerCase() + "%"));
+        builder.like(
+          builder.lower(departmentJoin.get("deptName")),
+          "%" + department.toLowerCase() + "%"
+        )
+      );
     }
 
     if (startDate != null) {
@@ -706,17 +752,21 @@ public class TrainingService {
     if (courseName != null) {
       Join<Training, Course> courseJoin = root.join("courses");
       predicates.add(
-          builder.like(
-              builder.lower(courseJoin.get("courseName")),
-              "%" + courseName.toLowerCase() + "%"));
+        builder.like(
+          builder.lower(courseJoin.get("courseName")),
+          "%" + courseName.toLowerCase() + "%"
+        )
+      );
     }
 
-    if (name == null &&
-        position == null &&
-        department == null &&
-        startDate == null &&
-        endDate == null &&
-        courseName == null) {
+    if (
+      name == null &&
+      position == null &&
+      department == null &&
+      startDate == null &&
+      endDate == null &&
+      courseName == null
+    ) {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
 
@@ -736,11 +786,12 @@ public class TrainingService {
   }
 
   public String printReport(
-      Long trainId,
-      Long userId1,
-      Long userId2,
-      Long userId3,
-      Long userId4) {
+    Long trainId,
+    Long userId1,
+    Long userId2,
+    Long userId3,
+    Long userId4
+  ) {
     Training training_id = findByTrainingId(trainId);
 
     try {
@@ -752,53 +803,62 @@ public class TrainingService {
         if (userId4 != null) {
           User evaluator4 = userRepository.findById(userId4).orElse(null);
           params.put(
-              "approve1",
-              convertByteToBase64(evaluator4.getSignature().getImage()));
+            "approve1",
+            convertByteToBase64(evaluator4.getSignature().getImage())
+          );
         } else if (userId1 == null && userId4 == null) {
           User evaluator2 = userRepository.findById(userId2).orElse(null);
           params.put(
-              "approve1",
-              convertByteToBase64(evaluator2.getSignature().getImage()));
+            "approve1",
+            convertByteToBase64(evaluator2.getSignature().getImage())
+          );
         } else if (userId1 == null && userId2 == null && userId4 == null) {
           User evaluator3 = userRepository.findById(userId3).orElse(null);
           params.put(
-              "approve1",
-              convertByteToBase64(evaluator3.getSignature().getImage()));
+            "approve1",
+            convertByteToBase64(evaluator3.getSignature().getImage())
+          );
         }
       } else if (userId1 != null) {
         User evaluator1 = userRepository.findById(userId1).orElse(null);
         params.put(
-            "approve1",
-            convertByteToBase64(evaluator1.getSignature().getImage()));
+          "approve1",
+          convertByteToBase64(evaluator1.getSignature().getImage())
+        );
       }
 
       if (userId1 != null) {
         User user_id1 = userRepository.findById(userId1).orElse(null);
         if (user_id1 != null) {
           params.put(
-              "imageBase64User1",
-              convertByteToBase64(user_id1.getSignature().getImage()));
+            "imageBase64User1",
+            convertByteToBase64(user_id1.getSignature().getImage())
+          );
           params.put("positionAp1", user_id1.getPosition().getPositionName());
           params.put(
-              "date_saveUser1",
-              training_id.getStatus().get(0).getApprovalDate());
+            "date_saveUser1",
+            training_id.getStatus().get(0).getApprovalDate()
+          );
         }
       }
       if (userId2 != null) {
         User user_id2 = userRepository.findById(userId2).orElse(null);
         if (user_id2 != null) {
           params.put(
-              "imageBase64User2",
-              convertByteToBase64(user_id2.getSignature().getImage()));
+            "imageBase64User2",
+            convertByteToBase64(user_id2.getSignature().getImage())
+          );
           params.put("positionAp2", user_id2.getPosition().getPositionName());
           if (training_id.getStatus().size() == 1) {
             params.put(
-                "date_saveUser2",
-                training_id.getStatus().get(0).getApprovalDate());
+              "date_saveUser2",
+              training_id.getStatus().get(0).getApprovalDate()
+            );
           } else if (training_id.getStatus().size() > 1) {
             params.put(
-                "date_saveUser2",
-                training_id.getStatus().get(1).getApprovalDate());
+              "date_saveUser2",
+              training_id.getStatus().get(1).getApprovalDate()
+            );
           }
         }
       }
@@ -806,16 +866,19 @@ public class TrainingService {
         User user_id3 = userRepository.findById(userId3).orElse(null);
         if (user_id3 != null) {
           params.put(
-              "imageBase64User3",
-              convertByteToBase64(user_id3.getSignature().getImage()));
+            "imageBase64User3",
+            convertByteToBase64(user_id3.getSignature().getImage())
+          );
           if (training_id.getStatus().size() > 1) {
             params.put(
-                "date_saveUser3",
-                training_id.getStatus().get(1).getApprovalDate());
+              "date_saveUser3",
+              training_id.getStatus().get(1).getApprovalDate()
+            );
           } else if (training_id.getStatus().size() == 1) {
             params.put(
-                "date_saveUser3",
-                training_id.getStatus().get(0).getApprovalDate());
+              "date_saveUser3",
+              training_id.getStatus().get(0).getApprovalDate()
+            );
           }
         }
       }
@@ -824,24 +887,29 @@ public class TrainingService {
         User user_id4 = userRepository.findById(userId4).orElse(null);
         if (user_id4 != null) {
           params.put(
-              "imageBase64User4",
-              convertByteToBase64(user_id4.getSignature().getImage()));
+            "imageBase64User4",
+            convertByteToBase64(user_id4.getSignature().getImage())
+          );
         }
       }
 
       params.put(
-          "dept_code",
-          training_id.getUser().getDepartment().getDeptCode());
+        "dept_code",
+        training_id.getUser().getDepartment().getDeptCode()
+      );
       params.put(
-          "sector_name",
-          training_id.getUser().getSector().getSectorName());
+        "sector_name",
+        training_id.getUser().getSector().getSectorName()
+      );
       params.put(
-          "dept_name",
-          training_id.getUser().getDepartment().getDeptName());
+        "dept_name",
+        training_id.getUser().getDepartment().getDeptName()
+      );
       params.put("date_save", training_id.getDateSave());
       params.put(
-          "course_name",
-          training_id.getCourses().get(0).getCourseName());
+        "course_name",
+        training_id.getCourses().get(0).getCourseName()
+      );
       params.put("objective", training_id.getCourses().get(0).getObjective());
       params.put("start_date", training_id.getCourses().get(0).getStartDate());
       params.put("end_date", training_id.getCourses().get(0).getEndDate());
@@ -857,8 +925,9 @@ public class TrainingService {
       params.put("firstname", training_id.getUser().getFirstname());
       params.put("lastname", training_id.getUser().getLastname());
       params.put(
-          "position",
-          training_id.getUser().getPosition().getPositionName());
+        "position",
+        training_id.getUser().getPosition().getPositionName()
+      );
 
       params.put("action", training_id.getAction());
       params.put("actionDate", training_id.getActionDate());
@@ -867,14 +936,17 @@ public class TrainingService {
       params.put("app_name", training_id.getApprove1().getFirstname());
       params.put("app_lastname", training_id.getApprove1().getLastname());
       params.put(
-          "app_position",
-          training_id.getApprove1().getPosition().getPositionName());
+        "app_position",
+        training_id.getApprove1().getPosition().getPositionName()
+      );
       params.put(
-          "app_dept_name",
-          training_id.getApprove1().getDepartment().getDeptName());
+        "app_dept_name",
+        training_id.getApprove1().getDepartment().getDeptName()
+      );
       params.put(
-          "app_sector_name",
-          training_id.getApprove1().getSector().getSectorName());
+        "app_sector_name",
+        training_id.getApprove1().getSector().getSectorName()
+      );
       params.put("result1", training_id.getResult().get(0).getResult1());
       params.put("result2", training_id.getResult().get(0).getResult2());
       params.put("result3", training_id.getResult().get(0).getResult3());
@@ -887,31 +959,35 @@ public class TrainingService {
       params.put("plan", training_id.getResult().get(0).getPlan());
       params.put("result", training_id.getResult().get(0).getResult());
       params.put(
-          "date_saveEvaluation",
-          training_id.getResult().get(0).getEvaluationDate());
+        "date_saveEvaluation",
+        training_id.getResult().get(0).getEvaluationDate()
+      );
       dataList.add(params);
 
       // Load the JasperReport from a JRXML file
-      InputStream reportInput = UserService.class.getClassLoader()
+      InputStream reportInput =
+        UserService.class.getClassLoader()
           .getResourceAsStream("report/OF1-report.jrxml");
       JasperReport jasperReport = JasperCompileManager.compileReport(
-          reportInput);
+        reportInput
+      );
 
       // Create a JRDataSource from the user data
       JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
 
       // Fill the report with data
       JasperPrint jasperPrint = JasperFillManager.fillReport(
-          jasperReport,
-          params,
-          dataSource);
+        jasperReport,
+        params,
+        dataSource
+      );
 
-//      File tempPdfFile = File.createTempFile("report", ".pdf");
-//
-//      // Export the report to the temporary PDF file
-//      JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdfFile.getAbsolutePath());
-//
-//      return tempPdfFile;
+      //      File tempPdfFile = File.createTempFile("report", ".pdf");
+      //
+      //      // Export the report to the temporary PDF file
+      //      JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdfFile.getAbsolutePath());
+      //
+      //      return tempPdfFile;
 
       // Export the report to PDF
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -924,95 +1000,212 @@ public class TrainingService {
     return null;
   }
 
+  private static JRDataSource getDataSource(LinkedHashMap<String, Object> ht) {
+    Float sumall = 0.0f;
+    Collection<BeanHistroy> coll = new ArrayList<BeanHistroy>();
+    List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get("data");
 
-  public String printReportHistoryTraining(
-      String startDate,
-      String endDate,
-      Long deptID,
-      Long sectorID
-      //Long trainId
-  ) throws Exception {
+    for (Map<String, Object> userData : data) {
+      List<String> course_names = new ArrayList<>();
+      List<String> course_places = new ArrayList<>();
+      List<Float> course_prices = new ArrayList<>();
+      List<String> course_notes = new ArrayList<>();
+      List<String> dates = new ArrayList<>();
+      Float sums = 0.0f;
 
-    LinkedHashMap<String, Object> ht = HistoryTraining(startDate, endDate, deptID, sectorID);
+      Long id = (Long) userData.get("user_id");
+      String name =
+        userData.get("emp_code") +
+        " " +
+        userData.get("title") +
+        " " +
+        userData.get("firstname") +
+        " " +
+        userData.get("lastname");
+      List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
+        "course"
+      );
+      for (int i = 0; i < courseList.size(); i++) {
+        Map<String, Object> course = courseList.get(i);
 
-      String spec = "report/SV1-training.jrxml";
-      assert spec != null;
-      System.out.println("0");
-      if (spec == null) {
-          throw new Exception("The spec variable is null");
+        course_names.add(course.get("course_name") != null ? course.get("course_name").toString() : "");
+        course_places.add(course.get("place") != null ? course.get("place").toString() : "");
+        course_prices.add(course.get("price") != null ? (float) course.get("price") : 0.0f);
+        String startDate = course.get("start_date") != null ? course.get("start_date").toString() : "";
+        String endDate = course.get("end_date") != null ? course.get("end_date").toString() : "";
+        String dateCombined = startDate + " - " + endDate;
+        dates.add(dateCombined);
+        course_notes.add(course.get("note") != null ? course.get("note").toString() : "");
+
+        sums += (float) course.get("price");
+        sumall += (float) course.get("price");
       }
-      //System.out.println("1");
+      coll.add(
+        new BeanHistroy(
+          course_names,
+          course_places,
+          course_prices,
+          course_notes,
+          dates,
+          sums,
+          sumall,
+          name,
+          id
+        )
+      );
+    }
+    return new JRBeanCollectionDataSource(coll);
+  }
+
+  // public String printReportHistoryTraining(
+  //   String startDate,
+  //   String endDate,
+  //   Long deptID,
+  //   Long sectorID
+  //   //Long trainId
+  // ) throws Exception {
+  //   LinkedHashMap<String, Object> ht = HistoryTraining(
+  //     startDate,
+  //     endDate,
+  //     deptID,
+  //     sectorID
+  //   );
+
+  //   String spec = "report/SV1-training.jrxml";
+  //   assert spec != null;
+  //   System.out.println("0");
+  //   if (spec == null) {
+  //     throw new Exception("The spec variable is null");
+  //   }
+  //   //System.out.println("1");
+  //   try {
+  //     List<Map<String, Object>> dataList = new ArrayList<>();
+  //     Map<String, Object> params = new HashMap<>();
+  //     Optional<Sector> sector = sectorRepository.findById(sectorID);
+  //     Optional<Department> depOptional = departmentRepository.findById(deptID);
+
+  //     params.put("sector_name", sector.get().getSectorName());
+  //     params.put("dept_name", depOptional.get().getDeptName());
+
+  //     params.put("startdate", startDate);
+  //     params.put("enddate", endDate);
+  //     List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get(
+  //       "data"
+  //     );
+  //     for (Map<String, Object> userData : data) {
+  //       System.out.println(userData);
+  //       params.put("user_id", userData.get("user_id"));
+  //       params.put("emp_code", userData.get("emp_code"));
+  //       params.put("title", userData.get("title"));
+  //       params.put("firstname", userData.get("firstname"));
+  //       params.put("lastname", userData.get("lastname"));
+  //       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
+  //         "course"
+  //       );
+  //       // Process courses for the user
+  //       for (int i = 0; i < courseList.size(); i++) {
+  //         Map<String, Object> course = courseList.get(i);
+  //         params.put("course_id", course.get("course_id"));
+  //         params.put("course_name", course.get("course_name"));
+  //         params.put("place", course.get("place"));
+  //         params.put("price", course.get("price"));
+  //         params.put("start_date", course.get("start_date").toString());
+  //         params.put("end_date", course.get("end_date").toString());
+  //         params.put("note", course.get("note"));
+  //       }
+  //     }
+  //     dataList.add(params);
+
+  //     ///////////////////////////////////////////////////////////////////////////
+
+  //     // Load the JRXML file
+  //     InputStream reportInput =
+  //       UserService.class.getClassLoader().getResourceAsStream(spec);
+  //     JasperReport jasperReport = JasperCompileManager.compileReport(
+  //       reportInput
+  //     );
+
+  //     JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+
+  //     JasperPrint jasperPrint = JasperFillManager.fillReport(
+  //       jasperReport,
+  //       params,
+  //       dataSource
+  //     );
+
+  //     byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+  //     //System.out.println("7");
+  //     // Convert the byte array to Base64
+  //     return Base64.encodeBase64String(bytes);
+  //   } catch (Exception e) {
+  //     e.printStackTrace();
+  //   }
+  //   return null;
+  // }
+  public void test(
+    String startDate,
+    String endDate,
+    Long deptID,
+    Long sectorID
+  ) {
+    LinkedHashMap<String, Object> ht = HistoryTraining(
+      startDate,
+      endDate,
+      deptID,
+      sectorID
+    );
+    getDataSource(ht);
+  }
+
+  public String testBuildPdf(
+    String startDate,
+    String endDate,
+    Long deptID,
+    Long sectorID
+  ) {
     try {
-      List<Map<String, Object>> dataList = new ArrayList<>();
-      Map<String, Object> params = new HashMap<>();
+      String spec = "report/SV1-training.jrxml";
+      Map<String, Object> params = new HashMap<String, Object>();
       Optional<Sector> sector = sectorRepository.findById(sectorID);
       Optional<Department> depOptional = departmentRepository.findById(deptID);
-      
-      
+      LinkedHashMap<String, Object> ht = HistoryTraining(
+        startDate,
+        endDate,
+        deptID,
+        sectorID
+      );
 
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
 
       params.put("startdate", startDate);
       params.put("enddate", endDate);
-      List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get("data");
-      for (Map<String, Object> userData : data) {
-        System.out.println(userData);
-        params.put("user_id", userData.get("user_id"));
-        params.put("emp_code", userData.get("emp_code"));
-        params.put("title", userData.get("title"));
-        params.put("firstname", userData.get("firstname"));
-        params.put("lastname", userData.get("lastname"));
-        List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get("course");
-        // Process courses for the user
-        for (int i = 0; i < courseList.size(); i++) {
-          Map<String, Object> course = courseList.get(i);
-          params.put("course_id", course.get("course_id"));
-          params.put("course_name", course.get("course_name"));
-          params.put("place" , course.get("place"));
-          params.put("price", course.get("price"));
-          params.put("start_date", course.get("start_date").toString());
-          params.put("end_date", course.get("end_date").toString());
-          params.put("note",course.get("note"));
-        }
 
-      }
-      dataList.add(params);
-
-///////////////////////////////////////////////////////////////////////////
-
-        // Load the JRXML file
-        InputStream reportInput = UserService.class.getClassLoader()
-                .getResourceAsStream(spec);
-        JasperReport jasperReport = JasperCompileManager.compileReport(
-                reportInput);
-
-      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
-
+      InputStream reportInput =
+        UserService.class.getClassLoader().getResourceAsStream(spec);
+      JasperReport jasperReport = JasperCompileManager.compileReport(
+        reportInput
+      );
       JasperPrint jasperPrint = JasperFillManager.fillReport(
-          jasperReport,
-              params,
-          dataSource);
-
+        jasperReport,
+        params,
+        getDataSource(ht)
+      );
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-        //System.out.println("7");
-      // Convert the byte array to Base64
       return Base64.encodeBase64String(bytes);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return null;
   }
-  
 
   public LinkedHashMap<String, Object> HistoryTraining(
-      String startDate,
-      String endDate,
-      Long deptID,
-      Long sectorID) {
+    String startDate,
+    String endDate,
+    Long deptID,
+    Long sectorID
+  ) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    System.out.println(startDate);
-    System.out.println(endDate);
     try {
       Date parsedStartDate = dateFormat.parse(startDate);
       Date parsedEndDate = dateFormat.parse(endDate);
@@ -1020,28 +1213,55 @@ public class TrainingService {
       CriteriaQuery<Tuple> query = cb.createTupleQuery();
       Root<Training> trainingRoot = query.from(Training.class);
       query.multiselect(
-          trainingRoot.get("user").get("id").alias("user_id"),
-          trainingRoot.get("user").get("empCode").alias("emp_code"),
-          trainingRoot.get("user").get("title").alias("title"),
-          trainingRoot.get("user").get("firstname").alias("firstname"),
-          trainingRoot.get("user").get("lastname").alias("lastname"),
-          trainingRoot.join("courses").get("id").alias("course_id"),
-          trainingRoot.join("courses").get("courseName").alias("course_name"),
-          trainingRoot.join("courses").get("place").alias("place"),
-          trainingRoot.join("courses").get("price").alias("price"),
-          trainingRoot.join("courses").get("startDate").alias("start_date"),
-          trainingRoot.join("courses").get("endDate").alias("end_date"),
-          trainingRoot.join("courses").get("note").alias("note"));
-          trainingRoot.join("courses").get("active").alias("active");
-          trainingRoot.join("result").get("result").alias("result");
-      Predicate startDatePredicate = cb.greaterThanOrEqualTo(trainingRoot.join("courses").get("startDate"), parsedStartDate);
-      Predicate endDatePredicate = cb.lessThanOrEqualTo(trainingRoot.join("courses").get("endDate"), parsedEndDate);
-      Predicate deptPredicate = cb.equal(trainingRoot.get("user").get("department").get("id"), deptID);
-      Predicate sectorPredicate = cb.equal(trainingRoot.get("user").get("sector").get("id"), sectorID);
-      Predicate cancelPredicate = cb.equal(trainingRoot.join("courses").get("active"),"ดำเนินการอยู่");
-      Predicate passPredicate = cb.equal(trainingRoot.join("result").get("result"),"pass");
+        trainingRoot.get("user").get("id").alias("user_id"),
+        trainingRoot.get("user").get("empCode").alias("emp_code"),
+        trainingRoot.get("user").get("title").alias("title"),
+        trainingRoot.get("user").get("firstname").alias("firstname"),
+        trainingRoot.get("user").get("lastname").alias("lastname"),
+        trainingRoot.join("courses").get("id").alias("course_id"),
+        trainingRoot.join("courses").get("courseName").alias("course_name"),
+        trainingRoot.join("courses").get("place").alias("place"),
+        trainingRoot.join("courses").get("price").alias("price"),
+        trainingRoot.join("courses").get("startDate").alias("start_date"),
+        trainingRoot.join("courses").get("endDate").alias("end_date"),
+        trainingRoot.join("courses").get("note").alias("note")
+      );
+      trainingRoot.join("courses").get("active").alias("active");
+      trainingRoot.join("result").get("result").alias("result");
+      Predicate startDatePredicate = cb.greaterThanOrEqualTo(
+        trainingRoot.join("courses").get("startDate"),
+        parsedStartDate
+      );
+      Predicate endDatePredicate = cb.lessThanOrEqualTo(
+        trainingRoot.join("courses").get("endDate"),
+        parsedEndDate
+      );
+      Predicate deptPredicate = cb.equal(
+        trainingRoot.get("user").get("department").get("id"),
+        deptID
+      );
+      Predicate sectorPredicate = cb.equal(
+        trainingRoot.get("user").get("sector").get("id"),
+        sectorID
+      );
+      Predicate cancelPredicate = cb.equal(
+        trainingRoot.join("courses").get("active"),
+        "ดำเนินการอยู่"
+      );
+      Predicate passPredicate = cb.equal(
+        trainingRoot.join("result").get("result"),
+        "pass"
+      );
       query.where(
-          cb.and(startDatePredicate, endDatePredicate, deptPredicate, sectorPredicate,cancelPredicate,passPredicate));
+        cb.and(
+          startDatePredicate,
+          endDatePredicate,
+          deptPredicate,
+          sectorPredicate,
+          cancelPredicate,
+          passPredicate
+        )
+      );
       query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
 
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
@@ -1052,7 +1272,10 @@ public class TrainingService {
       float totalAll = 0;
 
       for (Tuple row : resultListBudgetTraining) {
-        if (currentUser == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
+        if (
+          currentUser == null ||
+          !currentUser.get("emp_code").equals(row.get("emp_code"))
+        ) {
           if (currentUser != null) {
             currentUser.put("total", totalAll);
           }
@@ -1075,7 +1298,9 @@ public class TrainingService {
         course.put("start_date", row.get("start_date"));
         course.put("end_date", row.get("end_date"));
         course.put("note", row.get("note"));
-        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(course);
+        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
+            course
+          );
 
         totalAll += (Float) row.get("price");
       }
@@ -1084,7 +1309,10 @@ public class TrainingService {
         currentUser.put("total", totalAll);
       }
 
-      double totalAllValue = users.stream().mapToDouble(user -> (Float) user.get("total")).sum();
+      double totalAllValue = users
+        .stream()
+        .mapToDouble(user -> (Float) user.get("total"))
+        .sum();
       result.put("total_All", totalAllValue);
       result.put("data", users);
 
@@ -1099,41 +1327,47 @@ public class TrainingService {
    * @เช็คNullของTraining1
    */
   public boolean isTrainingNull(CreateTrainingRequest request) {
-    return (request == null ||
-        request.getDateSave() == null ||
-        request.getDateSave().toString().isEmpty());
+    return (
+      request == null ||
+      request.getDateSave() == null ||
+      request.getDateSave().toString().isEmpty()
+    );
   }
 
   /**
    * @เช็คNullของTraining2
    */
   public boolean isEditTrainingNull1(EditTrainingSection1Request request) {
-    return (request == null ||
-        request.getDateSave() == null ||
-        request.getDateSave().toString().isEmpty());
+    return (
+      request == null ||
+      request.getDateSave() == null ||
+      request.getDateSave().toString().isEmpty()
+    );
   }
 
   /**
    * @เช็คNullของTraining3
    */
   public boolean isEditTrainingNull2(EditTrainingSection2Request request) {
-    return (request == null ||
-        request.getResult1() == null ||
-        request.getResult1().isEmpty() ||
-        request.getResult2() == null ||
-        request.getResult2().isEmpty() ||
-        request.getResult3() == null ||
-        request.getResult3().isEmpty() ||
-        request.getResult4() == null ||
-        request.getResult4().isEmpty() ||
-        request.getResult5() == null ||
-        request.getResult5().isEmpty() ||
-        request.getResult6() == null ||
-        request.getResult6().isEmpty() ||
-        request.getResult7() == null ||
-        request.getResult7().isEmpty() ||
-        request.getResult() == null ||
-        request.getResult().isEmpty());
+    return (
+      request == null ||
+      request.getResult1() == null ||
+      request.getResult1().isEmpty() ||
+      request.getResult2() == null ||
+      request.getResult2().isEmpty() ||
+      request.getResult3() == null ||
+      request.getResult3().isEmpty() ||
+      request.getResult4() == null ||
+      request.getResult4().isEmpty() ||
+      request.getResult5() == null ||
+      request.getResult5().isEmpty() ||
+      request.getResult6() == null ||
+      request.getResult6().isEmpty() ||
+      request.getResult7() == null ||
+      request.getResult7().isEmpty() ||
+      request.getResult() == null ||
+      request.getResult().isEmpty()
+    );
   }
 
   /**
@@ -1141,31 +1375,37 @@ public class TrainingService {
    */
 
   private void changeApprover(
-      EditTrainingSection1Request editTraining,
-      long trainingId) {
-    System.out.println(trainingId);
+    EditTrainingSection1Request editTraining,
+    long trainingId
+  ) {
     String jpql = "DELETE FROM Status s WHERE training_id = :training_id";
     entityManager
-        .createQuery(jpql)
-        .setParameter("training_id", trainingId)
-        .executeUpdate();
+      .createQuery(jpql)
+      .setParameter("training_id", trainingId)
+      .executeUpdate();
 
     User approve1 = userRepository
-        .findById(editTraining.getApprove1_id())
-        .orElseThrow(() -> new RuntimeException(
-            "Approve1Id not found: " + editTraining.getApprove1_id()));
+      .findById(editTraining.getApprove1_id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + editTraining.getApprove1_id()
+        )
+      );
 
     User approve3 = userRepository
-        .findById(Long.valueOf(3))
-        .orElseThrow(() -> new RuntimeException(
-            "Approve1Id not found: " + editTraining.getApprove1_id()));
+      .findById(Long.valueOf(3))
+      .orElseThrow(() ->
+        new RuntimeException(
+          "Approve1Id not found: " + editTraining.getApprove1_id()
+        )
+      );
 
     Role vicePresidentRole = approve1
-        .getRoles()
-        .stream()
-        .filter(role -> role.getRole().equals(Roles.VicePresident))
-        .findFirst()
-        .orElse(null);
+      .getRoles()
+      .stream()
+      .filter(role -> role.getRole().equals(Roles.VicePresident))
+      .findFirst()
+      .orElse(null);
 
     Training training_id = findByTrainingIdEdit(trainingId);
     if (training_id.getStatus() == null) {
@@ -1173,32 +1413,32 @@ public class TrainingService {
     }
     if (vicePresidentRole != null) {
       Status status1 = Status
-          .builder()
-          .training(training_id)
-          .status(null)
-          .approveId(approve1)
-          .active(1)
-          .build();
+        .builder()
+        .training(training_id)
+        .status(null)
+        .approveId(approve1)
+        .active(1)
+        .build();
 
       statusRepository.save(status1);
 
       training_id.getStatus().add(status1);
     } else {
       Status status1 = Status
-          .builder()
-          .status(null)
-          .training(training_id)
-          .approveId(approve1)
-          .active(1)
-          .build();
+        .builder()
+        .status(null)
+        .training(training_id)
+        .approveId(approve1)
+        .active(1)
+        .build();
 
       Status status2 = Status
-          .builder()
-          .status(null)
-          .training(training_id)
-          .approveId(approve3)
-          .active(0)
-          .build();
+        .builder()
+        .status(null)
+        .training(training_id)
+        .approveId(approve3)
+        .active(0)
+        .build();
 
       statusRepository.save(status1);
       statusRepository.save(status2);
@@ -1215,8 +1455,8 @@ public class TrainingService {
     query.where(builder.equal(root.get("id"), id));
 
     List<Training> trainingList = entityManager
-        .createQuery(query)
-        .getResultList();
+      .createQuery(query)
+      .getResultList();
     return trainingList.get(0);
   }
 }
