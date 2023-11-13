@@ -34,7 +34,7 @@ public class Sector {
   @OneToOne(mappedBy = "sector")
   private User user;
 
-  @OneToOne(optional = false)
+  @ManyToOne
   @JoinColumn(name = "company_id")
   @JsonIgnore
   private Company company;

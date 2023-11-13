@@ -41,7 +41,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
   }
 
-private void insertDataIntoCourseTable() {
+  private void insertDataIntoCourseTable() {
     if (isTableEmpty("public.course")) {
       jdbcTemplate.execute(
         "INSERT INTO public.course (course_name, end_date, institute, note, place, price, start_date, time, objective,active,type) VALUES " +
@@ -71,7 +71,18 @@ private void insertDataIntoCourseTable() {
   private void insertDataIntoSectorTable() {
     if (isTableEmpty("public.sector")) {
       jdbcTemplate.execute(
-        "INSERT INTO public.sector (id, sector_code, sector_name,company_id) VALUES(1, 'SD', 'SD',1),(2, 'SD', 'SD',2);"
+        "INSERT INTO public.sector (id, sector_code, sector_name,company_id)" +
+        "VALUES(1, 'SD', 'SD',1)," +
+        "(2, 'SD', 'SD',2)," +
+        "(3, 'OSS', 'OSS',1)," +
+        "(4, 'PS', 'PS',1)," +
+        "(5, 'TOP', 'TOP',1)," +
+        "(6, 'MS', 'MS',1)," +
+        "(7, 'PBS', 'PBS',1)," +
+        "(8, 'FSI', 'FSI',1)," +
+        "(9, 'QMR', 'QMR',1)," +
+        "(10, 'AF', 'AF',1)," +
+        "(11, 'HQ', 'HQ',1);"
       );
     }
   }
@@ -79,9 +90,25 @@ private void insertDataIntoCourseTable() {
   private void insertDataIntoDepartmentTable() {
     if (isTableEmpty("public.department")) {
       jdbcTemplate.execute(
-        "INSERT INTO public.department (id, dept_name, dept_code, sector_id) VALUES(1, 'SD1', '4011', 1),(2, 'SD2', '4012', 1),(3, 'SQA', '4013', 1),(4, 'SD1', '5000', 2);"
+        "INSERT INTO public.department (id, dept_name, dept_code, sector_id) VALUES " +
+        "(1, 'SD1', '4011', 1), " +
+        "(2, 'SD2', '4012', 1), " +
+        "(3, 'SQA', '4013', 1), " +
+        "(4, 'SD1', '5000', 2), " +
+        "(5, 'FSI', '1011', 8), " +
+        "(6, 'PBS', '2011', 7), " +
+        "(7, 'MS', '3011', 6), " +
+        "(8, 'SE', '5011', 5), " +
+        "(9, 'CS', '5012', 5), " +
+        "(10, 'CE', '5013', 5), " +
+        "(11, 'NS', '5014', 5), " +
+        "(12, 'SM', '5015', 5), " +
+        "(13, 'OSS', '6011', 3), " +
+        "(14, 'PM', '7011', 4), " +
+        "(15, 'DT', '7012', 4), " +
+        "(16, 'HQ', '8011', 11), " +
+        "(17, 'AF', '9011', 10)"
       );
-      
     }
   }
 
@@ -135,23 +162,82 @@ private void insertDataIntoCourseTable() {
     String hashpassword = passwordEncoder.encode("1234");
 
     String sql =
-      "INSERT INTO public.users (email,emp_code,firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status,title) VALUES" +
-      "('admin@pccth.com',000001,'Admin', 'Admin','" + hashpassword + "', '+1111111111',1,1,8,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('approver@pccth.com',000002,'ประวิทย์', 'เถาว์พันธ์','" + hashpassword + "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('vicepresident@pccth.com',000003,'VicePresident', 'VicePresident','" + hashpassword + "','+3333333333',1, 1, 1, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('personnel@pccth.com',000004,'Personnel', 'Personnel','" + hashpassword + "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่','นาย')," +
-      "('2@pccth.com',000005,'สุริยา', ' จันทร', '" + hashpassword + "', '+6666666666',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('3@pccth.com',000006,'ณัทกฤช', 'เจริญธรรมทัด', '" + hashpassword + "', '+7777777777',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('4@pccth.com',000007,'วาณี', 'ธรรมาภิมุขกุล', '" + hashpassword + "', '+8888888888',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('5@pccth.com',000008,'พันชริทร์', 'โสภะ', '" + hashpassword + "', '+9999999999',1,1,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('6@pccth.com',000009,'เสาวภา', '6', '" + hashpassword + "', '+0000000000',1,2,4,1, 'เป็นพนักงานอยู่','นาย')," +
-      "('7@pccth.com',000010,'ณัฐวรรณ', '7', '" + hashpassword + "', '1234567890',1,3,4,1, 'เป็นพนักงานอยู่','นาย'),"+
-      "('khunanonk@pccth.com','123456','คุณานนท์','ครองขวัญ','" + hashpassword + "','0981234567',1,1,13,1, 'เป็นพนักงานอยู่','นาย')";
+      "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status, title) VALUES " +
+      "('admin@pccth.com', 000001, 'Admin', 'Admin', '" +
+      hashpassword +
+      "', '+1111111111', 1, 1, 8, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('approver@pccth.com', 000002, 'ประวิทย์', 'เถาว์พันธ์', '" +
+      hashpassword +
+      "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('vicepresident@pccth.com', 000003, 'VicePresident', 'VicePresident', '" +
+      hashpassword +
+      "','+3333333333', 1, 1, 1, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('personnel@pccth.com', 000004, 'Personnel', 'Personnel', '" +
+      hashpassword +
+      "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('2@pccth.com', 000005, 'สุริยา', ' จันทร', '" +
+      hashpassword +
+      "', '+6666666666', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('3@pccth.com', 000006, 'ณัทกฤช', 'เจริญธรรมทัด', '" +
+      hashpassword +
+      "', '+7777777777', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('4@pccth.com', 000007, 'วาณี', 'ธรรมาภิมุขกุล', '" +
+      hashpassword +
+      "', '+8888888888', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('5@pccth.com', 000008, 'พันชริทร์', 'โสภะ', '" +
+      hashpassword +
+      "', '+9999999999', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('6@pccth.com', 000009, 'เสาวภา', '6', '" +
+      hashpassword +
+      "', '+0000000000', 1, 2, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('7@pccth.com', 000010, 'ณัฐวรรณ', '7', '" +
+      hashpassword +
+      "', '1234567890', 1, 3, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('khunanonk@pccth.com', '123456', 'คุณานนท์', 'ครองขวัญ', '" +
+      hashpassword +
+      "','0981234567', 1, 1, 13, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminFSI@pccth.com', 10006, 'AdminFSI', 'AdminFSI', '" +
+      hashpassword +
+      "', '+1111111111', 1, 5, 8, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminPBS@pccth.com', 10005, 'AdminPBS', 'AdminPBS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 6, 8, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminMS@pccth.com', 10004, 'AdminMS', 'AdminMS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 1, 8, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminOSS@pccth.com', 10003, 'AdminOSS', 'AdminOSS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 13, 8, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminHQ@pccth.com', 10001, 'AdminHQ', 'AdminHQ', '" +
+      hashpassword +
+      "', '+1111111111', 1, 16, 8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('adminAF@pccth.com', 10000, 'AdminAF', 'AdminAF', '" +
+      hashpassword +
+      "', '+1111111111', 1, 17, 8, 10, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userFSI@pccth.com', 20006, 'userFSI', 'userFSI', '" +
+      hashpassword +
+      "', '+1111111111', 1, 5, 4, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userPBS@pccth.com', 20005, 'userPBS', 'userPBS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 6, 4, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userMS@pccth.com', 20004, 'userMS', 'userMS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 1, 4, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userOSS@pccth.com', 20003, 'userOSS', 'userOSS', '" +
+      hashpassword +
+      "', '+1111111111', 1, 13, 4, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userHQ@pccth.com', 20001, 'userHQ', 'userHQ', '" +
+      hashpassword +
+      "', '+1111111111', 1, 16, 4, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAF@pccth.com', 20000, 'userAF', 'userAF', '" +
+      hashpassword +
+      "', '+1111111111', 1, 17, 4, 10, 'เป็นพนักงานอยู่', 'นาย')";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," + 
+            "(18,5),(19,5),(20,5),(21,5),(22,5)"
       );
     }
   }
