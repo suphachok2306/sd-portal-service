@@ -1114,7 +1114,7 @@ public class TrainingService {
     Long sectorID
   ) {
     try {
-      String spec = "report/SV1-training.jrxml";
+      String spec = "report/histroy-training.jrxml";
       Map<String, Object> params = new HashMap<String, Object>();
       Optional<Sector> sector = sectorRepository.findById(sectorID);
       Optional<Department> depOptional = departmentRepository.findById(deptID);
@@ -1380,6 +1380,13 @@ public class TrainingService {
         trainingRootOutput.get("user").get("firstname").alias("firstname"),
         trainingRootOutput.get("user").get("lastname").alias("lastname"),
         trainingRootOutput.join("courses").get("id").alias("course_id"),
+        trainingRootOutput.join("result").get("result1").alias("result1"),
+        trainingRootOutput.join("result").get("result2").alias("result2"),
+        trainingRootOutput.join("result").get("result3").alias("result3"),
+        trainingRootOutput.join("result").get("result4").alias("result4"),
+        trainingRootOutput.join("result").get("result5").alias("result5"),
+        trainingRootOutput.join("result").get("result6").alias("result6"),
+        trainingRootOutput.join("result").get("result7").alias("result7"),
         trainingRootOutput
           .join("courses")
           .get("courseName")
@@ -1406,30 +1413,43 @@ public class TrainingService {
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> courses = new ArrayList<>();
-      LinkedHashMap<String, Object> currentcourse = null;
 
       for (Tuple row : resultListBudgetTrainingOutput) {
-        if (
-          currentcourse == null ||
-          !currentcourse.get("course_id").equals(row.get("course_id"))
-        ) {
+        LinkedHashMap<String, Object> currentcourse = courses
+          .stream()
+          .filter(course ->
+            course.get("course_name").equals(row.get("course_name"))
+          )
+          .findFirst()
+          .orElse(null);
+
+        if (currentcourse == null) {
           currentcourse = new LinkedHashMap<>();
           currentcourse.put("course_name", row.get("course_name"));
           currentcourse.put("user", new ArrayList<>());
           courses.add(currentcourse);
         }
+
         LinkedHashMap<String, Object> user = new LinkedHashMap<>();
         user.put("title", row.get("title"));
         user.put("firstname", row.get("firstname"));
         user.put("lastname", row.get("lastname"));
+        user.put("result1",row.get("result1"));
+        user.put("result2",row.get("result2"));
+        user.put("result3",row.get("result3"));
+        user.put("result4",row.get("result4"));
+        user.put("result5",row.get("result5"));
+        user.put("result6",row.get("result6"));
+        user.put("result7",row.get("result7"));
+
         ((List<LinkedHashMap<String, Object>>) currentcourse.get("user")).add(
             user
           );
       }
 
       result.put("data", courses);
-
       return result;
+
     } catch (ParseException e) {
       e.printStackTrace();
     }
