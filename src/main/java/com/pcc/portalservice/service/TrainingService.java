@@ -7,16 +7,6 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -24,6 +14,16 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -1085,7 +1085,7 @@ public class TrainingService {
         sumall += (float) course.get("price");
       }
       course_names.add("");
-      course_places.add("รวม");
+      course_places.add("\t\t\t รวม");
       course_prices.add(sums);
       dates.add("");
       course_priceProjects.add("");
@@ -1203,9 +1203,9 @@ public class TrainingService {
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
-      Predicate passPredicate = cb.equal(
+      Predicate passPredicate = cb.notEqual(
         statusJoin.get("status"),
-        StatusApprove.อนุมัติ
+        StatusApprove.ยกเลิก
       );
       query.where(
         cb.and(
