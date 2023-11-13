@@ -1216,15 +1216,10 @@ public class TrainingService {
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
-<<<<<<< HEAD
-      Predicate passPredicate = cb.notEqual(
-        statusJoin.get("status"),
-        StatusApprove.ยกเลิก
-=======
+
       Predicate passPredicate = cb.or(
         cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
         cb.isNull(statusJoin.get("status"))
->>>>>>> 4bcfa57866641c4dbed36f55c4f4ad0dde38b0de
       );
 
       query.where(
