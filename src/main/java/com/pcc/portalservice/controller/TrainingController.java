@@ -421,12 +421,13 @@ public class TrainingController {
     );
   }
 
+
   @GetMapping("/generic9")
   public LinkedHashMap<String, Object> generic9(
     @RequestParam String startDate,
     @RequestParam String endDate
   ) {
-    return trainingService.generic9(
+    return trainingService.HistoryTraining(
       startDate,
       endDate
     );

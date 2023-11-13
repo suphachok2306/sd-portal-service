@@ -139,21 +139,21 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('SR.SYSTEM ANALYST I', 2),\r\n" + //
         "('SR.PROGRAMMER ANALYST I', 2),\r\n" + //
         "('PROGRAMMER II', 2),\r\n" + //
-        "('PROGRAMMER III', 2),\r\n" + //
-        "('SR.PROGRAMMER', 2),\r\n" + //
-        "('SR. SYSTEM ANALYST I', 2),\r\n" + //
-        "('PROGRAMMER I', 2),\r\n" + //
-        "('SR.SQA ANALYST II', 3),\r\n" + //
-        "('SR.MANAGER', 3),\r\n" + //
-        "('SR.TESTER', 3),\r\n" + //
-        "('TESTER III', 3),\r\n" + //
-        "('SR.SQA ANALYST I', 3),\r\n" + //
-        "('TESTER II', 3),\r\n" + //
-        "('TESTER I', 3),\r\n" + //
-        "('PROGRAMMER II',4),\r\n" + //
-        "('SR.SYSTEM ANALYST I',4),\r\n" + //
-        "('SR.SYSTEM ANALYST II',4),\r\n" + //
-        "('PROGRAMMER III',4);"
+        "('PROGRAMMER III', 3),\r\n" + //
+        "('SR.PROGRAMMER', 4),\r\n" + //
+        "('SR. SYSTEM ANALYST I', 5),\r\n" + //
+        "('PROGRAMMER I', 6),\r\n" + //
+        "('SR.SQA ANALYST II', 7),\r\n" + //
+        "('SR.MANAGER', 8),\r\n" + //
+        "('SR.TESTER', 9),\r\n" + //
+        "('TESTER III', 10),\r\n" + //
+        "('SR.SQA ANALYST I', 11),\r\n" + //
+        "('TESTER II', 12),\r\n" + //
+        "('TESTER I', 13),\r\n" + //
+        "('PROGRAMMER II',14),\r\n" + //
+        "('SR.SYSTEM ANALYST I',15),\r\n" + //
+        "('SR.SYSTEM ANALYST II',16),\r\n" + //
+        "('PROGRAMMER III',17);"
       );
     }
   }
@@ -260,7 +260,7 @@ public class DatabaseInitializer implements CommandLineRunner {
       "    (10.0,10,20,'2023', 1,2),\n" +
       "    (10.0,10,20,'2023', 1,2),\n" +
       "    (1000.0,500,1500,'2023',1,2),\n" +
-      "    (15000.0,1500,3000, '2023', 1,1);";
+      "    (1500.0,1500,3000, '2023', 1,1);";
 
     if (isTableEmpty("public.budget")) {
       jdbcTemplate.execute(sql);

@@ -1318,7 +1318,145 @@ public class TrainingService {
     return null;
   }
 
-  public LinkedHashMap<String, Object> generic9(
+  // public LinkedHashMap<String, Object> generic9(
+  //   String startDate,
+  //   String endDate
+  // ) {
+  //   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+  //   try {
+  //     Date parsedStartDate = dateFormat.parse(startDate);
+  //     Date parsedEndDate = dateFormat.parse(endDate);
+
+  //     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+  //     CriteriaQuery<Tuple> query = cb.createTupleQuery();
+  //     Root<Training> trainingRoot = query.from(Training.class);
+
+  //     Join<Training, Course> courseJoin = trainingRoot.join("courses");
+  //     Join<Training, Status> statusJoin = trainingRoot.join("status");
+
+  //     query
+  //       .multiselect(
+  //         trainingRoot.get("id").alias("train_id"),
+  //         courseJoin.get("active").alias("active"),
+  //         statusJoin.get("status").alias("status")
+  //       )
+  //       .distinct(true);
+
+  //     Predicate startDatePredicate = cb.greaterThanOrEqualTo(
+  //       courseJoin.get("startDate"),
+  //       parsedStartDate
+  //     );
+  //     Predicate endDatePredicate = cb.lessThanOrEqualTo(
+  //       courseJoin.get("endDate"),
+  //       parsedEndDate
+  //     );
+  //     Predicate cancelPredicate = cb.equal(
+  //       courseJoin.get("active"),
+  //       "ดำเนินการอยู่"
+  //     );
+  //     Predicate passPredicate = cb.or(
+  //       cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
+  //       cb.isNull(statusJoin.get("status"))
+  //     );
+
+  //     query.where(
+  //       cb.and(
+  //         startDatePredicate,
+  //         endDatePredicate,
+  //         cancelPredicate,
+  //         passPredicate
+  //       )
+  //     );
+  //     TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
+  //     List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+
+  //     CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
+  //     CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
+  //     Root<Training> trainingRootOutput = queryOutput.from(Training.class);
+  //     queryOutput.multiselect(
+  //       trainingRootOutput.get("user").get("id").alias("user_id"),
+  //       trainingRootOutput.get("user").get("empCode").alias("emp_code"),
+  //       trainingRootOutput.get("user").get("title").alias("title"),
+  //       trainingRootOutput.get("user").get("firstname").alias("firstname"),
+  //       trainingRootOutput.get("user").get("lastname").alias("lastname"),
+  //       trainingRootOutput.join("courses").get("id").alias("course_id"),
+  //       trainingRootOutput.join("result").get("result1").alias("result1"),
+  //       trainingRootOutput.join("result").get("result2").alias("result2"),
+  //       trainingRootOutput.join("result").get("result3").alias("result3"),
+  //       trainingRootOutput.join("result").get("result4").alias("result4"),
+  //       trainingRootOutput.join("result").get("result5").alias("result5"),
+  //       trainingRootOutput.join("result").get("result6").alias("result6"),
+  //       trainingRootOutput.join("result").get("result7").alias("result7"),
+  //       trainingRootOutput
+  //         .join("courses")
+  //         .get("courseName")
+  //         .alias("course_name")
+  //     );
+
+  //     queryOutput.where(
+  //       trainingRootOutput
+  //         .get("id")
+  //         .in(
+  //           resultListBudgetTraining
+  //             .stream()
+  //             .map(tuple -> tuple.get("train_id", Long.class))
+  //             .collect(Collectors.toList())
+  //         )
+  //     );
+
+  //     queryOutput.orderBy(cbOutput.asc(courseJoin.get("id")));
+
+  //     TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
+  //       queryOutput
+  //     );
+  //     List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
+
+  //     LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+  //     List<LinkedHashMap<String, Object>> courses = new ArrayList<>();
+
+  //     for (Tuple row : resultListBudgetTrainingOutput) {
+  //       LinkedHashMap<String, Object> currentcourse = courses
+  //         .stream()
+  //         .filter(course ->
+  //           course.get("course_name").equals(row.get("course_name"))
+  //         )
+  //         .findFirst()
+  //         .orElse(null);
+
+  //       if (currentcourse == null) {
+  //         currentcourse = new LinkedHashMap<>();
+  //         currentcourse.put("course_name", row.get("course_name"));
+  //         currentcourse.put("user", new ArrayList<>());
+  //         courses.add(currentcourse);
+  //       }
+
+  //       LinkedHashMap<String, Object> user = new LinkedHashMap<>();
+  //       user.put("title", row.get("title"));
+  //       user.put("firstname", row.get("firstname"));
+  //       user.put("lastname", row.get("lastname"));
+  //       user.put("result1",row.get("result1"));
+  //       user.put("result2",row.get("result2"));
+  //       user.put("result3",row.get("result3"));
+  //       user.put("result4",row.get("result4"));
+  //       user.put("result5",row.get("result5"));
+  //       user.put("result6",row.get("result6"));
+  //       user.put("result7",row.get("result7"));
+
+  //       ((List<LinkedHashMap<String, Object>>) currentcourse.get("user")).add(
+  //           user
+  //         );
+  //     }
+
+  //     result.put("data", courses);
+  //     return result;
+
+  //   } catch (ParseException e) {
+  //     e.printStackTrace();
+  //   }
+  //   return null;
+  // }
+
+  public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
     String endDate
   ) {
@@ -1354,6 +1492,7 @@ public class TrainingService {
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
+
       Predicate passPredicate = cb.or(
         cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
         cb.isNull(statusJoin.get("status"))
@@ -1374,7 +1513,7 @@ public class TrainingService {
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
       Root<Training> trainingRootOutput = queryOutput.from(Training.class);
       queryOutput.multiselect(
-        trainingRootOutput.get("user").get("id").alias("user_id"),
+       trainingRootOutput.get("user").get("id").alias("user_id"),
         trainingRootOutput.get("user").get("empCode").alias("emp_code"),
         trainingRootOutput.get("user").get("title").alias("title"),
         trainingRootOutput.get("user").get("firstname").alias("firstname"),
@@ -1392,7 +1531,6 @@ public class TrainingService {
           .get("courseName")
           .alias("course_name")
       );
-
       queryOutput.where(
         trainingRootOutput
           .get("id")
@@ -1403,8 +1541,7 @@ public class TrainingService {
               .collect(Collectors.toList())
           )
       );
-
-      queryOutput.orderBy(cbOutput.asc(courseJoin.get("id")));
+      queryOutput.orderBy(cb.asc(trainingRootOutput.get("user").get("id")));
 
       TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
         queryOutput
@@ -1412,44 +1549,40 @@ public class TrainingService {
       List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-      List<LinkedHashMap<String, Object>> courses = new ArrayList<>();
+      List<LinkedHashMap<String, Object>> users = new ArrayList<>();
+      LinkedHashMap<String, Object> currentUser = null;
 
       for (Tuple row : resultListBudgetTrainingOutput) {
-        LinkedHashMap<String, Object> currentcourse = courses
-          .stream()
-          .filter(course ->
-            course.get("course_name").equals(row.get("course_name"))
-          )
-          .findFirst()
-          .orElse(null);
-
-        if (currentcourse == null) {
-          currentcourse = new LinkedHashMap<>();
-          currentcourse.put("course_name", row.get("course_name"));
-          currentcourse.put("user", new ArrayList<>());
-          courses.add(currentcourse);
+        if (
+          currentUser == null ||
+          !currentUser.get("emp_code").equals(row.get("emp_code"))
+        ) {
+          currentUser = new LinkedHashMap<>();
+          currentUser.put("user_id", row.get("user_id"));
+          currentUser.put("emp_code", row.get("emp_code"));
+          currentUser.put("title", row.get("title"));
+          currentUser.put("firstname", row.get("firstname"));
+          currentUser.put("lastname", row.get("lastname"));
+          currentUser.put("course", new ArrayList<>());
+          users.add(currentUser);
         }
 
-        LinkedHashMap<String, Object> user = new LinkedHashMap<>();
-        user.put("title", row.get("title"));
-        user.put("firstname", row.get("firstname"));
-        user.put("lastname", row.get("lastname"));
-        user.put("result1",row.get("result1"));
-        user.put("result2",row.get("result2"));
-        user.put("result3",row.get("result3"));
-        user.put("result4",row.get("result4"));
-        user.put("result5",row.get("result5"));
-        user.put("result6",row.get("result6"));
-        user.put("result7",row.get("result7"));
-
-        ((List<LinkedHashMap<String, Object>>) currentcourse.get("user")).add(
-            user
+        LinkedHashMap<String, Object> course = new LinkedHashMap<>();
+        course.put("course_name", row.get("course_name"));
+        course.put("result1",row.get("result1"));
+        course.put("result2",row.get("result2"));
+        course.put("result3",row.get("result3"));
+        course.put("result4",row.get("result4"));
+        course.put("result5",row.get("result5"));
+        course.put("result6",row.get("result6"));
+        course.put("result7",row.get("result7"));
+        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
+            course
           );
       }
+      result.put("data", users);
 
-      result.put("data", courses);
       return result;
-
     } catch (ParseException e) {
       e.printStackTrace();
     }
