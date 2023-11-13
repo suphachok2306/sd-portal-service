@@ -178,11 +178,11 @@ public class DepartmentService {
       Map<String, Object> resultMap = new HashMap<>();
 
       resultMap.put("company", (String) row[0]);
-      resultMap.put("sectorname", (String) row[1]);
-      resultMap.put("sectorcode", (String) row[2]);
+      resultMap.put("sectorName", (String) row[1]);
+      resultMap.put("sectorCode", (String) row[2]);
       resultMap.put("id", ((Number) row[3]).longValue());
-      resultMap.put("deptname", (String) row[4]);
-      resultMap.put("deptcode", (String) row[5]);
+      resultMap.put("deptName", (String) row[4]);
+      resultMap.put("deptCode", (String) row[5]);
 
       resultList.add(resultMap);
     }

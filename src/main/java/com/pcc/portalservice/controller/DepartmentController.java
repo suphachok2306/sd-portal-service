@@ -91,13 +91,13 @@ public class DepartmentController {
     for (Map<String, Object> department : departments) {
       Map<String, Object> companySector = new HashMap<>();
       companySector.put("company", department.get("company"));
-      companySector.put("sectorname", department.get("sectorname"));
-      companySector.put("sectorcode", department.get("sectorcode"));
+      companySector.put("sectorName", department.get("sectorName"));
+      companySector.put("sectorCode", department.get("sectorCode"));
 
       Map<String, Object> departmentInfo = new HashMap<>();
       departmentInfo.put("id", department.get("id"));
-      departmentInfo.put("deptcode", department.get("deptcode"));
-      departmentInfo.put("deptname", department.get("deptname"));
+      departmentInfo.put("deptCode", department.get("deptCode"));
+      departmentInfo.put("deptName", department.get("deptName"));
 
       companySector.put("department", departmentInfo);
       restructuredDepartments.add(companySector);
@@ -105,4 +105,44 @@ public class DepartmentController {
 
     return restructuredDepartments;
   }
+
+
+//  @GetMapping("/findAllJoinDepartmentssector")
+//  public List<Map<String, Object>> getAllDepartmentssector() {
+//    List<Map<String, Object>> departments = departmentService.findAllJoinDepartmentssector();
+//
+//    // Group departments by company
+//    Map<String, List<Map<String, Object>>> companyMap = new HashMap<>();
+//    for (Map<String, Object> department : departments) {
+//      String company = (String) department.get("company");
+//
+//      // Create or get the list for the current company
+//      companyMap.computeIfAbsent(company, k -> new ArrayList<>()).add(department);
+//    }
+//
+//    // Restructure the response
+//    List<Map<String, Object>> restructuredDepartments = new ArrayList<>();
+//    for (List<Map<String, Object>> companyDepartments : companyMap.values()) {
+//      Map<String, Object> firstDepartment = companyDepartments.get(0);
+//
+//      Map<String, Object> result = new HashMap<>();
+//      result.put("sectorcode", firstDepartment.get("sectorcode"));
+//      result.put("sectorname", firstDepartment.get("sectorname"));
+//      result.put("company", firstDepartment.get("company"));
+//
+//      List<Map<String, Object>> departmentList = new ArrayList<>();
+//      for (Map<String, Object> department : companyDepartments) {
+//        Map<String, Object> departmentInfo = new HashMap<>();
+//        departmentInfo.put("id", department.get("id"));
+//        departmentInfo.put("deptcode", department.get("deptcode"));
+//        departmentInfo.put("deptname", department.get("deptname"));
+//        departmentList.add(departmentInfo);
+//      }
+//
+//      result.put("department", departmentList);
+//      restructuredDepartments.add(result);
+//    }
+//
+//    return restructuredDepartments;
+//  }
 }
