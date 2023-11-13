@@ -420,6 +420,17 @@ public class TrainingController {
       sectorID
     );
   }
+
+  @GetMapping("/generic9")
+  public LinkedHashMap<String, Object> generic9(
+    @RequestParam String startDate,
+    @RequestParam String endDate
+  ) {
+    return trainingService.generic9(
+      startDate,
+      endDate
+    );
+  }
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
   //     if (count > 3) {

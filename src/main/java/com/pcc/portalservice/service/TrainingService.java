@@ -1317,11 +1317,9 @@ public class TrainingService {
     return null;
   }
 
-  public LinkedHashMap<String, Object> generic(
+  public LinkedHashMap<String, Object> generic9(
     String startDate,
-    String endDate,
-    Long deptID,
-    Long sectorID
+    String endDate
   ) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     try {
@@ -1351,28 +1349,19 @@ public class TrainingService {
         courseJoin.get("endDate"),
         parsedEndDate
       );
-      Predicate deptPredicate = cb.equal(
-        trainingRoot.get("user").get("department").get("id"),
-        deptID
-      );
-      Predicate sectorPredicate = cb.equal(
-        trainingRoot.get("user").get("sector").get("id"),
-        sectorID
-      );
       Predicate cancelPredicate = cb.equal(
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
-      Predicate passPredicate = cb.equal(
-        statusJoin.get("status"),
-        StatusApprove.อนุมัติ
+      Predicate passPredicate = cb.or(
+        cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
+        cb.isNull(statusJoin.get("status"))
       );
+
       query.where(
         cb.and(
           startDatePredicate,
           endDatePredicate,
-          deptPredicate,
-          sectorPredicate,
           cancelPredicate,
           passPredicate
         )
@@ -1393,16 +1382,9 @@ public class TrainingService {
         trainingRootOutput
           .join("courses")
           .get("courseName")
-          .alias("course_name"),
-        trainingRootOutput.join("courses").get("place").alias("place"),
-        trainingRootOutput.join("courses").get("price").alias("price"),
-        trainingRootOutput.join("courses").get("startDate").alias("start_date"),
-        trainingRootOutput.join("courses").get("endDate").alias("end_date"),
-        trainingRootOutput
-          .join("courses")
-          .get("priceProject")
-          .alias("priceProject")
+          .alias("course_name")
       );
+
       queryOutput.where(
         trainingRootOutput
           .get("id")
@@ -1413,7 +1395,8 @@ public class TrainingService {
               .collect(Collectors.toList())
           )
       );
-      queryOutput.orderBy(cb.asc(trainingRootOutput.get("user").get("id")));
+
+      queryOutput.orderBy(cbOutput.asc(courseJoin.get("id")));
 
       TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
         queryOutput
@@ -1421,53 +1404,29 @@ public class TrainingService {
       List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-      List<LinkedHashMap<String, Object>> users = new ArrayList<>();
-      LinkedHashMap<String, Object> currentUser = null;
-      float totalAll = 0;
+      List<LinkedHashMap<String, Object>> courses = new ArrayList<>();
+      LinkedHashMap<String, Object> currentcourse = null;
 
       for (Tuple row : resultListBudgetTrainingOutput) {
         if (
-          currentUser == null ||
-          !currentUser.get("emp_code").equals(row.get("emp_code"))
+          currentcourse == null ||
+          !currentcourse.get("course_id").equals(row.get("course_id"))
         ) {
-          if (currentUser != null) {
-            currentUser.put("total", totalAll);
-          }
-          currentUser = new LinkedHashMap<>();
-          currentUser.put("user_id", row.get("user_id"));
-          currentUser.put("emp_code", row.get("emp_code"));
-          currentUser.put("title", row.get("title"));
-          currentUser.put("firstname", row.get("firstname"));
-          currentUser.put("lastname", row.get("lastname"));
-          currentUser.put("course", new ArrayList<>());
-          users.add(currentUser);
-          totalAll = 0;
+          currentcourse = new LinkedHashMap<>();
+          currentcourse.put("course_name", row.get("course_name"));
+          currentcourse.put("user", new ArrayList<>());
+          courses.add(currentcourse);
         }
-
-        LinkedHashMap<String, Object> course = new LinkedHashMap<>();
-        course.put("course_id", row.get("course_id"));
-        course.put("course_name", row.get("course_name"));
-        course.put("place", row.get("place"));
-        course.put("price", row.get("price"));
-        course.put("start_date", row.get("start_date"));
-        course.put("end_date", row.get("end_date"));
-        course.put("priceProject", row.get("priceProject"));
-        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
-            course
+        LinkedHashMap<String, Object> user = new LinkedHashMap<>();
+        user.put("title", row.get("title"));
+        user.put("firstname", row.get("firstname"));
+        user.put("lastname", row.get("lastname"));
+        ((List<LinkedHashMap<String, Object>>) currentcourse.get("user")).add(
+            user
           );
-        totalAll += (float) row.get("price");
       }
 
-      if (currentUser != null) {
-        currentUser.put("total", (totalAll));
-      }
-      double totalAllValue = users
-        .stream()
-        .mapToDouble(user -> (Float) user.get("total"))
-        .sum();
-
-      result.put("total_All", totalAllValue);
-      result.put("data", users);
+      result.put("data", courses);
 
       return result;
     } catch (ParseException e) {
