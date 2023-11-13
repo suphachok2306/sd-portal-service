@@ -7,6 +7,19 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+<<<<<<< HEAD
+=======
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+>>>>>>> 4bcfa57866641c4dbed36f55c4f4ad0dde38b0de
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -1203,10 +1216,17 @@ public class TrainingService {
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
+<<<<<<< HEAD
       Predicate passPredicate = cb.notEqual(
         statusJoin.get("status"),
         StatusApprove.ยกเลิก
+=======
+      Predicate passPredicate = cb.or(
+        cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
+        cb.isNull(statusJoin.get("status"))
+>>>>>>> 4bcfa57866641c4dbed36f55c4f4ad0dde38b0de
       );
+
       query.where(
         cb.and(
           startDatePredicate,
@@ -1230,27 +1250,40 @@ public class TrainingService {
         trainingRootOutput.get("user").get("firstname").alias("firstname"),
         trainingRootOutput.get("user").get("lastname").alias("lastname"),
         trainingRootOutput.join("courses").get("id").alias("course_id"),
-        trainingRootOutput.join("courses").get("courseName").alias("course_name"),
+        trainingRootOutput
+          .join("courses")
+          .get("courseName")
+          .alias("course_name"),
         trainingRootOutput.join("courses").get("place").alias("place"),
         trainingRootOutput.join("courses").get("price").alias("price"),
         trainingRootOutput.join("courses").get("startDate").alias("start_date"),
         trainingRootOutput.join("courses").get("endDate").alias("end_date"),
-        trainingRootOutput.join("courses").get("priceProject").alias("priceProject")
+        trainingRootOutput
+          .join("courses")
+          .get("priceProject")
+          .alias("priceProject")
       );
       queryOutput.where(
-        trainingRootOutput.get("id").in(resultListBudgetTraining.stream().map(tuple -> tuple.get("train_id", Long.class)).collect(Collectors.toList()))
+        trainingRootOutput
+          .get("id")
+          .in(
+            resultListBudgetTraining
+              .stream()
+              .map(tuple -> tuple.get("train_id", Long.class))
+              .collect(Collectors.toList())
+          )
       );
       queryOutput.orderBy(cb.asc(trainingRootOutput.get("user").get("id")));
 
-      TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(queryOutput);
+      TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
+        queryOutput
+      );
       List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
       LinkedHashMap<String, Object> currentUser = null;
       float totalAll = 0;
-      
-
 
       for (Tuple row : resultListBudgetTrainingOutput) {
         if (
@@ -1282,18 +1315,176 @@ public class TrainingService {
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );
-
-        totalAll += (Float) row.get("price");
+        totalAll += (float) row.get("price");
       }
 
       if (currentUser != null) {
-        currentUser.put("total", totalAll);
+        currentUser.put("total", (totalAll));
       }
-
       double totalAllValue = users
         .stream()
         .mapToDouble(user -> (Float) user.get("total"))
         .sum();
+
+      result.put("total_All", totalAllValue);
+      result.put("data", users);
+
+      return result;
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public LinkedHashMap<String, Object> generic(
+    String startDate,
+    String endDate,
+    Long deptID,
+    Long sectorID
+  ) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    try {
+      Date parsedStartDate = dateFormat.parse(startDate);
+      Date parsedEndDate = dateFormat.parse(endDate);
+
+      CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+      CriteriaQuery<Tuple> query = cb.createTupleQuery();
+      Root<Training> trainingRoot = query.from(Training.class);
+
+      Join<Training, Course> courseJoin = trainingRoot.join("courses");
+      Join<Training, Status> statusJoin = trainingRoot.join("status");
+
+      query
+        .multiselect(
+          trainingRoot.get("id").alias("train_id"),
+          courseJoin.get("active").alias("active"),
+          statusJoin.get("status").alias("status")
+        )
+        .distinct(true);
+
+      Predicate startDatePredicate = cb.greaterThanOrEqualTo(
+        courseJoin.get("startDate"),
+        parsedStartDate
+      );
+      Predicate endDatePredicate = cb.lessThanOrEqualTo(
+        courseJoin.get("endDate"),
+        parsedEndDate
+      );
+      Predicate deptPredicate = cb.equal(
+        trainingRoot.get("user").get("department").get("id"),
+        deptID
+      );
+      Predicate sectorPredicate = cb.equal(
+        trainingRoot.get("user").get("sector").get("id"),
+        sectorID
+      );
+      Predicate cancelPredicate = cb.equal(
+        courseJoin.get("active"),
+        "ดำเนินการอยู่"
+      );
+      Predicate passPredicate = cb.equal(
+        statusJoin.get("status"),
+        StatusApprove.อนุมัติ
+      );
+      query.where(
+        cb.and(
+          startDatePredicate,
+          endDatePredicate,
+          deptPredicate,
+          sectorPredicate,
+          cancelPredicate,
+          passPredicate
+        )
+      );
+      TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
+      List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+
+      CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
+      CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
+      Root<Training> trainingRootOutput = queryOutput.from(Training.class);
+      queryOutput.multiselect(
+        trainingRootOutput.get("user").get("id").alias("user_id"),
+        trainingRootOutput.get("user").get("empCode").alias("emp_code"),
+        trainingRootOutput.get("user").get("title").alias("title"),
+        trainingRootOutput.get("user").get("firstname").alias("firstname"),
+        trainingRootOutput.get("user").get("lastname").alias("lastname"),
+        trainingRootOutput.join("courses").get("id").alias("course_id"),
+        trainingRootOutput
+          .join("courses")
+          .get("courseName")
+          .alias("course_name"),
+        trainingRootOutput.join("courses").get("place").alias("place"),
+        trainingRootOutput.join("courses").get("price").alias("price"),
+        trainingRootOutput.join("courses").get("startDate").alias("start_date"),
+        trainingRootOutput.join("courses").get("endDate").alias("end_date"),
+        trainingRootOutput
+          .join("courses")
+          .get("priceProject")
+          .alias("priceProject")
+      );
+      queryOutput.where(
+        trainingRootOutput
+          .get("id")
+          .in(
+            resultListBudgetTraining
+              .stream()
+              .map(tuple -> tuple.get("train_id", Long.class))
+              .collect(Collectors.toList())
+          )
+      );
+      queryOutput.orderBy(cb.asc(trainingRootOutput.get("user").get("id")));
+
+      TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
+        queryOutput
+      );
+      List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
+
+      LinkedHashMap<String, Object> result = new LinkedHashMap<>();
+      List<LinkedHashMap<String, Object>> users = new ArrayList<>();
+      LinkedHashMap<String, Object> currentUser = null;
+      float totalAll = 0;
+
+      for (Tuple row : resultListBudgetTrainingOutput) {
+        if (
+          currentUser == null ||
+          !currentUser.get("emp_code").equals(row.get("emp_code"))
+        ) {
+          if (currentUser != null) {
+            currentUser.put("total", totalAll);
+          }
+          currentUser = new LinkedHashMap<>();
+          currentUser.put("user_id", row.get("user_id"));
+          currentUser.put("emp_code", row.get("emp_code"));
+          currentUser.put("title", row.get("title"));
+          currentUser.put("firstname", row.get("firstname"));
+          currentUser.put("lastname", row.get("lastname"));
+          currentUser.put("course", new ArrayList<>());
+          users.add(currentUser);
+          totalAll = 0;
+        }
+
+        LinkedHashMap<String, Object> course = new LinkedHashMap<>();
+        course.put("course_id", row.get("course_id"));
+        course.put("course_name", row.get("course_name"));
+        course.put("place", row.get("place"));
+        course.put("price", row.get("price"));
+        course.put("start_date", row.get("start_date"));
+        course.put("end_date", row.get("end_date"));
+        course.put("priceProject", row.get("priceProject"));
+        ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
+            course
+          );
+        totalAll += (float) row.get("price");
+      }
+
+      if (currentUser != null) {
+        currentUser.put("total", (totalAll));
+      }
+      double totalAllValue = users
+        .stream()
+        .mapToDouble(user -> (Float) user.get("total"))
+        .sum();
+
       result.put("total_All", totalAllValue);
       result.put("data", users);
 
