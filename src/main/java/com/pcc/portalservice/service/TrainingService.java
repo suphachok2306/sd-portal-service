@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
@@ -1074,18 +1076,20 @@ public class TrainingService {
 
         dates.add(dateCombined);
         course_priceProjects.add(
-          course.get("priceProject") != null ? course.get("priceProject").toString() : ""
+          course.get("priceProject") != null
+            ? course.get("priceProject").toString()
+            : ""
         );
 
         sums += (float) course.get("price");
         sumall += (float) course.get("price");
       }
-       course_names.add("");
-       course_places.add("รวม");
-       course_prices.add(sums);
-       dates.add("");
-       course_priceProjects.add("");
-      
+      course_names.add("");
+      course_places.add("รวม");
+      course_prices.add(sums);
+      dates.add("");
+      course_priceProjects.add("");
+
       coll.add(
         new BeanHistroy(
           course_names,
@@ -1163,31 +1167,28 @@ public class TrainingService {
     try {
       Date parsedStartDate = dateFormat.parse(startDate);
       Date parsedEndDate = dateFormat.parse(endDate);
+
       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> query = cb.createTupleQuery();
       Root<Training> trainingRoot = query.from(Training.class);
-      query.multiselect(
-        trainingRoot.get("user").get("id").alias("user_id"),
-        trainingRoot.get("user").get("empCode").alias("emp_code"),
-        trainingRoot.get("user").get("title").alias("title"),
-        trainingRoot.get("user").get("firstname").alias("firstname"),
-        trainingRoot.get("user").get("lastname").alias("lastname"),
-        trainingRoot.join("courses").get("id").alias("course_id"),
-        trainingRoot.join("courses").get("courseName").alias("course_name"),
-        trainingRoot.join("courses").get("place").alias("place"),
-        trainingRoot.join("courses").get("price").alias("price"),
-        trainingRoot.join("courses").get("startDate").alias("start_date"),
-        trainingRoot.join("courses").get("endDate").alias("end_date"),
-        trainingRoot.join("courses").get("priceProject").alias("priceProject")
-      );
-      trainingRoot.join("courses").get("active").alias("active");
-      trainingRoot.join("result").get("result").alias("result");
+
+      Join<Training, Course> courseJoin = trainingRoot.join("courses");
+      Join<Training, Status> statusJoin = trainingRoot.join("status");
+
+      query
+        .multiselect(
+          trainingRoot.get("id").alias("train_id"),
+          courseJoin.get("active").alias("active"),
+          statusJoin.get("status").alias("status")
+        )
+        .distinct(true);
+
       Predicate startDatePredicate = cb.greaterThanOrEqualTo(
-        trainingRoot.join("courses").get("startDate"),
+        courseJoin.get("startDate"),
         parsedStartDate
       );
       Predicate endDatePredicate = cb.lessThanOrEqualTo(
-        trainingRoot.join("courses").get("endDate"),
+        courseJoin.get("endDate"),
         parsedEndDate
       );
       Predicate deptPredicate = cb.equal(
@@ -1199,12 +1200,12 @@ public class TrainingService {
         sectorID
       );
       Predicate cancelPredicate = cb.equal(
-        trainingRoot.join("courses").get("active"),
+        courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
       Predicate passPredicate = cb.equal(
-        trainingRoot.join("result").get("result"),
-        "pass"
+        statusJoin.get("status"),
+        StatusApprove.อนุมัติ
       );
       query.where(
         cb.and(
@@ -1216,16 +1217,42 @@ public class TrainingService {
           passPredicate
         )
       );
-      query.orderBy(cb.asc(trainingRoot.get("user").get("id")));
-
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
       List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+
+      CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
+      CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
+      Root<Training> trainingRootOutput = queryOutput.from(Training.class);
+      queryOutput.multiselect(
+        trainingRootOutput.get("user").get("id").alias("user_id"),
+        trainingRootOutput.get("user").get("empCode").alias("emp_code"),
+        trainingRootOutput.get("user").get("title").alias("title"),
+        trainingRootOutput.get("user").get("firstname").alias("firstname"),
+        trainingRootOutput.get("user").get("lastname").alias("lastname"),
+        trainingRootOutput.join("courses").get("id").alias("course_id"),
+        trainingRootOutput.join("courses").get("courseName").alias("course_name"),
+        trainingRootOutput.join("courses").get("place").alias("place"),
+        trainingRootOutput.join("courses").get("price").alias("price"),
+        trainingRootOutput.join("courses").get("startDate").alias("start_date"),
+        trainingRootOutput.join("courses").get("endDate").alias("end_date"),
+        trainingRootOutput.join("courses").get("priceProject").alias("priceProject")
+      );
+      queryOutput.where(
+        trainingRootOutput.get("id").in(resultListBudgetTraining.stream().map(tuple -> tuple.get("train_id", Long.class)).collect(Collectors.toList()))
+      );
+      queryOutput.orderBy(cb.asc(trainingRootOutput.get("user").get("id")));
+
+      TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(queryOutput);
+      List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
+
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
       LinkedHashMap<String, Object> currentUser = null;
       float totalAll = 0;
+      
 
-      for (Tuple row : resultListBudgetTraining) {
+
+      for (Tuple row : resultListBudgetTrainingOutput) {
         if (
           currentUser == null ||
           !currentUser.get("emp_code").equals(row.get("emp_code"))
