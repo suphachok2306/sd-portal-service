@@ -1,4 +1,4 @@
-﻿package com.pcc.portalservice.model;
+package com.pcc.portalservice.model;
 
 import java.util.List;
 import java.util.Objects;

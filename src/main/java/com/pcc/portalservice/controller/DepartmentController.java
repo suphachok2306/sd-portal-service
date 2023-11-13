@@ -5,9 +5,6 @@ import com.pcc.portalservice.requests.CreateDepartmentRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.DepartmentService;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -72,5 +75,34 @@ public class DepartmentController {
   @GetMapping("/findAllJoinDepartments")
   public List<Map<String, Object>> getAllJoinDepartments() {
     return departmentService.findAllJoinDepartments();
+  }
+
+//  @GetMapping("/findAllJoinDepartmentssector")
+//  public List<Map<String, Object>> getAllJoinDepartmentssector() {
+//    return departmentService.findAllJoinDepartmentssector();
+//  }
+
+  @GetMapping("/findAllJoinDepartmentssector")
+  public List<Map<String, Object>> getAllDepartmentssector() {
+    List<Map<String, Object>> departments = departmentService.findAllJoinDepartmentssector();
+
+    // Restructure the response
+    List<Map<String, Object>> restructuredDepartments = new ArrayList<>();
+    for (Map<String, Object> department : departments) {
+      Map<String, Object> companySector = new HashMap<>();
+      companySector.put("company", department.get("company"));
+      companySector.put("sectorname", department.get("sectorname"));
+      companySector.put("sectorcode", department.get("sectorcode"));
+
+      Map<String, Object> departmentInfo = new HashMap<>();
+      departmentInfo.put("id", department.get("id"));
+      departmentInfo.put("deptcode", department.get("deptcode"));
+      departmentInfo.put("deptname", department.get("deptname"));
+
+      companySector.put("department", departmentInfo);
+      restructuredDepartments.add(companySector);
+    }
+
+    return restructuredDepartments;
   }
 }
