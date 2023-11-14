@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Generic9" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d96a9aa-3bbf-43cd-a28c-bb356c9f3107">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="emp_code" uuid="1868470b-d251-425b-be8a-2078d9266a23">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<subDataset name="dataset1" uuid="551fafc2-60f2-4722-b535-8c8b6fa7db1d">
+		<field name="course_name" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+	</subDataset>
+	<subDataset name="title" uuid="0d4802eb-97db-4af3-8704-bb1ae344592b">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="title" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="87623492-325a-4cce-a021-043a17722d1f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="result1" class="java.lang.Float"/>
+	</subDataset>
+	<subDataset name="dataset3" uuid="1f960bc6-cd02-4bd0-994a-5dadb4687b6b">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<subDataset name="dataset4" uuid="9f1cdc1b-562d-41a7-a43c-3bfc93347b7a">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="startdate" class="java.lang.String"/>
+	<parameter name="enddate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="course_names" class="java.lang.String"/>
+	<field name="id" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement x="271" y="10" width="260" height="30" uuid="d6a7c765-cb45-403c-b8a9-05303ac0f40f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Generic 9 ยื่นกรมพัฒนาฝีมือแรงงาน กระทรวงแรงงาน]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="182" splitType="Stretch">
+			<staticText>
+				<reportElement x="220" y="10" width="100" height="170" uuid="c2450199-629c-414b-b7d9-ee804d178565">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box topPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[หลักสูตร]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="40" height="170" uuid="65cb3277-67fe-4b9b-b6dd-28285128bb38"/>
+				<box topPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[คำนำหน้า]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="10" width="60" height="170" uuid="573ada6a-d353-47c2-be73-f9daeecb68bc"/>
+				<box topPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[ชื่อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="10" width="60" height="170" uuid="714433cf-9c5b-4a2d-85ff-0772d90f2fcf"/>
+				<box topPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[นามสกุล]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="10" width="60" height="170" uuid="fa2c5c61-8417-4dbf-9a55-3f6ac7951277"/>
+				<box topPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="10" width="480" height="30" uuid="7b9395d9-7a3d-4a85-958c-8027fc75af10"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[ผลการประเมินศักยภาพผู้ผ่านการอบรม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="40" width="69" height="140" uuid="186cd9ce-c834-4c68-82f2-81c185a342c8"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[1.
+การนำความรู้
+/ทักษะไปใช้ใน
+การปฏิบัติงาน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="40" width="68" height="140" uuid="775b8d3b-bc5d-468f-9e47-ca86d7f4fbe3"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified" rotation="None">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[3.การเปลี่ยนแปลง
+พฤติกรรมการ
+ปฏิบัติงานหลัง
+จากผ่านการฝึก
+อบรม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="40" width="68" height="140" uuid="86192270-4370-45fb-bca0-ff8d280abf01"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[4.
+การพัฒนา
+คุณภาพงาน
+/การปฏิบัติงาน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="661" y="40" width="69" height="140" uuid="666a721c-2978-4067-beb4-c128d4786462"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[6.
+การนำความรู้/
+ทักษะที่ได้รับไป
+ถ่ายทอดให้เพื่อนร่วมงาน
+/ผู้ใต้บังคับบัญชา]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="40" width="70" height="140" uuid="110bf508-5755-48ec-bd26-a3192577c42e"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[7.
+การพัฒนา
+ความคิด
+สร้างสรรค์
+จากการนำความรู้
+/ทักษะที่ได้จาก
+การฝึกอบรม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="40" width="68" height="140" uuid="b22c6072-6aa0-4d6d-a599-456803c11242"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[2.ความถูกต้องของการปฏิบัติงาน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="593" y="40" width="68" height="140" uuid="5489b33d-b5ed-491f-acf0-7c3eaf64b1fb"/>
+				<box topPadding="5" leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Justified">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[5.
+พัฒนาการด้าน
+การประสานงาน
+กับหน่วยงาน
+อื่นๆ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="160" height="30" uuid="441a38b6-2db5-4ede-a2ef-87faaf5f92be">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="601de73b-dd60-4ca5-9419-33db4d95ab73"/>
+				</reportElement>
+				<textElement>
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="320" y="0" width="69" height="30" uuid="067310e7-23e5-4731-abd4-7f558f163db5"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset2" uuid="a69cac8a-341d-4172-9aab-ba52e95f451b">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="69">
+						<textField>
+							<reportElement x="0" y="0" width="69" height="30" uuid="87df2c77-5f3b-48f0-a9b1-9e1f60a133bb"/>
+							<textElement>
+								<font fontName="THSarabunNew" size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{result1}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="220" y="0" width="100" height="30" uuid="fa0983a3-2d1d-49e1-8ccd-9c7e61cd5a95"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset1" uuid="6793f6af-76d3-4ced-9237-329d54b39cc5">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="100">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="30" uuid="7893f2c4-caf9-47c1-872f-9ddde3e296f5"/>
+							<textElement>
+								<font fontName="THSarabunNew" size="14"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{course_name}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="5" width="100" height="30" uuid="ee7e86e4-b2b2-4bb2-98fe-8fdb09fd4983"/>
+				<textFieldExpression><![CDATA[$P{startdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="5" width="100" height="30" uuid="d2766bc7-49d1-4b27-9d41-4d3499cfc7a8"/>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>
