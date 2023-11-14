@@ -1,6 +1,9 @@
 package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.math.BigDecimal;
+
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +23,7 @@ public class Budget_Department {
   private Long id;
 
   private String year;
-  private float total_exp;
+  private BigDecimal total_exp;
   private String type;
 
   @ManyToOne(optional = false)

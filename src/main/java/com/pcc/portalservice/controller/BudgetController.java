@@ -219,30 +219,9 @@ public class BudgetController {
    * @GetMapping
    */
   @GetMapping("/findAllBudget")
-  public List<Map<String, Object>> getAllBudgets() {
-    List<Budget> budgets = budgetService.findAll();
-    List<Map<String, Object>> result = new ArrayList<>();
-
-    for (Budget budget : budgets) {
-      Map<String, Object> budgetMap = new HashMap<>();
-      budgetMap.put("id", budget.getId());
-      budgetMap.put("year", budget.getYear());
-      budgetMap.put("budgetTraining", budget.getBudgetTraining());
-      budgetMap.put("budgetCer", budget.getBudgetCer());
-      budgetMap.put("total_exp", budget.getTotal_exp());
-      budgetMap.put("company", budget.getCompany().getCompanyName());
-
-      Map<String, Object> departmentMap = new HashMap<>();
-      departmentMap.put("deptid", budget.getDepartment().getId());
-      departmentMap.put("deptname", budget.getDepartment().getDeptName());
-      departmentMap.put("deptcode", budget.getDepartment().getDeptCode());
-
-      budgetMap.put("department", departmentMap);
-
-      result.add(budgetMap);
-    }
-
-    return result;
+  public ResponseEntity<List<Map<String, Object>>> getAllBudgets() {
+    List<Map<String, Object>> budget = budgetService.findAlls();
+    return ResponseEntity.ok(budget);
   }
 
   /**

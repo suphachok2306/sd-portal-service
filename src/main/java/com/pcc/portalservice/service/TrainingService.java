@@ -1084,11 +1084,11 @@ public class TrainingService {
         sums += (float) course.get("price");
         sumall += (float) course.get("price");
       }
-      course_names.add("");
+      course_names.add("\t\t\t");
       course_places.add("\t\t\t รวม");
       course_prices.add(sums);
-      dates.add("");
-      course_priceProjects.add("");
+      dates.add("\t\t\t");
+      course_priceProjects.add("\t\t\t");
 
       coll.add(
         new BeanHistroy(
