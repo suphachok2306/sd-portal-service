@@ -110,7 +110,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(15, 'DT', '7012', 4), " +
         "(16, 'HQ', '8011', 11), " +
         "(17, 'AF', '9011', 10)," +
-        "(18, 'ISO', '8011', 12), " +
+        "(18, 'ISO', '8011', 11), " +
         "(19, 'PS', '8011', 4), " +
         "(20, 'TOP', '8011', 5) "
       );
@@ -544,7 +544,7 @@ public class DatabaseInitializer implements CommandLineRunner {
       "', '+1111111111', 1, 6, 8, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
       "('adminMS@pccth.com', 10004, 'AdminMS', 'AdminMS', '" +
       hashpassword +
-      "', '+1111111111', 1, 1, 8, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "', '+1111111111', 1, 5, 8, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
       "('adminOSS@pccth.com', 10003, 'AdminOSS', 'AdminOSS', '" +
       hashpassword +
       "', '+1111111111', 1, 13, 8, 3, 'เป็นพนักงานอยู่', 'นาย'), " +

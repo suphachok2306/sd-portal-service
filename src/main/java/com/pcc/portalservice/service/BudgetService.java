@@ -7,6 +7,8 @@ import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -40,29 +42,38 @@ public class BudgetService {
    */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
     Company companyName = companyRepository
-        .findById(createBudgetRequest.getCompany_Id())
-        .orElseThrow(() -> new RuntimeException(
-            "companyName not found: " + createBudgetRequest.getCompany_Id()));
+      .findById(createBudgetRequest.getCompany_Id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "companyName not found: " + createBudgetRequest.getCompany_Id()
+        )
+      );
     Department departmentId = departmentRepository
-        .findById(createBudgetRequest.getDepartment_Id())
-        .orElseThrow(() -> new RuntimeException(
-            "departmentId not found: " + createBudgetRequest.getDepartment_Id()));
+      .findById(createBudgetRequest.getDepartment_Id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "departmentId not found: " + createBudgetRequest.getDepartment_Id()
+        )
+      );
     Budget budget = Budget
-        .builder()
-        .department(departmentId)
-        .company(companyName)
-        .year(createBudgetRequest.getYear())
-        .budgetCer(createBudgetRequest.getBudgetCer())
-        .budgetTraining(createBudgetRequest.getBudgetTraining())
-        .total_exp(
-            totalExp(
-                createBudgetRequest.getBudgetCer(),
-                createBudgetRequest.getBudgetTraining()))
-        .build();
+      .builder()
+      .department(departmentId)
+      .company(companyName)
+      .year(createBudgetRequest.getYear())
+      .budgetCer(createBudgetRequest.getBudgetCer())
+      .budgetTraining(createBudgetRequest.getBudgetTraining())
+      .total_exp(
+        totalExp(
+          createBudgetRequest.getBudgetCer(),
+          createBudgetRequest.getBudgetTraining()
+        )
+      )
+      .build();
     budget = budgetRepository.save(budget);
     checkBudget(
-        createBudgetRequest.getDepartment_Id(),
-        createBudgetRequest.getYear());
+      createBudgetRequest.getDepartment_Id(),
+      createBudgetRequest.getYear()
+    );
 
     return budget;
   }
@@ -84,17 +95,24 @@ public class BudgetService {
    * @Edit
    */
   public Budget editBudget(
-      CreateBudgetRequest createBudgetRequest,
-      Long budgetID) {
+    CreateBudgetRequest createBudgetRequest,
+    Long budgetID
+  ) {
     Company companyName = companyRepository
-        .findById(createBudgetRequest.getCompany_Id())
-        .orElseThrow(() -> new RuntimeException(
-            "companyName not found: " + createBudgetRequest.getCompany_Id()));
+      .findById(createBudgetRequest.getCompany_Id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "companyName not found: " + createBudgetRequest.getCompany_Id()
+        )
+      );
 
     Department departmentId = departmentRepository
-        .findById(createBudgetRequest.getDepartment_Id())
-        .orElseThrow(() -> new RuntimeException(
-            "sectorId not found: " + createBudgetRequest.getDepartment_Id()));
+      .findById(createBudgetRequest.getDepartment_Id())
+      .orElseThrow(() ->
+        new RuntimeException(
+          "sectorId not found: " + createBudgetRequest.getDepartment_Id()
+        )
+      );
 
     Budget budget = findById(budgetID);
     budget.setDepartment(departmentId);
@@ -103,70 +121,90 @@ public class BudgetService {
     budget.setBudgetCer(createBudgetRequest.getBudgetCer());
     budget.setBudgetTraining(createBudgetRequest.getBudgetTraining());
     budget.setTotal_exp(
-        totalExp(
-            createBudgetRequest.getBudgetCer(),
-            createBudgetRequest.getBudgetTraining()));
+      totalExp(
+        createBudgetRequest.getBudgetCer(),
+        createBudgetRequest.getBudgetTraining()
+      )
+    );
 
     return budgetRepository.save(budget);
   }
 
-  public Float getTotalBudgetCer(Long departmentId, String year) {
+  public BigDecimal getTotalBudgetCer(Long departmentId, String year) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Float> criteriaQuery = builder.createQuery(Float.class);
+    CriteriaQuery<BigDecimal> criteriaQuery = builder.createQuery(
+      BigDecimal.class
+    );
     Root<Budget> bd = criteriaQuery.from(Budget.class);
 
-    criteriaQuery.select(builder.sum(bd.get("budgetCer").as(Float.class)));
+    criteriaQuery.select(builder.sum(bd.get("budgetCer").as(BigDecimal.class)));
     criteriaQuery.where(
-        builder.equal(bd.get("department").get("id"), departmentId),
-        builder.equal(bd.get("year"), year));
+      builder.equal(bd.get("department").get("id"), departmentId),
+      builder.equal(bd.get("year"), year)
+    );
 
-    TypedQuery<Float> typedQuery = entityManager.createQuery(criteriaQuery);
+    TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(
+      criteriaQuery
+    );
+    BigDecimal result = typedQuery.getSingleResult();
+
+    result = result.setScale(2, RoundingMode.HALF_UP);
+
+    return result;
+  }
+
+  public BigDecimal getTotalBudgetTraining(Long departmentId, String year) {
+    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<BigDecimal> criteriaQuery = builder.createQuery(
+      BigDecimal.class
+    );
+    Root<Budget> bd = criteriaQuery.from(Budget.class);
+
+    criteriaQuery.select(
+      builder.sum(bd.get("budgetTraining").as(BigDecimal.class))
+    );
+    criteriaQuery.where(
+      builder.equal(bd.get("department").get("id"), departmentId),
+      builder.equal(bd.get("year"), year)
+    );
+
+    TypedQuery<BigDecimal> typedQuery = entityManager.createQuery(
+      criteriaQuery
+    );
     return typedQuery.getSingleResult();
   }
 
-  public Float getTotalBudgetTraining(Long departmentId, String year) {
-    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Float> criteriaQuery = builder.createQuery(Float.class);
-    Root<Budget> bd = criteriaQuery.from(Budget.class);
-
-    criteriaQuery.select(builder.sum(bd.get("budgetTraining").as(Float.class)));
-    criteriaQuery.where(
-        builder.equal(bd.get("department").get("id"), departmentId),
-        builder.equal(bd.get("year"), year));
-
-    TypedQuery<Float> typedQuery = entityManager.createQuery(criteriaQuery);
-    return typedQuery.getSingleResult();
-  }
-
-  public Float getTotalBudgetTotalExp(Long departmentId, String year) {
-    float x = getTotalBudgetCer(departmentId, year);
-    float y = getTotalBudgetTraining(departmentId, year);
-    return x + y;
+  public BigDecimal getTotalBudgetTotalExp(Long departmentId, String year) {
+    BigDecimal x = getTotalBudgetCer(departmentId, year);
+    BigDecimal y = getTotalBudgetTraining(departmentId, year);
+    return x.add(y);
   }
 
   public void insertBudgetDepartment(
-      Float x,
-      Company company,
-      Department department,
-      String year,
-      String type) {
+    BigDecimal x,
+    Company company,
+    Department department,
+    String year,
+    String type
+  ) {
     Budget_Department budget_Department = Budget_Department
-        .builder()
-        .total_exp(x)
-        .type(type)
-        .year(year)
-        .company(company)
-        .department(department)
-        .build();
+      .builder()
+      .total_exp(x)
+      .type(type)
+      .year(year)
+      .company(company)
+      .department(department)
+      .build();
 
     budget_DepartmentRepository.save(budget_Department);
   }
 
-  public void UpdateBudgetDepartment(Long budgetId, Float value) {
+  public void UpdateBudgetDepartment(Long budgetId, BigDecimal y) {
     Budget_Department budget_Department = budget_DepartmentRepository
-        .findById(budgetId)
-        .orElseThrow(() -> new RuntimeException("budgetId not found: " + budgetId));
-    budget_Department.setTotal_exp(value);
+      .findById(budgetId)
+      .orElseThrow(() -> new RuntimeException("budgetId not found: " + budgetId)
+      );
+    budget_Department.setTotal_exp(y);
 
     budget_DepartmentRepository.save(budget_Department);
   }
@@ -192,66 +230,79 @@ public class BudgetService {
    */
   public Budget findById(Long id) {
     return budgetRepository
-        .findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("ID " + id + " ไม่มีในระบบ"));
+      .findById(id)
+      .orElseThrow(() ->
+        new EntityNotFoundException("ID " + id + " ไม่มีในระบบ")
+      );
   }
 
   /**
    * @เช็คNullของBudget
    */
   public boolean isBudgetNull(CreateBudgetRequest request) {
-    return (request == null ||
-        request.getYear() == null ||
-        request.getYear().isEmpty());
+    return (
+      request == null ||
+      request.getYear() == null ||
+      request.getYear().isEmpty()
+    );
   }
 
   private void checkBudget(Long department_id, String year) {
     if (department_id != null && year != null) {
       CriteriaBuilder builder = entityManager.getCriteriaBuilder();
       CriteriaQuery<Budget_Department> criteriaQuery = builder.createQuery(
-          Budget_Department.class);
+        Budget_Department.class
+      );
       Root<Budget_Department> bd = criteriaQuery.from(Budget_Department.class);
 
       Predicate yearPredicate = builder.equal(bd.get("year"), year);
       Predicate departmentPredicate = builder.equal(
-          bd.get("department"),
-          departmentRepository.findById(department_id).get());
+        bd.get("department"),
+        departmentRepository.findById(department_id).get()
+      );
 
       Predicate predicate = builder.and(yearPredicate, departmentPredicate);
       criteriaQuery.where(predicate);
 
       TypedQuery<Budget_Department> typedQuery = entityManager.createQuery(
-          criteriaQuery);
+        criteriaQuery
+      );
 
       if (typedQuery != null) {
-        Float x = getTotalBudgetCer(department_id, year);
-        Float y = getTotalBudgetTraining(department_id, year);
-        Float z = getTotalBudgetTotalExp(department_id, year);
+        BigDecimal x = getTotalBudgetCer(department_id, year);
+        BigDecimal y = getTotalBudgetTraining(department_id, year);
+        BigDecimal z = getTotalBudgetTotalExp(department_id, year);
         Department department = departmentRepository
-            .findById(department_id)
-            .get();
+          .findById(department_id)
+          .get();
         Optional<Company> company = companyRepository.findById(
-            department.getSector().getCompany().getId());
+          department.getSector().getCompany().getId()
+        );
         List<Budget_Department> resultList = typedQuery.getResultList();
         resultList.sort(Comparator.comparing(Budget_Department::getId));
         if (resultList.size() == 3) {
           for (int i = 0; i < resultList.size(); i++) {
             if (resultList.get(i).getType().toString().equals("อบรม")) {
               UpdateBudgetDepartment(resultList.get(i).getId(), y);
-            } else if (resultList.get(i).getType().toString().equals("certificate")) {
+            } else if (
+              resultList.get(i).getType().toString().equals("certificate")
+            ) {
               UpdateBudgetDepartment(resultList.get(i).getId(), x);
-            } else if (resultList.get(i).getType().toString().equals("ยอดรวม")) {
+            } else if (
+              resultList.get(i).getType().toString().equals("ยอดรวม")
+            ) {
               UpdateBudgetDepartment(resultList.get(i).getId(), z);
             }
           }
         } else if (resultList.size() <= 0) {
           insertBudgetDepartment(x, company.get(), department, year, "อบรม");
           insertBudgetDepartment(
-              y,
-              company.get(),
-              department,
-              year,
-              "certificate");
+            y,
+            company.get(),
+            department,
+            year,
+            "certificate"
+          );
           insertBudgetDepartment(z, company.get(), department, year, "ยอดรวม");
         }
       }
@@ -259,16 +310,20 @@ public class BudgetService {
   }
 
   public LinkedHashMap<String, Object> total_exp(
-      String year,
-      long department_id) {
+    String year,
+    long department_id
+  ) {
     checkBudget(department_id, year);
-    String jpqlBudgetCer = "SELECT SUM(b.budgetCer) AS total_budget_cer " +
-        "FROM Budget b " +
-        "WHERE b.department.id = :department_id AND b.year = :year";
 
-    String jpqlBudgetTraining = "SELECT SUM(b.budgetTraining) AS total_budget_training " +
-        "FROM Budget b " +
-        "WHERE b.department.id = :department_id AND b.year = :year";
+    String jpqlBudgetCer =
+      "SELECT SUM(b.budgetCer) AS total_budget_cer " +
+      "FROM Budget b " +
+      "WHERE b.department.id = :department_id AND b.year = :year";
+
+    String jpqlBudgetTraining =
+      "SELECT SUM(b.budgetTraining) AS total_budget_training " +
+      "FROM Budget b " +
+      "WHERE b.department.id = :department_id AND b.year = :year";
 
     Query queryBudgetCer = entityManager.createQuery(jpqlBudgetCer);
     queryBudgetCer.setParameter("department_id", department_id);
@@ -286,37 +341,57 @@ public class BudgetService {
     if (!resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()) {
       result.put("Year", year);
       result.put(
-          "Company",
-          companyRepository.findById(
-              departmentRepository
-                  .findById(department_id)
-                  .get()
-                  .getSector()
-                  .getCompany()
-                  .getId()));
+        "Company",
+        companyRepository.findById(
+          departmentRepository
+            .findById(department_id)
+            .get()
+            .getSector()
+            .getCompany()
+            .getId()
+        )
+      );
       result.put("Department", departmentRepository.findById(department_id));
-      result.put("budgetCer", resultListBudgetCer.get(0));
-      result.put("budgetTrain", resultListBudgetTraining.get(0));
+
+      BigDecimal budgetCer = new BigDecimal(
+        resultListBudgetCer.get(0).toString()
+      );
+      BigDecimal budgetTraining = new BigDecimal(
+        resultListBudgetTraining.get(0).toString()
+      );
+
+      System.out.println(budgetCer.setScale(2, RoundingMode.HALF_UP));
+
+      result.put("budgetCer", budgetCer.setScale(2, RoundingMode.HALF_UP));
       result.put(
-          "budgetTotal",
-          (Double) resultListBudgetCer.get(0) +
-              (Double) resultListBudgetTraining.get(0));
+        "budgetTrain",
+        budgetTraining.setScale(2, RoundingMode.HALF_UP)
+      );
+      result.put(
+        "budgetTotal",
+        budgetCer.add(budgetTraining).setScale(2, RoundingMode.HALF_UP)
+      );
     }
 
     return result;
   }
 
-  private List<Float> getTrainingIds(String year, long department_id, String courseType) {
-    String trainingIdsQuery = "SELECT DISTINCT t.id " +
-        "FROM Training t " +
-        "JOIN t.courses c " +
-        "LEFT JOIN t.status s " +
-        "WHERE t.user.department.id = :departmentId " +
-        "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-        "AND c.active != 'ยกเลิก' " +
-        "AND c.type = :courseType " +
-        "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
-        "AND (c.priceProject IS NULL OR c.priceProject = '') ";
+  private List<Float> getTrainingIds(
+    String year,
+    long department_id,
+    String courseType
+  ) {
+    String trainingIdsQuery =
+      "SELECT DISTINCT t.id " +
+      "FROM Training t " +
+      "JOIN t.courses c " +
+      "LEFT JOIN t.status s " +
+      "WHERE t.user.department.id = :departmentId " +
+      "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
+      "AND c.active != 'ยกเลิก' " +
+      "AND c.type = :courseType " +
+      "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
+      "AND (c.priceProject IS NULL OR c.priceProject = '') ";
 
     Query query = entityManager.createQuery(trainingIdsQuery);
     query.setParameter("departmentId", department_id);
@@ -327,22 +402,26 @@ public class BudgetService {
   }
 
   private List<Object> getBudget(String courseType, List<Float> trainingIds) {
-    String jpqlBudget = "SELECT SUM(c.price) " +
-        "FROM Training t " +
-        "JOIN t.courses c " +
-        "WHERE t.id IN :trainingIds";
+    String jpqlBudget =
+      "SELECT SUM(c.price) " +
+      "FROM Training t " +
+      "JOIN t.courses c " +
+      "WHERE t.id IN :trainingIds";
 
     Query queryBudget = entityManager.createQuery(jpqlBudget);
     queryBudget.setParameter("trainingIds", trainingIds);
 
     List<Object> resultListBudget = queryBudget.getResultList();
 
-    return resultListBudget.isEmpty() ? Collections.emptyList() : resultListBudget;
+    return resultListBudget.isEmpty()
+      ? Collections.emptyList()
+      : resultListBudget;
   }
 
   public LinkedHashMap<String, Object> totalPriceRemaining(
-      String year,
-      long department_id) {
+    String year,
+    long department_id
+  ) {
     checkBudget(department_id, year);
 
     List<Float> trainingIds = getTrainingIds(year, department_id, "สอบ");
@@ -355,30 +434,51 @@ public class BudgetService {
     try {
       LinkedHashMap<String, Object> all_budget = total_exp(year, department_id);
 
-      Double certificate = (Double) all_budget.get("budgetCer") -
-          (resultListBudgetCer.get(0) != null
-              ? ((Double) resultListBudgetCer.get(0))
-              : 0);
-      Double train = (Double) all_budget.get("budgetTrain") -
-          (resultListBudgetTraining.get(0) != null
-              ? ((Double) resultListBudgetTraining.get(0))
-              : 0);
-      Double total_use = certificate + train;
-      if (!resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()) {
+      BigDecimal budgetCer = (BigDecimal) all_budget.get("budgetCer");
+      BigDecimal budgetTrain = (BigDecimal) all_budget.get("budgetTrain");
+
+      BigDecimal certificate = budgetCer.subtract(
+        (
+          resultListBudgetCer.get(0) != null
+            ? new BigDecimal(resultListBudgetCer.get(0).toString())
+            : BigDecimal.ZERO
+        )
+      );
+      BigDecimal train = budgetTrain.subtract(
+        (
+          resultListBudgetTraining.get(0) != null
+            ? new BigDecimal(resultListBudgetTraining.get(0).toString())
+            : BigDecimal.ZERO
+        )
+      );
+
+      BigDecimal total_use = certificate.add(train);
+
+      if (
+        !resultListBudgetCer.isEmpty() && !resultListBudgetTraining.isEmpty()
+      ) {
         result.put("Year", year);
         result.put(
-            "Company",
-            companyRepository.findById(
-                departmentRepository
-                    .findById(department_id)
-                    .get()
-                    .getSector()
-                    .getCompany()
-                    .getId()));
+          "Company",
+          companyRepository.findById(
+            departmentRepository
+              .findById(department_id)
+              .get()
+              .getSector()
+              .getCompany()
+              .getId()
+          )
+        );
         result.put("Department", departmentRepository.findById(department_id));
-        result.put("budgetCer", certificate);
-        result.put("budgetTrain", train);
-        result.put("budgetTotal", total_use);
+        result.put(
+          "budgetCer",
+          certificate.setScale(2, BigDecimal.ROUND_HALF_UP)
+        );
+        result.put("budgetTrain", train.setScale(2, BigDecimal.ROUND_HALF_UP));
+        result.put(
+          "budgetTotal",
+          total_use.setScale(2, BigDecimal.ROUND_HALF_UP)
+        );
       }
 
       return result;
@@ -389,9 +489,10 @@ public class BudgetService {
   }
 
   public List<LinkedHashMap<String, Object>> find_budget(
-      Long company_id,
-      String year,
-      Long department_id) {
+    Long company_id,
+    String year,
+    Long department_id
+  ) {
     String jpql = "select * from budget where 1=1";
 
     if (year != null) {
@@ -407,8 +508,9 @@ public class BudgetService {
     }
 
     NativeQuery<Budget> query = (NativeQuery<Budget>) entityManager.createNativeQuery(
-        jpql,
-        Budget.class);
+      jpql,
+      Budget.class
+    );
 
     if (year != null) {
       query.setParameter("year", year);
@@ -431,10 +533,23 @@ public class BudgetService {
 
       budgetMap.put("id", budget.getId());
       budgetMap.put("year", budget.getYear());
-      budgetMap.put("budgetTraining", budget.getBudgetTraining());
-      budgetMap.put("budgetCer", budget.getBudgetCer());
-      budgetMap.put("total_exp", budget.getTotal_exp());
+
+      // Convert float values to BigDecimal and setScale for two decimal places
+      BigDecimal budgetTraining = BigDecimal
+        .valueOf(budget.getBudgetTraining())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+      BigDecimal budgetCer = BigDecimal
+        .valueOf(budget.getBudgetCer())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+      BigDecimal total_exp = BigDecimal
+        .valueOf(budget.getTotal_exp())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+      budgetMap.put("budgetTraining", budgetTraining);
+      budgetMap.put("budgetCer", budgetCer);
+      budgetMap.put("total_exp", total_exp);
       budgetMap.put("company", budget.getCompany().getCompanyName());
+
       Map<String, Object> departmentMap = new HashMap<>();
       departmentMap.put("deptid", budget.getDepartment().getId());
       departmentMap.put("deptname", budget.getDepartment().getDeptName());
@@ -446,5 +561,43 @@ public class BudgetService {
     }
 
     return budgetMapList;
+  }
+
+  public List<Map<String, Object>> findAlls() {
+    List<Budget> budgets = budgetRepository.findAll();
+    List<Map<String, Object>> result = new ArrayList<>();
+
+    for (Budget budget : budgets) {
+      Map<String, Object> budgetMap = new HashMap<>();
+      budgetMap.put("id", budget.getId());
+      budgetMap.put("year", budget.getYear());
+
+      // Convert float values to BigDecimal and setScale for two decimal places
+      BigDecimal budgetTraining = BigDecimal
+        .valueOf(budget.getBudgetTraining())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+      BigDecimal budgetCer = BigDecimal
+        .valueOf(budget.getBudgetCer())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+      BigDecimal total_exp = BigDecimal
+        .valueOf(budget.getTotal_exp())
+        .setScale(2, BigDecimal.ROUND_HALF_UP);
+
+      budgetMap.put("budgetTraining", budgetTraining);
+      budgetMap.put("budgetCer", budgetCer);
+      budgetMap.put("total_exp", total_exp);
+      budgetMap.put("company", budget.getCompany().getCompanyName());
+
+      Map<String, Object> departmentMap = new HashMap<>();
+      departmentMap.put("deptid", budget.getDepartment().getId());
+      departmentMap.put("deptname", budget.getDepartment().getDeptName());
+      departmentMap.put("deptcode", budget.getDepartment().getDeptCode());
+
+      budgetMap.put("department", departmentMap);
+
+      result.add(budgetMap);
+    }
+
+    return result;
   }
 }
