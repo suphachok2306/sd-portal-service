@@ -84,7 +84,17 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(10, 'AF', 'AF',1)," +
         "(11, 'HQ', 'HQ',1)," +
         "(12, 'ISO', 'ISO',1)," +
-        "(13, 'ISO', 'ISO',2);"
+        "(13, 'ISO', 'ISO',2)," +
+        "(14, 'HQ', 'HQ', 2),  " +
+        "(15, 'AF', 'AF', 2),  " +
+        "(16, 'MK', 'MK', 2),  " +
+        "(17, 'APS', 'APS', 2),  " +
+        "(18, 'APS (BOI)', 'APS (BOI)', 2),  " +
+        "(19, 'OSS', 'OSS', 2),  " +
+        "(20, 'OSS (BOI)', 'OSS (BOI)', 2),  " +
+        "(21, 'TOP', 'TOP', 2),  " +
+        "(22, 'TOP (BOI)', 'TOP (BOI)', 2),  " +
+        "(23, 'SD (BOI)', 'SD (BOI)', 2)  "
       );
     }
   }
@@ -111,8 +121,18 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(16, 'HQ', '8011', 11), " +
         "(17, 'AF', '9011', 10)," +
         "(18, 'ISO', '8011', 11), " +
-        "(19, 'PS', '8011', 4), " +
-        "(20, 'TOP', '8011', 5) "
+        "(19 ,'PS', '0000', 4)," +
+        "(20, 'TOP', '8011', 5), " +
+        "(21, 'SI', '3011', 6),  " +
+        "(22, 'BD', '3011', 6),  " +
+        "(23, 'IS', '3011', 6),  " +
+        "(24, 'AP', '3011', 6),  " +
+        "(25, 'FM', '6011', 3),  " +
+        "(26, 'LG', '8011', 14),  " +
+        "(27, 'PN', '8011', 14),  " +
+        "(28, 'AD', '8011', 14),  " +
+        "(29, 'AC', '9011', 15),  " +
+        "(30, 'FN', '9011', 15)  "
       );
     }
   }
@@ -159,9 +179,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('SR.SYSTEM ANALYST I',15),\r\n" + //
         "('SR.SYSTEM ANALYST II',16),\r\n" + //
         "('PROGRAMMER III',17)," +
-        "('Manager Senior Manager', 7)," +
-        "('Business Development Specialist Senior', 7)," +
-        "('Business Development Senior', 7)," +
+        "('Manager_Senior Manager', 22)," +
+        "('Business Development Specialist_Senior', 22)," +
+        "('Business Development_Senior', 22)," +
         "('Quality Management Representative', 18)," +
         "('Document and Data Control', 18)," +
         "('Manager / Senior Manager', 3)," +
@@ -175,9 +195,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Tester I', 3)," +
         "('Tester II', 3)," +
         "('Tester III', 3)," +
-        "('Manager Senior Manager', 7)," +
-        "('IT Specialist Senior IT Consultant', 7)," +
-        "('IT Administrator Senior', 7)," +
+        "('Manager_Senior Manager', 23)," +
+        "('IT Specialist Senior IT Consultant', 23)," +
+        "('IT Administrator Senior', 23)," +
         "('Vice President', 13)," +
         "('Asst. Vice President', 13)," +
         "('FM Manager', 13)," +
@@ -187,68 +207,68 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Manager', 13)," +
         "('Asst. Manager', 13)," +
         "('SQA Specialist', 13)," +
-        "('SQA Analyst', 13)," +
-        "('Application Support', 13)," +
-        "('Legal Manager Sr.Legal Manager', 16)," +
-        "('Sr.Legal Specialist I', 16)," +
-        "('Sr.Legal Specialist II', 16)," +
-        "('Legal Specialist I', 16)," +
-        "('Legal Specialist II', 16)," +
-        "('Sr.Legal Officer I', 16)," +
-        "('Sr.Legal Officer II', 16)," +
-        "('Admin Staff I', 16)," +
-        "('Admin Staff II', 16)," +
-        "('Admin Staff III', 16)," +
-        "('Legal Officer I', 16)," +
-        "('Legal Officer II', 16)," +
-        "('Legal Officer III', 16)," +
-        "('Finance Officer I', 17)," +
-        "('Finance Officer II', 17)," +
-        "('Finance Officer III', 17)," +
-        "('Cashier', 17)," +
-        "('Bill Collector', 17)," +
+        "('SQA_Analyst', 13)," +
+        "('Application_Support', 13)," +
+        "('Legal Manager_Sr.Legal Manager', 26)," +
+        "('Sr.Legal Specialist I', 26)," +
+        "('Sr.Legal Specialist II', 26)," +
+        "('Legal Specialist I', 26)," +
+        "('Legal Specialist II', 26)," +
+        "('Sr.Legal Officer I', 26)," +
+        "('Sr.Legal Officer II', 26)," +
+        "('Admin Staff I', 26)," +
+        "('Admin Staff II', 26)," +
+        "('Admin Staff III', 26)," +
+        "('Legal Officer I', 26)," +
+        "('Legal Officer II', 26)," +
+        "('Legal Officer III', 26)," +
+        "('Finance Officer I', 30)," +
+        "('Finance Officer II', 30)," +
+        "('Finance Officer III', 30)," +
+        "('Cashier', 30)," +
+        "('Bill Collector', 30)," +
         "('Vice President', 20)," +
         "('Assistant Vice President', 20)," +
-        "('Sr. Personnel Manager', 16)," +
-        "('Personnel Manager', 16)," +
-        "('Assistant Manager I PN', 16)," +
-        "('Assistant Manager II PN', 16)," +
-        "('Assistant Manager I (Payroll)', 16)," +
-        "('Assistant Manager II (Payroll)', 16)," +
-        "('Sr. HR Specialist I', 16)," +
-        "('Sr. HR Specialist II', 16)," +
-        "('HR Specialist I', 16)," +
-        "('HR Specialist II', 16)," +
-        "('Sr. HR Officer I', 16)," +
-        "('Sr. HR Officer II', 16)," +
-        "('Sr. Payroll Officer I', 16)," +
-        "('Sr. Payroll Officer II', 16)," +
-        "('HR Officer I', 16)," +
-        "('HR Officer II', 16)," +
-        "('HR Officer III', 16)," +
-        "('Payroll Officer I', 16)," +
-        "('Payroll Officer II', 16)," +
-        "('Payroll Officer III', 16)," +
-        "('Officer Admin Manager 7B', 16)," +
-        "('Sr. Admin Officer IV 6A', 16)," +
-        "('Sr. Admin Officer III 6B', 16)," +
-        "('Sr. Admin Officer II 5A', 16)," +
-        "('Sr. Admin Officer I 5B', 16)," +
-        "('Admin Officer I-III 3A-4A', 16)," +
-        "('Admin Officer II 3A-4A', 16)," +
-        "('Admin Officer III 3A-4A', 16)," +
-        "('Admin Staff I', 16)," +
-        "('Admin Staff II', 16)," +
-        "('Admin Staff III', 16)," +
-        "('Driver', 16)," +
-        "('Accounting Officer I', 17)," +
-        "('Accounting Officer II', 17)," +
-        "('Accounting Officer III', 17)," +
-        "('Account Admin I', 17)," +
-        "('Account Admin II', 17)," +
-        "('Account Admin III', 17)," +
-        "('Sr.Accounting Officer I', 17)," +
-        "('Sr.Accounting Officer II', 17)," +
+        "('Sr. Personnel Manager', 27)," +
+        "('Personnel Manager', 27)," +
+        "('Assistant Manager I PN', 27)," +
+        "('Assistant Manager II PN', 27)," +
+        "('Assistant Manager I (Payroll)', 27)," +
+        "('Assistant Manager II (Payroll)', 27)," +
+        "('Sr. HR Specialist I', 27)," +
+        "('Sr. HR Specialist II', 27)," +
+        "('HR Specialist I', 27)," +
+        "('HR Specialist II', 27)," +
+        "('Sr. HR Officer I', 27)," +
+        "('Sr. HR Officer II', 27)," +
+        "('Sr. Payroll Officer I', 27)," +
+        "('Sr. Payroll Officer II', 27)," +
+        "('HR Officer I', 27)," +
+        "('HR Officer II', 27)," +
+        "('HR Officer III', 27)," +
+        "('Payroll Officer I', 27)," +
+        "('Payroll Officer II', 27)," +
+        "('Payroll Officer III', 27)," +
+        "('Officer Admin Manager_7B', 28)," +
+        "('Sr. Admin Officer IV_6A', 28)," +
+        "('Sr. Admin Officer III_6B', 28)," +
+        "('Sr. Admin Officer II_5A', 28)," +
+        "('Sr. Admin Officer I_5B', 28)," +
+        "('Admin Officer I-III 3A-4A', 28)," +
+        "('Admin Officer II 3A-4A', 28)," +
+        "('Admin Officer III 3A-4A', 28)," +
+        "('Admin Staff I', 28)," +
+        "('Admin Staff II', 28)," +
+        "('Admin Staff III', 28)," +
+        "('Driver', 28)," +
+        "('Accounting Officer I', 29)," +
+        "('Accounting Officer II', 29)," +
+        "('Accounting Officer III', 29)," +
+        "('Account Admin I', 29)," +
+        "('Account Admin II', 29)," +
+        "('Account Admin III', 29)," +
+        "('Sr.Accounting Officer I', 29)," +
+        "('Sr.Accounting Officer II', 29)," +
         "('Sr.Manager', 10)," +
         "('Sr.Technical Specialist I', 10)," +
         "('Sr.Helpdesk Lead', 10)," +
@@ -274,10 +294,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Technician II', 10)," +
         "('Technician III', 10)," +
         "('Manager', 13)," +
-        "('Asst Manager', 13)," +
-        "('System Engineer', 13)," +
-        "('Network Analyst', 13)," +
-        "('Network Engineer', 13)," +
+        "('Asst_Manager', 13)," +
+        "('System_Engineer', 13)," +
+        "('Network_Analyst', 13)," +
+        "('Network_Engineer', 13)," +
         "('DBA', 13)," +
         "('Manager and Sr.Manager', 11)," +
         "('Asst.Manager I', 11)," +
@@ -303,21 +323,21 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Driver', 11)," +
         "('Vice President', 7)," +
         "('Advisor', 7)," +
-        "('Admin Officer Senior', 7)," +
+        "('Admin Officer_Senior', 7)," +
         "('Manager', 13)," +
         "('Assistant Manager', 13)," +
         "('Application Specialist', 13)," +
         "('System Analyst', 13)," +
         "('Programmer', 13)," +
         "('Operation Support', 13)," +
-        "('Sr Admin Officer', 13)," +
-        "('Admin Officer', 13)," +
+        "('Sr_Admin_Officer', 13)," +
+        "('Admin_Officer', 13)," +
         "('Driver', 13)," +
         "('Manager', 13)," +
-        "('Asst Manager', 13)," +
-        "('Mainframe Specialist', 13)," +
-        "('Sr_System Programmer', 13)," +
-        "('System Programmer', 13)," +
+        "('Asst_Manager', 13)," +
+        "('Mainframe_Specialist', 13)," +
+        "('Sr_System_Programmer', 13)," +
+        "('System_Programmer', 13)," +
         "('Manager', 9)," +
         "('Asst. Manager I', 9)," +
         "('Asst. Manager II', 9)," +
@@ -345,7 +365,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Admin Admin I', 9)," +
         "('Sr. Manager', 9)," +
         "('Vice President', 6)," +
-        "('MK Group Executive Vice President', 6)," +
+        "('MK Group_Executive Vice President', 6)," +
         "('Manager_Sr.Manager (Sale Support)', 6)," +
         "('Assistant Manager I (Business Consultant)', 6)," +
         "('Assistant Manager II (Business Consultant)', 6)," +
@@ -354,17 +374,17 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Business Consultant Specialist I', 6)," +
         "('Business Consultant Specialist II', 6)," +
         "('Jr. Business Consultant', 6)," +
-        "('Admin Sr.Admin Officer I', 6)," +
-        "('Admin Sr.Admin Officer II', 6)," +
-        "('Admin Sr.Admin Officer III', 6)," +
-        "('Admin Sr.Admin Officer IV', 6)," +
-        "('Sale Support Sr.Sale Support', 6)," +
+        "('Admin_Sr.Admin Officer I', 6)," +
+        "('Admin_Sr.Admin Officer II', 6)," +
+        "('Admin_Sr.Admin Officer III', 6)," +
+        "('Admin_Sr.Admin Officer IV', 6)," +
+        "('Sale Support_Sr.Sale Support', 6)," +
         "('Manager/Sr.Manager', 6)," +
         "('Sr. Business Consultant Specialist I', 6)," +
         "('Sr. Business Consultant Specialist II', 6)," +
         "('Sr. Business Consultant Specialist III', 6)," +
-        "('Asst Project Manager', 13)," +
-        "('Project Coordinator', 13)," +
+        "('Asst_Project_Manager', 13)," +
+        "('Project_Coordinator', 13)," +
         "('Manager / Senior Manager', 8)," +
         "('Assistant Manager I', 8)," +
         "('Assistant Manager II', 8)," +
@@ -423,45 +443,45 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Vice President', 17)," +
         "('Assistant Vice President', 17)," +
         "('Manager', 13)," +
-        "('Asst Manager', 13)," +
-        "('Sr System Operator', 13)," +
-        "('System Operator', 13)," +
-        "('Manager Senior Manager', 7)," +
-        "('Purchasing Specialist', 7)," +
-        "('Purchasing Officer Senior', 7)," +
+        "('Asst_Manager', 13)," +
+        "('Sr_System_Operator', 13)," +
+        "('System_Operator', 13)," +
+        "('Manager_Senior Manager', 24)," +
+        "('Purchasing Specialist', 24)," +
+        "('Purchasing Officer_Senior', 24)," +
         "('Asst. Vice President', 5)," +
-        "('Admin Sr.Admin Officer I', 5)," +
-        "('Admin Sr.Admin Officer II', 5)," +
-        "('Admin Sr.Admin Officer III', 5)," +
-        "('Admin Sr.Admin Officer IV', 5)," +
+        "('Admin_Sr.Admin Officer I', 5)," +
+        "('Admin_Sr.Admin Officer II', 5)," +
+        "('Admin_Sr.Admin Officer III', 5)," +
+        "('Admin_Sr.Admin Officer IV', 5)," +
         "('Vice President', 5)," +
         "('Business Consultant Specialist I', 5)," +
         "('Business Consultant Specialist II', 5)," +
-        "('Manager Sr.Manager (Sale Support)', 5)," +
+        "('Manager_Sr.Manager (Sale Support)', 5)," +
         "('Sr.Business Consultant I', 5)," +
         "('Sr.Business Consultant II', 5)," +
         "('Business Consultant I', 5)," +
         "('Business Consultant II', 5)," +
-        "('Sale Support Sr.Sale Support', 5)," +
+        "('Sale Support_Sr.Sale Support', 5)," +
         "('Manager/Sr.Manager', 5)," +
         "('President', 16)," +
         "('Executive Secretary', 16)," +
         "('Advisor', 16)," +
-        "('Secretary Sr. Secretary', 16)," +
+        "('Secretary_Sr. Secretary', 16)," +
         "('Sr. Vice President Chief Architect', 16)," +
         "('CEO', 16)," +
         "('SR-Manager (Chief Architect)', 16)," +
         "('Programmer (Chief Architect)', 16)," +
-        "('Manager Sr.Manager (Sale Support)', 16)," +
+        "('Manager_Sr.Manager (Sale Support)', 16)," +
         "('Manager (7A)', 14)," +
         "('Sr.Project Manager (7A)', 14)," +
         "('Project Manager (7B)', 14)," +
         "('Sr.Asst. Project Manager (6A)', 14)," +
         "('Asst. Project Manager (6B)', 14)," +
-        "('Lead Project Co 6B-6A', 14)," +
-        "('Sr.Project Co 5B-5A', 14)," +
-        "('Project Co 4A', 14)," +
-        "('Project Co 3A-4B', 14)," +
+        "('Lead Project Co_6B-6A', 14)," +
+        "('Sr.Project Co_5B-5A', 14)," +
+        "('Project Co_4A', 14)," +
+        "('Project Co_3A-4B', 14)," +
         "('Sr.Admin IV (6A)', 14)," +
         "('Sr.Admin III (6B)', 14)," +
         "('Sr.Admin II (5A)', 14)," +
@@ -469,12 +489,12 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Admin III (4A)', 14)," +
         "('Admin II (4B)', 14)," +
         "('Admin I (3A)', 14)," +
-        "('Technical Consultant', 7)," +
-        "('Solution Architect', 7)," +
-        "('Solutions Specialist  Senior', 7)," +
-        "('Technical Specialist Senior', 7)," +
-        "('Technical Engineer Senior', 7)," +
-        "('Manager Senior Manager', 7)," +
+        "('Technical Consultant', 21)," +
+        "('Solution Architect', 21)," +
+        "('Solutions Specialist  Senior', 21)," +
+        "('Technical Specialist Senior', 21)," +
+        "('Technical Engineer Senior', 21)," +
+        "('Manager_Senior Manager', 21)," +
         "('SR.Project Manager', 12)," +
         "('Project Manager', 12)," +
         "('Assitant Project Manger and Senior', 12)," +
@@ -498,89 +518,115 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
   }
 
-  private void insertDataIntoUsersTable() {
-    String hashpassword = passwordEncoder.encode("1234");
+    private void insertDataIntoUsersTable() {
+      String hashpassword = passwordEncoder.encode("1234");
 
-    String sql =
-      "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, company_id, department_id, position_id, sector_id, status, title) VALUES " +
-      "('admin@pccth.com', 000001, 'Admin', 'Admin', '" +
-      hashpassword +
-      "', '+1111111111', 1, 1, 8, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('approver@pccth.com', 000002, 'ประวิทย์', 'เถาว์พันธ์', '" +
-      hashpassword +
-      "', '+2222222222', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('vicepresident@pccth.com', 000003, 'VicePresident', 'VicePresident', '" +
-      hashpassword +
-      "','+3333333333', 1, 1, 1, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('personnel@pccth.com', 000004, 'Personnel', 'Personnel', '" +
-      hashpassword +
-      "', '+4444444444', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('2@pccth.com', 000005, 'สุริยา', ' จันทร', '" +
-      hashpassword +
-      "', '+6666666666', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('3@pccth.com', 000006, 'ณัทกฤช', 'เจริญธรรมทัด', '" +
-      hashpassword +
-      "', '+7777777777', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('4@pccth.com', 000007, 'วาณี', 'ธรรมาภิมุขกุล', '" +
-      hashpassword +
-      "', '+8888888888', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('5@pccth.com', 000008, 'พันชริทร์', 'โสภะ', '" +
-      hashpassword +
-      "', '+9999999999', 1, 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('6@pccth.com', 000009, 'เสาวภา', '6', '" +
-      hashpassword +
-      "', '+0000000000', 1, 2, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('7@pccth.com', 000010, 'ณัฐวรรณ', '7', '" +
-      hashpassword +
-      "', '1234567890', 1, 3, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('khunanonk@pccth.com', '123456', 'คุณานนท์', 'ครองขวัญ', '" +
-      hashpassword +
-      "','0981234567', 1, 1, 13, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminFSI@pccth.com', 10006, 'AdminFSI', 'AdminFSI', '" +
-      hashpassword +
-      "', '+1111111111', 1, 5, 8, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminPBS@pccth.com', 10005, 'AdminPBS', 'AdminPBS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 6, 8, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminMS@pccth.com', 10004, 'AdminMS', 'AdminMS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 5, 8, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminOSS@pccth.com', 10003, 'AdminOSS', 'AdminOSS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 13, 8, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminHQ@pccth.com', 10001, 'AdminHQ', 'AdminHQ', '" +
-      hashpassword +
-      "', '+1111111111', 1, 16, 8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminAF@pccth.com', 10000, 'AdminAF', 'AdminAF', '" +
-      hashpassword +
-      "', '+1111111111', 1, 17, 8, 10, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userFSI@pccth.com', 20006, 'userFSI', 'userFSI', '" +
-      hashpassword +
-      "', '+1111111111', 1, 5, 4, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPBS@pccth.com', 20005, 'userPBS', 'userPBS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 6, 4, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userMS@pccth.com', 20004, 'userMS', 'userMS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 1, 4, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userOSS@pccth.com', 20003, 'userOSS', 'userOSS', '" +
-      hashpassword +
-      "', '+1111111111', 1, 13, 4, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userHQ@pccth.com', 20001, 'userHQ', 'userHQ', '" +
-      hashpassword +
-      "', '+1111111111', 1, 16, 4, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAF@pccth.com', 20000, 'userAF', 'userAF', '" +
-      hashpassword +
-      "', '+1111111111', 1, 17, 4, 10, 'เป็นพนักงานอยู่', 'นาย')";
+      String sql =
+        "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, company_id, position_id, sector_id, status, title) VALUES " +
+        "('admin@pccth.com', 000001, 'Admin', 'Admin', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('approver@pccth.com', 000002, 'ประวิทย์', 'เถาว์พันธ์', '" +
+        hashpassword +
+        "', '+2222222222', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('vicepresident@pccth.com', 000003, 'VicePresident', 'VicePresident', '" +
+        hashpassword +
+        "','+3333333333', 1, 1, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('personnel@pccth.com', 000004, 'Personnel', 'Personnel', '" +
+        hashpassword +
+        "', '+4444444444', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('2@pccth.com', 000005, 'สุริยา', ' จันทร', '" +
+        hashpassword +
+        "', '+6666666666', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('3@pccth.com', 000006, 'ณัทกฤช', 'เจริญธรรมทัด', '" +
+        hashpassword +
+        "', '+7777777777', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('4@pccth.com', 000007, 'วาณี', 'ธรรมาภิมุขกุล', '" +
+        hashpassword +
+        "', '+8888888888', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('5@pccth.com', 000008, 'พันชริทร์', 'โสภะ', '" +
+        hashpassword +
+        "', '+9999999999', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('6@pccth.com', 000009, 'เสาวภา', '6', '" +
+        hashpassword +
+        "', '+0000000000', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('7@pccth.com', 000010, 'ณัฐวรรณ', '7', '" +
+        hashpassword +
+        "', '1234567890', 1, 4, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('khunanonk@pccth.com', '123456', 'คุณานนท์', 'ครองขวัญ', '" +
+        hashpassword +
+        "','0981234567', 1, 13, 1, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminFSI@pccth.com', 10006, 'วาสนา', 'ยีตา', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminPBS@pccth.com', 10005, 'กมลพรรณ', 'ฉิมจารย์', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminMS@pccth.com', 10004, 'นภาขวัญ', 'แซ่อึ้ง', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminOSS@pccth.com', 10003, 'รติรส', 'กุญแจทอง', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminLG@pccth.com', 10001, 'รุ่งกานต์', 'อินทรีประจง', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminPN&AD@pccth.com', 10002, 'อรทัย', 'เพืยศักดิ์', '" +
+        hashpassword +
+        "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminAF@pccth.com', 10000, 'ชมพูนุท', 'ชัยสุขโกศล', '" +
+        hashpassword +
+        "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminSD@pccth.com', 10009, 'ชณัญพัชร์', 'มิลินภรพิศุทธ์', '" +
+        hashpassword +
+        "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminSE@pccth.com', 90000, 'อุทัยวรรณ', 'กิมศรี', '" +
+        hashpassword +
+        "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminCS&CE&SM@pccth.com', 10399, 'นันทิดา', 'แสงเตือน', '" +
+        hashpassword +
+        "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminNS@pccth.com', 10400, 'ศิริรัตน์', 'ชาลียุทธ', '" +
+        hashpassword +
+         "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminPM@pccth.com', 10430, 'สิริรัตน', 'ทรงสอาด', '" +
+        hashpassword +
+         "', '+1111111111', 1,  8, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('adminDT@pccth.com', 10410, 'ประภัสสร', 'ศรีสังข์', '" +
+        hashpassword +
+        "', '+1111111111', 1, 8, 10, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userFSI@pccth.com', 20006, 'userFSI', 'userFSI', '" +
+        hashpassword +
+        "', '+1111111111', 1, 4, 8, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userPBS@pccth.com', 20005, 'userPBS', 'userPBS', '" +
+        hashpassword +
+        "', '+1111111111', 1, 4, 7, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userMS@pccth.com', 20004, 'userMS', 'userMS', '" +
+        hashpassword +
+        "', '+1111111111', 1, 4, 6, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userOSS@pccth.com', 20003, 'userOSS', 'userOSS', '" +
+        hashpassword +
+        "', '+1111111111', 1, 4, 3, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userHQ@pccth.com', 20001, 'userHQ', 'userHQ', '" +
+        hashpassword +
+        "', '+1111111111', 1,  4, 11, 'เป็นพนักงานอยู่', 'นาย'), " +
+        "('userAF@pccth.com', 20000, 'userAF', 'userAF', '" +
+        hashpassword +
+        "', '+1111111111', 1,  4, 10, 'เป็นพนักงานอยู่', 'นาย')";
 
-    if (isTableEmpty("public.users")) {
-      jdbcTemplate.execute(sql);
-      jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," +
-        "(18,5),(19,5),(20,5),(21,5),(22,5)"
-      );
+      if (isTableEmpty("public.users")) {
+        jdbcTemplate.execute(sql);
+        jdbcTemplate.execute(
+            "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," +
+            "(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,5),(26,5),(27,5),(28,5),(29,5),(30,5)"
+          );
+        jdbcTemplate.execute(
+            "INSERT INTO public.user_department (user_id, department_id) VALUES" +
+            "(1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1)"+
+            "(12,5),(13,6),(14,7),(15,13),(16,26),(17,27),(17,28),(18,17),(19,1),(20,8),(21,9),(21,10),(21,12)"+
+            "(22,11),(23,14),(24,15),(25,5),(26,6),(27,7),(28,13),(29,16),(30,17)");
+      }
     }
-  }
 
   private void insertBudgetTable() {
     String sql =

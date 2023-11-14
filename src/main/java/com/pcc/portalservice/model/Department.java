@@ -16,25 +16,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Department {
-
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String deptName;
-  private String deptCode;
+    private String deptName;
+    private String deptCode;
 
-  @OneToMany(mappedBy = "department")
-  @JsonIgnore
-  private List<Position> positions = new ArrayList<>();
+    @OneToMany(mappedBy = "department")
+    @JsonIgnore
+    private List<Position> positions = new ArrayList<>();
 
-  @OneToOne(mappedBy = "department")
-  @JsonIgnore
-  private User user;
+    @ManyToMany(mappedBy = "departments")
+    @JsonIgnore
+    private List<User> users = new ArrayList<>();
 
-  @ManyToOne
-  @JoinColumn(name = "sector_id")
-  @JsonIgnore
-  private Sector sector;
+    @ManyToOne
+    @JoinColumn(name = "sector_id")
+    @JsonIgnore
+    private Sector sector;
 
 }

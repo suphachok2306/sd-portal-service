@@ -313,22 +313,22 @@ public class TrainingController {
   //    return trainingService.printReport(trainId);
   //  }
 
-  @GetMapping("/Report")
-  public String report(
-    @RequestParam Long trainId,
-    @RequestParam(required = false) Long userId1,
-    @RequestParam(required = false) Long userId2,
-    @RequestParam(required = false) Long userId3,
-    @RequestParam(required = false) Long userId4
-  ) {
-    return trainingService.printReport(
-      trainId,
-      userId1,
-      userId2,
-      userId3,
-      userId4
-    );
-  }
+  // @GetMapping("/Report")
+  // public String report(
+  //   @RequestParam Long trainId,
+  //   @RequestParam(required = false) Long userId1,
+  //   @RequestParam(required = false) Long userId2,
+  //   @RequestParam(required = false) Long userId3,
+  //   @RequestParam(required = false) Long userId4
+  // ) {
+  //   return trainingService.printReport(
+  //     trainId,
+  //     userId1,
+  //     userId2,
+  //     userId3,
+  //     userId4
+  //   );
+  // }
 
 //  @Value("${pdf.path}")
 //  private String pdfFilesPath;

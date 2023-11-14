@@ -787,224 +787,224 @@ public class TrainingService {
     return java.util.Base64.getEncoder().encodeToString(imageBytes);
   }
 
-  public String printReport(
-    Long trainId,
-    Long userId1,
-    Long userId2,
-    Long userId3,
-    Long userId4
-  ) {
-    Training training_id = findByTrainingId(trainId);
+  // public String printReport(
+  //   Long trainId,
+  //   Long userId1,
+  //   Long userId2,
+  //   Long userId3,
+  //   Long userId4
+  // ) {
+  //   Training training_id = findByTrainingId(trainId);
 
-    try {
-      List<Map<String, Object>> dataList = new ArrayList<>();
+  //   try {
+  //     List<Map<String, Object>> dataList = new ArrayList<>();
 
-      Map<String, Object> params = new HashMap<>();
+  //     Map<String, Object> params = new HashMap<>();
 
-      if (userId1 == null) {
-        if (userId4 != null) {
-          User evaluator4 = userRepository.findById(userId4).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator4.getSignature().getImage())
-          );
-        } else if (userId1 == null && userId4 == null) {
-          User evaluator2 = userRepository.findById(userId2).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator2.getSignature().getImage())
-          );
-        } else if (userId1 == null && userId2 == null && userId4 == null) {
-          User evaluator3 = userRepository.findById(userId3).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator3.getSignature().getImage())
-          );
-        }
-      } else if (userId1 != null) {
-        User evaluator1 = userRepository.findById(userId1).orElse(null);
-        params.put(
-          "approve1",
-          convertByteToBase64(evaluator1.getSignature().getImage())
-        );
-      }
+  //     if (userId1 == null) {
+  //       if (userId4 != null) {
+  //         User evaluator4 = userRepository.findById(userId4).orElse(null);
+  //         params.put(
+  //           "approve1",
+  //           convertByteToBase64(evaluator4.getSignature().getImage())
+  //         );
+  //       } else if (userId1 == null && userId4 == null) {
+  //         User evaluator2 = userRepository.findById(userId2).orElse(null);
+  //         params.put(
+  //           "approve1",
+  //           convertByteToBase64(evaluator2.getSignature().getImage())
+  //         );
+  //       } else if (userId1 == null && userId2 == null && userId4 == null) {
+  //         User evaluator3 = userRepository.findById(userId3).orElse(null);
+  //         params.put(
+  //           "approve1",
+  //           convertByteToBase64(evaluator3.getSignature().getImage())
+  //         );
+  //       }
+  //     } else if (userId1 != null) {
+  //       User evaluator1 = userRepository.findById(userId1).orElse(null);
+  //       params.put(
+  //         "approve1",
+  //         convertByteToBase64(evaluator1.getSignature().getImage())
+  //       );
+  //     }
 
-      if (userId1 != null) {
-        User user_id1 = userRepository.findById(userId1).orElse(null);
-        if (user_id1 != null) {
-          params.put(
-            "imageBase64User1",
-            convertByteToBase64(user_id1.getSignature().getImage())
-          );
-          params.put("positionAp1", user_id1.getPosition().getPositionName());
-          params.put(
-            "date_saveUser1",
-            training_id.getStatus().get(0).getApprovalDate()
-          );
-        }
-      }
-      if (userId2 != null) {
-        User user_id2 = userRepository.findById(userId2).orElse(null);
-        if (user_id2 != null) {
-          params.put(
-            "imageBase64User2",
-            convertByteToBase64(user_id2.getSignature().getImage())
-          );
-          params.put("positionAp2", user_id2.getPosition().getPositionName());
-          if (training_id.getStatus().size() == 1) {
-            params.put(
-              "date_saveUser2",
-              training_id.getStatus().get(0).getApprovalDate()
-            );
-          } else if (training_id.getStatus().size() > 1) {
-            params.put(
-              "date_saveUser2",
-              training_id.getStatus().get(1).getApprovalDate()
-            );
-          }
-        }
-      }
-      if (userId3 != null) {
-        User user_id3 = userRepository.findById(userId3).orElse(null);
-        if (user_id3 != null) {
-          params.put(
-            "imageBase64User3",
-            convertByteToBase64(user_id3.getSignature().getImage())
-          );
-          if (training_id.getStatus().size() > 1) {
-            params.put(
-              "date_saveUser3",
-              training_id.getStatus().get(1).getApprovalDate()
-            );
-          } else if (training_id.getStatus().size() == 1) {
-            params.put(
-              "date_saveUser3",
-              training_id.getStatus().get(0).getApprovalDate()
-            );
-          }
-        }
-      }
+  //     if (userId1 != null) {
+  //       User user_id1 = userRepository.findById(userId1).orElse(null);
+  //       if (user_id1 != null) {
+  //         params.put(
+  //           "imageBase64User1",
+  //           convertByteToBase64(user_id1.getSignature().getImage())
+  //         );
+  //         params.put("positionAp1", user_id1.getPosition().getPositionName());
+  //         params.put(
+  //           "date_saveUser1",
+  //           training_id.getStatus().get(0).getApprovalDate()
+  //         );
+  //       }
+  //     }
+  //     if (userId2 != null) {
+  //       User user_id2 = userRepository.findById(userId2).orElse(null);
+  //       if (user_id2 != null) {
+  //         params.put(
+  //           "imageBase64User2",
+  //           convertByteToBase64(user_id2.getSignature().getImage())
+  //         );
+  //         params.put("positionAp2", user_id2.getPosition().getPositionName());
+  //         if (training_id.getStatus().size() == 1) {
+  //           params.put(
+  //             "date_saveUser2",
+  //             training_id.getStatus().get(0).getApprovalDate()
+  //           );
+  //         } else if (training_id.getStatus().size() > 1) {
+  //           params.put(
+  //             "date_saveUser2",
+  //             training_id.getStatus().get(1).getApprovalDate()
+  //           );
+  //         }
+  //       }
+  //     }
+  //     if (userId3 != null) {
+  //       User user_id3 = userRepository.findById(userId3).orElse(null);
+  //       if (user_id3 != null) {
+  //         params.put(
+  //           "imageBase64User3",
+  //           convertByteToBase64(user_id3.getSignature().getImage())
+  //         );
+  //         if (training_id.getStatus().size() > 1) {
+  //           params.put(
+  //             "date_saveUser3",
+  //             training_id.getStatus().get(1).getApprovalDate()
+  //           );
+  //         } else if (training_id.getStatus().size() == 1) {
+  //           params.put(
+  //             "date_saveUser3",
+  //             training_id.getStatus().get(0).getApprovalDate()
+  //           );
+  //         }
+  //       }
+  //     }
 
-      if (userId4 != null) {
-        User user_id4 = userRepository.findById(userId4).orElse(null);
-        if (user_id4 != null) {
-          params.put(
-            "imageBase64User4",
-            convertByteToBase64(user_id4.getSignature().getImage())
-          );
-        }
-      }
+  //     if (userId4 != null) {
+  //       User user_id4 = userRepository.findById(userId4).orElse(null);
+  //       if (user_id4 != null) {
+  //         params.put(
+  //           "imageBase64User4",
+  //           convertByteToBase64(user_id4.getSignature().getImage())
+  //         );
+  //       }
+  //     }
 
-      params.put(
-        "dept_code",
-        training_id.getUser().getDepartment().getDeptCode()
-      );
-      params.put(
-        "sector_name",
-        training_id.getUser().getSector().getSectorName()
-      );
-      params.put(
-        "dept_name",
-        training_id.getUser().getDepartment().getDeptName()
-      );
-      params.put("date_save", training_id.getDateSave());
-      params.put(
-        "course_name",
-        training_id.getCourses().get(0).getCourseName()
-      );
-      params.put("objective", training_id.getCourses().get(0).getObjective());
-      params.put("start_date", training_id.getCourses().get(0).getStartDate());
-      params.put("end_date", training_id.getCourses().get(0).getEndDate());
-      params.put("time", training_id.getCourses().get(0).getTime());
-      params.put("note", training_id.getCourses().get(0).getNote());
+  //     params.put(
+  //       "dept_code",
+  //       training_id.getUser().getDepartment().getDeptCode()
+  //     );
+  //     params.put(
+  //       "sector_name",
+  //       training_id.getUser().getSector().getSectorName()
+  //     );
+  //     params.put(
+  //       "dept_name",
+  //       training_id.getUser().getDepartment().getDeptName()
+  //     );
+  //     params.put("date_save", training_id.getDateSave());
+  //     params.put(
+  //       "course_name",
+  //       training_id.getCourses().get(0).getCourseName()
+  //     );
+  //     params.put("objective", training_id.getCourses().get(0).getObjective());
+  //     params.put("start_date", training_id.getCourses().get(0).getStartDate());
+  //     params.put("end_date", training_id.getCourses().get(0).getEndDate());
+  //     params.put("time", training_id.getCourses().get(0).getTime());
+  //     params.put("note", training_id.getCourses().get(0).getNote());
 
-      params.put("price", training_id.getCourses().get(0).getPrice());
-      params.put("institute", training_id.getCourses().get(0).getInstitute());
-      params.put("place", training_id.getCourses().get(0).getPlace());
-      params.put("budget", training_id.getBudget());
-      params.put(
-        "priceProject",
-        training_id.getCourses().get(0).getPriceProject()
-      );
+  //     params.put("price", training_id.getCourses().get(0).getPrice());
+  //     params.put("institute", training_id.getCourses().get(0).getInstitute());
+  //     params.put("place", training_id.getCourses().get(0).getPlace());
+  //     params.put("budget", training_id.getBudget());
+  //     params.put(
+  //       "priceProject",
+  //       training_id.getCourses().get(0).getPriceProject()
+  //     );
 
-      params.put("emp_code", training_id.getUser().getEmpCode());
-      params.put("firstname", training_id.getUser().getFirstname());
-      params.put("lastname", training_id.getUser().getLastname());
-      params.put(
-        "position",
-        training_id.getUser().getPosition().getPositionName()
-      );
+  //     params.put("emp_code", training_id.getUser().getEmpCode());
+  //     params.put("firstname", training_id.getUser().getFirstname());
+  //     params.put("lastname", training_id.getUser().getLastname());
+  //     params.put(
+  //       "position",
+  //       training_id.getUser().getPosition().getPositionName()
+  //     );
 
-      params.put("action", training_id.getAction());
-      params.put("actionDate", training_id.getActionDate());
+  //     params.put("action", training_id.getAction());
+  //     params.put("actionDate", training_id.getActionDate());
 
-      // section2
-      params.put("app_name", training_id.getApprove1().getFirstname());
-      params.put("app_lastname", training_id.getApprove1().getLastname());
-      params.put(
-        "app_position",
-        training_id.getApprove1().getPosition().getPositionName()
-      );
-      params.put(
-        "app_dept_name",
-        training_id.getApprove1().getDepartment().getDeptName()
-      );
-      params.put(
-        "app_sector_name",
-        training_id.getApprove1().getSector().getSectorName()
-      );
-      params.put("result1", training_id.getResult().get(0).getResult1());
-      params.put("result2", training_id.getResult().get(0).getResult2());
-      params.put("result3", training_id.getResult().get(0).getResult3());
-      params.put("result4", training_id.getResult().get(0).getResult4());
-      params.put("result5", training_id.getResult().get(0).getResult5());
-      params.put("result6", training_id.getResult().get(0).getResult6());
-      params.put("result7", training_id.getResult().get(0).getResult7());
-      params.put("comment", training_id.getResult().get(0).getComment());
-      params.put("cause", training_id.getResult().get(0).getCause());
-      params.put("plan", training_id.getResult().get(0).getPlan());
-      params.put("result", training_id.getResult().get(0).getResult());
-      params.put(
-        "date_saveEvaluation",
-        training_id.getResult().get(0).getEvaluationDate()
-      );
-      dataList.add(params);
+  //     // section2
+  //     params.put("app_name", training_id.getApprove1().getFirstname());
+  //     params.put("app_lastname", training_id.getApprove1().getLastname());
+  //     params.put(
+  //       "app_position",
+  //       training_id.getApprove1().getPosition().getPositionName()
+  //     );
+  //     params.put(
+  //       "app_dept_name",
+  //       training_id.getApprove1().getDepartment().getDeptName()
+  //     );
+  //     params.put(
+  //       "app_sector_name",
+  //       training_id.getApprove1().getSector().getSectorName()
+  //     );
+  //     params.put("result1", training_id.getResult().get(0).getResult1());
+  //     params.put("result2", training_id.getResult().get(0).getResult2());
+  //     params.put("result3", training_id.getResult().get(0).getResult3());
+  //     params.put("result4", training_id.getResult().get(0).getResult4());
+  //     params.put("result5", training_id.getResult().get(0).getResult5());
+  //     params.put("result6", training_id.getResult().get(0).getResult6());
+  //     params.put("result7", training_id.getResult().get(0).getResult7());
+  //     params.put("comment", training_id.getResult().get(0).getComment());
+  //     params.put("cause", training_id.getResult().get(0).getCause());
+  //     params.put("plan", training_id.getResult().get(0).getPlan());
+  //     params.put("result", training_id.getResult().get(0).getResult());
+  //     params.put(
+  //       "date_saveEvaluation",
+  //       training_id.getResult().get(0).getEvaluationDate()
+  //     );
+  //     dataList.add(params);
 
-      // Load the JasperReport from a JRXML file
-      InputStream reportInput =
-        UserService.class.getClassLoader()
-          .getResourceAsStream("report/OF1-report.jrxml");
-      JasperReport jasperReport = JasperCompileManager.compileReport(
-        reportInput
-      );
+  //     // Load the JasperReport from a JRXML file
+  //     InputStream reportInput =
+  //       UserService.class.getClassLoader()
+  //         .getResourceAsStream("report/OF1-report.jrxml");
+  //     JasperReport jasperReport = JasperCompileManager.compileReport(
+  //       reportInput
+  //     );
 
-      // Create a JRDataSource from the user data
-      JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
+  //     // Create a JRDataSource from the user data
+  //     JRDataSource dataSource = new JRBeanCollectionDataSource(dataList);
 
-      // Fill the report with data
-      JasperPrint jasperPrint = JasperFillManager.fillReport(
-        jasperReport,
-        params,
-        dataSource
-      );
+  //     // Fill the report with data
+  //     JasperPrint jasperPrint = JasperFillManager.fillReport(
+  //       jasperReport,
+  //       params,
+  //       dataSource
+  //     );
 
-      //      File tempPdfFile = File.createTempFile("report", ".pdf");
-      //
-      //      // Export the report to the temporary PDF file
-      //      JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdfFile.getAbsolutePath());
-      //
-      //      return tempPdfFile;
+  //     //      File tempPdfFile = File.createTempFile("report", ".pdf");
+  //     //
+  //     //      // Export the report to the temporary PDF file
+  //     //      JasperExportManager.exportReportToPdfFile(jasperPrint, tempPdfFile.getAbsolutePath());
+  //     //
+  //     //      return tempPdfFile;
 
-      // Export the report to PDF
-      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+  //     // Export the report to PDF
+  //     byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
 
-      // Convert the byte array to Base64
-      return Base64.encodeBase64String(bytes);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+  //     // Convert the byte array to Base64
+  //     return Base64.encodeBase64String(bytes);
+  //   } catch (Exception e) {
+  //     e.printStackTrace();
+  //   }
+  //   return null;
+  // }
 
   private static JRDataSource getDataSource(LinkedHashMap<String, Object> ht) {
     Float sumall = 0.0f;
