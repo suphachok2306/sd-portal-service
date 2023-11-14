@@ -82,7 +82,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(8, 'FSI', 'FSI',1)," +
         "(9, 'QMR', 'QMR',1)," +
         "(10, 'AF', 'AF',1)," +
-        "(11, 'HQ', 'HQ',1);"
+        "(11, 'HQ', 'HQ',1)," +
+        "(12, 'ISO', 'ISO',1)," +
+        "(13, 'ISO', 'ISO',2);"
       );
     }
   }
@@ -107,7 +109,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(14, 'PM', '7011', 4), " +
         "(15, 'DT', '7012', 4), " +
         "(16, 'HQ', '8011', 11), " +
-        "(17, 'AF', '9011', 10)"
+        "(17, 'AF', '9011', 10)," +
+        "(18, 'ISO', '8011', 11), " +
+        "(19, 'PS', '8011', 4), " +
+        "(20, 'TOP', '8011', 5) "
       );
     }
   }
@@ -153,7 +158,342 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('PROGRAMMER II',14),\r\n" + //
         "('SR.SYSTEM ANALYST I',15),\r\n" + //
         "('SR.SYSTEM ANALYST II',16),\r\n" + //
-        "('PROGRAMMER III',17);"
+        "('PROGRAMMER III',17)," +
+        "('Manager Senior Manager', 7)," +
+        "('Business Development Specialist Senior', 7)," +
+        "('Business Development Senior', 7)," +
+        "('Quality Management Representative', 18)," +
+        "('Document and Data Control', 18)," +
+        "('Manager / Senior Manager', 3)," +
+        "('Assistant Manager I', 3)," +
+        "('Assistant Manager II', 3)," +
+        "('SQA Specialist / Senior SQA Specialist', 3)," +
+        "('Senior SQA Analyst I', 3)," +
+        "('Senior SQA Analyst II', 3)," +
+        "('SQA Analyst', 3)," +
+        "('Senior Tester', 3)," +
+        "('Tester I', 3)," +
+        "('Tester II', 3)," +
+        "('Tester III', 3)," +
+        "('Manager Senior Manager', 7)," +
+        "('IT Specialist Senior IT Consultant', 7)," +
+        "('IT Administrator Senior', 7)," +
+        "('Vice President', 13)," +
+        "('Asst. Vice President', 13)," +
+        "('FM Manager', 13)," +
+        "('FSVP-Services Group', 19)," +
+        "('Vice President (8B)', 19)," +
+        "('Asst.Vice President (8C)', 19)," +
+        "('Manager', 13)," +
+        "('Asst. Manager', 13)," +
+        "('SQA Specialist', 13)," +
+        "('SQA Analyst', 13)," +
+        "('Application Support', 13)," +
+        "('Legal Manager Sr.Legal Manager', 16)," +
+        "('Sr.Legal Specialist I', 16)," +
+        "('Sr.Legal Specialist II', 16)," +
+        "('Legal Specialist I', 16)," +
+        "('Legal Specialist II', 16)," +
+        "('Sr.Legal Officer I', 16)," +
+        "('Sr.Legal Officer II', 16)," +
+        "('Admin Staff I', 16)," +
+        "('Admin Staff II', 16)," +
+        "('Admin Staff III', 16)," +
+        "('Legal Officer I', 16)," +
+        "('Legal Officer II', 16)," +
+        "('Legal Officer III', 16)," +
+        "('Finance Officer I', 17)," +
+        "('Finance Officer II', 17)," +
+        "('Finance Officer III', 17)," +
+        "('Cashier', 17)," +
+        "('Bill Collector', 17)," +
+        "('Vice President', 20)," +
+        "('Assistant Vice President', 20)," +
+        "('Sr. Personnel Manager', 16)," +
+        "('Personnel Manager', 16)," +
+        "('Assistant Manager I PN', 16)," +
+        "('Assistant Manager II PN', 16)," +
+        "('Assistant Manager I (Payroll)', 16)," +
+        "('Assistant Manager II (Payroll)', 16)," +
+        "('Sr. HR Specialist I', 16)," +
+        "('Sr. HR Specialist II', 16)," +
+        "('HR Specialist I', 16)," +
+        "('HR Specialist II', 16)," +
+        "('Sr. HR Officer I', 16)," +
+        "('Sr. HR Officer II', 16)," +
+        "('Sr. Payroll Officer I', 16)," +
+        "('Sr. Payroll Officer II', 16)," +
+        "('HR Officer I', 16)," +
+        "('HR Officer II', 16)," +
+        "('HR Officer III', 16)," +
+        "('Payroll Officer I', 16)," +
+        "('Payroll Officer II', 16)," +
+        "('Payroll Officer III', 16)," +
+        "('Officer Admin Manager 7B', 16)," +
+        "('Sr. Admin Officer IV 6A', 16)," +
+        "('Sr. Admin Officer III 6B', 16)," +
+        "('Sr. Admin Officer II 5A', 16)," +
+        "('Sr. Admin Officer I 5B', 16)," +
+        "('Admin Officer I-III 3A-4A', 16)," +
+        "('Admin Officer II 3A-4A', 16)," +
+        "('Admin Officer III 3A-4A', 16)," +
+        "('Admin Staff I', 16)," +
+        "('Admin Staff II', 16)," +
+        "('Admin Staff III', 16)," +
+        "('Driver', 16)," +
+        "('Accounting Officer I', 17)," +
+        "('Accounting Officer II', 17)," +
+        "('Accounting Officer III', 17)," +
+        "('Account Admin I', 17)," +
+        "('Account Admin II', 17)," +
+        "('Account Admin III', 17)," +
+        "('Sr.Accounting Officer I', 17)," +
+        "('Sr.Accounting Officer II', 17)," +
+        "('Sr.Manager', 10)," +
+        "('Sr.Technical Specialist I', 10)," +
+        "('Sr.Helpdesk Lead', 10)," +
+        "('IT Specialist I', 10)," +
+        "('IT Specialist II', 10)," +
+        "('Sr.Computer Engineer I', 10)," +
+        "('Sr.Computer Engineer II', 10)," +
+        "('Sr.Technician I', 10)," +
+        "('Sr.Technician II', 10)," +
+        "('Computer Engineer I', 10)," +
+        "('Computer Engineer II', 10)," +
+        "('Computer Engineer III', 10)," +
+        "('HelpDesk I', 10)," +
+        "('HelpDesk II', 10)," +
+        "('HelpDesk III', 10)," +
+        "('Store Officer I', 10)," +
+        "('Store Officer II', 10)," +
+        "('Store Officer III', 10)," +
+        "('Technical Support I', 10)," +
+        "('Technical Support II', 10)," +
+        "('Technical Support III', 10)," +
+        "('Technician I', 10)," +
+        "('Technician II', 10)," +
+        "('Technician III', 10)," +
+        "('Manager', 13)," +
+        "('Asst Manager', 13)," +
+        "('System Engineer', 13)," +
+        "('Network Analyst', 13)," +
+        "('Network Engineer', 13)," +
+        "('DBA', 13)," +
+        "('Manager and Sr.Manager', 11)," +
+        "('Asst.Manager I', 11)," +
+        "('Asst.Manager II', 11)," +
+        "('IT Specialist I', 11)," +
+        "('IT Specialist II', 11)," +
+        "('Network Analyst and Sr.Network Analyst', 11)," +
+        "('Cyber Security System Analyst and Sr.Cyber Security System Analyst', 11)," +
+        "('Sr.Computer Engineer I', 11)," +
+        "('Sr.Computer Engineer II', 11)," +
+        "('Sr.Network Engineer I', 11)," +
+        "('Sr.Network Engineer II', 11)," +
+        "('Sr.Cyber Security Engineer I', 11)," +
+        "('Sr.Cyber Security Engineer II', 11)," +
+        "('Computer Engineer I', 11)," +
+        "('Computer Engineer II', 11)," +
+        "('Computer Engineer III', 11)," +
+        "('Network Engineer I', 11)," +
+        "('Network Engineer II', 11)," +
+        "('Network Engineer III', 11)," +
+        "('Cyber Security Engineer II', 11)," +
+        "('Cyber Security Engineer III', 11)," +
+        "('Driver', 11)," +
+        "('Vice President', 7)," +
+        "('Advisor', 7)," +
+        "('Admin Officer Senior', 7)," +
+        "('Manager', 13)," +
+        "('Assistant Manager', 13)," +
+        "('Application Specialist', 13)," +
+        "('System Analyst', 13)," +
+        "('Programmer', 13)," +
+        "('Operation Support', 13)," +
+        "('Sr Admin Officer', 13)," +
+        "('Admin Officer', 13)," +
+        "('Driver', 13)," +
+        "('Manager', 13)," +
+        "('Asst Manager', 13)," +
+        "('Mainframe Specialist', 13)," +
+        "('Sr_System Programmer', 13)," +
+        "('System Programmer', 13)," +
+        "('Manager', 9)," +
+        "('Asst. Manager I', 9)," +
+        "('Asst. Manager II', 9)," +
+        "('IT Specialist I', 9)," +
+        "('IT Specialist II', 9)," +
+        "('Sr. Engr I', 9)," +
+        "('Sr. Engr II', 9)," +
+        "('Engr I', 9)," +
+        "('Engr II', 9)," +
+        "('Asst. TS Manager I', 9)," +
+        "('Asst. TS Manager II', 9)," +
+        "('Sr. Technical Support I', 9)," +
+        "('Sr. Technical Support |I', 9)," +
+        "('Sr. Technical Support III', 9)," +
+        "('Technical Support I', 9)," +
+        "('Technical Support II', 9)," +
+        "('Technical Support III', 9)," +
+        "('Admin Officer I', 9)," +
+        "('Admin Officer II', 9)," +
+        "('Admin Officer III', 9)," +
+        "('Sr. Admin Officer I', 9)," +
+        "('Sr. Admin Officer II', 9)," +
+        "('Sr. Admin Officer III', 9)," +
+        "('Sr. Admin Officer IV', 9)," +
+        "('Admin Admin I', 9)," +
+        "('Sr. Manager', 9)," +
+        "('Vice President', 6)," +
+        "('MK Group Executive Vice President', 6)," +
+        "('Manager_Sr.Manager (Sale Support)', 6)," +
+        "('Assistant Manager I (Business Consultant)', 6)," +
+        "('Assistant Manager II (Business Consultant)', 6)," +
+        "('Business Consultant I', 6)," +
+        "('Business Consultant II', 6)," +
+        "('Business Consultant Specialist I', 6)," +
+        "('Business Consultant Specialist II', 6)," +
+        "('Jr. Business Consultant', 6)," +
+        "('Admin Sr.Admin Officer I', 6)," +
+        "('Admin Sr.Admin Officer II', 6)," +
+        "('Admin Sr.Admin Officer III', 6)," +
+        "('Admin Sr.Admin Officer IV', 6)," +
+        "('Sale Support Sr.Sale Support', 6)," +
+        "('Manager/Sr.Manager', 6)," +
+        "('Sr. Business Consultant Specialist I', 6)," +
+        "('Sr. Business Consultant Specialist II', 6)," +
+        "('Sr. Business Consultant Specialist III', 6)," +
+        "('Asst Project Manager', 13)," +
+        "('Project Coordinator', 13)," +
+        "('Manager / Senior Manager', 8)," +
+        "('Assistant Manager I', 8)," +
+        "('Assistant Manager II', 8)," +
+        "('Data Engineer I', 8)," +
+        "('Data Engineer II', 8)," +
+        "('Data Engineer III', 8)," +
+        "('Data Engineer IV', 8)," +
+        "('Data Engineer V', 8)," +
+        "('Data Engineer Specialist / Senior Data Engineer Specialist', 8)," +
+        "('Senior Data Engineer I', 8)," +
+        "('Senior Data Engineer II', 8)," +
+        "('DevOps Engineer I', 8)," +
+        "('DevOps Engineer II', 8)," +
+        "('DevOps Engineer III', 8)," +
+        "('DevOps Engineer IV', 8)," +
+        "('DevOps Engineer V', 8)," +
+        "('Data Engineer Expert', 8)," +
+        "('DevOps Engineer Specialist / Senior DevOps Engineer Specialist', 8)," +
+        "('Senior DevOps Engineer I', 8)," +
+        "('Senior DevOps Engineer II', 8)," +
+        "('Enterprise Architect / Senior Enterprise Architect I', 8)," +
+        "('Enterprise Architect / Senior Enterprise Architect II', 8)," +
+        "('DevOps Engineer Expert', 8)," +
+        "('Enterprise Architect Expert', 8)," +
+        "('Enterprise Architect Specialist / Senior Enterprise Architect Specialist', 8)," +
+        "('Senior Site Reliability Engineer I', 8)," +
+        "('Senior Site Reliability Engineer II', 8)," +
+        "('Site Reliability Engineer I', 8)," +
+        "('Site Reliability Engineer II', 8)," +
+        "('Site Reliability Engineer III', 8)," +
+        "('Site Reliability Engineer IV', 8)," +
+        "('Site Reliability Engineer V', 8)," +
+        "('Site Reliability Engineer Expert', 8)," +
+        "('Site Reliability Engineer Specialist / Senior DataSite Reliability Engineer Specialist', 8)," +
+        "('Senior System Engineer I', 8)," +
+        "('Senior System Engineer II', 8)," +
+        "('System Engineer I', 8)," +
+        "('System Engineer II', 8)," +
+        "('System Engineer III', 8)," +
+        "('System Engineer IV', 8)," +
+        "('System Engineer V', 8)," +
+        "('System Engineer Expert', 8)," +
+        "('System Engineer Specialist / Senior System Engineer Specialist', 8)," +
+        "('Technical Support I', 8)," +
+        "('Technical Support II', 8)," +
+        "('Technical Support III', 8)," +
+        "('Technical Support IV', 8)," +
+        "('Technical Support V', 8)," +
+        "('Technology Strategist / Senior Technology Strategist I', 8)," +
+        "('Technology Strategist / Senior Technology Strategist II', 8)," +
+        "('Technology Strategist Specialist / Senior Technology Strategist Specialist', 8)," +
+        "('Technology Strategist Expert', 8)," +
+        "('Admin Officer I / Senior Admin Officer', 8)," +
+        "('Admin Officer II / Senior Admin Officer', 8)," +
+        "('Admin Officer III / Senior Admin Officer', 8)," +
+        "('Vice President', 17)," +
+        "('Assistant Vice President', 17)," +
+        "('Manager', 13)," +
+        "('Asst Manager', 13)," +
+        "('Sr System Operator', 13)," +
+        "('System Operator', 13)," +
+        "('Manager Senior Manager', 7)," +
+        "('Purchasing Specialist', 7)," +
+        "('Purchasing Officer Senior', 7)," +
+        "('Asst. Vice President', 5)," +
+        "('Admin Sr.Admin Officer I', 5)," +
+        "('Admin Sr.Admin Officer II', 5)," +
+        "('Admin Sr.Admin Officer III', 5)," +
+        "('Admin Sr.Admin Officer IV', 5)," +
+        "('Vice President', 5)," +
+        "('Business Consultant Specialist I', 5)," +
+        "('Business Consultant Specialist II', 5)," +
+        "('Manager Sr.Manager (Sale Support)', 5)," +
+        "('Sr.Business Consultant I', 5)," +
+        "('Sr.Business Consultant II', 5)," +
+        "('Business Consultant I', 5)," +
+        "('Business Consultant II', 5)," +
+        "('Sale Support Sr.Sale Support', 5)," +
+        "('Manager/Sr.Manager', 5)," +
+        "('President', 16)," +
+        "('Executive Secretary', 16)," +
+        "('Advisor', 16)," +
+        "('Secretary Sr. Secretary', 16)," +
+        "('Sr. Vice President Chief Architect', 16)," +
+        "('CEO', 16)," +
+        "('SR-Manager (Chief Architect)', 16)," +
+        "('Programmer (Chief Architect)', 16)," +
+        "('Manager Sr.Manager (Sale Support)', 16)," +
+        "('Manager (7A)', 14)," +
+        "('Sr.Project Manager (7A)', 14)," +
+        "('Project Manager (7B)', 14)," +
+        "('Sr.Asst. Project Manager (6A)', 14)," +
+        "('Asst. Project Manager (6B)', 14)," +
+        "('Lead Project Co 6B-6A', 14)," +
+        "('Sr.Project Co 5B-5A', 14)," +
+        "('Project Co 4A', 14)," +
+        "('Project Co 3A-4B', 14)," +
+        "('Sr.Admin IV (6A)', 14)," +
+        "('Sr.Admin III (6B)', 14)," +
+        "('Sr.Admin II (5A)', 14)," +
+        "('Sr.Admin I (5B)', 14)," +
+        "('Admin III (4A)', 14)," +
+        "('Admin II (4B)', 14)," +
+        "('Admin I (3A)', 14)," +
+        "('Technical Consultant', 7)," +
+        "('Solution Architect', 7)," +
+        "('Solutions Specialist  Senior', 7)," +
+        "('Technical Specialist Senior', 7)," +
+        "('Technical Engineer Senior', 7)," +
+        "('Manager Senior Manager', 7)," +
+        "('SR.Project Manager', 12)," +
+        "('Project Manager', 12)," +
+        "('Assitant Project Manger and Senior', 12)," +
+        "('Project Coordinator Lead and Senior', 12)," +
+        "('Sr Project Coordinator I', 12)," +
+        "('Project Coordinator I', 12)," +
+        "('Sr Project Coordinator II', 12)," +
+        "('Project Coordinator II', 12)," +
+        "('Sr.DT Manager (7A)', 15)," +
+        "('DT Manager (7B)', 15)," +
+        "('Sr. DT Officer II (5A)', 15)," +
+        "('Sr. DT Officer I (5B)', 15)," +
+        "('DT Officer III (4A)', 15)," +
+        "('DT Officer II (4B)', 15)," +
+        "('DT Officer I (3A)', 15)," +
+        "('Assistant DT Manager (6B)', 15)," +
+        "('Java and DB II Instructor', 15)," +
+        "('Sr. Asst. DT Manager (6A)', 15)," +
+        "('Instructor', 15)"
       );
     }
   }
@@ -236,8 +576,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," + 
-            "(18,5),(19,5),(20,5),(21,5),(22,5)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," +
+        "(18,5),(19,5),(20,5),(21,5),(22,5)"
       );
     }
   }
