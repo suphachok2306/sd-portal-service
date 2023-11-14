@@ -180,7 +180,7 @@
 				<text><![CDATA[ค่าใช่จ่าย]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="705" y="10" width="95" height="30" uuid="26f8312a-2e1f-4647-8760-eaa69443c950"/>
+				<reportElement x="705" y="10" width="95" height="30" uuid="9256b7dc-f4b4-4f19-afd9-100a16bcb8d3"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
 				</box>
@@ -247,9 +247,9 @@
 				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="148" height="44" uuid="19f59075-0da5-49ed-8c8a-60114be6a197"/>
 				<box leftPadding="10">
 					<pen lineWidth="1.0" lineStyle="Dashed"/>
-					<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+					<topPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dashed" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Top">
@@ -286,14 +286,14 @@
 				</jr:list>
 			</componentElement>
 			<componentElement>
-				<reportElement x="705" y="-1" width="95" height="45" uuid="1bb519a3-c198-45a5-9b22-95b48b70980b"/>
+				<reportElement x="705" y="0" width="95" height="44" uuid="1bb519a3-c198-45a5-9b22-95b48b70980b"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset3" uuid="bed41798-41db-4dae-a3d1-224a5bb5c2d8">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{priceProjects})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="45" width="95">
+					<jr:listContents height="44" width="95">
 						<textField>
-							<reportElement x="0" y="0" width="95" height="45" uuid="e76d5067-0feb-4b17-a95e-7520413bae77"/>
+							<reportElement x="0" y="0" width="95" height="44" uuid="e76d5067-0feb-4b17-a95e-7520413bae77"/>
 							<box>
 								<pen lineWidth="1.0" lineStyle="Dashed"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

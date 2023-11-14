@@ -10,8 +10,6 @@ import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
 import lombok.AllArgsConstructor;
-import net.sf.jasperreports.engine.JRException;
-
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -422,16 +420,27 @@ public class TrainingController {
   }
 
 
-  @GetMapping("/generic9")
+  @GetMapping("/Generic9")
   public LinkedHashMap<String, Object> generic9(
     @RequestParam String startDate,
     @RequestParam String endDate
   ) {
-    return trainingService.HistoryTraining(
+    return trainingService.HistoryGeneric9(
       startDate,
       endDate
     );
   }
+  @GetMapping("/ReportGeneric9")
+  public String reportGeneric9(
+          @RequestParam String startDate,
+          @RequestParam String endDate
+  ) throws Exception {
+    return trainingService.printReportGeneric9(
+            startDate,
+            endDate
+    );
+  }
+
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
   //     if (count > 3) {

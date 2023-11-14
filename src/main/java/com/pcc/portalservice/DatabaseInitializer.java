@@ -110,7 +110,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(15, 'DT', '7012', 4), " +
         "(16, 'HQ', '8011', 11), " +
         "(17, 'AF', '9011', 10)," +
-        "(18, 'ISO', '8011', 11), " +
+        "(18, 'ISO', '8011', 12), " +
         "(19, 'PS', '8011', 4), " +
         "(20, 'TOP', '8011', 5) "
       );
