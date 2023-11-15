@@ -907,6 +907,10 @@ public class TrainingService {
         "sector_name",
         training_id.getUser().getSector().getSectorName()
       );
+//      params.put(
+//        "dept_name",
+//        training_id.getUser().getDepartment().getDeptName()
+//      );
       params.put(
         "dept_name",
         departmentOptional.get().getDeptName()
@@ -949,6 +953,11 @@ public class TrainingService {
         "app_position",
         training_id.getApprove1().getPosition().getPositionName()
       );
+
+//      params.put(
+//        "app_dept_name",
+//        training_id.getApprove1().getDepartment().getDeptName()
+//      );
       params.put(
         "app_dept_name",
         departmentOptional.get().getDeptName()

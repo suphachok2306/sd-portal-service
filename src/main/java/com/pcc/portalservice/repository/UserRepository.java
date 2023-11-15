@@ -2,10 +2,11 @@ package com.pcc.portalservice.repository;
 
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.Roles;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,5 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findById(Long userId);
   //public Page<User> findAll(Specification<User> spec, Pageable pageable);
+
 
 }
