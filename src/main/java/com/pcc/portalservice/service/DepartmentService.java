@@ -304,11 +304,11 @@ public class DepartmentService {
             "d.id AS department_id, " +
             "d.dept_name AS department_name, " +
             "d.dept_code AS department_code " +
-            "FROM users u " +
-            "JOIN sector s ON u.sector_id = s.id " +
+            "FROM sector s " +
             "JOIN company c ON s.company_id = c.id " +
-            "JOIN user_department ud ON ud.user_id = u.id " +
-            "JOIN department d ON ud.department_id = d.id " +
+            "JOIN department d ON s.id = d.sector_id " +
+            "JOIN user_department ud ON ud.department_id = d.id " +
+            "JOIN users u ON ud.user_id = u.id " +
             "WHERE u.id = :id";
 
     List<Object[]> results = entityManager
