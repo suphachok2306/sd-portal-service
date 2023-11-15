@@ -215,47 +215,12 @@ public class UserService {
       new RuntimeException("Sector not found / SectorCode or SectorName wrong")
     );
 
-<<<<<<< HEAD
-    Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
-      editEmployeeRequest.getDeptCode(),
-      editEmployeeRequest.getDeptName()
-    );
-
-    Department department = departmentOptional.orElseThrow(() ->
-      new RuntimeException("Department not found / DeptCode or DeptName wrong")
-    );
-    Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
-      editEmployeeRequest.getPositionName(),
-      department
-    );
-
-    Position position = positionOptional.orElseThrow(() ->
-      new RuntimeException("Position not found")
-    );
-//    if (positionOptional.isEmpty()) {
-//      throw new RuntimeException("Position not found for the given department");
-//    }
-//
-//    Position position = positionOptional.get();
-
-    if ((email == null || email.isEmpty()) && userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
-      throw new RuntimeException("EmpCode is already in use.");
-  } else if (userRepository.existsByEmail(email) && !user.getEmail().equals(email) && 
-             userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
-      throw new RuntimeException("Both Email and EmpCode are already in use.");
-  } else if (userRepository.existsByEmail(email) && !user.getEmail().equals(email)) {
-      throw new RuntimeException("Email is already in use.");
-  } else if (userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
-      throw new RuntimeException("EmpCode is already in use.");
-  }
-=======
     for (Long i : editEmployeeRequest.getDeptID()) {
       try {
           Optional<Department> departmentOptional = departmentRepository.findById(i);
           Department department = departmentOptional.orElseThrow(() ->
               new RuntimeException("Department not found / DeptCode or DeptName wrong")
           );
->>>>>>> 170b4e22aefba082d3d76dc8b52f95c78235b26a
   
           Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
               editEmployeeRequest.getPositionName(),
