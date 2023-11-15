@@ -1,5 +1,7 @@
 package com.pcc.portalservice.requests;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,7 +15,7 @@ public class EditEmployeeRequest {
     String email;
     String sectorName;
     String sectorCode;
-    String deptName;
-    String deptCode;
     String companyName;
+
+    private List<Long> deptID;
 }

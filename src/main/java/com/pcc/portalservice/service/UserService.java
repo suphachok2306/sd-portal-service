@@ -7,20 +7,19 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateEmployeeRequest;
 import com.pcc.portalservice.requests.CreateUserRequest;
 import com.pcc.portalservice.requests.EditEmployeeRequest;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -132,9 +131,8 @@ public class UserService {
       new RuntimeException("Sector not found / SectorCode or SectorName wrong")
     );
 
-    Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
-      createEmployeeRequest.getDeptCode(),
-      createEmployeeRequest.getDeptName()
+    Optional<Department> departmentOptional = departmentRepository.findById(
+      createEmployeeRequest.getDeptID().get(0)
     );
 
     Department department = departmentOptional.orElseThrow(() ->
@@ -154,7 +152,7 @@ public class UserService {
       .builder()
       .company(companyName)
       .sector(sector)
-      .departments(null)
+      .departments(new HashSet<>())
       .empCode(createEmployeeRequest.getEmpCode())
       .firstname(createEmployeeRequest.getFirstname())
       .lastname(createEmployeeRequest.getLastname())
@@ -167,15 +165,23 @@ public class UserService {
     for (String roleName : createEmployeeRequest.getRoles()) {
       Roles roleEnum = null;
       try {
-        roleEnum = Roles.valueOf(roleName); // Check if it's a valid role
+        roleEnum = Roles.valueOf(roleName);
       } catch (IllegalArgumentException e) {
-        // If it's not a valid role, set it to "User"
         roleEnum = Roles.User;
       }
 
       Role role = roleRepository.findByRole(roleEnum).orElse(null);
       if (role != null && !user.getRoles().contains(role)) {
         user.getRoles().add(role);
+      }
+    }
+
+    for (Long deptID : createEmployeeRequest.getDeptID()) {
+      Department department_id = departmentRepository
+        .findById(deptID)
+        .orElse(null);
+      if (deptID != null) {
+        user.getDepartments().add(department_id);
       }
     }
 
@@ -209,6 +215,7 @@ public class UserService {
       new RuntimeException("Sector not found / SectorCode or SectorName wrong")
     );
 
+<<<<<<< HEAD
     Optional<Department> departmentOptional = departmentRepository.findByDeptCodeAndDeptName(
       editEmployeeRequest.getDeptCode(),
       editEmployeeRequest.getDeptName()
@@ -241,19 +248,72 @@ public class UserService {
   } else if (userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
       throw new RuntimeException("EmpCode is already in use.");
   }
+=======
+    for (Long i : editEmployeeRequest.getDeptID()) {
+      try {
+          Optional<Department> departmentOptional = departmentRepository.findById(i);
+          Department department = departmentOptional.orElseThrow(() ->
+              new RuntimeException("Department not found / DeptCode or DeptName wrong")
+          );
+>>>>>>> 170b4e22aefba082d3d76dc8b52f95c78235b26a
   
+          Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
+              editEmployeeRequest.getPositionName(),
+              department
+          );
+          Position position = positionOptional.orElseThrow(() ->
+              new RuntimeException("Position not found")
+          );
+  
+          user.setPosition(position);
+      } catch (RuntimeException e) {
+          continue;
+      }
+  }  
+
+    if (
+      (email == null || email.isEmpty()) &&
+      userRepository.existsByEmpCode(empCode) &&
+      !user.getEmpCode().equals(empCode)
+    ) {
+      throw new RuntimeException("EmpCode is already in use.");
+    } else if (
+      userRepository.existsByEmail(email) &&
+      !user.getEmail().equals(email) &&
+      userRepository.existsByEmpCode(empCode) &&
+      !user.getEmpCode().equals(empCode)
+    ) {
+      throw new RuntimeException("Both Email and EmpCode are already in use.");
+    } else if (
+      userRepository.existsByEmail(email) && !user.getEmail().equals(email)
+    ) {
+      throw new RuntimeException("Email is already in use.");
+    } else if (
+      userRepository.existsByEmpCode(empCode) &&
+      !user.getEmpCode().equals(empCode)
+    ) {
+      throw new RuntimeException("EmpCode is already in use.");
+    }
 
     user.setEmpCode(editEmployeeRequest.getEmpCode());
     user.setFirstname(editEmployeeRequest.getFirstname());
     user.setLastname(editEmployeeRequest.getLastname());
     user.setEmail(editEmployeeRequest.getEmail());
-    user.setPosition(position);
     user.setSector(sector);
-    user.setDepartments(null);
+    user.setDepartments(new HashSet<>());
+
+    for (Long deptID : editEmployeeRequest.getDeptID()) {
+      Department department_id = departmentRepository
+        .findById(deptID)
+        .orElse(null);
+      if (deptID != null) {
+        user.getDepartments().add(department_id);
+      }
+    }
     user.setCompany(companyName);
+
     return userRepository.save(user);
   }
-
 
   public Role createRole(Roles roleName) {
     if (!roleRepository.existsByRole(roleName)) {
@@ -400,137 +460,137 @@ public class UserService {
   /**
    * @หาUserด้วยempcode,name,position,email,deptname,deptcode,company
    */
-//  public Object searchUser(
-//    String empCode,
-//    String name,
-//    String position,
-//    String email,
-//    String deptName,
-//    String deptCode,
-//    String company,
-//    String sectorName,
-//    String sectorCode
-//  ) {
-//    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-//    CriteriaQuery<User> query = builder.createQuery(User.class);
-//    Root<User> root = query.from(User.class);
-//
-//    List<Predicate> predicates = new ArrayList<>();
-//
-//    if (empCode != null) {
-//      predicates.add(
-//        builder.like(
-//          builder.lower(root.get("empCode")),
-//          "%" + empCode.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (name != null) {
-//      Expression<String> fullName = builder.concat(
-//        builder.concat(builder.lower(root.get("firstname")), " "),
-//        builder.lower(root.get("lastname"))
-//      );
-//      predicates.add(
-//        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
-//      );
-//    }
-//    if (email != null) {
-//      predicates.add(
-//        builder.like(
-//          builder.lower(root.get("email")),
-//          "%" + email.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (position != null) {
-//      Join<User, Position> positionJoin = root.join("position");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(positionJoin.get("positionName")),
-//          "%" + position.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (deptName != null) {
-//      Join<User, Department> departmentJoin = root.join("department");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(departmentJoin.get("deptName")),
-//          "%" + deptName.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (deptCode != null) {
-//      Join<User, Department> departmentJoin = root.join("department");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(departmentJoin.get("deptCode")),
-//          "%" + deptCode.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (company != null) {
-//      Join<User, Company> companyJoin = root.join("company");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(companyJoin.get("companyName")),
-//          "%" + company.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (sectorName != null) {
-//      Join<User, Sector> sectorJoin = root.join("sector");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(sectorJoin.get("sectorName")),
-//          "%" + sectorName.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//    if (sectorCode != null) {
-//      Join<User, Sector> sectorJoin = root.join("sector");
-//      predicates.add(
-//        builder.like(
-//          builder.lower(sectorJoin.get("sectorCode")),
-//          "%" + sectorCode.toLowerCase() + "%"
-//        )
-//      );
-//    }
-//
-//    if (
-//      name == null &&
-//      empCode != null &&
-//      position != null &&
-//      email != null &&
-//      deptCode != null &&
-//      deptName != null &&
-//      company != null &&
-//      sectorName != null &&
-//      sectorCode != null
-//    ) {
-//      return "ไม่พบรายการที่ต้องการค้นหา";
-//    }
-//
-//    query.where(predicates.toArray(new Predicate[0]));
-//
-//    List<User> users = entityManager.createQuery(query).getResultList();
-//
-//    if (users.isEmpty()) {
-//      return "ไม่พบรายการที่ต้องการค้นหา";
-//    }
-//
-//    return users;
-//  }
+  //  public Object searchUser(
+  //    String empCode,
+  //    String name,
+  //    String position,
+  //    String email,
+  //    String deptName,
+  //    String deptCode,
+  //    String company,
+  //    String sectorName,
+  //    String sectorCode
+  //  ) {
+  //    CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+  //    CriteriaQuery<User> query = builder.createQuery(User.class);
+  //    Root<User> root = query.from(User.class);
+  //
+  //    List<Predicate> predicates = new ArrayList<>();
+  //
+  //    if (empCode != null) {
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(root.get("empCode")),
+  //          "%" + empCode.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (name != null) {
+  //      Expression<String> fullName = builder.concat(
+  //        builder.concat(builder.lower(root.get("firstname")), " "),
+  //        builder.lower(root.get("lastname"))
+  //      );
+  //      predicates.add(
+  //        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
+  //      );
+  //    }
+  //    if (email != null) {
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(root.get("email")),
+  //          "%" + email.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (position != null) {
+  //      Join<User, Position> positionJoin = root.join("position");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(positionJoin.get("positionName")),
+  //          "%" + position.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (deptName != null) {
+  //      Join<User, Department> departmentJoin = root.join("department");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(departmentJoin.get("deptName")),
+  //          "%" + deptName.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (deptCode != null) {
+  //      Join<User, Department> departmentJoin = root.join("department");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(departmentJoin.get("deptCode")),
+  //          "%" + deptCode.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (company != null) {
+  //      Join<User, Company> companyJoin = root.join("company");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(companyJoin.get("companyName")),
+  //          "%" + company.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (sectorName != null) {
+  //      Join<User, Sector> sectorJoin = root.join("sector");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(sectorJoin.get("sectorName")),
+  //          "%" + sectorName.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //    if (sectorCode != null) {
+  //      Join<User, Sector> sectorJoin = root.join("sector");
+  //      predicates.add(
+  //        builder.like(
+  //          builder.lower(sectorJoin.get("sectorCode")),
+  //          "%" + sectorCode.toLowerCase() + "%"
+  //        )
+  //      );
+  //    }
+  //
+  //    if (
+  //      name == null &&
+  //      empCode != null &&
+  //      position != null &&
+  //      email != null &&
+  //      deptCode != null &&
+  //      deptName != null &&
+  //      company != null &&
+  //      sectorName != null &&
+  //      sectorCode != null
+  //    ) {
+  //      return "ไม่พบรายการที่ต้องการค้นหา";
+  //    }
+  //
+  //    query.where(predicates.toArray(new Predicate[0]));
+  //
+  //    List<User> users = entityManager.createQuery(query).getResultList();
+  //
+  //    if (users.isEmpty()) {
+  //      return "ไม่พบรายการที่ต้องการค้นหา";
+  //    }
+  //
+  //    return users;
+  //  }
   public Object searchUser(
-          String empCode,
-          String name,
-          String position,
-          String email,
-          String deptName,
-          String deptCode,
-          String company,
-          String sectorName,
-          String sectorCode
+    String empCode,
+    String name,
+    String position,
+    String email,
+    String deptName,
+    String deptCode,
+    String company,
+    String sectorName,
+    String sectorCode
   ) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<User> query = builder.createQuery(User.class);
@@ -540,39 +600,39 @@ public class UserService {
 
     if (empCode != null) {
       predicates.add(
-              builder.like(
-                      builder.lower(root.get("empCode")),
-                      "%" + empCode.toLowerCase() + "%"
-              )
+        builder.like(
+          builder.lower(root.get("empCode")),
+          "%" + empCode.toLowerCase() + "%"
+        )
       );
     }
 
     if (name != null) {
       Expression<String> fullName = builder.concat(
-              builder.concat(builder.lower(root.get("firstname")), " "),
-              builder.lower(root.get("lastname"))
+        builder.concat(builder.lower(root.get("firstname")), " "),
+        builder.lower(root.get("lastname"))
       );
       predicates.add(
-              builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
+        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
       );
     }
 
     if (email != null) {
       predicates.add(
-              builder.like(
-                      builder.lower(root.get("email")),
-                      "%" + email.toLowerCase() + "%"
-              )
+        builder.like(
+          builder.lower(root.get("email")),
+          "%" + email.toLowerCase() + "%"
+        )
       );
     }
 
     if (position != null) {
       Join<User, Position> positionJoin = root.join("position");
       predicates.add(
-              builder.like(
-                      builder.lower(positionJoin.get("positionName")),
-                      "%" + position.toLowerCase() + "%"
-              )
+        builder.like(
+          builder.lower(positionJoin.get("positionName")),
+          "%" + position.toLowerCase() + "%"
+        )
       );
     }
 
@@ -581,19 +641,19 @@ public class UserService {
 
       if (deptName != null) {
         predicates.add(
-                builder.like(
-                        builder.lower(departmentJoin.get("deptName")),
-                        "%" + deptName.toLowerCase() + "%"
-                )
+          builder.like(
+            builder.lower(departmentJoin.get("deptName")),
+            "%" + deptName.toLowerCase() + "%"
+          )
         );
       }
 
       if (deptCode != null) {
         predicates.add(
-                builder.like(
-                        builder.lower(departmentJoin.get("deptCode")),
-                        "%" + deptCode.toLowerCase() + "%"
-                )
+          builder.like(
+            builder.lower(departmentJoin.get("deptCode")),
+            "%" + deptCode.toLowerCase() + "%"
+          )
         );
       }
     }
@@ -601,10 +661,10 @@ public class UserService {
     if (company != null) {
       Join<User, Company> companyJoin = root.join("company");
       predicates.add(
-              builder.like(
-                      builder.lower(companyJoin.get("companyName")),
-                      "%" + company.toLowerCase() + "%"
-              )
+        builder.like(
+          builder.lower(companyJoin.get("companyName")),
+          "%" + company.toLowerCase() + "%"
+        )
       );
     }
 
@@ -613,19 +673,19 @@ public class UserService {
 
       if (sectorName != null) {
         predicates.add(
-                builder.like(
-                        builder.lower(sectorJoin.get("sectorName")),
-                        "%" + sectorName.toLowerCase() + "%"
-                )
+          builder.like(
+            builder.lower(sectorJoin.get("sectorName")),
+            "%" + sectorName.toLowerCase() + "%"
+          )
         );
       }
 
       if (sectorCode != null) {
         predicates.add(
-                builder.like(
-                        builder.lower(sectorJoin.get("sectorCode")),
-                        "%" + sectorCode.toLowerCase() + "%"
-                )
+          builder.like(
+            builder.lower(sectorJoin.get("sectorCode")),
+            "%" + sectorCode.toLowerCase() + "%"
+          )
         );
       }
     }
@@ -646,7 +706,6 @@ public class UserService {
 
     return users;
   }
-
 
   /**
    * @SetStatusลาออกให้Employee

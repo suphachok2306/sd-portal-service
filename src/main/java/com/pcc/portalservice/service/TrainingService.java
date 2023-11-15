@@ -895,18 +895,36 @@ public class TrainingService {
         }
       }
 
+<<<<<<< HEAD
 //      params.put(
 //        "dept_code",
 //        training_id.getUser().getDepartment().getDeptCode()
 //      );
+=======
+      
+
+      Optional<Department> departmentOptional = departmentRepository.findById(Long.valueOf(1));
+
+      params.put(
+        "dept_code",
+        departmentOptional.get().getDeptCode()
+      );
+>>>>>>> 170b4e22aefba082d3d76dc8b52f95c78235b26a
       params.put(
         "sector_name",
         training_id.getUser().getSector().getSectorName()
       );
+<<<<<<< HEAD
 //      params.put(
 //        "dept_name",
 //        training_id.getUser().getDepartment().getDeptName()
 //      );
+=======
+      params.put(
+        "dept_name",
+        departmentOptional.get().getDeptName()
+      );
+>>>>>>> 170b4e22aefba082d3d76dc8b52f95c78235b26a
       params.put("date_save", training_id.getDateSave());
       params.put(
         "course_name",
@@ -945,10 +963,17 @@ public class TrainingService {
         "app_position",
         training_id.getApprove1().getPosition().getPositionName()
       );
+<<<<<<< HEAD
 //      params.put(
 //        "app_dept_name",
 //        training_id.getApprove1().getDepartment().getDeptName()
 //      );
+=======
+      params.put(
+        "app_dept_name",
+        departmentOptional.get().getDeptName()
+      );
+>>>>>>> 170b4e22aefba082d3d76dc8b52f95c78235b26a
       params.put(
         "app_sector_name",
         training_id.getApprove1().getSector().getSectorName()

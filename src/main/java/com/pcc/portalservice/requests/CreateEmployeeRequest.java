@@ -11,12 +11,11 @@ public class CreateEmployeeRequest {
     String companyName;
     String sectorName;
     String sectorCode;
-    String deptName;
-    String deptCode;
     String empCode;
     String firstname;
     String lastname;
     String positionName;
     String email;
+    private List<Long> deptID;
     private List<String> roles;
 }
