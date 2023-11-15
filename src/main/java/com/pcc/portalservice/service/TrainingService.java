@@ -202,11 +202,6 @@ public class TrainingService {
     Long trainingId,
     EditTrainingSection1Request editTraining
   ) throws ParseException {
-    // Training training_id = trainingRepository
-    // .findById(trainingId)
-    // .orElseThrow(() ->
-    // new RuntimeException("TrainingId not found: " + trainingId)
-    // );
     Training training_id = findByTrainingId(trainingId);
 
     Course course_id = courseRepository
@@ -355,7 +350,6 @@ public class TrainingService {
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
     Root<Training> root = query.from(Training.class);
 
-    // Fetch statuses without duplicates
     root.fetch("status", JoinType.INNER);
 
     query.where(builder.equal(root.get("id"), id));
@@ -461,17 +455,40 @@ public class TrainingService {
     query.setParameter("id", userId);
     List<Training> resultList = query.getResultList();
 
-    Map<Long, Training> uniqueTrainings = new HashMap<>();
+    return calculateTrainingResultStatus(resultList);
+  }
 
-    for (Training training : resultList) {
-      uniqueTrainings.putIfAbsent(training.getId(), training);
-    }
+  public List<Map<String, Object>> findTrainingsByDept(Long userId) {
+    String sql =
+      "SELECT DISTINCT ud.id " +
+      "FROM User u " +
+      "JOIN u.departments ud " +
+      "WHERE u.id = :id ";
 
-    List<Training> uniqueTrainingList = new ArrayList<>(
-      uniqueTrainings.values()
+    TypedQuery<Long> query = entityManager.createQuery(sql, Long.class);
+    query.setParameter("id", userId);
+    List<Long> departmentIds = query.getResultList();
+    System.out.println(departmentIds);
+
+    System.out.println(departmentIds);
+
+    String jpql =
+      "SELECT t " +
+      "FROM Training t " +
+      "JOIN User u ON u.id = t.user.id " +
+      "JOIN u.departments ud " +
+      "WHERE ud.id IN (:id)";
+
+    TypedQuery<Training> querys = entityManager.createQuery(
+      jpql,
+      Training.class
     );
 
-    return calculateTrainingResultStatus(uniqueTrainingList);
+    querys.setParameter("id", departmentIds);
+    List<Training> resultList = querys.getResultList();
+
+    return calculateTrainingResultStatus(resultList);
+
   }
 
   /**
@@ -553,7 +570,11 @@ public class TrainingService {
       String result_status;
       int count = 0;
 
-      for (Status status : training.getStatus()) {
+      List<Status> uniqueStatusList = removeDuplicateStatus(
+        training.getStatus()
+      );
+      
+      for (Status status : uniqueStatusList) {
         if (status.getStatus() != null) {
           if ("อนุมัติ".equals(status.getStatus().toString())) {
             approvedCount++;
@@ -588,7 +609,7 @@ public class TrainingService {
         }
       }
 
-      List<Status> statusListCopy = new ArrayList<>(training.getStatus());
+      List<Status> statusListCopy = new ArrayList<>(uniqueStatusList);
       statusListCopy.sort(Comparator.comparing(Status::getId));
       training.setStatus(statusListCopy);
 
@@ -699,6 +720,7 @@ public class TrainingService {
   }
 
   public static List<Status> removeDuplicateStatus(List<Status> statusList) {
+    System.out.println("test");
     Set<Long> statusIds = new HashSet<>();
     List<Status> uniqueStatusList = new ArrayList<>();
     for (Status status : statusList) {
@@ -709,7 +731,6 @@ public class TrainingService {
         continue;
       }
     }
-
     return uniqueStatusList;
   }
 

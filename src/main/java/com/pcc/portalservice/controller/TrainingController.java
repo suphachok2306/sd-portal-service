@@ -242,6 +242,16 @@ public class TrainingController {
     return ResponseEntity.ok(trainings);
   }
 
+  @GetMapping("/findTrainingsByDept")
+  public ResponseEntity<List<Map<String, Object>>> findTrainingsByDept(
+    @RequestParam Long userId
+  ) {
+    List<Map<String, Object>> trainings = trainingService.findTrainingsByDept(
+      userId
+    );
+    return ResponseEntity.ok(trainings);
+  }
+
   /**
    * @หาTrainingด้วยApproveId
    * @GetMapping
