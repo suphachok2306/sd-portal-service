@@ -149,10 +149,7 @@ public class BudgetController {
 
       return resultList;
     } catch (Exception e) {
-      response.setResponseMessage(e.getMessage());
-      if (e.getMessage().equals("Cannot invoke \"java.lang.Float.floatValue()\" because the return value of \"com.pcc.portalservice.service.BudgetService.getTotalBudgetCer(java.lang.Long, String)\" is null")) {
         response.setResponseMessage("ยังไม่มีงบในระบบ");
-      }
       return ResponseEntity.badRequest().body(response);
     }
   }
@@ -187,12 +184,9 @@ public class BudgetController {
 
       return resultList;
     } catch (Exception e) {
-      response.setResponseMessage(e.getMessage());
-      if (e.getMessage().equals("Cannot invoke \"java.lang.Float.floatValue()\" because the return value of \"com.pcc.portalservice.service.BudgetService.getTotalBudgetCer(java.lang.Long, String)\" is null")) {
         response.setResponseMessage("ยังไม่มีงบในระบบ");
       }
       return ResponseEntity.badRequest().body(response);
-    }
   }
 
   // /**

@@ -153,7 +153,7 @@ public class UserService {
       .builder()
       .company(companyName)
       .sector(sector)
-      // .department(department)
+      .departments(null)
       .empCode(createEmployeeRequest.getEmpCode())
       .firstname(createEmployeeRequest.getFirstname())
       .lastname(createEmployeeRequest.getLastname())
@@ -243,7 +243,7 @@ public class UserService {
     user.setEmail(editEmployeeRequest.getEmail());
     user.setPosition(position);
     user.setSector(sector);
-    // user.setDepartment(department);
+    user.setDepartments(null);
     user.setCompany(companyName);
     return userRepository.save(user);
   }
