@@ -895,9 +895,13 @@ public class TrainingService {
         }
       }
 
+      
+
+      Optional<Department> departmentOptional = departmentRepository.findById(Long.valueOf(1));
+
       params.put(
         "dept_code",
-        training_id.getUser().getDepartment().getDeptCode()
+        departmentOptional.get().getDeptCode()
       );
       params.put(
         "sector_name",
@@ -905,7 +909,7 @@ public class TrainingService {
       );
       params.put(
         "dept_name",
-        training_id.getUser().getDepartment().getDeptName()
+        departmentOptional.get().getDeptName()
       );
       params.put("date_save", training_id.getDateSave());
       params.put(
@@ -947,7 +951,7 @@ public class TrainingService {
       );
       params.put(
         "app_dept_name",
-        training_id.getApprove1().getDepartment().getDeptName()
+        departmentOptional.get().getDeptName()
       );
       params.put(
         "app_sector_name",

@@ -37,17 +37,11 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-    @ToString.Exclude // To exclude this field from the toString method
+    @ToString.Exclude 
     @OneToOne
     @JoinColumn(name = "sector_id")
     private Sector sector;
 
-//    @ManyToMany
-//    @JoinTable(
-//        name = "USER_DEPARTMENT",
-//        joinColumns = @JoinColumn(name = "user_id"),
-//        inverseJoinColumns = @JoinColumn(name = "department_id"))
-//    private List<Department> departments = new ArrayList<>();
 
   @ManyToMany
   @JoinTable(
