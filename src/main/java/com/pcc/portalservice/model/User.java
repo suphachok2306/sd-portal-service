@@ -1,15 +1,10 @@
 package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import javax.persistence.*;
-
 import lombok.*;
+
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "USERS")
@@ -47,12 +42,19 @@ public class User {
     @JoinColumn(name = "sector_id")
     private Sector sector;
 
-    @ManyToMany
-    @JoinTable(
-        name = "USER_DEPARTMENT",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "department_id"))
-    private List<Department> departments = new ArrayList<>();
+//    @ManyToMany
+//    @JoinTable(
+//        name = "USER_DEPARTMENT",
+//        joinColumns = @JoinColumn(name = "user_id"),
+//        inverseJoinColumns = @JoinColumn(name = "department_id"))
+//    private List<Department> departments = new ArrayList<>();
+
+  @ManyToMany
+  @JoinTable(
+          name = "USER_DEPARTMENT",
+          joinColumns = @JoinColumn(name = "user_id"),
+          inverseJoinColumns = @JoinColumn(name = "department_id"))
+  private Set<Department> departments = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "position_id")
