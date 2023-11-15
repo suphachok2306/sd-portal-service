@@ -895,9 +895,9 @@ public class TrainingService {
         }
       }
 
-      
+      Long dept_id = findDeptByUserID(training_id.getUser().getId());
 
-      Optional<Department> departmentOptional = departmentRepository.findById(Long.valueOf(1));
+      Optional<Department> departmentOptional = departmentRepository.findById(dept_id);
 
       params.put(
         "dept_code",
@@ -1007,6 +1007,10 @@ public class TrainingService {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return null;
+  }
+
+  private Long findDeptByUserID(Long id) {
     return null;
   }
 
