@@ -225,6 +225,11 @@ public class UserService {
     Position position = positionOptional.orElseThrow(() ->
       new RuntimeException("Position not found")
     );
+//    if (positionOptional.isEmpty()) {
+//      throw new RuntimeException("Position not found for the given department");
+//    }
+//
+//    Position position = positionOptional.get();
 
     if ((email == null || email.isEmpty()) && userRepository.existsByEmpCode(empCode) && !user.getEmpCode().equals(empCode)) {
       throw new RuntimeException("EmpCode is already in use.");
@@ -333,6 +338,10 @@ public class UserService {
    */
   public List<User> findAllEmployee() {
     return userRepository.findByRolesRole(Roles.User);
+  }
+
+  public List<User> findByDept(){
+    return null;
   }
 
   /**

@@ -895,18 +895,18 @@ public class TrainingService {
         }
       }
 
-      params.put(
-        "dept_code",
-        training_id.getUser().getDepartment().getDeptCode()
-      );
+//      params.put(
+//        "dept_code",
+//        training_id.getUser().getDepartment().getDeptCode()
+//      );
       params.put(
         "sector_name",
         training_id.getUser().getSector().getSectorName()
       );
-      params.put(
-        "dept_name",
-        training_id.getUser().getDepartment().getDeptName()
-      );
+//      params.put(
+//        "dept_name",
+//        training_id.getUser().getDepartment().getDeptName()
+//      );
       params.put("date_save", training_id.getDateSave());
       params.put(
         "course_name",
@@ -945,10 +945,10 @@ public class TrainingService {
         "app_position",
         training_id.getApprove1().getPosition().getPositionName()
       );
-      params.put(
-        "app_dept_name",
-        training_id.getApprove1().getDepartment().getDeptName()
-      );
+//      params.put(
+//        "app_dept_name",
+//        training_id.getApprove1().getDepartment().getDeptName()
+//      );
       params.put(
         "app_sector_name",
         training_id.getApprove1().getSector().getSectorName()

@@ -2,6 +2,7 @@ package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Sector;
+import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateDepartmentRequest;
@@ -295,6 +296,118 @@ public class DepartmentService {
 
      return resultList;
    }
+  public List<Map<String, Object>> findDepartmentsByUser(Optional<User> byId) {
+    String jpql = "SELECT " +
+            "c.company_name AS company_name, " +
+            "s.sector_name AS sector_name, " +
+            "s.sector_code AS sector_code, " +
+            "d.id AS department_id, " +
+            "d.dept_name AS department_name, " +
+            "d.dept_code AS department_code " +
+            "FROM users u " +
+            "JOIN sector s ON u.sector_id = s.id " +
+            "JOIN company c ON s.company_id = c.id " +
+            "JOIN user_department ud ON ud.user_id = u.id " +
+            "JOIN department d ON ud.department_id = d.id " +
+            "WHERE u.id = :id";
+
+    List<Object[]> results = entityManager
+            .createNativeQuery(jpql)
+            .setParameter("id", byId.map(User::getId).orElse(null))
+            .getResultList();
+
+    List<Map<String, Object>> resultList = new ArrayList<>();
+
+    Map<String, Map<String, Object>> companyMap = new HashMap<>();
+
+    for (Object[] row : results) {
+      String company = (String) row[0];
+      String sectorName = (String) row[1];
+      String sectorCode = (String) row[2];
+      Long deptId = ((Number) row[3]).longValue();
+      String deptName = (String) row[4];
+      String deptCode = (String) row[5];
+
+      Map<String, Object> resultMap;
+      Map<String, Object> departmentMap = new LinkedHashMap<>();
+
+      if (companyMap.containsKey(company)) {
+        resultMap = companyMap.get(company);
+        List<Map<String, Object>> sectors = (List<Map<String, Object>>) resultMap.get("sectors");
+
+        boolean sectorExists = false;
+        for (Map<String, Object> sector : sectors) {
+          if (sector.get("sectorname").equals(sectorName)) {
+            sectorExists = true;
+            List<Map<String, Object>> departments = (List<Map<String, Object>>) sector.get("departments");
+
+            boolean departmentExists = false;
+            for (Map<String, Object> department : departments) {
+              if (department.get("deptname").equals(deptName)) {
+                departmentExists = true;
+                break;
+              }
+            }
+
+            if (!departmentExists) {
+              Map<String, Object> newDepartmentMap = new LinkedHashMap<>();
+              newDepartmentMap.put("deptid", deptId);
+              newDepartmentMap.put("deptname", deptName);
+              newDepartmentMap.put("deptcode", deptCode);
+              departments.add(newDepartmentMap);
+            }
+
+            break;
+          }
+        }
+
+        if (!sectorExists) {
+          Map<String, Object> sectorMap = new LinkedHashMap<>();
+          sectorMap.put("sectorname", sectorName);
+          sectorMap.put("sectorcode", sectorCode);
+
+          List<Map<String, Object>> departments = new ArrayList<>();
+
+          Map<String, Object> newDepartmentMap = new LinkedHashMap<>();
+          newDepartmentMap.put("deptid", deptId);
+          newDepartmentMap.put("deptname", deptName);
+          newDepartmentMap.put("deptcode", deptCode);
+
+          departments.add(newDepartmentMap);
+          sectorMap.put("departments", departments);
+          sectors.add(sectorMap);
+        }
+      } else {
+        resultMap = new LinkedHashMap<>();
+        resultMap.put("company", company);
+
+        List<Map<String, Object>> sectors = new ArrayList<>();
+
+        Map<String, Object> sectorMap = new LinkedHashMap<>();
+        sectorMap.put("sectorname", sectorName);
+        sectorMap.put("sectorcode", sectorCode);
+
+        List<Map<String, Object>> departments = new ArrayList<>();
+
+        Map<String, Object> newDepartmentMap = new LinkedHashMap<>();
+        newDepartmentMap.put("deptid", deptId);
+        newDepartmentMap.put("deptname", deptName);
+        newDepartmentMap.put("deptcode", deptCode);
+
+        departments.add(newDepartmentMap);
+        sectorMap.put("departments", departments);
+
+        sectors.add(sectorMap);
+        resultMap.put("sectors", sectors);
+
+        companyMap.put(company, resultMap);
+        resultList.add(resultMap);
+      }
+    }
+
+    return resultList;
+  }
+
 
   public List<Map<String, Object>> findAllJoinDepartmentssector() {
     String jpql =
