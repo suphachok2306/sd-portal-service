@@ -488,7 +488,6 @@ public class TrainingService {
     List<Training> resultList = querys.getResultList();
 
     return calculateTrainingResultStatus(resultList);
-
   }
 
   /**
@@ -573,7 +572,7 @@ public class TrainingService {
       List<Status> uniqueStatusList = removeDuplicateStatus(
         training.getStatus()
       );
-      
+
       for (Status status : uniqueStatusList) {
         if (status.getStatus() != null) {
           if ("อนุมัติ".equals(status.getStatus().toString())) {
@@ -1325,10 +1324,12 @@ public class TrainingService {
         courseJoin.get("endDate"),
         parsedEndDate
       );
-      Predicate deptPredicate = cb.equal(
-        trainingRoot.get("user").get("department").get("id"),
-        deptID
-      );
+
+      Join<User, Department> departmentJoin = trainingRoot
+        .join("user")
+        .join("departments");
+      Predicate deptPredicate = cb.equal(departmentJoin.get("id"), deptID);
+
       Predicate sectorPredicate = cb.equal(
         trainingRoot.get("user").get("sector").get("id"),
         sectorID
