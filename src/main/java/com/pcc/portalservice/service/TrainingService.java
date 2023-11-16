@@ -7,6 +7,15 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -14,16 +23,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -1163,7 +1162,7 @@ public class TrainingService {
         " " +
         userData.get("firstname") +
         " " +
-        userData.get("lastname") ;
+        userData.get("lastname");
 
       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
         "course"
@@ -1197,7 +1196,21 @@ public class TrainingService {
           course.get("result7") != null ? (String) course.get("result7") : " "
         );
       }
-      coll.add(new BeanGeneric9(course_names, result1,result2,result3,result4,result5,result6,result7,position,name,id));
+      coll.add(
+        new BeanGeneric9(
+          course_names,
+          result1,
+          result2,
+          result3,
+          result4,
+          result5,
+          result6,
+          result7,
+          position,
+          name,
+          id
+        )
+      );
     }
 
     return new JRBeanCollectionDataSource(coll);
@@ -1251,40 +1264,41 @@ public class TrainingService {
     }
     return null;
   }
-
-  public String printReportGeneric9(String startDate, String endDate) {
+  
+  public Map<String, Object> printReportGeneric9(String startDate, String endDate) {
+    Map<String, Object> reports = new HashMap<>();
+    
     try {
       String spec = "report/Generic9.jrxml";
-      Map<String, Object> params = new HashMap<String, Object>();
-      LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
-
-      params.put(
-        "startdate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
-      );
-      params.put(
-        "enddate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
-      );
-
-      InputStream reportInput =
-        UserService.class.getClassLoader().getResourceAsStream(spec);
-      JasperReport jasperReport = JasperCompileManager.compileReport(
-        reportInput
-      );
-      JasperPrint jasperPrint = JasperFillManager.fillReport(
-        jasperReport,
-        params,
-        getDataSourceGeneric9(ht)
-      );
-      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-      return Base64.encodeBase64String(bytes);
+      for (int i = 1; i < 3; i++) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        LinkedHashMap<String, Object> ht = HistoryGeneric9(
+          startDate,
+          endDate,
+          Long.valueOf(i)
+        );
+        InputStream reportInput =
+          UserService.class.getClassLoader().getResourceAsStream(spec);
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+          reportInput
+        );
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+          jasperReport,
+          params,
+          getDataSourceGeneric9(ht)
+        );
+        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+        if(i==1){
+             reports.put("PCC Report", Base64.encodeBase64String(bytes));
+        }
+        else if(i==2){
+             reports.put("Wiresoft Jasper", Base64.encodeBase64String(bytes));
+        }
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return null;
+    return reports;
   }
 
   public LinkedHashMap<String, Object> HistoryTraining(
@@ -1450,147 +1464,10 @@ public class TrainingService {
     return null;
   }
 
-  //   public LinkedHashMap<String, Object> generic9(
-  //     String startDate,
-  //     String endDate
-  //   ) {
-  //     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-  //     try {
-  //       Date parsedStartDate = dateFormat.parse(startDate);
-  //       Date parsedEndDate = dateFormat.parse(endDate);
-  //
-  //       CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-  //       CriteriaQuery<Tuple> query = cb.createTupleQuery();
-  //       Root<Training> trainingRoot = query.from(Training.class);
-  //
-  //       Join<Training, Course> courseJoin = trainingRoot.join("courses");
-  //       Join<Training, Status> statusJoin = trainingRoot.join("status");
-  //
-  //       query
-  //         .multiselect(
-  //           trainingRoot.get("id").alias("train_id"),
-  //           courseJoin.get("active").alias("active"),
-  //           statusJoin.get("status").alias("status")
-  //         )
-  //         .distinct(true);
-  //
-  //       Predicate startDatePredicate = cb.greaterThanOrEqualTo(
-  //         courseJoin.get("startDate"),
-  //         parsedStartDate
-  //       );
-  //       Predicate endDatePredicate = cb.lessThanOrEqualTo(
-  //         courseJoin.get("endDate"),
-  //         parsedEndDate
-  //       );
-  //       Predicate cancelPredicate = cb.equal(
-  //         courseJoin.get("active"),
-  //         "ดำเนินการอยู่"
-  //       );
-  //       Predicate passPredicate = cb.or(
-  //         cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
-  //         cb.isNull(statusJoin.get("status"))
-  //       );
-  //
-  //       query.where(
-  //         cb.and(
-  //           startDatePredicate,
-  //           endDatePredicate,
-  //           cancelPredicate,
-  //           passPredicate
-  //         )
-  //       );
-  //       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
-  //       List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
-  //
-  //       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
-  //       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
-  //       Root<Training> trainingRootOutput = queryOutput.from(Training.class);
-  //       queryOutput.multiselect(
-  //         trainingRootOutput.get("user").get("id").alias("user_id"),
-  //         trainingRootOutput.get("user").get("empCode").alias("emp_code"),
-  //         trainingRootOutput.get("user").get("title").alias("title"),
-  //         trainingRootOutput.get("user").get("firstname").alias("firstname"),
-  //         trainingRootOutput.get("user").get("lastname").alias("lastname"),
-  //         trainingRootOutput.join("courses").get("id").alias("course_id"),
-  //         trainingRootOutput.join("result").get("result1").alias("result1"),
-  //         trainingRootOutput.join("result").get("result2").alias("result2"),
-  //         trainingRootOutput.join("result").get("result3").alias("result3"),
-  //         trainingRootOutput.join("result").get("result4").alias("result4"),
-  //         trainingRootOutput.join("result").get("result5").alias("result5"),
-  //         trainingRootOutput.join("result").get("result6").alias("result6"),
-  //         trainingRootOutput.join("result").get("result7").alias("result7"),
-  //         trainingRootOutput
-  //           .join("courses")
-  //           .get("courseName")
-  //           .alias("course_name")
-  //       );
-  //
-  //       queryOutput.where(
-  //         trainingRootOutput
-  //           .get("id")
-  //           .in(
-  //             resultListBudgetTraining
-  //               .stream()
-  //               .map(tuple -> tuple.get("train_id", Long.class))
-  //               .collect(Collectors.toList())
-  //           )
-  //       );
-  //
-  //       queryOutput.orderBy(cbOutput.asc(courseJoin.get("id")));
-  //
-  //       TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
-  //         queryOutput
-  //       );
-  //       List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
-  //
-  //       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
-  //       List<LinkedHashMap<String, Object>> courses = new ArrayList<>();
-  //
-  //       for (Tuple row : resultListBudgetTrainingOutput) {
-  //         LinkedHashMap<String, Object> currentcourse = courses
-  //           .stream()
-  //           .filter(course ->
-  //             course.get("course_name").equals(row.get("course_name"))
-  //           )
-  //           .findFirst()
-  //           .orElse(null);
-  //
-  //         if (currentcourse == null) {
-  //           currentcourse = new LinkedHashMap<>();
-  //           currentcourse.put("course_name", row.get("course_name"));
-  //           currentcourse.put("user", new ArrayList<>());
-  //           courses.add(currentcourse);
-  //         }
-  //
-  //         LinkedHashMap<String, Object> user = new LinkedHashMap<>();
-  //         user.put("title", row.get("title"));
-  //         user.put("firstname", row.get("firstname"));
-  //         user.put("lastname", row.get("lastname"));
-  //         user.put("result1",row.get("result1"));
-  //         user.put("result2",row.get("result2"));
-  //         user.put("result3",row.get("result3"));
-  //         user.put("result4",row.get("result4"));
-  //         user.put("result5",row.get("result5"));
-  //         user.put("result6",row.get("result6"));
-  //         user.put("result7",row.get("result7"));
-  //
-  //         ((List<LinkedHashMap<String, Object>>) currentcourse.get("user")).add(
-  //             user
-  //           );
-  //       }
-  //
-  //       result.put("data", courses);
-  //       return result;
-  //
-  //     } catch (ParseException e) {
-  //       e.printStackTrace();
-  //     }
-  //     return null;
-  //   }
-
   public LinkedHashMap<String, Object> HistoryGeneric9(
     String startDate,
-    String endDate
+    String endDate,
+    Long companyId
   ) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     try {
@@ -1603,13 +1480,13 @@ public class TrainingService {
 
       Join<Training, Course> courseJoin = trainingRoot.join("courses");
       Join<Training, Status> statusJoin = trainingRoot.join("status");
-      Join<Training, User> userJoin = trainingRoot.join("user").join("position");
 
       query
         .multiselect(
           trainingRoot.get("id").alias("train_id"),
           courseJoin.get("active").alias("active"),
-          statusJoin.get("status").alias("status")
+          statusJoin.get("status").alias("status"),
+          trainingRoot.get("user").get("company").get("id").alias("company_id")
         )
         .distinct(true);
 
@@ -1631,12 +1508,18 @@ public class TrainingService {
         cb.isNull(statusJoin.get("status"))
       );
 
+      Predicate companyPredicate = cb.equal(
+        trainingRoot.get("user").get("company").get("id"),
+        companyId
+      );
+
       query.where(
         cb.and(
           startDatePredicate,
           endDatePredicate,
           cancelPredicate,
-          passPredicate
+          passPredicate,
+          companyPredicate
         )
       );
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);

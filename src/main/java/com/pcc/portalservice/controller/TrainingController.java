@@ -433,15 +433,17 @@ public class TrainingController {
   @GetMapping("/Generic9")
   public LinkedHashMap<String, Object> generic9(
     @RequestParam String startDate,
-    @RequestParam String endDate
+    @RequestParam String endDate,
+    @RequestParam Long companyId
   ) {
     return trainingService.HistoryGeneric9(
       startDate,
-      endDate
+      endDate,
+      companyId
     );
   }
   @GetMapping("/ReportGeneric9")
-  public String reportGeneric9(
+  public Map<String, Object> reportGeneric9(
           @RequestParam String startDate,
           @RequestParam String endDate
   ) throws Exception {
