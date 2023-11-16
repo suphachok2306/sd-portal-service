@@ -37,11 +37,8 @@ public class TrainingService {
   private final ResultRepository resultRepository;
   private final DepartmentRepository departmentRepository;
   private final SectorRepository sectorRepository;
-<<<<<<< HEAD
   private final CompanyRepository companyRepository;
-=======
   private final PositionRepository positionRepository;
->>>>>>> 4c5cccdbc3745b6df51776693a0a7b71b0601fde
 
   private final EntityManager entityManager;
 
@@ -1256,7 +1253,6 @@ public class TrainingService {
     return null;
   }
 
-<<<<<<< HEAD
 //  public String printReportGeneric9(String startDate, String endDate) {
 //    try {
 //      String spec = "report/Generic9.jrxml";
@@ -1320,42 +1316,40 @@ public class TrainingService {
 //    }
 //    return null;
 //  }
-=======
-  public String printReportGeneric9(String startDate, String endDate) {
-    try {
-      String spec = "report/Generic9.jrxml";
-      Map<String, Object> params = new HashMap<String, Object>();
-      LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
-
-      params.put(
-        "startdate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
-      );
-      params.put(
-        "enddate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
-      );
-
-      InputStream reportInput =
-        UserService.class.getClassLoader().getResourceAsStream(spec);
-      JasperReport jasperReport = JasperCompileManager.compileReport(
-        reportInput
-      );
-      JasperPrint jasperPrint = JasperFillManager.fillReport(
-        jasperReport,
-        params,
-        getDataSourceGeneric9(ht)
-      );
-      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-      return Base64.encodeBase64String(bytes);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
->>>>>>> 4c5cccdbc3745b6df51776693a0a7b71b0601fde
+//  public String printReportGeneric9(String startDate, String endDate) {
+//    try {
+//      String spec = "report/Generic9.jrxml";
+//      Map<String, Object> params = new HashMap<String, Object>();
+//      LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
+//
+//      params.put(
+//        "startdate",
+//        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+//      );
+//      params.put(
+//        "enddate",
+//        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+//      );
+//
+//      InputStream reportInput =
+//        UserService.class.getClassLoader().getResourceAsStream(spec);
+//      JasperReport jasperReport = JasperCompileManager.compileReport(
+//        reportInput
+//      );
+//      JasperPrint jasperPrint = JasperFillManager.fillReport(
+//        jasperReport,
+//        params,
+//        getDataSourceGeneric9(ht)
+//      );
+//      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+//      return Base64.encodeBase64String(bytes);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//    return null;
+//  }
 
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
