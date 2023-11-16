@@ -452,6 +452,16 @@ public class TrainingController {
             endDate
     );
   }
+//  @GetMapping("/ReportGeneric9")
+//  public String reportGeneric9(
+//          @RequestParam String startDate,
+//          @RequestParam String endDate
+//  ) throws Exception {
+//    return trainingService.printReportGeneric9(
+//            startDate,
+//            endDate
+//    );
+//  }
 
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);
