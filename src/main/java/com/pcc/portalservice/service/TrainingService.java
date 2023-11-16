@@ -1306,7 +1306,7 @@ public class TrainingService {
             byte[] xlsBytes = outputStream.toByteArray();
 
             if (i == 1) {
-                reports.put("PCC Report", Base64.encodeBase64String(xlsBytes));
+                reports.put("PCC Jasper", Base64.encodeBase64String(xlsBytes));
             } else if (i == 2) {
                 reports.put("Wiresoft Jasper", Base64.encodeBase64String(xlsBytes));
             }
