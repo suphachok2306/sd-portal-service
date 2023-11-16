@@ -468,9 +468,6 @@ public class TrainingService {
     TypedQuery<Long> query = entityManager.createQuery(sql, Long.class);
     query.setParameter("id", userId);
     List<Long> departmentIds = query.getResultList();
-    System.out.println(departmentIds);
-
-    System.out.println(departmentIds);
 
     String jpql =
       "SELECT t " +
@@ -719,7 +716,6 @@ public class TrainingService {
   }
 
   public static List<Status> removeDuplicateStatus(List<Status> statusList) {
-    System.out.println("test");
     Set<Long> statusIds = new HashSet<>();
     List<Status> uniqueStatusList = new ArrayList<>();
     for (Status status : statusList) {
@@ -1047,7 +1043,6 @@ public class TrainingService {
     Float sumall = 0.0f;
     Collection<BeanHistroy> coll = new ArrayList<BeanHistroy>();
     List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get("data");
-
     for (Map<String, Object> userData : data) {
       List<String> course_names = new ArrayList<>();
       List<String> course_places = new ArrayList<>();
@@ -1217,10 +1212,9 @@ public class TrainingService {
         deptID,
         sectorID
       );
-
+      params.put("company",sector.get().getCompany().getCompanyName());
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
-
       params.put(
         "startdate",
         new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
