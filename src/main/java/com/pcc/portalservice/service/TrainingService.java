@@ -1607,6 +1607,7 @@ public class TrainingService {
 
       Join<Training, Course> courseJoin = trainingRoot.join("courses");
       Join<Training, Status> statusJoin = trainingRoot.join("status");
+      Join<Training, User> userJoin = trainingRoot.join("user").join("position");
 
       query
         .multiselect(

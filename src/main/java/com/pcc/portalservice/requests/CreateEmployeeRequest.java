@@ -12,6 +12,7 @@ public class CreateEmployeeRequest {
     String sectorName;
     String sectorCode;
     String empCode;
+    String title;
     String firstname;
     String lastname;
     String positionName;
