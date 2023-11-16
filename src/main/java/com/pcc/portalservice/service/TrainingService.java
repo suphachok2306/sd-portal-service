@@ -7,6 +7,8 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,10 @@ import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
@@ -783,13 +789,14 @@ public class TrainingService {
 
     if (startDate != null) {
       Join<Training, Course> courseJoin = root.join("courses");
-      predicates.add(builder.equal(courseJoin.get("startDate"), startDate));
-    }
-
-    if (endDate != null) {
+      predicates.add(builder.greaterThanOrEqualTo(courseJoin.get("startDate"), startDate));
+  }
+  
+  if (endDate != null) {
       Join<Training, Course> courseJoin = root.join("courses");
-      predicates.add(builder.equal(courseJoin.get("endDate"), endDate));
-    }
+      predicates.add(builder.lessThanOrEqualTo(courseJoin.get("endDate"), endDate));
+  }
+  
 
     if (courseName != null) {
       Join<Training, Course> courseJoin = root.join("courses");
@@ -1267,39 +1274,48 @@ public class TrainingService {
   
   public Map<String, Object> printReportGeneric9(String startDate, String endDate) {
     Map<String, Object> reports = new HashMap<>();
-    
+
     try {
-      String spec = "report/Generic9.jrxml";
-      for (int i = 1; i < 3; i++) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        LinkedHashMap<String, Object> ht = HistoryGeneric9(
-          startDate,
-          endDate,
-          Long.valueOf(i)
-        );
-        InputStream reportInput =
-          UserService.class.getClassLoader().getResourceAsStream(spec);
-        JasperReport jasperReport = JasperCompileManager.compileReport(
-          reportInput
-        );
-        JasperPrint jasperPrint = JasperFillManager.fillReport(
-          jasperReport,
-          params,
-          getDataSourceGeneric9(ht)
-        );
-        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-        if(i==1){
-             reports.put("PCC Report", Base64.encodeBase64String(bytes));
+        String spec = "report/Generic9.jrxml";
+        for (int i = 1; i < 3; i++) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            LinkedHashMap<String, Object> ht = HistoryGeneric9(
+                startDate,
+                endDate,
+                Long.valueOf(i)
+            );
+            InputStream reportInput =
+                    UserService.class.getClassLoader().getResourceAsStream(spec);
+            JasperReport jasperReport = JasperCompileManager.compileReport(
+                    reportInput
+            );
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                    jasperReport,
+                    params,
+                    getDataSourceGeneric9(ht)
+            );
+
+            JRXlsxExporter exporter = new JRXlsxExporter();
+
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+
+            exporter.exportReport();
+            byte[] xlsBytes = outputStream.toByteArray();
+
+            if (i == 1) {
+                reports.put("PCC Report", Base64.encodeBase64String(xlsBytes));
+            } else if (i == 2) {
+                reports.put("Wiresoft Jasper", Base64.encodeBase64String(xlsBytes));
+            }
         }
-        else if(i==2){
-             reports.put("Wiresoft Jasper", Base64.encodeBase64String(bytes));
-        }
-      }
     } catch (Exception e) {
-      e.printStackTrace();
+        e.printStackTrace();
     }
     return reports;
-  }
+}
 
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
