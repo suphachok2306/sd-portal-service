@@ -36,6 +36,7 @@ public class TrainingService {
   private final ResultRepository resultRepository;
   private final DepartmentRepository departmentRepository;
   private final SectorRepository sectorRepository;
+  private final PositionRepository positionRepository;
 
   private final EntityManager entityManager;
 
@@ -1147,49 +1148,55 @@ public class TrainingService {
 
     for (Map<String, Object> userData : data) {
       List<String> course_names = new ArrayList<>();
-      List<Float> results = new ArrayList<>();
+      List<String> result1 = new ArrayList<>();
+      List<String> result2 = new ArrayList<>();
+      List<String> result3 = new ArrayList<>();
+      List<String> result4 = new ArrayList<>();
+      List<String> result5 = new ArrayList<>();
+      List<String> result6 = new ArrayList<>();
+      List<String> result7 = new ArrayList<>();
+      String position = (String) userData.get("position");
+      Long id = (Long) userData.get("user_id");
       String name =
-        userData.get("emp_code") +
-        " " +
         userData.get("title") +
         " " +
         userData.get("firstname") +
         " " +
-        userData.get("lastname");
+        userData.get("lastname") ;
 
       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
         "course"
       );
+
       for (Map<String, Object> course : courseList) {
         course_names.add(
           course.get("course_name") != null
             ? course.get("course_name").toString()
             : ""
         );
-        results.add(
-          course.get("result1") != null ? (float) course.get("result1") : 0.0f
+        result1.add(
+          course.get("result1") != null ? (String) course.get("result1") : " "
         );
-        results.add(
-          course.get("result2") != null ? (float) course.get("result2") : 0.0f
+        result2.add(
+          course.get("result2") != null ? (String) course.get("result2") : " "
         );
-        results.add(
-          course.get("result3") != null ? (float) course.get("result3") : 0.0f
+        result3.add(
+          course.get("result3") != null ? (String) course.get("result3") : " "
         );
-        results.add(
-          course.get("result4") != null ? (float) course.get("result4") : 0.0f
+        result4.add(
+          course.get("result4") != null ? (String) course.get("result4") : " "
         );
-        results.add(
-          course.get("result5") != null ? (float) course.get("result5") : 0.0f
+        result5.add(
+          course.get("result5") != null ? (String) course.get("result5") : " "
         );
-        results.add(
-          course.get("result6") != null ? (float) course.get("result6") : 0.0f
+        result6.add(
+          course.get("result6") != null ? (String) course.get("result6") : " "
         );
-        results.add(
-          course.get("result7") != null ? (float) course.get("result7") : 0.0f
+        result7.add(
+          course.get("result7") != null ? (String) course.get("result7") : " "
         );
       }
-
-      coll.add(new BeanGeneric9(course_names, results, name));
+      coll.add(new BeanGeneric9(course_names, result1,result2,result3,result4,result5,result6,result7,position,name,id));
     }
 
     return new JRBeanCollectionDataSource(coll);
@@ -1212,7 +1219,7 @@ public class TrainingService {
         deptID,
         sectorID
       );
-      params.put("company",sector.get().getCompany().getCompanyName());
+      params.put("company", sector.get().getCompany().getCompanyName());
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
       params.put(
@@ -1248,12 +1255,7 @@ public class TrainingService {
     try {
       String spec = "report/Generic9.jrxml";
       Map<String, Object> params = new HashMap<String, Object>();
-      //Optional<Sector> sector = sectorRepository.findById(sectorID);
-      //Optional<Department> depOptional = departmentRepository.findById(deptID);
       LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
-
-      //params.put("sector_name", sector.get().getSectorName());
-      //params.put("dept_name", depOptional.get().getDeptName());
 
       params.put(
         "startdate",
@@ -1648,6 +1650,11 @@ public class TrainingService {
         trainingRootOutput.get("user").get("firstname").alias("firstname"),
         trainingRootOutput.get("user").get("lastname").alias("lastname"),
         trainingRootOutput.join("courses").get("id").alias("course_id"),
+        trainingRootOutput
+          .get("user")
+          .get("position")
+          .get("id")
+          .alias("position_id"),
         trainingRootOutput.join("result").get("result1").alias("result1"),
         trainingRootOutput.join("result").get("result2").alias("result2"),
         trainingRootOutput.join("result").get("result3").alias("result3"),
@@ -1682,6 +1689,10 @@ public class TrainingService {
       LinkedHashMap<String, Object> currentUser = null;
 
       for (Tuple row : resultListBudgetTrainingOutput) {
+        Optional<Position> positionOptional = positionRepository.findById(
+          (Long) row.get("position_id")
+        );
+        String positionString = positionOptional.get().getPositionName();
         if (
           currentUser == null ||
           !currentUser.get("emp_code").equals(row.get("emp_code"))
@@ -1692,6 +1703,7 @@ public class TrainingService {
           currentUser.put("title", row.get("title"));
           currentUser.put("firstname", row.get("firstname"));
           currentUser.put("lastname", row.get("lastname"));
+          currentUser.put("position", positionString);
           currentUser.put("course", new ArrayList<>());
           users.add(currentUser);
         }

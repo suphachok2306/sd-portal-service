@@ -120,7 +120,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{company}.equals("PCCTH") ? "บริษัทโปรเฟสชั่นนัลคอมพิวเตอร์ จำกัด" : "บริษัทไวซซอฟท์ จำกัด"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{company}.equals("PCCTH") ? "บริษัท โปรเฟสชั่นนัลคอมพิวเตอร์ จำกัด" : "บริษัท ไวซซอฟท์ จำกัด"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
