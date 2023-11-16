@@ -525,7 +525,17 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "('Assistant DT Manager (6B)', 15)," +
                             "('Java and DB II Instructor', 15)," +
                             "('Sr. Asst. DT Manager (6A)', 15)," +
-                            "('Instructor', 15)"
+                            "('Instructor', 15)," +
+                            "('PROGRAMMER I' , 33)," +
+                            "('PROGRAMMER I', 34)," +
+                            "('PROGRAMMER I', 35)," +
+                            "('PROGRAMMER I', 36)," +
+                            "('PROGRAMMER I', 37)," +
+                            "('PROGRAMMER I', 38)," +
+                            "('PROGRAMMER I', 39)," +
+                            "('PROGRAMMER I', 40)," +
+                            "('PROGRAMMER I', 41)"
+
             );
         }
     }
