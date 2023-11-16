@@ -37,7 +37,11 @@ public class TrainingService {
   private final ResultRepository resultRepository;
   private final DepartmentRepository departmentRepository;
   private final SectorRepository sectorRepository;
+<<<<<<< HEAD
   private final CompanyRepository companyRepository;
+=======
+  private final PositionRepository positionRepository;
+>>>>>>> 4c5cccdbc3745b6df51776693a0a7b71b0601fde
 
   private final EntityManager entityManager;
 
@@ -470,9 +474,6 @@ public class TrainingService {
     TypedQuery<Long> query = entityManager.createQuery(sql, Long.class);
     query.setParameter("id", userId);
     List<Long> departmentIds = query.getResultList();
-    System.out.println(departmentIds);
-
-    System.out.println(departmentIds);
 
     String jpql =
       "SELECT t " +
@@ -721,7 +722,6 @@ public class TrainingService {
   }
 
   public static List<Status> removeDuplicateStatus(List<Status> statusList) {
-    System.out.println("test");
     Set<Long> statusIds = new HashSet<>();
     List<Status> uniqueStatusList = new ArrayList<>();
     for (Status status : statusList) {
@@ -1049,7 +1049,6 @@ public class TrainingService {
     Float sumall = 0.0f;
     Collection<BeanHistroy> coll = new ArrayList<BeanHistroy>();
     List<Map<String, Object>> data = (List<Map<String, Object>>) ht.get("data");
-
     for (Map<String, Object> userData : data) {
       List<String> course_names = new ArrayList<>();
       List<String> course_places = new ArrayList<>();
@@ -1154,49 +1153,55 @@ public class TrainingService {
 
     for (Map<String, Object> userData : data) {
       List<String> course_names = new ArrayList<>();
-      List<Float> results = new ArrayList<>();
+      List<String> result1 = new ArrayList<>();
+      List<String> result2 = new ArrayList<>();
+      List<String> result3 = new ArrayList<>();
+      List<String> result4 = new ArrayList<>();
+      List<String> result5 = new ArrayList<>();
+      List<String> result6 = new ArrayList<>();
+      List<String> result7 = new ArrayList<>();
+      String position = (String) userData.get("position");
+      Long id = (Long) userData.get("user_id");
       String name =
-        userData.get("emp_code") +
-        " " +
         userData.get("title") +
         " " +
         userData.get("firstname") +
         " " +
-        userData.get("lastname");
+        userData.get("lastname") ;
 
       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
         "course"
       );
+
       for (Map<String, Object> course : courseList) {
         course_names.add(
           course.get("course_name") != null
             ? course.get("course_name").toString()
             : ""
         );
-        results.add(
-          course.get("result1") != null ? (float) course.get("result1") : 0.0f
+        result1.add(
+          course.get("result1") != null ? (String) course.get("result1") : " "
         );
-        results.add(
-          course.get("result2") != null ? (float) course.get("result2") : 0.0f
+        result2.add(
+          course.get("result2") != null ? (String) course.get("result2") : " "
         );
-        results.add(
-          course.get("result3") != null ? (float) course.get("result3") : 0.0f
+        result3.add(
+          course.get("result3") != null ? (String) course.get("result3") : " "
         );
-        results.add(
-          course.get("result4") != null ? (float) course.get("result4") : 0.0f
+        result4.add(
+          course.get("result4") != null ? (String) course.get("result4") : " "
         );
-        results.add(
-          course.get("result5") != null ? (float) course.get("result5") : 0.0f
+        result5.add(
+          course.get("result5") != null ? (String) course.get("result5") : " "
         );
-        results.add(
-          course.get("result6") != null ? (float) course.get("result6") : 0.0f
+        result6.add(
+          course.get("result6") != null ? (String) course.get("result6") : " "
         );
-        results.add(
-          course.get("result7") != null ? (float) course.get("result7") : 0.0f
+        result7.add(
+          course.get("result7") != null ? (String) course.get("result7") : " "
         );
       }
-
-      coll.add(new BeanGeneric9(course_names, results, name));
+      coll.add(new BeanGeneric9(course_names, result1,result2,result3,result4,result5,result6,result7,position,name,id));
     }
 
     return new JRBeanCollectionDataSource(coll);
@@ -1219,10 +1224,9 @@ public class TrainingService {
         deptID,
         sectorID
       );
-
+      params.put("company", sector.get().getCompany().getCompanyName());
       params.put("sector_name", sector.get().getSectorName());
       params.put("dept_name", depOptional.get().getDeptName());
-
       params.put(
         "startdate",
         new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
@@ -1252,6 +1256,7 @@ public class TrainingService {
     return null;
   }
 
+<<<<<<< HEAD
 //  public String printReportGeneric9(String startDate, String endDate) {
 //    try {
 //      String spec = "report/Generic9.jrxml";
@@ -1315,6 +1320,42 @@ public class TrainingService {
 //    }
 //    return null;
 //  }
+=======
+  public String printReportGeneric9(String startDate, String endDate) {
+    try {
+      String spec = "report/Generic9.jrxml";
+      Map<String, Object> params = new HashMap<String, Object>();
+      LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
+
+      params.put(
+        "startdate",
+        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+      );
+      params.put(
+        "enddate",
+        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+      );
+
+      InputStream reportInput =
+        UserService.class.getClassLoader().getResourceAsStream(spec);
+      JasperReport jasperReport = JasperCompileManager.compileReport(
+        reportInput
+      );
+      JasperPrint jasperPrint = JasperFillManager.fillReport(
+        jasperReport,
+        params,
+        getDataSourceGeneric9(ht)
+      );
+      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+      return Base64.encodeBase64String(bytes);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+>>>>>>> 4c5cccdbc3745b6df51776693a0a7b71b0601fde
 
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
@@ -1691,6 +1732,11 @@ public class TrainingService {
         trainingRootOutput.get("user").get("lastname").alias("lastname"),
         trainingRootOutput.get("position").get("positionName").alias("positionName"),
         trainingRootOutput.join("courses").get("id").alias("course_id"),
+        trainingRootOutput
+          .get("user")
+          .get("position")
+          .get("id")
+          .alias("position_id"),
         trainingRootOutput.join("result").get("result1").alias("result1"),
         trainingRootOutput.join("result").get("result2").alias("result2"),
         trainingRootOutput.join("result").get("result3").alias("result3"),
@@ -1725,6 +1771,10 @@ public class TrainingService {
       LinkedHashMap<String, Object> currentUser = null;
 
       for (Tuple row : resultListBudgetTrainingOutput) {
+        Optional<Position> positionOptional = positionRepository.findById(
+          (Long) row.get("position_id")
+        );
+        String positionString = positionOptional.get().getPositionName();
         if (
           currentUser == null ||
           !currentUser.get("emp_code").equals(row.get("emp_code"))
@@ -1735,6 +1785,7 @@ public class TrainingService {
           currentUser.put("title", row.get("title"));
           currentUser.put("firstname", row.get("firstname"));
           currentUser.put("lastname", row.get("lastname"));
+          currentUser.put("position", positionString);
           currentUser.put("course", new ArrayList<>());
           users.add(currentUser);
         }

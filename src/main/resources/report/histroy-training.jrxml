@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ประวัติการฝึกอบรม" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e7222bc-ff08-4e75-95cb-533ae5588ce1">
 	<subDataset name="dataset1" uuid="551fafc2-60f2-4722-b535-8c8b6fa7db1d">
 		<field name="course_name" class="java.lang.String">
@@ -30,6 +30,7 @@
 	<parameter name="sector_name" class="java.lang.String"/>
 	<parameter name="enddate" class="java.lang.String"/>
 	<parameter name="startdate" class="java.lang.String"/>
+	<parameter name="company" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="course_names" class="java.util.Collection"/>
 	<field name="course_prices" class="java.util.Collection"/>
@@ -40,21 +41,7 @@
 	<field name="sumall" class="java.lang.Float"/>
 	<field name="name" class="java.lang.String"/>
 	<title>
-		<band height="164" splitType="Stretch">
-			<staticText>
-				<reportElement x="2" y="15" width="798" height="30" uuid="04110634-451c-4c9d-9b6e-b7265e7fbb8a"/>
-				<box bottomPadding="0">
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="THSarabunNew" size="14"/>
-				</textElement>
-				<text><![CDATA[บริษัทโปรเฟสชั่นนัลคอมพิวเตอร์ จำกัด]]></text>
-			</staticText>
+		<band height="168" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="93" width="70" height="30" uuid="c9d46342-29a0-43f4-ac3f-55f3f7ba5125"/>
 				<textElement verticalAlignment="Middle">
@@ -124,6 +111,16 @@
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dept_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="799" height="30" uuid="38553da7-3707-40ce-831c-ee201a5f7758"/>
+				<box>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{company}.equals("PCCTH") ? "บริษัท โปรเฟสชั่นนัลคอมพิวเตอร์ จำกัด" : "บริษัท ไวซซอฟท์ จำกัด"]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
