@@ -37,6 +37,7 @@ public class TrainingService {
   private final ResultRepository resultRepository;
   private final DepartmentRepository departmentRepository;
   private final SectorRepository sectorRepository;
+  private final CompanyRepository companyRepository;
 
   private final EntityManager entityManager;
 
@@ -1251,45 +1252,69 @@ public class TrainingService {
     return null;
   }
 
-  public String printReportGeneric9(String startDate, String endDate) {
-    try {
-      String spec = "report/Generic9.jrxml";
-      Map<String, Object> params = new HashMap<String, Object>();
-      //Optional<Sector> sector = sectorRepository.findById(sectorID);
-      //Optional<Department> depOptional = departmentRepository.findById(deptID);
-      LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate);
-
-      //params.put("sector_name", sector.get().getSectorName());
-      //params.put("dept_name", depOptional.get().getDeptName());
-
-      params.put(
-        "startdate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
-      );
-      params.put(
-        "enddate",
-        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
-          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
-      );
-
-      InputStream reportInput =
-        UserService.class.getClassLoader().getResourceAsStream(spec);
-      JasperReport jasperReport = JasperCompileManager.compileReport(
-        reportInput
-      );
-      JasperPrint jasperPrint = JasperFillManager.fillReport(
-        jasperReport,
-        params,
-        getDataSourceGeneric9(ht)
-      );
-      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-      return Base64.encodeBase64String(bytes);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+//  public String printReportGeneric9(String startDate, String endDate) {
+//    try {
+//      String spec = "report/Generic9.jrxml";
+//      Map<String, Object> params = new HashMap<String, Object>();
+//      //Optional<Sector> sector = sectorRepository.findById(sectorID);
+//      //Optional<Department> depOptional = departmentRepository.findById(deptID);
+//
+//      //params.put("sector_name", sector.get().getSectorName());
+//      //params.put("dept_name", depOptional.get().getDeptName());
+//      for (int i = 0; i < 2; i++) {
+//        LinkedHashMap<String, Object> ht = HistoryGeneric9(startDate, endDate, Long.valueOf(i));
+//        params.put(
+//                "startdate",
+//                new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//                        .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+//        );
+//        params.put(
+//                "enddate",
+//                new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//                        .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+//        );
+//
+//        InputStream reportInput =
+//                UserService.class.getClassLoader().getResourceAsStream(spec);
+//        JasperReport jasperReport = JasperCompileManager.compileReport(
+//                reportInput
+//        );
+//        JasperPrint jasperPrint = JasperFillManager.fillReport(
+//                jasperReport,
+//                params,
+//                getDataSourceGeneric9(ht)
+//        );
+//        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+//        return Base64.encodeBase64String(bytes);
+//      }
+//      params.put(
+//        "startdate",
+//        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//          .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+//      );
+//      params.put(
+//        "enddate",
+//        new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+//          .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+//      );
+//
+//      InputStream reportInput =
+//        UserService.class.getClassLoader().getResourceAsStream(spec);
+//      JasperReport jasperReport = JasperCompileManager.compileReport(
+//        reportInput
+//      );
+//      JasperPrint jasperPrint = JasperFillManager.fillReport(
+//        jasperReport,
+//        params,
+//        getDataSourceGeneric9(ht)
+//      );
+//      byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+//      return Base64.encodeBase64String(bytes);
+//    } catch (Exception e) {
+//      e.printStackTrace();
+//    }
+//    return null;
+//  }
 
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
@@ -1594,8 +1619,10 @@ public class TrainingService {
 
   public LinkedHashMap<String, Object> HistoryGeneric9(
     String startDate,
-    String endDate
+    String endDate,
+    Long companyId
   ) {
+    //Optional<Company> company = companyRepository.findById(companyId);
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     try {
       Date parsedStartDate = dateFormat.parse(startDate);
@@ -1607,7 +1634,8 @@ public class TrainingService {
 
       Join<Training, Course> courseJoin = trainingRoot.join("courses");
       Join<Training, Status> statusJoin = trainingRoot.join("status");
-      Join<Training, User> userJoin = trainingRoot.join("user").join("position");
+      //Join<Training, User> userJoin = trainingRoot.join("user").join("position");
+
 
       query
         .multiselect(
@@ -1634,13 +1662,19 @@ public class TrainingService {
         cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
         cb.isNull(statusJoin.get("status"))
       );
+      Join<User, Company> companyJoin = trainingRoot.join("user").join("company");
+      Predicate companyPredicate = cb.equal(
+              companyJoin.get("id"),
+              companyId
+      );
 
       query.where(
         cb.and(
           startDatePredicate,
           endDatePredicate,
           cancelPredicate,
-          passPredicate
+          passPredicate,
+                companyPredicate
         )
       );
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
@@ -1655,6 +1689,7 @@ public class TrainingService {
         trainingRootOutput.get("user").get("title").alias("title"),
         trainingRootOutput.get("user").get("firstname").alias("firstname"),
         trainingRootOutput.get("user").get("lastname").alias("lastname"),
+        trainingRootOutput.get("position").get("positionName").alias("positionName"),
         trainingRootOutput.join("courses").get("id").alias("course_id"),
         trainingRootOutput.join("result").get("result1").alias("result1"),
         trainingRootOutput.join("result").get("result2").alias("result2"),
@@ -1706,6 +1741,7 @@ public class TrainingService {
 
         LinkedHashMap<String, Object> course = new LinkedHashMap<>();
         course.put("course_name", row.get("course_name"));
+        course.put("positionName", row.get("positionName"));
         course.put("result1", row.get("result1"));
         course.put("result2", row.get("result2"));
         course.put("result3", row.get("result3"));
