@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ประวัติการฝึกอบรม" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3e7222bc-ff08-4e75-95cb-533ae5588ce1">
 	<subDataset name="dataset1" uuid="551fafc2-60f2-4722-b535-8c8b6fa7db1d">
 		<field name="course_name" class="java.lang.String">
@@ -299,41 +299,15 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{result1s})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="60" width="69">
-						<textField>
-							<reportElement x="0" y="0" width="69" height="60" uuid="728e278e-97a9-4c96-a3c3-fc535382b668"/>
-							<box>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-							</box>
-							<textElement>
-								<font fontName="THSarabunNew" size="14"/>
-							</textElement>
-							<textFieldExpression><![CDATA[$F{result1}.equals( "pass") ? " " : "  "]]></textFieldExpression>
-						</textField>
-						<staticText>
-							<reportElement x="0" y="0" width="69" height="60" uuid="ebb9434b-7dab-434a-90cd-c34684553da7"/>
-							<box>
-								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
-							</box>
-							<text><![CDATA[]]></text>
-						</staticText>
-						<line direction="BottomUp">
-							<reportElement x="30" y="26" width="6" height="9" uuid="e57b3509-1a1a-4b4f-8fc0-6c95cd2fbebc">
-								<printWhenExpression><![CDATA[$F{result1}.equals( "pass")]]></printWhenExpression>
+						<image>
+							<reportElement x="24" y="18" width="21" height="25" uuid="dd4fa9d6-5952-4712-bdd5-2b56c21f381b">
+								<printWhenExpression><![CDATA[$F{result1}.equals( "pass") ]]></printWhenExpression>
 							</reportElement>
-						</line>
-						<line>
-							<reportElement x="28" y="33" width="2" height="2" uuid="6b73465f-fe4f-450c-ad28-facee373ae46">
-								<property name="com.jaspersoft.studio.unit.width" value="px"/>
-								<property name="com.jaspersoft.studio.unit.height" value="px"/>
-								<printWhenExpression><![CDATA[$F{result1}.equals( "pass")]]></printWhenExpression>
-							</reportElement>
-						</line>
+							<imageExpression><![CDATA["C:/Users/PPC/Desktop/right.png"]]></imageExpression>
+						</image>
+						<rectangle>
+							<reportElement mode="Transparent" x="0" y="0" width="69" height="60" uuid="f1fc1e7e-1f93-4f0d-b5b9-7d4150354c4a"/>
+						</rectangle>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
