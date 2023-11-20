@@ -358,10 +358,10 @@
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
@@ -469,7 +469,7 @@
 							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
