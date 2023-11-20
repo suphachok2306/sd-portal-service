@@ -30,6 +30,7 @@
 	<parameter name="sector_name" class="java.lang.String"/>
 	<parameter name="enddate" class="java.lang.String"/>
 	<parameter name="startdate" class="java.lang.String"/>
+	<parameter name="company" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="course_names" class="java.util.Collection"/>
 	<field name="course_prices" class="java.util.Collection"/>
