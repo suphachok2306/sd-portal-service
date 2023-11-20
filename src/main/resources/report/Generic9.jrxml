@@ -301,16 +301,16 @@
 					<jr:listContents height="60" width="69">
 						<textField>
 							<reportElement x="0" y="0" width="69" height="60" uuid="728e278e-97a9-4c96-a3c3-fc535382b668"/>
-							<box topPadding="5">
+							<box topPadding="0">
 								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result1}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result1}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -331,14 +331,14 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result2}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result2}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -365,7 +365,7 @@
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result3}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result3}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -385,14 +385,14 @@
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result4}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result4}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -412,14 +412,14 @@
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result5}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result5}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -439,14 +439,14 @@
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
-							<textElement textAlignment="Left" verticalAlignment="Top">
+							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result6}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result6}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -466,14 +466,14 @@
 								<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 								<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							</reportElement>
-							<box topPadding="5">
+							<box topPadding="0">
 								<pen lineWidth="1.0" lineStyle="Solid"/>
 							</box>
 							<textElement textAlignment="Left" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result7}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result7}.equals( "pass") ? "\u2713" : "  "]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
