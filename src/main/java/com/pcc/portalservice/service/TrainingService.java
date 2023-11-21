@@ -7,6 +7,16 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -17,17 +27,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -788,14 +787,17 @@ public class TrainingService {
 
     if (startDate != null) {
       Join<Training, Course> courseJoin = root.join("courses");
-      predicates.add(builder.greaterThanOrEqualTo(courseJoin.get("startDate"), startDate));
-  }
-  
-  if (endDate != null) {
+      predicates.add(
+        builder.greaterThanOrEqualTo(courseJoin.get("startDate"), startDate)
+      );
+    }
+
+    if (endDate != null) {
       Join<Training, Course> courseJoin = root.join("courses");
-      predicates.add(builder.lessThanOrEqualTo(courseJoin.get("endDate"), endDate));
-  }
-  
+      predicates.add(
+        builder.lessThanOrEqualTo(courseJoin.get("endDate"), endDate)
+      );
+    }
 
     if (courseName != null) {
       Join<Training, Course> courseJoin = root.join("courses");
@@ -1270,51 +1272,58 @@ public class TrainingService {
     }
     return null;
   }
-  
-  public Map<String, Object> printReportGeneric9(String startDate, String endDate) {
+
+  public Map<String, Object> printReportGeneric9(
+    String startDate,
+    String endDate
+  ) {
     Map<String, Object> reports = new HashMap<>();
 
     try {
-        String spec = "report/Generic9.jrxml";
-        for (int i = 1; i < 3; i++) {
-            Map<String, Object> params = new HashMap<String, Object>();
-            LinkedHashMap<String, Object> ht = HistoryGeneric9(
-                startDate,
-                endDate,
-                Long.valueOf(i)
-            );
-            InputStream reportInput =
-                    UserService.class.getClassLoader().getResourceAsStream(spec);
-            JasperReport jasperReport = JasperCompileManager.compileReport(
-                    reportInput
-            );
-            JasperPrint jasperPrint = JasperFillManager.fillReport(
-                    jasperReport,
-                    params,
-                    getDataSourceGeneric9(ht)
-            );
+      String spec = "report/Generic9.jrxml";
+      for (int i = 1; i < 3; i++) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        LinkedHashMap<String, Object> ht = HistoryGeneric9(
+          startDate,
+          endDate,
+          Long.valueOf(i)
+        );
+        InputStream reportInput =
+          UserService.class.getClassLoader().getResourceAsStream(spec);
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+          reportInput
+        );
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+          jasperReport,
+          params,
+          getDataSourceGeneric9(ht)
+        );
 
-            JRXlsxExporter exporter = new JRXlsxExporter();
+        JRXlsxExporter exporter = new JRXlsxExporter();
 
-            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        exporter.setExporterOutput(
+          new SimpleOutputStreamExporterOutput(outputStream)
+        );
 
-            exporter.exportReport();
-            byte[] xlsBytes = outputStream.toByteArray();
+        exporter.exportReport();
+        byte[] xlsBytes = outputStream.toByteArray();
+        List<?> dataList = (List<?>) ht.get("data");
 
-            if (i == 1) {
-                reports.put("PCC_Jasper", Base64.encodeBase64String(xlsBytes));
-            } else if (i == 2) {
-                reports.put("Wiresoft_Jasper", Base64.encodeBase64String(xlsBytes));
-            }
-        }
+        reports.put(
+          (i == 1) ? "PCC_Jasper" : "Wiresoft_Jasper",
+          (!dataList.isEmpty())
+            ? Base64.encodeBase64String(xlsBytes)
+            : "ไม่มีข้อมูล"
+        );
+      }
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
     }
     return reports;
-}
+  }
 
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
