@@ -534,7 +534,13 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "('PROGRAMMER I', 38)," +
                             "('PROGRAMMER I', 39)," +
                             "('PROGRAMMER I', 40)," +
+                            "('PROGRAMMER I', 41)," +
+                            "('PROGRAMMER I', 25)," +
+                            "('PROGRAMMER I', 31)," +
+                            "('PROGRAMMER I', 32)," +
+                            "('PROGRAMMER I', 42)," +
                             "('PROGRAMMER I', 41)"
+
 
             );
         }
