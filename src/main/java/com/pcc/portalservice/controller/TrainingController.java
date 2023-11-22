@@ -304,7 +304,8 @@ public class TrainingController {
     @RequestParam(required = false) @DateTimeFormat(
       iso = DateTimeFormat.ISO.DATE
     ) Date endDate,
-    @RequestParam(required = false) String courseName
+    @RequestParam(required = false) String courseName,
+    @RequestParam(required = false) String company
   ) {
     return trainingService.searchTraining(
       name,
@@ -312,7 +313,7 @@ public class TrainingController {
       department,
       startDate,
       endDate,
-      courseName
+      courseName, company
     );
   }
 

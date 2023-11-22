@@ -7,16 +7,6 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,6 +17,17 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -744,7 +745,8 @@ public class TrainingService {
     String department,
     Date startDate,
     Date endDate,
-    String courseName
+    String courseName,
+    String company
   ) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Training> query = builder.createQuery(Training.class);
@@ -808,6 +810,17 @@ public class TrainingService {
         )
       );
     }
+    if (company != null) {
+      Join<Training, User> userJoin = root.join("user");
+      Join<User, Company> companyJoin = userJoin.join("company");
+
+      predicates.add(
+              builder.like(
+                      builder.lower(companyJoin.get("companyName")),
+                      "%" + company.toLowerCase() + "%"
+              )
+      );
+    }
 
     if (
       name == null &&
@@ -815,7 +828,8 @@ public class TrainingService {
       department == null &&
       startDate == null &&
       endDate == null &&
-      courseName == null
+      courseName == null &&
+              company == null
     ) {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
