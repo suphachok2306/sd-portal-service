@@ -656,35 +656,35 @@
 				<text><![CDATA[กรรมการผู้จัดการ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="271" y="422" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
+				<reportElement x="253" y="422" width="138" height="30" uuid="80e04950-eee9-4748-9538-2b53c20ba3be"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[((($F{positionAp2} != null) ? $F{positionAp2} : " "))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="269" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
+				<reportElement x="248" y="370" width="140" height="30" uuid="10110e66-4251-4fad-b2a6-79277121a59a"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[((($F{positionAp1} != null) ? $F{positionAp1} : " "))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="370" width="134" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
+				<reportElement x="440" y="370" width="104" height="30" uuid="fa22f0e2-2e4c-4607-824d-f2d3aaec43f1"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_saveUser1} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser1}) : ""]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="420" width="134" height="30" uuid="5a6a6710-876a-4696-87f0-ee2a2ecf6376"/>
+				<reportElement x="440" y="422" width="103" height="30" uuid="5a6a6710-876a-4696-87f0-ee2a2ecf6376"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{date_saveUser2} != null ? new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_saveUser2}) : ""]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="470" width="134" height="30" uuid="98c65c09-f3cb-4b3c-af73-7788100fbf57"/>
+				<reportElement x="440" y="470" width="104" height="30" uuid="98c65c09-f3cb-4b3c-af73-7788100fbf57"/>
 				<textElement verticalAlignment="Bottom">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
@@ -746,39 +746,39 @@
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="387" width="112" height="20" uuid="7a2ec8ad-8a82-4c2f-93ef-4ee9b4f24945"/>
+				<reportElement x="253" y="387" width="133" height="20" uuid="7a2ec8ad-8a82-4c2f-93ef-4ee9b4f24945"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="290" y="440" width="115" height="20" uuid="e68596a3-8992-4b54-9d54-c73a36d79be6"/>
+				<reportElement x="253" y="440" width="135" height="20" uuid="e68596a3-8992-4b54-9d54-c73a36d79be6"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="388" width="132" height="20" uuid="f39a854b-4575-468b-8fac-604b651d2ccd"/>
+				<reportElement x="428" y="388" width="116" height="20" uuid="f39a854b-4575-468b-8fac-604b651d2ccd"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="413" y="438" width="132" height="20" uuid="b3374a01-8d82-4d09-ae2f-a4c1c283b633"/>
+				<reportElement x="428" y="440" width="117" height="20" uuid="b3374a01-8d82-4d09-ae2f-a4c1c283b633"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="488" width="132" height="20" uuid="8134e7de-6a72-4b9e-a8ff-a68e05a2aaf4"/>
+				<reportElement x="428" y="488" width="116" height="20" uuid="8134e7de-6a72-4b9e-a8ff-a68e05a2aaf4"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[...............................................................]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="371" width="56" height="30" uuid="09cc6e10-63b2-43ce-8238-db9fab3ec0d0"/>
+				<reportElement x="195" y="371" width="56" height="30" uuid="09cc6e10-63b2-43ce-8238-db9fab3ec0d0"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
 				<text><![CDATA[ตำแหน่ง ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="424" width="56" height="30" uuid="28da7e3e-fef0-4d17-88c8-57b709309911"/>
+				<reportElement x="196" y="424" width="56" height="30" uuid="28da7e3e-fef0-4d17-88c8-57b709309911"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
@@ -793,6 +793,27 @@
 				</textElement>
 				<textFieldExpression><![CDATA[($F{priceProject} != null) ? $F{priceProject} : " "]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="395" y="480" width="30" height="30" uuid="af2fe131-2efb-40d0-a78a-fb11875f6308"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="432" width="30" height="30" uuid="17f830f7-7e9f-4b46-87b6-28e0bfb922b5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="380" width="30" height="30" uuid="762f0c59-4af4-44e4-8981-4fc09855ad8f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="THSarabunNew" size="14"/>
+				</textElement>
+				<text><![CDATA[วันที่]]></text>
+			</staticText>
 		</band>
 		<band height="690">
 			<staticText>
