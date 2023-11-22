@@ -339,68 +339,6 @@ public class TrainingController {
     );
   }
 
-//  @Value("${pdf.path}")
-//  private String pdfFilesPath;
-//
-//  // Modify the endpoint to accept parameters and generate the report
-//  @GetMapping("/generateReport/{trainId}/{userId1}/{userId2}/{userId3}/{userId4}")
-//  public ResponseEntity<?> generateAndDownloadReport(
-//          @PathVariable Long trainId,
-//          @PathVariable Long userId1,
-//          @PathVariable Long userId2,
-//          @PathVariable Long userId3,
-//          @PathVariable Long userId4) {
-//    File pdfFile = generatePdfReport(trainId, userId1, userId2, userId3, userId4);
-//
-//    if (pdfFile != null) {
-//      Resource resource = new FileSystemResource(pdfFile);
-//
-//      if (resource.exists() && resource.isReadable()) {
-//        String encodedFilename = UriUtils.encode(resource.getFilename(), "UTF-8");
-//
-//        String contentDisposition = String.format("inline; filename=\"%s\"", encodedFilename);
-//
-//        // Serve the temporary PDF file as a response
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-//                .body(resource);
-//      }
-//    }
-//
-//    return ResponseEntity.notFound().build();
-//  }
-
-
-
-//  @GetMapping("/ReportHistoryTraining")
-//  public String reportHistoryTraining(
-//    @RequestParam String startDate,
-//    @RequestParam String endDate,
-//    @RequestParam Long deptID,
-//    @RequestParam Long sectorID
-//  ) {
-//    System.out.println("0");
-//    return trainingService.printReportHistoryTraining(
-//      startDate,
-//      endDate,
-//      deptID,
-//      sectorID
-//    );
-//  }
-  // @GetMapping("/ReportHistoryTraining")
-  // public String reportHistoryTraining(
-  //         //@RequestParam Long trainId
-  //         @RequestParam(required = false) String startDate,
-  //         @RequestParam(required = false) String endDate,
-  //         @RequestParam(required = false) Long deptID,
-  //         @RequestParam(required = false) Long sectorID
-
-
-  // ) throws Exception {
-  //   //System.out.println("0");
-  //   return trainingService.printReportHistoryTraining(startDate,endDate,deptID,sectorID);
-  // }
-
   @GetMapping("/ReportHistoryTraining")
   public String reportHistoryTraining(
     @RequestParam String startDate,
@@ -419,14 +357,12 @@ public class TrainingController {
   public LinkedHashMap<String, Object> HistoryTraining(
     @RequestParam String startDate,
     @RequestParam String endDate,
-    @RequestParam Long deptID,
-    @RequestParam Long sectorID
+    @RequestParam Long deptID
   ) {
     return trainingService.HistoryTraining(
       startDate,
       endDate,
-      deptID,
-      sectorID
+      deptID
     );
   }
 

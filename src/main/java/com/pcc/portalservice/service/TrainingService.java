@@ -7,6 +7,16 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -17,17 +27,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -815,10 +814,10 @@ public class TrainingService {
       Join<User, Company> companyJoin = userJoin.join("company");
 
       predicates.add(
-              builder.like(
-                      builder.lower(companyJoin.get("companyName")),
-                      "%" + company.toLowerCase() + "%"
-              )
+        builder.like(
+          builder.lower(companyJoin.get("companyName")),
+          "%" + company.toLowerCase() + "%"
+        )
       );
     }
 
@@ -829,7 +828,7 @@ public class TrainingService {
       startDate == null &&
       endDate == null &&
       courseName == null &&
-              company == null
+      company == null
     ) {
       return "ไม่พบรายการที่ต้องการค้นหา";
     }
@@ -1252,8 +1251,7 @@ public class TrainingService {
       LinkedHashMap<String, Object> ht = HistoryTraining(
         startDate,
         endDate,
-        deptID,
-        sectorID
+        deptID
       );
       params.put("company", sector.get().getCompany().getCompanyName());
       params.put("sector_name", sector.get().getSectorName());
@@ -1280,7 +1278,13 @@ public class TrainingService {
         getDataSource(ht)
       );
       byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-      return Base64.encodeBase64String(bytes);
+      List<?> dataList = (List<?>) ht.get("data");
+
+      if (dataList != null && !dataList.isEmpty()) {
+          return Base64.encodeBase64String(bytes);
+      } else {
+          return "ไม่มีข้อมูล";
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -1342,8 +1346,7 @@ public class TrainingService {
   public LinkedHashMap<String, Object> HistoryTraining(
     String startDate,
     String endDate,
-    Long deptID,
-    Long sectorID
+    Long deptID
   ) {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     try {
@@ -1379,18 +1382,29 @@ public class TrainingService {
         .join("departments");
       Predicate deptPredicate = cb.equal(departmentJoin.get("id"), deptID);
 
-      Predicate sectorPredicate = cb.equal(
-        trainingRoot.get("user").get("sector").get("id"),
-        sectorID
-      );
       Predicate cancelPredicate = cb.equal(
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
 
-      Predicate passPredicate = cb.or(
-        cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
-        cb.isNull(statusJoin.get("status"))
+      Predicate passPredicate = cb.equal(
+        statusJoin.get("status"),
+        StatusApprove.อนุมัติ
+      );
+    
+      Subquery<Long> approvedStatusCountSubquery = query.subquery(Long.class);
+      Root<Status> statusRoot1 = approvedStatusCountSubquery.from(Status.class);
+      approvedStatusCountSubquery.select(cb.count(statusRoot1));
+      approvedStatusCountSubquery.where(
+        cb.equal(statusRoot1.get("status"), StatusApprove.อนุมัติ),
+        cb.equal(trainingRoot.get("id"), statusRoot1.get("training"))
+      );
+
+      Subquery<Long> totalStatusCountSubquery = query.subquery(Long.class);
+      Root<Status> statusRoot2 = totalStatusCountSubquery.from(Status.class);
+      totalStatusCountSubquery.select(cb.count(statusRoot2));
+      totalStatusCountSubquery.where(
+        cb.equal(trainingRoot.get("id"), statusRoot2.get("training"))
       );
 
       query.where(
@@ -1398,13 +1412,13 @@ public class TrainingService {
           startDatePredicate,
           endDatePredicate,
           deptPredicate,
-          sectorPredicate,
           cancelPredicate,
-          passPredicate
+          passPredicate,
+          cb.equal(approvedStatusCountSubquery, totalStatusCountSubquery)
         )
       );
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
-      List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+      List<Tuple> resultListIDTraining = typedQuery.getResultList();
 
       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
@@ -1433,7 +1447,7 @@ public class TrainingService {
         trainingRootOutput
           .get("id")
           .in(
-            resultListBudgetTraining
+            resultListIDTraining
               .stream()
               .map(tuple -> tuple.get("train_id", Long.class))
               .collect(Collectors.toList())
@@ -1444,14 +1458,14 @@ public class TrainingService {
       TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
         queryOutput
       );
-      List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
+      List<Tuple> resultListIDTrainingOutput = typedQueryOutput.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
       LinkedHashMap<String, Object> currentUser = null;
       float totalAll = 0;
 
-      for (Tuple row : resultListBudgetTrainingOutput) {
+      for (Tuple row : resultListIDTrainingOutput) {
         if (
           currentUser == null ||
           !currentUser.get("emp_code").equals(row.get("emp_code"))
@@ -1541,14 +1555,29 @@ public class TrainingService {
         "ดำเนินการอยู่"
       );
 
-      Predicate passPredicate = cb.or(
-        cb.notEqual(statusJoin.get("status"), StatusApprove.ยกเลิก),
-        cb.isNull(statusJoin.get("status"))
+      Predicate passPredicate = cb.equal(
+        statusJoin.get("status"),
+        StatusApprove.อนุมัติ
       );
 
       Predicate companyPredicate = cb.equal(
         trainingRoot.get("user").get("company").get("id"),
         companyId
+      );
+      
+      Subquery<Long> approvedStatusCountSubquery = query.subquery(Long.class);
+      Root<Status> statusRoot1 = approvedStatusCountSubquery.from(Status.class);
+      approvedStatusCountSubquery.select(cb.count(statusRoot1));
+      approvedStatusCountSubquery.where(
+        cb.equal(statusRoot1.get("status"), StatusApprove.อนุมัติ),
+        cb.equal(trainingRoot.get("id"), statusRoot1.get("training"))
+      );
+
+      Subquery<Long> totalStatusCountSubquery = query.subquery(Long.class);
+      Root<Status> statusRoot2 = totalStatusCountSubquery.from(Status.class);
+      totalStatusCountSubquery.select(cb.count(statusRoot2));
+      totalStatusCountSubquery.where(
+        cb.equal(trainingRoot.get("id"), statusRoot2.get("training"))
       );
 
       query.where(
@@ -1557,11 +1586,12 @@ public class TrainingService {
           endDatePredicate,
           cancelPredicate,
           passPredicate,
-          companyPredicate
+          companyPredicate,
+          cb.equal(approvedStatusCountSubquery, totalStatusCountSubquery)
         )
       );
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
-      List<Tuple> resultListBudgetTraining = typedQuery.getResultList();
+      List<Tuple> resultListIDTraining = typedQuery.getResultList();
 
       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
@@ -1594,7 +1624,7 @@ public class TrainingService {
         trainingRootOutput
           .get("id")
           .in(
-            resultListBudgetTraining
+            resultListIDTraining
               .stream()
               .map(tuple -> tuple.get("train_id", Long.class))
               .collect(Collectors.toList())
@@ -1605,13 +1635,13 @@ public class TrainingService {
       TypedQuery<Tuple> typedQueryOutput = entityManager.createQuery(
         queryOutput
       );
-      List<Tuple> resultListBudgetTrainingOutput = typedQueryOutput.getResultList();
+      List<Tuple> resultListIDTrainingOutput = typedQueryOutput.getResultList();
 
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
       LinkedHashMap<String, Object> currentUser = null;
 
-      for (Tuple row : resultListBudgetTrainingOutput) {
+      for (Tuple row : resultListIDTrainingOutput) {
         Optional<Position> positionOptional = positionRepository.findById(
           (Long) row.get("position_id")
         );
