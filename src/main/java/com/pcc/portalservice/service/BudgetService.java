@@ -75,6 +75,7 @@ public class BudgetService {
    * @Delete
    */
   public String deleteData(Long id) {
+    autogen();
     Optional<Budget> optionalBudget = budgetRepository.findById(id);
     if (optionalBudget.isPresent()) {
       budgetRepository.deleteById(id);
@@ -91,6 +92,7 @@ public class BudgetService {
     CreateBudgetRequest createBudgetRequest,
     Long budgetID
   ) {
+    autogen();
     Company companyName = companyRepository
       .findById(createBudgetRequest.getCompany_Id())
       .orElseThrow(() ->
@@ -222,6 +224,7 @@ public class BudgetService {
    * @หางบด้วยId
    */
   public Budget findById(Long id) {
+    autogen();
     return budgetRepository
       .findById(id)
       .orElseThrow(() ->
@@ -488,6 +491,7 @@ public class BudgetService {
     String year,
     Long department_id
   ) {
+    autogen();
     String jpql = "select * from budget where 1=1";
 
     if (year != null) {
@@ -559,40 +563,42 @@ public class BudgetService {
   }
 
   public List<Map<String, Object>> findAlls() {
+    autogen();
     List<Budget> budgets = budgetRepository.findAll();
     List<Map<String, Object>> result = new ArrayList<>();
 
     for (Budget budget : budgets) {
-      Map<String, Object> budgetMap = new HashMap<>();
-      budgetMap.put("id", budget.getId());
-      budgetMap.put("year", budget.getYear());
+      if (!(budget.getBudgetCer() == 0 || budget.getBudgetTraining() == 0)) {
+        Map<String, Object> budgetMap = new HashMap<>();
+        budgetMap.put("id", budget.getId());
+        budgetMap.put("year", budget.getYear());
 
-      // Convert float values to BigDecimal and setScale for two decimal places
-      BigDecimal budgetTraining = BigDecimal
-        .valueOf(budget.getBudgetTraining())
-        .setScale(2, BigDecimal.ROUND_HALF_UP);
-      BigDecimal budgetCer = BigDecimal
-        .valueOf(budget.getBudgetCer())
-        .setScale(2, BigDecimal.ROUND_HALF_UP);
-      BigDecimal total_exp = BigDecimal
-        .valueOf(budget.getTotal_exp())
-        .setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal budgetTraining = BigDecimal
+          .valueOf(budget.getBudgetTraining())
+          .setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal budgetCer = BigDecimal
+          .valueOf(budget.getBudgetCer())
+          .setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal total_exp = BigDecimal
+          .valueOf(budget.getTotal_exp())
+          .setScale(2, BigDecimal.ROUND_HALF_UP);
 
-      budgetMap.put("budgetTraining", budgetTraining);
-      budgetMap.put("budgetCer", budgetCer);
-      budgetMap.put("total_exp", total_exp);
-      budgetMap.put("company", budget.getCompany().getCompanyName());
+        budgetMap.put("budgetTraining", budgetTraining);
+        budgetMap.put("budgetCer", budgetCer);
+        budgetMap.put("total_exp", total_exp);
+        budgetMap.put("company", budget.getCompany().getCompanyName());
 
-      Map<String, Object> departmentMap = new HashMap<>();
-      departmentMap.put("deptid", budget.getDepartment().getId());
-      departmentMap.put("deptname", budget.getDepartment().getDeptName());
-      departmentMap.put("deptcode", budget.getDepartment().getDeptCode());
+        Map<String, Object> departmentMap = new HashMap<>();
+        departmentMap.put("deptid", budget.getDepartment().getId());
+        departmentMap.put("deptname", budget.getDepartment().getDeptName());
+        departmentMap.put("deptcode", budget.getDepartment().getDeptCode());
 
-      budgetMap.put("department", departmentMap);
+        budgetMap.put("department", departmentMap);
 
-      result.add(budgetMap);
+        result.add(budgetMap);
+      }
+
     }
-
     return result;
   }
 
@@ -620,15 +626,15 @@ public class BudgetService {
             .findById(department.get().getSector().getCompany().getId())
             .orElseThrow(() ->
               new RuntimeException(
-                "companyName not found: " + department.get().getSector().getCompany().getId()
+                "companyName not found: " +
+                department.get().getSector().getCompany().getId()
               )
             );
           Department departmentId = departmentRepository
             .findById(department.get().getId())
             .orElseThrow(() ->
               new RuntimeException(
-                "departmentId not found: " +
-                department.get().getId()
+                "departmentId not found: " + department.get().getId()
               )
             );
           Budget budget = Budget
@@ -638,18 +644,10 @@ public class BudgetService {
             .year(String.valueOf(currentYear))
             .budgetCer(0)
             .budgetTraining(0)
-            .total_exp(
-              totalExp(
-                0,
-                0
-              )
-            )
+            .total_exp(totalExp(0, 0))
             .build();
           budget = budgetRepository.save(budget);
-          checkBudget(
-            departmentId.getId(),
-            String.valueOf(currentYear)
-          );
+          checkBudget(departmentId.getId(), String.valueOf(currentYear));
         }
       }
     } catch (Exception e) {
