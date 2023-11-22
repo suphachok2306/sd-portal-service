@@ -8,11 +8,12 @@ import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateBudgetRequest;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,7 +23,6 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.NativeQuery;
-import org.jfree.base.config.SystemPropertyConfiguration;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -31,7 +31,6 @@ import org.springframework.stereotype.Service;
 public class BudgetService {
 
   private final BudgetRepository budgetRepository;
-  private final SectorRepository sectorRepository;
   private final Budget_DepartmentRepository budget_DepartmentRepository;
   private final DepartmentRepository departmentRepository;
   private final CompanyRepository companyRepository;
@@ -41,13 +40,7 @@ public class BudgetService {
    * @Create
    */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
-    Company companyName = companyRepository
-      .findById(createBudgetRequest.getCompany_Id())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "companyName not found: " + createBudgetRequest.getCompany_Id()
-        )
-      );
+    autogen();
     Department departmentId = departmentRepository
       .findById(createBudgetRequest.getDepartment_Id())
       .orElseThrow(() ->
@@ -58,7 +51,7 @@ public class BudgetService {
     Budget budget = Budget
       .builder()
       .department(departmentId)
-      .company(companyName)
+      .company(departmentId.getSector().getCompany())
       .year(createBudgetRequest.getYear())
       .budgetCer(createBudgetRequest.getBudgetCer())
       .budgetTraining(createBudgetRequest.getBudgetTraining())
@@ -313,6 +306,7 @@ public class BudgetService {
     String year,
     long department_id
   ) {
+    autogen();
     checkBudget(department_id, year);
 
     String jpqlBudgetCer =
@@ -359,8 +353,6 @@ public class BudgetService {
       BigDecimal budgetTraining = new BigDecimal(
         resultListBudgetTraining.get(0).toString()
       );
-
-      System.out.println(budgetCer.setScale(2, RoundingMode.HALF_UP));
 
       result.put("budgetCer", budgetCer.setScale(2, RoundingMode.HALF_UP));
       result.put(
@@ -424,6 +416,7 @@ public class BudgetService {
     String year,
     long department_id
   ) {
+    autogen();
     checkBudget(department_id, year);
 
     List<Float> trainingIds = getTrainingIds(year, department_id, "สอบ");
@@ -601,5 +594,66 @@ public class BudgetService {
     }
 
     return result;
+  }
+
+  public void autogen() {
+    List<Department> data = departmentRepository.findAll();
+    int currentYear = LocalDate.now().getYear();
+
+    try {
+      Query query = entityManager.createNativeQuery(
+        "SELECT DISTINCT bd.department_id FROM Budget_Department bd WHERE bd.year = :year ORDER BY bd.department_id"
+      );
+      query.setParameter("year", String.valueOf(currentYear));
+      List<BigInteger> results = query.getResultList();
+      List<Long> result_long = new ArrayList<>();
+      for (BigInteger i : results) {
+        result_long.add(i.longValue());
+      }
+
+      for (Department datas : data) {
+        if (!result_long.contains(datas.getId())) {
+          Optional<Department> department = departmentRepository.findById(
+            datas.getId()
+          );
+          Company companyName = companyRepository
+            .findById(department.get().getSector().getCompany().getId())
+            .orElseThrow(() ->
+              new RuntimeException(
+                "companyName not found: " + department.get().getSector().getCompany().getId()
+              )
+            );
+          Department departmentId = departmentRepository
+            .findById(department.get().getId())
+            .orElseThrow(() ->
+              new RuntimeException(
+                "departmentId not found: " +
+                department.get().getId()
+              )
+            );
+          Budget budget = Budget
+            .builder()
+            .department(departmentId)
+            .company(companyName)
+            .year(String.valueOf(currentYear))
+            .budgetCer(0)
+            .budgetTraining(0)
+            .total_exp(
+              totalExp(
+                0,
+                0
+              )
+            )
+            .build();
+          budget = budgetRepository.save(budget);
+          checkBudget(
+            departmentId.getId(),
+            String.valueOf(currentYear)
+          );
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
