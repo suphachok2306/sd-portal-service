@@ -568,7 +568,7 @@ public class BudgetService {
     List<Map<String, Object>> result = new ArrayList<>();
 
     for (Budget budget : budgets) {
-      if (!(budget.getBudgetCer() == 0 || budget.getBudgetTraining() == 0)) {
+      if (!(budget.getBudgetCer() == 0 && budget.getBudgetTraining() == 0)) {
         Map<String, Object> budgetMap = new HashMap<>();
         budgetMap.put("id", budget.getId());
         budgetMap.put("year", budget.getYear());
