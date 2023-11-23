@@ -767,14 +767,14 @@ public class DatabaseInitializer implements CommandLineRunner {
       hashpassword +
       "', '+2222222222', 2, 4, 17, 'เป็นพนักงานอยู่', 'นาย')," +
       
-      "('approverAPS(BOI)@pccth.com',7031, 'approverAPS(BOI)', 'approverAPS(BOI)', '" +
+      "('approverAPS_BOI@pccth.com',7031, 'approverAPS(BOI)', 'approverAPS(BOI)', '" +
       hashpassword +
       "', '+2222222222', 2, 4, 18, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverOSS(BOI)@pccth.com',7032, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
+      "('approverOSS_BOI@pccth.com',7032, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
       hashpassword +
       "', '+2222222222', 2, 4, 20, 'เป็นพนักงานอยู่', 'นาย')," +
       
-      "('approverSD(BOI)@pccth.com',7033, 'approverSD(BOI)', 'approverSD(BOI)', '" +
+      "('approverSD_BOI@pccth.com',7033, 'approverSD(BOI)', 'approverSD(BOI)', '" +
       hashpassword +
       "', '+2222222222', 2, 4, 23, 'เป็นพนักงานอยู่', 'นาย')," +
 
