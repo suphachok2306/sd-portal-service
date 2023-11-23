@@ -190,7 +190,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('PROGRAMMER II',14),\r\n" + //
         "('SR.SYSTEM ANALYST I',15),\r\n" + //
         "('SR.SYSTEM ANALYST II',16),\r\n" + //
-        "('PROGRAMMER III',17)," +
+        //"('PROGRAMMER III',17)," +
         "('Manager_Senior Manager', 22)," +
         "('Business Development Specialist_Senior', 22)," +
         "('Business Development_Senior', 22)," +
@@ -452,8 +452,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Admin Officer I / Senior Admin Officer', 8)," +
         "('Admin Officer II / Senior Admin Officer', 8)," +
         "('Admin Officer III / Senior Admin Officer', 8)," +
-        "('Vice President', 17)," +
-        "('Assistant Vice President', 17)," +
+//        "('Vice President', 17)," +
+//        "('Assistant Vice President', 17)," +
         "('Manager', 25)," +
         "('Asst_Manager', 25)," +
         "('Sr_System_Operator', 25)," +
