@@ -144,7 +144,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(39, 'CE', '4000', 21),  " +
         "(40, 'SM', '4000', 21),  " +
         "(41, 'NS', '4100', 22),  " +
-        "(42, 'SD(BOI)', '5000', 23)  "
+        "(42, 'SD', '5000', 23)  "
       );
     }
   }
