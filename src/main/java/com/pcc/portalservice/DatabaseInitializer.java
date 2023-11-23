@@ -186,7 +186,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('TESTER III', 10),\r\n" + //
         "('SR.SQA ANALYST I', 11),\r\n" + //
         "('TESTER II', 12),\r\n" + //
-        "('TESTER I', 13),\r\n" + //
+        "('TESTER I', 25),\r\n" + //
         "('PROGRAMMER II',14),\r\n" + //
         "('SR.SYSTEM ANALYST I',15),\r\n" + //
         "('SR.SYSTEM ANALYST II',16),\r\n" + //
@@ -210,17 +210,17 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Manager_Senior Manager', 23)," +
         "('IT Specialist Senior IT Consultant', 23)," +
         "('IT Administrator Senior', 23)," +
-        "('Vice President', 13)," +
-        "('Asst. Vice President', 13)," +
-        "('FM Manager', 13)," +
+        "('Vice President', 25)," +
+        "('Asst. Vice President', 25)," +
+        "('FM Manager', 25)," +
         "('FSVP-Services Group', 19)," +
         "('Vice President (8B)', 19)," +
         "('Asst.Vice President (8C)', 19)," +
-        "('Manager', 13)," +
-        "('Asst. Manager', 13)," +
-        "('SQA Specialist', 13)," +
-        "('SQA_Analyst', 13)," +
-        "('Application_Support', 13)," +
+        "('Manager', 25)," +
+        "('Asst. Manager', 25)," +
+        "('SQA Specialist', 25)," +
+        "('SQA_Analyst', 25)," +
+        "('Application_Support', 25)," +
         "('Legal Manager_Sr.Legal Manager', 26)," +
         "('Sr.Legal Specialist I', 26)," +
         "('Sr.Legal Specialist II', 26)," +
@@ -305,12 +305,12 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Technician I', 10)," +
         "('Technician II', 10)," +
         "('Technician III', 10)," +
-        "('Manager', 13)," +
-        "('Asst_Manager', 13)," +
-        "('System_Engineer', 13)," +
-        "('Network_Analyst', 13)," +
-        "('Network_Engineer', 13)," +
-        "('DBA', 13)," +
+        "('Manager', 25)," +
+        "('Asst_Manager', 25)," +
+        "('System_Engineer', 25)," +
+        "('Network_Analyst', 25)," +
+        "('Network_Engineer', 25)," +
+        "('DBA', 25)," +
         "('Manager and Sr.Manager', 11)," +
         "('Asst.Manager I', 11)," +
         "('Asst.Manager II', 11)," +
@@ -336,20 +336,20 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Vice President', 7)," +
         "('Advisor', 7)," +
         "('Admin Officer_Senior', 7)," +
-        "('Manager', 13)," +
-        "('Assistant Manager', 13)," +
-        "('Application Specialist', 13)," +
-        "('System Analyst', 13)," +
-        "('Programmer', 13)," +
-        "('Operation Support', 13)," +
-        "('Sr_Admin_Officer', 13)," +
-        "('Admin_Officer', 13)," +
-        "('Driver', 13)," +
-        "('Manager', 13)," +
-        "('Asst_Manager', 13)," +
-        "('Mainframe_Specialist', 13)," +
-        "('Sr_System_Programmer', 13)," +
-        "('System_Programmer', 13)," +
+        "('Manager', 25)," +
+        "('Assistant Manager', 25)," +
+        "('Application Specialist', 25)," +
+        "('System Analyst', 25)," +
+        "('Programmer', 25)," +
+        "('Operation Support', 25)," +
+        "('Sr_Admin_Officer', 25)," +
+        "('Admin_Officer', 25)," +
+        "('Driver', 25)," +
+        "('Manager', 25)," +
+        "('Asst_Manager', 25)," +
+        "('Mainframe_Specialist', 25)," +
+        "('Sr_System_Programmer', 25)," +
+        "('System_Programmer', 25)," +
         "('Manager', 9)," +
         "('Asst. Manager I', 9)," +
         "('Asst. Manager II', 9)," +
@@ -395,8 +395,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Sr. Business Consultant Specialist I', 6)," +
         "('Sr. Business Consultant Specialist II', 6)," +
         "('Sr. Business Consultant Specialist III', 6)," +
-        "('Asst_Project_Manager', 13)," +
-        "('Project_Coordinator', 13)," +
+        "('Asst_Project_Manager', 25)," +
+        "('Project_Coordinator', 25)," +
         "('Manager / Senior Manager', 8)," +
         "('Assistant Manager I', 8)," +
         "('Assistant Manager II', 8)," +
@@ -454,10 +454,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Admin Officer III / Senior Admin Officer', 8)," +
         "('Vice President', 17)," +
         "('Assistant Vice President', 17)," +
-        "('Manager', 13)," +
-        "('Asst_Manager', 13)," +
-        "('Sr_System_Operator', 13)," +
-        "('System_Operator', 13)," +
+        "('Manager', 25)," +
+        "('Asst_Manager', 25)," +
+        "('Sr_System_Operator', 25)," +
+        "('System_Operator', 25)," +
         "('Manager_Senior Manager', 24)," +
         "('Purchasing Specialist', 24)," +
         "('Purchasing Officer_Senior', 24)," +
@@ -535,7 +535,6 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('PROGRAMMER I', 39)," +
         "('PROGRAMMER I', 40)," +
         "('PROGRAMMER I', 41)," +
-        "('PROGRAMMER I', 25)," +
         "('PROGRAMMER I', 31)," +
         "('PROGRAMMER I', 32)," +
         "('PROGRAMMER I', 42)," +
