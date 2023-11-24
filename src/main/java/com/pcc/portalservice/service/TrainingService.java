@@ -75,10 +75,9 @@ public class TrainingService {
       .findById(createTrainingRequest.getUserId())
       .orElseThrow(() ->
         new RuntimeException(
-          "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+          "UserId not found: " + createTrainingRequest.getUserId()
         )
       );
-
     User approve1 = userRepository
       .findById(createTrainingRequest.getApprove1_id())
       .orElseThrow(() ->
