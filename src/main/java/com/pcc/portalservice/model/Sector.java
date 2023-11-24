@@ -2,8 +2,11 @@ package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,13 +28,15 @@ public class Sector {
   private String sectorName;
   private String sectorCode;
 
+  
   @JsonIgnore
-  @OneToMany(mappedBy = "sector")
+  @ManyToMany(mappedBy = "sector")
   private List<Department> departments = new ArrayList<>();
 
+  @ManyToMany(mappedBy = "sectors")
   @JsonIgnore
-  @OneToOne(mappedBy = "sector")
-  private User user;
+  private List<User> users = new ArrayList<>();
+
 
   @ManyToOne
   @JoinColumn(name = "company_id")

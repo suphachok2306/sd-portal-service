@@ -22,7 +22,7 @@ public class Company {
   private String companyName;
 
   @JsonIgnore
-  @OneToOne(mappedBy = "company")
+  @ManyToOne()
   private Sector sector;
 
   @JsonIgnore

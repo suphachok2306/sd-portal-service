@@ -107,24 +107,6 @@ public class UserService {
       }
     }
 
-    Company companyName = companyRepository
-      .findByCompanyName(createEmployeeRequest.getCompanyName())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "companyName not found: " + createEmployeeRequest.getCompanyName()
-        )
-      );
-
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
-      createEmployeeRequest.getSectorCode(),
-      createEmployeeRequest.getSectorName(),
-      createEmployeeRequest.getCompanyName()
-    );
-
-    Sector sector = sectorOptional.orElseThrow(() ->
-      new RuntimeException("Sector not found / SectorCode or SectorName wrong")
-    );
-
     Optional<Department> departmentOptional = departmentRepository.findById(
       createEmployeeRequest.getDeptID().get(0)
     );
@@ -144,8 +126,8 @@ public class UserService {
 
     User user = User
       .builder()
-      .company(companyName)
-      .sector(sector)
+      .companys(new HashSet<>())
+      .sectors(new HashSet<>())
       .departments(new HashSet<>())
       .empCode(createEmployeeRequest.getEmpCode())
       .title(createEmployeeRequest.getTitle())
@@ -180,6 +162,20 @@ public class UserService {
       }
     }
 
+    for (Long sectorID : createEmployeeRequest.getSectorID()) {
+      Sector sector_id = sectorRepository.findById(sectorID).orElse(null);
+      if (sectorID != null) {
+        user.getSectors().add(sector_id);
+      }
+    }
+
+    for (Long companyID : createEmployeeRequest.getCompanyID()) {
+      Company company_id = companyRepository.findById(companyID).orElse(null);
+      if (companyID != null) {
+        user.getCompanys().add(company_id);
+      }
+    }
+
     return userRepository.save(user);
   }
 
@@ -189,23 +185,6 @@ public class UserService {
     User user = userRepository
       .findById(id)
       .orElseThrow(() -> new RuntimeException("UserId not found: "));
-    Company companyName = companyRepository
-      .findByCompanyName(editEmployeeRequest.getCompanyName())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "companyName not found: " + editEmployeeRequest.getCompanyName()
-        )
-      );
-
-    Optional<Sector> sectorOptional = sectorRepository.findBySectorCodeAndSectorNameAndCompanyCompanyName(
-      editEmployeeRequest.getSectorCode(),
-      editEmployeeRequest.getSectorName(),
-      editEmployeeRequest.getCompanyName()
-    );
-
-    Sector sector = sectorOptional.orElseThrow(() ->
-      new RuntimeException("Sector not found / SectorCode or SectorName wrong")
-    );
 
     for (Long i : editEmployeeRequest.getDeptID()) {
       try {
@@ -217,6 +196,13 @@ public class UserService {
             "Department not found / DeptCode or DeptName wrong"
           )
         );
+
+        Department department_id = departmentRepository
+          .findById(i)
+          .orElse(null);
+        if (i != null) {
+          user.getDepartments().add(department_id);
+        }
 
         Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
           editEmployeeRequest.getPositionName(),
@@ -261,18 +247,23 @@ public class UserService {
     user.setFirstname(editEmployeeRequest.getFirstname());
     user.setLastname(editEmployeeRequest.getLastname());
     user.setEmail(editEmployeeRequest.getEmail());
-    user.setSector(sector);
+    user.setSectors(new HashSet<>());
     user.setDepartments(new HashSet<>());
+    user.setCompanys(new HashSet<>());
 
-    for (Long deptID : editEmployeeRequest.getDeptID()) {
-      Department department_id = departmentRepository
-        .findById(deptID)
-        .orElse(null);
-      if (deptID != null) {
-        user.getDepartments().add(department_id);
+    for (Long sectorID : editEmployeeRequest.getSectorID()) {
+      Sector sector_id = sectorRepository.findById(sectorID).orElse(null);
+      if (sectorID != null) {
+        user.getSectors().add(sector_id);
       }
     }
-    user.setCompany(companyName);
+
+    for (Long companyID : editEmployeeRequest.getCompaniesID()) {
+      Company company_id = companyRepository.findById(companyID).orElse(null);
+      if (companyID != null) {
+        user.getCompanys().add(company_id);
+      }
+    }
 
     return userRepository.save(user);
   }

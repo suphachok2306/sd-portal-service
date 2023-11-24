@@ -36,26 +36,19 @@ public class User {
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Role> roles = new HashSet<>();
 
-  @ToString.Exclude
-  @OneToOne
-  @JoinColumn(name = "sector_id")
-  private Sector sector;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private Set<Sector> sectors = new HashSet<>();
 
-  @ManyToMany
-  @JoinTable(
-    name = "USER_DEPARTMENT",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "department_id")
-  )
+  @ManyToMany(fetch = FetchType.EAGER)
   private Set<Department> departments = new HashSet<>();
 
+  @ManyToMany
+  private Set<Company> companys = new HashSet<>();
+
+  
   @OneToOne
   @JoinColumn(name = "position_id")
   private Position position;
-
-  @OneToOne
-  @JoinColumn(name = "company_id")
-  private Company company;
 
   @OneToOne(mappedBy = "user")
   @JsonIgnore

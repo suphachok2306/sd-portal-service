@@ -8,9 +8,6 @@ import lombok.Data;
 @Builder
 public class CreateEmployeeRequest {
 
-  String companyName;
-  String sectorName;
-  String sectorCode;
   String empCode;
   String title;
   String firstname;
@@ -18,5 +15,7 @@ public class CreateEmployeeRequest {
   String positionName;
   String email;
   private List<Long> deptID;
+  private List<Long> companyID;
+  private List<Long> sectorID;
   private List<String> roles;
 }

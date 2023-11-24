@@ -27,8 +27,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-    insertDataIntoUsersTable();
-    insertBudgetTable();
+    // insertDataIntoUsersTable();
+    // insertBudgetTable();
   }
 
   private boolean isTableEmpty(String tableName) {
