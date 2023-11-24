@@ -177,7 +177,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('SR.PROGRAMMER ANALYST I', 2),\r\n" + //
         "('PROGRAMMER II', 2),\r\n" + //
         "('PROGRAMMER III', 3),\r\n" + //
-        "('SR.PROGRAMMER', 4),\r\n" + //
+        "('SR.PROGRAMMER', 42),\r\n" + //
         "('SR. SYSTEM ANALYST I', 5),\r\n" + //
         "('PROGRAMMER I', 6),\r\n" + //
         "('SR.SQA ANALYST II', 7),\r\n" + //
@@ -538,7 +538,13 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('PROGRAMMER I', 31)," +
         "('PROGRAMMER I', 32)," +
         "('PROGRAMMER I', 42)," +
-        "('PROGRAMMER I', 41)"
+        "('PROGRAMMER II', 42)," +
+        "('PROGRAMMER III', 42)," +
+        "('PROGRAMMER IIII', 42)," +
+        "('SR.SYSTEM ANALYST III', 42)," +
+        "('SR.SYSTEM ANALYST II', 42)," +
+        "('SR.SYSTEM ANALYST I', 42)," +
+        "('SR.SYSTEM ANALYST I', 41)"
       );
     }
   }
