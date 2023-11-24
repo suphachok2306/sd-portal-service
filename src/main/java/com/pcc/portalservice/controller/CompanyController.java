@@ -23,10 +23,6 @@ public class CompanyController {
 
   private final CompanyService companyService;
 
-  /**
-   * @สร้างCompany
-   * @PostMapping
-   */
   @PostMapping("/createCompany")
   public ResponseEntity<ApiResponse> createCompany(
     @RequestBody CreateCompanyRequest createCompanyRequest
@@ -55,10 +51,6 @@ public class CompanyController {
     }
   }
 
-  /**
-   * @หาCompany ทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllCompany")
   public List<Company> getAllCompany() {
     return companyService.findAll();

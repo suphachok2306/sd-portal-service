@@ -7,10 +7,9 @@ import lombok.Data;
 @Data
 public class UpdateUserRequest {
 
-    String username;
-    String email;
-    String firstname;
-    String lastname;
-    String telephone;
-
+  String username;
+  String email;
+  String firstname;
+  String lastname;
+  String telephone;
 }

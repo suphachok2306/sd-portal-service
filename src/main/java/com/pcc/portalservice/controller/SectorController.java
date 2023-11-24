@@ -23,10 +23,6 @@ public class SectorController {
 
   private final SectorService sectorService;
 
-  /**
-   * @สร้างSector
-   * @PostMapping
-   */
   @PostMapping("/creatSector")
   public ResponseEntity<ApiResponse> createCompany(
     @RequestBody CreateSectorRequest createSectorRequest
@@ -55,10 +51,6 @@ public class SectorController {
     }
   }
 
-  /**
-   * @หาSectorทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllSector")
   public List<Sector> getAllSector() {
     return sectorService.findAll();

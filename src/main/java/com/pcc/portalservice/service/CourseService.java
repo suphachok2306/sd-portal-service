@@ -35,70 +35,66 @@ public class CourseService {
   private final TrainingService trainingService;
   private final EntityManager entityManager;
 
-  /**
-   * @สร้างCourse
-   */
-  public Course create(CreateCourseRequest createCourseRequest) throws ParseException {
+  public Course create(CreateCourseRequest createCourseRequest)
+    throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date startDateFormat = dateFormat.parse(createCourseRequest.getStartDate());
     Date endDateFormat = dateFormat.parse(createCourseRequest.getEndDate());
-    
+
     Course course = null;
 
     if (createCourseRequest.getType().toString().equals("อบรม")) {
-        course = Course
-            .builder()
-            .type(createCourseRequest.getType())
-            .hours(createCourseRequest.getHours())
-            .active("ดำเนินการอยู่")
-            .courseName(createCourseRequest.getCourseName())
-            .startDate(startDateFormat)
-            .endDate(endDateFormat)
-            .time(createCourseRequest.getTime())
-            .note(createCourseRequest.getNote())
-            .objective("เพื่อนำมาใช้ในการปฎิบัติงาน")
-            .price(createCourseRequest.getPrice())
-            .priceProject(createCourseRequest.getPriceProject())
-            .place(createCourseRequest.getPlace())
-            .institute(createCourseRequest.getInstitute())
-            .build();
+      course =
+        Course
+          .builder()
+          .type(createCourseRequest.getType())
+          .hours(createCourseRequest.getHours())
+          .active("ดำเนินการอยู่")
+          .courseName(createCourseRequest.getCourseName())
+          .startDate(startDateFormat)
+          .endDate(endDateFormat)
+          .time(createCourseRequest.getTime())
+          .note(createCourseRequest.getNote())
+          .objective("เพื่อนำมาใช้ในการปฎิบัติงาน")
+          .price(createCourseRequest.getPrice())
+          .priceProject(createCourseRequest.getPriceProject())
+          .place(createCourseRequest.getPlace())
+          .institute(createCourseRequest.getInstitute())
+          .build();
     } else if (createCourseRequest.getType().toString().equals("สอบ")) {
-        String objectiveString = "เพื่อสอบ " + createCourseRequest.getCourseName();
-        course = Course
-            .builder()
-            .type(createCourseRequest.getType())
-            .hours(createCourseRequest.getHours())
-            .active("ดำเนินการอยู่")
-            .courseName(createCourseRequest.getCourseName())
-            .startDate(startDateFormat)
-            .endDate(endDateFormat)
-            .time(createCourseRequest.getTime())
-            .note(createCourseRequest.getNote())
-            .objective(objectiveString)
-            .price(createCourseRequest.getPrice())
-            .priceProject(createCourseRequest.getPriceProject())
-            .place(createCourseRequest.getPlace())
-            .institute(createCourseRequest.getInstitute())
-            .build();
+      String objectiveString =
+        "เพื่อสอบ " + createCourseRequest.getCourseName();
+      course =
+        Course
+          .builder()
+          .type(createCourseRequest.getType())
+          .hours(createCourseRequest.getHours())
+          .active("ดำเนินการอยู่")
+          .courseName(createCourseRequest.getCourseName())
+          .startDate(startDateFormat)
+          .endDate(endDateFormat)
+          .time(createCourseRequest.getTime())
+          .note(createCourseRequest.getNote())
+          .objective(objectiveString)
+          .price(createCourseRequest.getPrice())
+          .priceProject(createCourseRequest.getPriceProject())
+          .place(createCourseRequest.getPlace())
+          .institute(createCourseRequest.getInstitute())
+          .build();
     }
-    
+
     return courseRepository.save(course);
-}
+  }
 
-
-  /**
-   * @แก้ไขCourse
-   */
   public Course editCourse(EditCourseRequest editCourseRequest, Long courseId)
     throws ParseException {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date startDateFormat = dateFormat.parse(editCourseRequest.getStartDate());
     Date endDateFormat = dateFormat.parse(editCourseRequest.getEndDate());
     Course course = findById(courseId);
-    if(editCourseRequest.getType().toString().equals("อบรม")){
+    if (editCourseRequest.getType().toString().equals("อบรม")) {
       course.setObjective("เพื่อนำมาใช้ในการปฎิบัติงาน");
-    }
-    else if(editCourseRequest.getType().toString().equals("สอบ")){
+    } else if (editCourseRequest.getType().toString().equals("สอบ")) {
       String objectiveString = "เพื่อสอบ " + editCourseRequest.getCourseName();
       course.setObjective(objectiveString);
     }
@@ -117,9 +113,6 @@ public class CourseService {
     return courseRepository.save(course);
   }
 
-  /**
-   * @ลบCourseด้วยId
-   */
   public String deleteData(Long id) {
     Optional<Course> optionalCourse = courseRepository.findById(id);
     if (optionalCourse.isPresent()) {
@@ -130,9 +123,6 @@ public class CourseService {
     }
   }
 
-  /**
-   * @หาCourseด้วยId
-   */
   public Course findById(Long id) {
     return courseRepository
       .findById(id)
@@ -141,9 +131,6 @@ public class CourseService {
       );
   }
 
-  /**
-   * @หาCourseทั้งหมด
-   */
   public List<Course> findAllCourse() {
     List<Course> allCourses = courseRepository.findAll();
     List<Course> filteredCourses = new ArrayList<>();
@@ -170,9 +157,6 @@ public class CourseService {
     return filteredCourses;
   }
 
-  /**
-   * @เช็คNullของCourse
-   */
   public boolean isCourseNull(CreateCourseRequest request) {
     return (
       request == null ||
@@ -208,8 +192,18 @@ public class CourseService {
       criteriaQuery.where(
         criteriaBuilder.equal(courseJoin.get("id"), courseId),
         criteriaBuilder.greaterThanOrEqualTo(
-            criteriaBuilder.function("TO_CHAR", String.class, trainingRoot.get("dateSave"), criteriaBuilder.literal("YYYY-MM-DD")),
-            criteriaBuilder.function("TO_CHAR", String.class, criteriaBuilder.currentDate(), criteriaBuilder.literal("YYYY-MM-DD"))
+          criteriaBuilder.function(
+            "TO_CHAR",
+            String.class,
+            trainingRoot.get("dateSave"),
+            criteriaBuilder.literal("YYYY-MM-DD")
+          ),
+          criteriaBuilder.function(
+            "TO_CHAR",
+            String.class,
+            criteriaBuilder.currentDate(),
+            criteriaBuilder.literal("YYYY-MM-DD")
+          )
         )
       );
 

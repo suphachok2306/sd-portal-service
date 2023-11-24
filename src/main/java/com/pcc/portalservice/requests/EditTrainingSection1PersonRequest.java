@@ -6,6 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class EditTrainingSection1PersonRequest {
-    String action;
-    String actionDate;
+
+  String action;
+  String actionDate;
 }

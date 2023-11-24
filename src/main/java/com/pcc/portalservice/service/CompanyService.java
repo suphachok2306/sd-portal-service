@@ -15,9 +15,6 @@ public class CompanyService {
 
   private final CompanyRepository companyRepository;
 
-  /**
-   * @Create
-   */
   public Company create(CreateCompanyRequest createCompanyRequest) {
     Company company = Company
       .builder()
@@ -27,16 +24,10 @@ public class CompanyService {
     return companyRepository.save(company);
   }
 
-  /**
-   * @หาCompanyทั้งหมด
-   */
   public List<Company> findAll() {
     return companyRepository.findAll();
   }
 
-  /**
-   * @เช็คNullของCompany
-   */
   public boolean isCompanyNull(CreateCompanyRequest request) {
     return (
       request == null ||

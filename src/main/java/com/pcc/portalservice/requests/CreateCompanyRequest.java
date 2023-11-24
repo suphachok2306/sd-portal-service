@@ -6,6 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class CreateCompanyRequest {
-    Long companyId;
-    String companyName;
+
+  Long companyId;
+  String companyName;
 }

@@ -68,9 +68,6 @@ public class TrainingService {
     return entityManager.createQuery(criteriaQuery).getSingleResult();
   }
 
-  /**
-   * @สร้างTraining
-   */
   public Training createTraining(CreateTrainingRequest createTrainingRequest)
     throws ParseException {
     User user = userRepository
@@ -200,9 +197,6 @@ public class TrainingService {
     return savedTraining;
   }
 
-  /**
-   * @EditTrainingSection1
-   */
   public Training editTrainingSection1(
     Long trainingId,
     EditTrainingSection1Request editTraining
@@ -247,9 +241,6 @@ public class TrainingService {
     return updatedTraining;
   }
 
-  /**
-   * @EditTrainingSection2
-   */
   public Result editTrainingSection2(
     Long resultId,
     EditTrainingSection2Request editTraining
@@ -277,9 +268,6 @@ public class TrainingService {
     return updatedTraining;
   }
 
-  /**
-   * @SetStatus
-   */
   public Training setStatusToTraining(
     Long trainingId,
     Long approveId,
@@ -345,10 +333,6 @@ public class TrainingService {
 
     return null;
   }
-
-  /**
-   * @หาTrainingด้วยId
-   */
 
   public Training findByTrainingId(Long id) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -445,9 +429,6 @@ public class TrainingService {
     return resultWithStatus;
   }
 
-  /**
-   * @หาTrainingด้วยUserId
-   */
   public List<Map<String, Object>> findTrainingsByUserId(Long userId) {
     String jpql =
       "SELECT t FROM Training t JOIN FETCH t.status s WHERE t.user.id = :id";
@@ -492,10 +473,6 @@ public class TrainingService {
     return calculateTrainingResultStatus(resultList);
   }
 
-  /**
-   * @หาTrainingด้วยApproveId
-   */
-
   public List<Map<String, Object>> findTrainingsByApprove1Id(Long approve1Id) {
     String jpql =
       "SELECT DISTINCT t.id, action, action_date, date_save, day,budget," + //
@@ -515,9 +492,6 @@ public class TrainingService {
     return calculateTrainingResultStatus(resultList, approve1Id, 2);
   }
 
-  /**
-   * @หาTrainingทั้งหมด
-   */
   public List<Map<String, Object>> findAllTraining() {
     String jpql =
       "SELECT DISTINCT t FROM Training t JOIN FETCH t.status " +
@@ -531,10 +505,6 @@ public class TrainingService {
 
     return calculateTrainingResultStatus(trainingList);
   }
-
-  /**
-   * @หาTrainingด้วยPersonnelId
-   */
 
   public List<Map<String, Object>> findTrainingByPersonnelId(Long approve1Id) {
     String jpql =
@@ -554,10 +524,6 @@ public class TrainingService {
 
     return calculateTrainingResultStatus(resultList, approve1Id, 3);
   }
-
-  /**
-   * @OutputForTraining1
-   */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
     List<Training> trainingList
@@ -622,10 +588,6 @@ public class TrainingService {
 
     return resultWithStatusList;
   }
-
-  /**
-   * @OutputForTraining2
-   */
 
   public static List<Map<String, Object>> calculateTrainingResultStatus(
     List<Training> trainingList,
@@ -733,10 +695,6 @@ public class TrainingService {
     }
     return uniqueStatusList;
   }
-
-  /**
-   * @หาtrainingด้วยName,Position,Department,StartDate,Enddate,CourseName
-   */
 
   public Object searchTraining(
     String name,
@@ -1281,9 +1239,9 @@ public class TrainingService {
       List<?> dataList = (List<?>) ht.get("data");
 
       if (dataList != null && !dataList.isEmpty()) {
-          return Base64.encodeBase64String(bytes);
+        return Base64.encodeBase64String(bytes);
       } else {
-          return "ไม่มีข้อมูล";
+        return "ไม่มีข้อมูล";
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -1391,7 +1349,7 @@ public class TrainingService {
         statusJoin.get("status"),
         StatusApprove.อนุมัติ
       );
-    
+
       Subquery<Long> approvedStatusCountSubquery = query.subquery(Long.class);
       Root<Status> statusRoot1 = approvedStatusCountSubquery.from(Status.class);
       approvedStatusCountSubquery.select(cb.count(statusRoot1));
@@ -1564,7 +1522,7 @@ public class TrainingService {
         trainingRoot.get("user").get("company").get("id"),
         companyId
       );
-      
+
       Subquery<Long> approvedStatusCountSubquery = query.subquery(Long.class);
       Root<Status> statusRoot1 = approvedStatusCountSubquery.from(Status.class);
       approvedStatusCountSubquery.select(cb.count(statusRoot1));
@@ -1683,9 +1641,6 @@ public class TrainingService {
     return null;
   }
 
-  /**
-   * @เช็คNullของTraining1
-   */
   public boolean isTrainingNull(CreateTrainingRequest request) {
     return (
       request == null ||
@@ -1694,9 +1649,6 @@ public class TrainingService {
     );
   }
 
-  /**
-   * @เช็คNullของTraining2
-   */
   public boolean isEditTrainingNull1(EditTrainingSection1Request request) {
     return (
       request == null ||
@@ -1705,9 +1657,6 @@ public class TrainingService {
     );
   }
 
-  /**
-   * @เช็คNullของTraining3
-   */
   public boolean isEditTrainingNull2(EditTrainingSection2Request request) {
     return (
       request == null ||
@@ -1729,10 +1678,6 @@ public class TrainingService {
       request.getResult().isEmpty()
     );
   }
-
-  /**
-   * @changeApprover
-   */
 
   private void changeApprover(
     EditTrainingSection1Request editTraining,

@@ -1,9 +1,7 @@
 package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.math.BigDecimal;
-
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -23,10 +23,6 @@ public class PositionController {
 
   private final PositionService positionService;
 
-  /**
-   * @สร้างPosition
-   * @PostMapping
-   */
   @PostMapping("/createPosition")
   public ResponseEntity<ApiResponse> createPosition(
     @RequestBody CreatePositionRequest createPositionRequest
@@ -55,10 +51,6 @@ public class PositionController {
     }
   }
 
-  /**
-   * @หาPositionsทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllPositions")
   public List<Position> getAllPositions() {
     return positionService.findAll();

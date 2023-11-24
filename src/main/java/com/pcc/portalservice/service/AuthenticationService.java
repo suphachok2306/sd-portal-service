@@ -22,11 +22,6 @@ public class AuthenticationService {
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
 
-  //private final RefreshTokenRepository refreshTokenRepository;
-
-  /**
-   * @Login
-   */
   public JwtAuthenticationResponse login(User user, String plainPassword) {
     try {
       authenticationManager.authenticate(
@@ -40,41 +35,14 @@ public class AuthenticationService {
     }
 
     String jwtToken = jwtTokenProvider.createToken(user);
-    //RefreshToken refreshToken = createRefreshToken(user.getId());
 
     return JwtAuthenticationResponse
       .builder()
       .accessToken(jwtToken)
-      //.refreshToken(refreshToken)
       .tokenType("BEARER")
       .build();
   }
 
-  /*
-   * Here we handle all the stuff for refresh tokens
-   */
-  //    public RefreshToken createRefreshToken(Long userId) {
-  //        // @Value("${security.token.refresh.duration}")
-  //        long refreshTokenDurationMs = 11111L;
-  //
-  //        RefreshToken refreshToken = new RefreshToken();
-  //        refreshToken.setUserId(userId);
-  //        refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
-  //        refreshToken.setToken(UUID.randomUUID().toString());
-  //        return refreshTokenRepository.save(refreshToken);
-  //    }
-
-  //    public RefreshToken verifyExpiration(RefreshToken token) {
-  //        if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
-  //            refreshTokenRepository.delete(token);
-  //            throw new RuntimeException("Refresh token was expired. Please make a new login request");
-  //        }
-  //        return token;
-  //    }
-
-  /**
-   * @HashPassword
-   */
   public String hashPassword(String plaingPassword) {
     return passwordEncoder.encode(plaingPassword);
   }

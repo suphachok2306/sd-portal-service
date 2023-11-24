@@ -6,6 +6,7 @@ import lombok.Data;
 @Builder
 @Data
 public class CreatePositionRequest {
-    String positionName;
-    Long departmentId;
+
+  String positionName;
+  Long departmentId;
 }

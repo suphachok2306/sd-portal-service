@@ -27,10 +27,6 @@ public class CourseController {
   private final CourseService courseService;
   private final CourseRepository courseRepository;
 
-  /**
-   * @สร้างCourse
-   * @PostMapping
-   */
   @PostMapping("/createCourse")
   public ResponseEntity<ApiResponse> createCourse(
     @RequestBody CreateCourseRequest createCourseRequest
@@ -59,10 +55,6 @@ public class CourseController {
     }
   }
 
-  /**
-   * @แก้ไขCompany
-   * @PutMapping
-   */
   @PutMapping("/editCourse")
   public ResponseEntity<ApiResponse> updateCourse(
     @RequestBody EditCourseRequest editCourseRequest,
@@ -70,7 +62,10 @@ public class CourseController {
   ) throws ParseException {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
-    Course updatedCourse = courseService.editCourse(editCourseRequest,courseID);
+    Course updatedCourse = courseService.editCourse(
+      editCourseRequest,
+      courseID
+    );
     if (updatedCourse != null) {
       data.setResult(updatedCourse);
       response.setResponseMessage("ทำรายการเรียบร้อย");
@@ -82,10 +77,6 @@ public class CourseController {
     }
   }
 
-  /**
-   * @ลบCourseด้วยId
-   * @DeleteMapping
-   */
   @DeleteMapping("/deleteCourseById")
   public ResponseEntity<ApiResponse> delete(@RequestParam Long courseID) {
     ApiResponse response = new ApiResponse();
@@ -102,36 +93,21 @@ public class CourseController {
     }
   }
 
-  /**
-   * @หาCourseทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllCourse")
   public List<Course> getCourseAll() {
     return courseService.findAllCourse();
   }
-   /**
-   * @หาCourseทั้งหมด
-   * @GetMapping
-   */
+
   @GetMapping("/findAllTest")
   public List<Course> getTest() {
     return courseService.findAllTest();
   }
 
-  /**
-   * @หาCourseทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllCourses")
   public List<Course> getCourses() {
     return courseRepository.findAll();
   }
 
-  /**
-   * @หาCourseด้วยId
-   * @GetMapping
-   */
   @GetMapping("/findCourseById")
   public ResponseEntity<ApiResponse> findCourseById(
     @RequestParam Long CourseId
@@ -151,21 +127,21 @@ public class CourseController {
   }
 
   @PutMapping("/setStatusToCourse")
-    public ResponseEntity<ApiResponse> setStatusToCourse(
-            @RequestParam Long course_id,
-            StatusCourse statuscourse
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        try {
-            Course course = courseService.setStatusToCourse(course_id,statuscourse);
-            data.setResult(course);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
+  public ResponseEntity<ApiResponse> setStatusToCourse(
+    @RequestParam Long course_id,
+    StatusCourse statuscourse
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      Course course = courseService.setStatusToCourse(course_id, statuscourse);
+      data.setResult(course);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.badRequest().body(response);
     }
+  }
 }

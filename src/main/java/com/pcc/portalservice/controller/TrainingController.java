@@ -9,19 +9,18 @@ import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
-import lombok.AllArgsConstructor;
-import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @AllArgsConstructor
@@ -30,10 +29,6 @@ public class TrainingController {
 
   private TrainingService trainingService;
 
-  /**
-   * @สร้างTraining
-   * @PostMapping
-   */
   @PostMapping("/createTraining")
   public ResponseEntity<ApiResponse> createTraining(
     @RequestBody CreateTrainingRequest createTrainingRequest
@@ -62,10 +57,6 @@ public class TrainingController {
     }
   }
 
-  /**
-   * @แก้ไขTrainingส่วนที่1
-   * @PostMapping
-   */
   @PostMapping("/editTrainingSection1")
   public ResponseEntity<ApiResponse> editTrainingSection1(
     @RequestParam Long trainingId,
@@ -98,46 +89,6 @@ public class TrainingController {
     }
   }
 
-  /**
-   * @แก้ไขTrainingส่วนที่3
-   * @PostMapping
-   */
-  //  @PostMapping("/editTrainingSection1Person")
-  //  public ResponseEntity<ApiResponse> editTrainingSection1Person(
-  //          @RequestParam Long trainingId,
-  //          @RequestBody EditTrainingSection1PersonRequest editTraining
-  //  ) throws ParseException {
-  //    ApiResponse response = new ApiResponse();
-  //    ResponseData data = new ResponseData();
-  //    //        if (trainingService.isEditTrainingNull3(editTraining)) {
-  //    //            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-  //    //            return ResponseEntity.badRequest().body(response);
-  //    //        }
-  //    try {
-  //      Training training = trainingService.editTrainingSection1Person(
-  //              trainingId,
-  //              editTraining
-  //      );
-  //      data.setResult(training);
-  //      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-  //      response.setResponseData(data);
-  //      URI uri = URI.create(
-  //              ServletUriComponentsBuilder
-  //                      .fromCurrentContextPath()
-  //                      .path("/editTraining")
-  //                      .toUriString()
-  //      );
-  //      return ResponseEntity.created(uri).body(response);
-  //    } catch (Exception e) {
-  //      response.setResponseMessage(e.getMessage());
-  //      return ResponseEntity.internalServerError().body(response);
-  //    }
-  //  }
-
-  /**
-   * @แก้ไขTrainingส่วนที่2
-   * @PostMapping
-   */
   @PostMapping("/editTrainingSection2")
   public ResponseEntity<ApiResponse> editTrainingSection2(
     @RequestParam Long resultId,
@@ -166,10 +117,6 @@ public class TrainingController {
     }
   }
 
-  /**
-   * @แก้ไขStatusของTraining
-   * @PostMapping
-   */
   @PutMapping("/setStatusToTraining")
   public ResponseEntity<ApiResponse> addStatusToTraining(
     @RequestParam Long trainingId,
@@ -194,10 +141,6 @@ public class TrainingController {
     }
   }
 
-  /**
-   * @แก้ไขStatusของTraining
-   * @PostMapping
-   */
   @PutMapping("/setCancelToTraining")
   public ResponseEntity<ApiResponse> setCancelToTraining(
     @RequestParam Long trainingId
@@ -216,10 +159,6 @@ public class TrainingController {
     }
   }
 
-  /**
-   * @หาTrainingด้วยId
-   * @GetMapping
-   */
   @GetMapping("/findTrainingByTrainingId")
   public ResponseEntity<Map<String, Object>> findTrainingByTrainingId(
     @RequestParam Long trainingId
@@ -228,10 +167,6 @@ public class TrainingController {
     return ResponseEntity.ok(training);
   }
 
-  /**
-   * @หาTrainingด้วยUserId
-   * @GetMapping
-   */
   @GetMapping("/findTrainingByUserId")
   public ResponseEntity<List<Map<String, Object>>> findTrainingByUserId(
     @RequestParam Long userId
@@ -252,10 +187,6 @@ public class TrainingController {
     return ResponseEntity.ok(trainings);
   }
 
-  /**
-   * @หาTrainingด้วยApproveId
-   * @GetMapping
-   */
   @GetMapping("/findTrainingByApprove1Id")
   public ResponseEntity<List<Map<String, Object>>> findTrainingByApprove1Id(
     @RequestParam Long approve1Id
@@ -266,33 +197,11 @@ public class TrainingController {
     return ResponseEntity.ok(trainings);
   }
 
-  // /**
-  //  * @หาTrainingด้วยPersonnelId
-  //  * @GetMapping
-  //  */
-  // @GetMapping("/findTrainingByPersonnelId")
-  // public ResponseEntity<List<Map<String, Object>>> findTrainingByPersonnelId(
-  //         @RequestParam Long PersonnelId
-  // ) {
-  //   List<Map<String, Object>> trainings = trainingService.findTrainingByPersonnelId(
-  //           PersonnelId
-  //   );
-  //   return ResponseEntity.ok(trainings);
-  // }
-
-  /**
-   * @หาTrainingทั้งหมด
-   * @GetMapping
-   */
   @GetMapping("/findAllTraining")
   public List<Map<String, Object>> findAllTraining() {
     return trainingService.findAllTraining();
   }
 
-  /**
-   * @หาTrainingด้วยName,Position,Department,startDate,endDate,courseName
-   * @GetMapping
-   */
   @GetMapping("/searchTraining")
   public Object search(
     @RequestParam(required = false) String name,
@@ -313,7 +222,8 @@ public class TrainingController {
       department,
       startDate,
       endDate,
-      courseName, company
+      courseName,
+      company
     );
   }
 
@@ -347,25 +257,21 @@ public class TrainingController {
     @RequestParam Long sectorID
   ) throws Exception {
     return trainingService.printReportHistoryTraining(
-       startDate,
-     endDate,
-     deptID,
-     sectorID
+      startDate,
+      endDate,
+      deptID,
+      sectorID
     );
   }
+
   @GetMapping("/HistoryTraining")
   public LinkedHashMap<String, Object> HistoryTraining(
     @RequestParam String startDate,
     @RequestParam String endDate,
     @RequestParam Long deptID
   ) {
-    return trainingService.HistoryTraining(
-      startDate,
-      endDate,
-      deptID
-    );
+    return trainingService.HistoryTraining(startDate, endDate, deptID);
   }
-
 
   @GetMapping("/Generic9")
   public LinkedHashMap<String, Object> generic9(
@@ -373,32 +279,26 @@ public class TrainingController {
     @RequestParam String endDate,
     @RequestParam Long companyId
   ) {
-    return trainingService.HistoryGeneric9(
-      startDate,
-      endDate,
-      companyId
-    );
+    return trainingService.HistoryGeneric9(startDate, endDate, companyId);
   }
+
   @GetMapping("/ReportGeneric9")
   public Map<String, Object> reportGeneric9(
-          @RequestParam String startDate,
-          @RequestParam String endDate
+    @RequestParam String startDate,
+    @RequestParam String endDate
   ) throws Exception {
-    return trainingService.printReportGeneric9(
-            startDate,
-            endDate
-    );
+    return trainingService.printReportGeneric9(startDate, endDate);
   }
-//  @GetMapping("/ReportGeneric9")
-//  public String reportGeneric9(
-//          @RequestParam String startDate,
-//          @RequestParam String endDate
-//  ) throws Exception {
-//    return trainingService.printReportGeneric9(
-//            startDate,
-//            endDate
-//    );
-//  }
+  //  @GetMapping("/ReportGeneric9")
+  //  public String reportGeneric9(
+  //          @RequestParam String startDate,
+  //          @RequestParam String endDate
+  //  ) throws Exception {
+  //    return trainingService.printReportGeneric9(
+  //            startDate,
+  //            endDate
+  //    );
+  //  }
 
   // public ResponseEntity<List<Map<String, Object>>> findAllApprove(@RequestParam Long count) {
   //     List<Map<String, Object>> training = trainingService.findbyAllCountApprove(count);

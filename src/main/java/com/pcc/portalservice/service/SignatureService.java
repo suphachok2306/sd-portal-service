@@ -23,9 +23,6 @@ public class SignatureService {
   private final SignatureRepository signatureRepository;
   private final UserRepository userRepository;
 
-    /**
-   * @ConvertImageforSignature
-   */
   public static byte[] convertJPEGtoPNG(byte[] jpegImage) throws IOException {
     BufferedImage bufferedImage = ImageIO.read(
       new ByteArrayInputStream(jpegImage)
@@ -41,10 +38,6 @@ public class SignatureService {
     return outputStream.toByteArray();
   }
 
-  /**
-   * @อัพโหลดSignatureImage
-   * @สร้างSignatureImage
-   */
   public Object uploadSignature(Long userId, MultipartFile file)
     throws IOException {
     User user = userRepository
@@ -65,9 +58,6 @@ public class SignatureService {
     return signatureRepository.save(signature);
   }
 
-  /**
-   * @หาSignatureImage
-   */
   public byte[] getSignatureImage(Long userId) {
     User user = userRepository
       .findById(userId)

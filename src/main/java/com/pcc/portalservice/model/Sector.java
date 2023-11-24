@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +40,6 @@ public class Sector {
 
   @Override
   public int hashCode() {
-      return Objects.hash(id, sectorName, sectorCode);
+    return Objects.hash(id, sectorName, sectorCode);
   }
-
 }

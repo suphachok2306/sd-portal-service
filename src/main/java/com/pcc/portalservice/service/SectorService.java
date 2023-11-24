@@ -19,9 +19,6 @@ public class SectorService {
   private final SectorRepository sectorRepository;
   private final CompanyRepository companyRepository;
 
-  /**
-   * @สร้างSector
-   */
   public Sector create(CreateSectorRequest createSectorRequest) {
     Company companyID = companyRepository
       .findById(createSectorRequest.getCompanyId())
@@ -40,17 +37,10 @@ public class SectorService {
     return sectorRepository.save(sector);
   }
 
-  /**
-   * @หาSectorทั้งหมด
-   */
   public List<Sector> findAll() {
     return sectorRepository.findAll();
   }
 
-
-  /**
-   * @หาSectorด้วยSectorCodeและSectorNameและCompanyName
-   */
   public Optional<Sector> findBySectorCodeAndSectorNameAndCompanyName(
     String sectorCode,
     String sectorName,
@@ -63,9 +53,6 @@ public class SectorService {
     );
   }
 
-  /**
-   * @เช็คNullของSector
-   */
   public boolean isSectorNull(CreateSectorRequest request) {
     return (
       request == null ||

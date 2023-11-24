@@ -27,313 +27,246 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @BasePathAwareController
 public class UserController {
 
-    private final UserService userService;
-    private final UserRepository userRepository;
+  private final UserService userService;
+  private final UserRepository userRepository;
 
-    /**
-     * @สร้างUser
-     * @PostMapping
-     */
-    @PostMapping("/createUser")
-    public ResponseEntity<ApiResponse> create(
-            @RequestBody CreateUserRequest createUserRequest
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (userService.isUserNull(createUserRequest)) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-        try {
-            User user = userService.create(createUserRequest);
-            data.setResult(user);
-            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
+  @PostMapping("/createUser")
+  public ResponseEntity<ApiResponse> create(
+    @RequestBody CreateUserRequest createUserRequest
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    if (userService.isUserNull(createUserRequest)) {
+      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+      return ResponseEntity.badRequest().body(response);
     }
-
-    /**
-     * @สร้างEmployee
-     * @PostMapping
-     */
-    @PostMapping("/createEmployee")
-    public ResponseEntity<ApiResponse> createEmployee(
-            @RequestBody CreateEmployeeRequest createEmployeeRequest
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (userService.isEmpNull(createEmployeeRequest)) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-        try {
-            User user = userService.createEmployee(createEmployeeRequest);
-            data.setResult(user);
-            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-            response.setResponseData(data);
-            URI uri = URI.create(
-                    ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/createEmployee")
-                            .toUriString()
-            );
-            return ResponseEntity.created(uri).body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
+    try {
+      User user = userService.create(createUserRequest);
+      data.setResult(user);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
     }
+  }
 
-    /**
-     * @สร้างRole
-     * @PostMapping
-     */
-    @PostMapping("/createRole")
-    public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
-        Roles roleEnum = Roles.valueOf(roleName);
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        try {
-            Role role = userService.createRole(roleEnum);
-            if (role == null) {
-                response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
-                return ResponseEntity.badRequest().body(response);
-            }
-            data.setResult(roleEnum);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } catch (IllegalArgumentException e) {
-            response.setResponseMessage("Invalid role name: " + roleName);
-            return ResponseEntity.internalServerError().body(response);
-        }
+  @PostMapping("/createEmployee")
+  public ResponseEntity<ApiResponse> createEmployee(
+    @RequestBody CreateEmployeeRequest createEmployeeRequest
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    if (userService.isEmpNull(createEmployeeRequest)) {
+      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+      return ResponseEntity.badRequest().body(response);
     }
-
-    /**
-     * @แก้ไขEmployee
-     * @PutMapping
-     */
-    @PutMapping("/editEmployee")
-    public ResponseEntity<ApiResponse> editEmployee(
-            @RequestParam Long userId,
-            @RequestBody EditEmployeeRequest editEmployeeRequest
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (userService.isEditEmpNull(editEmployeeRequest)) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-        try {
-            User user = userService.editUser(userId, editEmployeeRequest);
-            data.setResult(user);
-            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-            response.setResponseData(data);
-            URI uri = URI.create(
-                    ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/editEmployee")
-                            .toUriString()
-            );
-            return ResponseEntity.created(uri).body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
+    try {
+      User user = userService.createEmployee(createEmployeeRequest);
+      data.setResult(user);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      URI uri = URI.create(
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/createEmployee")
+          .toUriString()
+      );
+      return ResponseEntity.created(uri).body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
     }
+  }
 
-    /**
-     * @ลบUser,Employeeด้วยId
-     * @DeleteMapping
-     */
-    @DeleteMapping("deleteById")
-    public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        String user = userService.deleteData(id);
-        if (user != null) {
-            data.setResult(user);
-            response.setResponseMessage("ลบข้อมูลเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่พบข้อมูลที่ตรงกับ ID ที่ระบุ");
-            return ResponseEntity.badRequest().body(response);
-        }
+  @PostMapping("/createRole")
+  public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
+    Roles roleEnum = Roles.valueOf(roleName);
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      Role role = userService.createRole(roleEnum);
+      if (role == null) {
+        response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
+        return ResponseEntity.badRequest().body(response);
+      }
+      data.setResult(roleEnum);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } catch (IllegalArgumentException e) {
+      response.setResponseMessage("Invalid role name: " + roleName);
+      return ResponseEntity.internalServerError().body(response);
     }
+  }
 
-    /**
-     * @หาUser,Employeeด้วยempCode,name,position,email,deptName,deptCode,company
-     * @GetMapping
-     */
-    @GetMapping("/searchUser")
-
-    public Object search(
-            @RequestParam(required = false) String empCode,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String position,
-            @RequestParam(required = false) String email,
-            //@RequestParam(required = false) String department,
-            @RequestParam(required = false) String deptName,
-            @RequestParam(required = false) String deptCode,
-            @RequestParam(required = false) String company,
-            @RequestParam(required = false) String sectorName,
-            @RequestParam(required = false) String sectorCode
-    ) throws JsonProcessingException {
-        return userService.searchUser(
-                empCode,
-                name,
-                position,
-                email,
-                deptName,
-                deptCode,
-                company,
-                sectorCode,
-                sectorName
-        );
+  @PutMapping("/editEmployee")
+  public ResponseEntity<ApiResponse> editEmployee(
+    @RequestParam Long userId,
+    @RequestBody EditEmployeeRequest editEmployeeRequest
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    if (userService.isEditEmpNull(editEmployeeRequest)) {
+      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+      return ResponseEntity.badRequest().body(response);
     }
-
-    /**
-     * @หาพนักงานทั้งหมด,หาEmployeeทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllEmployee")
-    public List<User> getAllEmployee() {
-        return userService.findAllEmployee();
+    try {
+      User user = userService.editUser(userId, editEmployeeRequest);
+      data.setResult(user);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      URI uri = URI.create(
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/editEmployee")
+          .toUriString()
+      );
+      return ResponseEntity.created(uri).body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
     }
+  }
 
-    /**
-     * @หาหาEmployeeทั้งหมดที่ทำงานอยู่
-     * @GetMapping
-     */
-    @GetMapping("/findActiveEmployees")
-    public List<User> findActiveEmployees() {
-        return userService.findActiveEmployees();
+  @DeleteMapping("deleteById")
+  public ResponseEntity<ApiResponse> delete(@RequestParam Long id) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    String user = userService.deleteData(id);
+    if (user != null) {
+      data.setResult(user);
+      response.setResponseMessage("ลบข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } else {
+      response.setResponseMessage("ไม่พบข้อมูลที่ตรงกับ ID ที่ระบุ");
+      return ResponseEntity.badRequest().body(response);
     }
+  }
 
-    /**
-     * @หาPersonnelทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllPersonnel")
-    public List<User> getAllPersonnel() {
-        return userService.findAllPersonnel();
+  @GetMapping("/searchUser")
+  public Object search(
+    @RequestParam(required = false) String empCode,
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String position,
+    @RequestParam(required = false) String email,
+    //@RequestParam(required = false) String department,
+    @RequestParam(required = false) String deptName,
+    @RequestParam(required = false) String deptCode,
+    @RequestParam(required = false) String company,
+    @RequestParam(required = false) String sectorName,
+    @RequestParam(required = false) String sectorCode
+  ) throws JsonProcessingException {
+    return userService.searchUser(
+      empCode,
+      name,
+      position,
+      email,
+      deptName,
+      deptCode,
+      company,
+      sectorCode,
+      sectorName
+    );
+  }
+
+  @GetMapping("/findAllEmployee")
+  public List<User> getAllEmployee() {
+    return userService.findAllEmployee();
+  }
+
+  @GetMapping("/findActiveEmployees")
+  public List<User> findActiveEmployees() {
+    return userService.findActiveEmployees();
+  }
+
+  @GetMapping("/findAllPersonnel")
+  public List<User> getAllPersonnel() {
+    return userService.findAllPersonnel();
+  }
+
+  @GetMapping("/findAllVicePresident")
+  public List<User> getAllVicePresident() {
+    return userService.findAllVicePresident();
+  }
+
+  @GetMapping("/findAllApprover")
+  public List<User> getAllApprover() {
+    return userService.findAllApprover();
+  }
+
+  @GetMapping("/findAllAdmin")
+  public List<User> getAllAdmin() {
+    return userService.findAllAdmin();
+  }
+
+  @GetMapping("/findAllVicePresidentAndApprover")
+  public List<User> getAllVicePresidentAndApprover() {
+    List<User> vicePresidents = userService.findAllVicePresident();
+    List<User> approvers = userService.findAllApprover();
+
+    List<User> allVicePresidentAndApprover = new ArrayList<>();
+    allVicePresidentAndApprover.addAll(vicePresidents);
+    allVicePresidentAndApprover.addAll(approvers);
+
+    return allVicePresidentAndApprover;
+  }
+
+  @GetMapping("/findUserById")
+  public ResponseEntity<ApiResponse> findUserById(@RequestParam Long userId) {
+    Optional<User> user = userRepository.findById(userId);
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    if (user != null) {
+      data.setResult(user);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } else {
+      response.setResponseMessage("ไม่สามารถทำรายการได้");
+      return ResponseEntity.badRequest().body(response);
     }
+  }
 
-    /**
-     * @หาVicePresidentทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllVicePresident")
-    public List<User> getAllVicePresident() {
-        return userService.findAllVicePresident();
+  @PutMapping("/setStatusToUser")
+  public ResponseEntity<ApiResponse> addStatusToUser(
+    @RequestParam Long User_id,
+    StatusUser statusUser
+  ) {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      User user = userService.setStatusToUser(User_id, statusUser);
+      data.setResult(user);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.badRequest().body(response);
     }
+  }
 
-    /**
-     * @หาApproverทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllApprover")
-    public List<User> getAllApprover() {
-        return userService.findAllApprover();
+  @PostMapping("/addRoleToUser")
+  public ResponseEntity<ApiResponse> addRoleToUser(
+    @RequestParam Long userId,
+    @RequestParam String roleName
+  ) {
+    ApiResponse response = new ApiResponse();
+    Roles roleEnum = Roles.valueOf(roleName);
+    if (userService.hasRole(userId, roleName)) {
+      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+      return ResponseEntity.badRequest().body(response);
     }
-
-    /**
-     * @หาAdminทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllAdmin")
-    public List<User> getAllAdmin() {
-        return userService.findAllAdmin();
+    try {
+      userService.addRoleToUser(userId, roleEnum);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      return ResponseEntity.ok().body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
     }
-
-    /**
-     * @หาVicePresidentAndApproverทั้งหมด
-     * @GetMapping
-     */
-    @GetMapping("/findAllVicePresidentAndApprover")
-    public List<User> getAllVicePresidentAndApprover() {
-        List<User> vicePresidents = userService.findAllVicePresident();
-        List<User> approvers = userService.findAllApprover();
-
-        List<User> allVicePresidentAndApprover = new ArrayList<>();
-        allVicePresidentAndApprover.addAll(vicePresidents);
-        allVicePresidentAndApprover.addAll(approvers);
-
-        return allVicePresidentAndApprover;
-    }
-
-    /**
-     * @หาUserด้วยId
-     * @GetMapping
-     */
-    @GetMapping("/findUserById")
-    public ResponseEntity<ApiResponse> findUserById(@RequestParam Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        if (user != null) {
-            data.setResult(user);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } else {
-            response.setResponseMessage("ไม่สามารถทำรายการได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    /**
-     * @เพิ่มStatusให้User
-     * @อัพเดตStatusให้User
-     * @PutMapping
-     */
-    @PutMapping("/setStatusToUser")
-    public ResponseEntity<ApiResponse> addStatusToUser(
-            @RequestParam Long User_id,
-            StatusUser statusUser
-    ) {
-        ApiResponse response = new ApiResponse();
-        ResponseData data = new ResponseData();
-        try {
-            User user = userService.setStatusToUser(User_id, statusUser);
-            data.setResult(user);
-            response.setResponseMessage("ทำรายการเรียบร้อย");
-            response.setResponseData(data);
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    /**
-     * @เพิ่มRoleให้User
-     * @อัพเดตRoleให้User
-     * @PutMapping
-     */
-    @PostMapping("/addRoleToUser")
-    public ResponseEntity<ApiResponse> addRoleToUser(
-            @RequestParam Long userId,
-            @RequestParam String roleName
-    ) {
-        ApiResponse response = new ApiResponse();
-        Roles roleEnum = Roles.valueOf(roleName);
-        if (userService.hasRole(userId, roleName)) {
-            response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-            return ResponseEntity.badRequest().body(response);
-        }
-        try {
-            userService.addRoleToUser(userId, roleEnum);
-            response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-            return ResponseEntity.ok().body(response);
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.internalServerError().body(response);
-        }
-    }
+  }
 }

@@ -19,9 +19,6 @@ public class PositionService {
   private final PositionRepository positionRepository;
   private final DepartmentRepository departmentRepository;
 
-  /**
-   * @สร้างPosition
-   */
   public Position create(CreatePositionRequest createPositionRequest) {
     Department departmentId = departmentRepository
       .findById(createPositionRequest.getDepartmentId())
@@ -39,16 +36,10 @@ public class PositionService {
     return positionRepository.save(position);
   }
 
-  /**
-   * @หาPositionทั้งหมด
-   */
   public List<Position> findAll() {
     return positionRepository.findAll();
   }
 
-  /**
-   * @หาPositionด้วยNameและDepartment
-   */
   public Optional<Position> findByPositionNameAndDepartment(
     String positionName,
     Department department
@@ -59,9 +50,6 @@ public class PositionService {
     );
   }
 
-  /**
-   * @เช็คNullของPosition
-   */
   public boolean isPositionNull(CreatePositionRequest request) {
     return (
       request == null ||

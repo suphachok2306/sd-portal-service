@@ -2,13 +2,12 @@ package com.pcc.portalservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pcc.portalservice.model.enums.StatusApprove;
+import java.util.Date;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "Status")
@@ -17,26 +16,25 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Status {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private StatusApprove status;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    
-    private int active;
+  @Enumerated(EnumType.STRING)
+  private StatusApprove status;
 
-    @Temporal(TemporalType.DATE)
-    private Date approvalDate;
+  private int active;
 
-    @ManyToOne
-    @JoinColumn(name = "approve_id")
-    private User approveId;
+  @Temporal(TemporalType.DATE)
+  private Date approvalDate;
 
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn(name = "training_id")
-    private Training training;
+  @ManyToOne
+  @JoinColumn(name = "approve_id")
+  private User approveId;
 
+  @ManyToOne
+  @JsonIgnore
+  @JoinColumn(name = "training_id")
+  private Training training;
 }

@@ -36,9 +36,6 @@ public class BudgetService {
   private final CompanyRepository companyRepository;
   private final EntityManager entityManager;
 
-  /**
-   * @Create
-   */
   public Budget create(CreateBudgetRequest createBudgetRequest) {
     autogen();
     Department departmentId = departmentRepository
@@ -71,9 +68,6 @@ public class BudgetService {
     return budget;
   }
 
-  /**
-   * @Delete
-   */
   public String deleteData(Long id) {
     autogen();
     Optional<Budget> optionalBudget = budgetRepository.findById(id);
@@ -85,9 +79,6 @@ public class BudgetService {
     }
   }
 
-  /**
-   * @Edit
-   */
   public Budget editBudget(
     CreateBudgetRequest createBudgetRequest,
     Long budgetID
@@ -204,25 +195,16 @@ public class BudgetService {
     budget_DepartmentRepository.save(budget_Department);
   }
 
-  /**
-   * @คำนวณงบ
-   */
   public float totalExp(float certificate, float training) {
     float total = certificate + training;
 
     return total;
   }
 
-  /**
-   * @หางบทั้งหมด
-   */
   public List<Budget> findAll() {
     return budgetRepository.findAll();
   }
 
-  /**
-   * @หางบด้วยId
-   */
   public Budget findById(Long id) {
     autogen();
     return budgetRepository
@@ -232,9 +214,6 @@ public class BudgetService {
       );
   }
 
-  /**
-   * @เช็คNullของBudget
-   */
   public boolean isBudgetNull(CreateBudgetRequest request) {
     return (
       request == null ||
@@ -597,7 +576,6 @@ public class BudgetService {
 
         result.add(budgetMap);
       }
-
     }
     return result;
   }

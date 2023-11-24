@@ -6,7 +6,8 @@ import lombok.Data;
 @Builder
 @Data
 public class CreateSectorRequest {
-    String sectorName;
-    String sectorCode;
-    Long companyId;
+
+  String sectorName;
+  String sectorCode;
+  Long companyId;
 }
