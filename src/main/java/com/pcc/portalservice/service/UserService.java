@@ -39,29 +39,24 @@ public class UserService {
   private final EntityManager entityManager;
 
   public User create(CreateUserRequest createUserRequest) {
-    if (
-      userRepository.existsByEmail(createUserRequest.getEmail()) &&
-      (
-        createUserRequest.getEmail() != null &&
-        !createUserRequest.getEmail().isEmpty()
-      )
-    ) {
+    if (userRepository.existsByEmail(createUserRequest.getEmail()) &&
+        (createUserRequest.getEmail() != null &&
+            !createUserRequest.getEmail().isEmpty())) {
       throw new RuntimeException("Email is already in use.");
     }
 
     String hashedPassword = authenticationService.hashPassword(
-      createUserRequest.getPassword()
-    );
+        createUserRequest.getPassword());
 
     User user = User
-      .builder()
-      .email(createUserRequest.getEmail())
-      .firstname(createUserRequest.getFirstname())
-      .lastname(createUserRequest.getLastname())
-      .password(hashedPassword)
-      .telephone(createUserRequest.getTelephone())
-      .roles(new HashSet<>())
-      .build();
+        .builder()
+        .email(createUserRequest.getEmail())
+        .firstname(createUserRequest.getFirstname())
+        .lastname(createUserRequest.getLastname())
+        .password(hashedPassword)
+        .telephone(createUserRequest.getTelephone())
+        .roles(new HashSet<>())
+        .build();
 
     for (String roleName : createUserRequest.getRoles()) {
       Roles roleEnum = null;
@@ -90,13 +85,10 @@ public class UserService {
         throw new RuntimeException("EmpCode is already in use.");
       }
     } else {
-      if (
-        (userRepository.existsByEmail(email)) &&
-        userRepository.existsByEmpCode(empCode)
-      ) {
+      if ((userRepository.existsByEmail(email)) &&
+          userRepository.existsByEmpCode(empCode)) {
         throw new RuntimeException(
-          "Both Email and EmpCode are already in use."
-        );
+            "Both Email and EmpCode are already in use.");
       } else {
         if (userRepository.existsByEmail(email)) {
           throw new RuntimeException("Email is already in use.");
@@ -108,36 +100,31 @@ public class UserService {
     }
 
     Optional<Department> departmentOptional = departmentRepository.findById(
-      createEmployeeRequest.getDeptID().get(0)
-    );
+        createEmployeeRequest.getDeptID().get(0));
 
-    Department department = departmentOptional.orElseThrow(() ->
-      new RuntimeException("Department not found / DeptCode or DeptName wrong")
-    );
+    Department department = departmentOptional
+        .orElseThrow(() -> new RuntimeException("Department not found / DeptCode or DeptName wrong"));
 
     Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
-      createEmployeeRequest.getPositionName(),
-      department
-    );
+        createEmployeeRequest.getPositionName(),
+        department);
 
-    Position position = positionOptional.orElseThrow(() ->
-      new RuntimeException("Position not found")
-    );
+    Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));
 
     User user = User
-      .builder()
-      .companys(new HashSet<>())
-      .sectors(new HashSet<>())
-      .departments(new HashSet<>())
-      .empCode(createEmployeeRequest.getEmpCode())
-      .title(createEmployeeRequest.getTitle())
-      .firstname(createEmployeeRequest.getFirstname())
-      .lastname(createEmployeeRequest.getLastname())
-      .email(createEmployeeRequest.getEmail())
-      .roles(new HashSet<>())
-      .position(position)
-      .status(StatusUser.เป็นพนักงานอยู่.toString())
-      .build();
+        .builder()
+        .companys(new HashSet<>())
+        .sectors(new HashSet<>())
+        .departments(new HashSet<>())
+        .empCode(createEmployeeRequest.getEmpCode())
+        .title(createEmployeeRequest.getTitle())
+        .firstname(createEmployeeRequest.getFirstname())
+        .lastname(createEmployeeRequest.getLastname())
+        .email(createEmployeeRequest.getEmail())
+        .roles(new HashSet<>())
+        .position(position)
+        .status(StatusUser.เป็นพนักงานอยู่.toString())
+        .build();
 
     for (String roleName : createEmployeeRequest.getRoles()) {
       Roles roleEnum = null;
@@ -155,8 +142,8 @@ public class UserService {
 
     for (Long deptID : createEmployeeRequest.getDeptID()) {
       Department department_id = departmentRepository
-        .findById(deptID)
-        .orElse(null);
+          .findById(deptID)
+          .orElse(null);
       if (deptID != null) {
         user.getDepartments().add(department_id);
       }
@@ -183,34 +170,27 @@ public class UserService {
     String email = editEmployeeRequest.getEmail();
     String empCode = editEmployeeRequest.getEmpCode();
     User user = userRepository
-      .findById(id)
-      .orElseThrow(() -> new RuntimeException("UserId not found: "));
+        .findById(id)
+        .orElseThrow(() -> new RuntimeException("UserId not found: "));
 
     for (Long i : editEmployeeRequest.getDeptID()) {
       try {
         Optional<Department> departmentOptional = departmentRepository.findById(
-          i
-        );
-        Department department = departmentOptional.orElseThrow(() ->
-          new RuntimeException(
-            "Department not found / DeptCode or DeptName wrong"
-          )
-        );
+            i);
+        Department department = departmentOptional.orElseThrow(() -> new RuntimeException(
+            "Department not found / DeptCode or DeptName wrong"));
 
         Department department_id = departmentRepository
-          .findById(i)
-          .orElse(null);
+            .findById(i)
+            .orElse(null);
         if (i != null) {
           user.getDepartments().add(department_id);
         }
 
         Optional<Position> positionOptional = positionRepository.findByPositionNameAndDepartment(
-          editEmployeeRequest.getPositionName(),
-          department
-        );
-        Position position = positionOptional.orElseThrow(() ->
-          new RuntimeException("Position not found")
-        );
+            editEmployeeRequest.getPositionName(),
+            department);
+        Position position = positionOptional.orElseThrow(() -> new RuntimeException("Position not found"));
 
         user.setPosition(position);
       } catch (RuntimeException e) {
@@ -218,27 +198,19 @@ public class UserService {
       }
     }
 
-    if (
-      (email == null || email.isEmpty()) &&
-      userRepository.existsByEmpCode(empCode) &&
-      !user.getEmpCode().equals(empCode)
-    ) {
+    if ((email == null || email.isEmpty()) &&
+        userRepository.existsByEmpCode(empCode) &&
+        !user.getEmpCode().equals(empCode)) {
       throw new RuntimeException("EmpCode is already in use.");
-    } else if (
-      userRepository.existsByEmail(email) &&
-      !user.getEmail().equals(email) &&
-      userRepository.existsByEmpCode(empCode) &&
-      !user.getEmpCode().equals(empCode)
-    ) {
+    } else if (userRepository.existsByEmail(email) &&
+        !user.getEmail().equals(email) &&
+        userRepository.existsByEmpCode(empCode) &&
+        !user.getEmpCode().equals(empCode)) {
       throw new RuntimeException("Both Email and EmpCode are already in use.");
-    } else if (
-      userRepository.existsByEmail(email) && !user.getEmail().equals(email)
-    ) {
+    } else if (userRepository.existsByEmail(email) && !user.getEmail().equals(email)) {
       throw new RuntimeException("Email is already in use.");
-    } else if (
-      userRepository.existsByEmpCode(empCode) &&
-      !user.getEmpCode().equals(empCode)
-    ) {
+    } else if (userRepository.existsByEmpCode(empCode) &&
+        !user.getEmpCode().equals(empCode)) {
       throw new RuntimeException("EmpCode is already in use.");
     }
 
@@ -288,37 +260,31 @@ public class UserService {
   }
 
   public boolean isEmpNull(CreateEmployeeRequest request) {
-    return (
-      request == null ||
-      request.getEmpCode() == null ||
-      request.getEmpCode().isEmpty() ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty()
-    );
+    return (request == null ||
+        request.getEmpCode() == null ||
+        request.getEmpCode().isEmpty() ||
+        request.getFirstname() == null ||
+        request.getFirstname().isEmpty() ||
+        request.getLastname() == null ||
+        request.getLastname().isEmpty());
   }
 
   public boolean isEditEmpNull(EditEmployeeRequest request) {
-    return (
-      request == null ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty()
-    );
+    return (request == null ||
+        request.getFirstname() == null ||
+        request.getFirstname().isEmpty() ||
+        request.getLastname() == null ||
+        request.getLastname().isEmpty());
   }
 
   public boolean isUserNull(CreateUserRequest request) {
-    return (
-      request == null ||
-      request.getFirstname() == null ||
-      request.getFirstname().isEmpty() ||
-      request.getLastname() == null ||
-      request.getLastname().isEmpty() ||
-      request.getTelephone() == null ||
-      request.getTelephone().isEmpty()
-    );
+    return (request == null ||
+        request.getFirstname() == null ||
+        request.getFirstname().isEmpty() ||
+        request.getLastname() == null ||
+        request.getLastname().isEmpty() ||
+        request.getTelephone() == null ||
+        request.getTelephone().isEmpty());
   }
 
   public boolean hasRole(Long userId, String roleName) {
@@ -371,23 +337,20 @@ public class UserService {
 
   public User findByEmail(String email) {
     return userRepository
-      .findByEmail(email)
-      .orElseThrow(() ->
-        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found")
-      );
+        .findByEmail(email)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
   }
 
   public Object searchUser(
-    String empCode,
-    String name,
-    String position,
-    String email,
-    String deptName,
-    String deptCode,
-    String company,
-    String sectorName,
-    String sectorCode
-  ) {
+      String empCode,
+      String name,
+      String position,
+      String email,
+      String deptName,
+      String deptCode,
+      String company,
+      String sectorName,
+      String sectorCode) {
     CriteriaBuilder builder = entityManager.getCriteriaBuilder();
     CriteriaQuery<User> query = builder.createQuery(User.class);
     Root<User> root = query.from(User.class);
@@ -396,40 +359,32 @@ public class UserService {
 
     if (empCode != null) {
       predicates.add(
-        builder.like(
-          builder.lower(root.get("empCode")),
-          "%" + empCode.toLowerCase() + "%"
-        )
-      );
+          builder.like(
+              builder.lower(root.get("empCode")),
+              "%" + empCode.toLowerCase() + "%"));
     }
 
     if (name != null) {
       Expression<String> fullName = builder.concat(
-        builder.concat(builder.lower(root.get("firstname")), " "),
-        builder.lower(root.get("lastname"))
-      );
+          builder.concat(builder.lower(root.get("firstname")), " "),
+          builder.lower(root.get("lastname")));
       predicates.add(
-        builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%")
-      );
+          builder.like(builder.lower(fullName), "%" + name.toLowerCase() + "%"));
     }
 
     if (email != null) {
       predicates.add(
-        builder.like(
-          builder.lower(root.get("email")),
-          "%" + email.toLowerCase() + "%"
-        )
-      );
+          builder.like(
+              builder.lower(root.get("email")),
+              "%" + email.toLowerCase() + "%"));
     }
 
     if (position != null) {
       Join<User, Position> positionJoin = root.join("position");
       predicates.add(
-        builder.like(
-          builder.lower(positionJoin.get("positionName")),
-          "%" + position.toLowerCase() + "%"
-        )
-      );
+          builder.like(
+              builder.lower(positionJoin.get("positionName")),
+              "%" + position.toLowerCase() + "%"));
     }
 
     if (deptName != null || deptCode != null) {
@@ -437,52 +392,42 @@ public class UserService {
 
       if (deptName != null) {
         predicates.add(
-          builder.like(
-            builder.lower(departmentJoin.get("deptName")),
-            "%" + deptName.toLowerCase() + "%"
-          )
-        );
+            builder.like(
+                builder.lower(departmentJoin.get("deptName")),
+                "%" + deptName.toLowerCase() + "%"));
       }
 
       if (deptCode != null) {
         predicates.add(
-          builder.like(
-            builder.lower(departmentJoin.get("deptCode")),
-            "%" + deptCode.toLowerCase() + "%"
-          )
-        );
+            builder.like(
+                builder.lower(departmentJoin.get("deptCode")),
+                "%" + deptCode.toLowerCase() + "%"));
       }
     }
 
     if (company != null) {
-      Join<User, Company> companyJoin = root.join("company");
+      Join<User, Company> companyJoin = root.join("companys");
       predicates.add(
-        builder.like(
-          builder.lower(companyJoin.get("companyName")),
-          "%" + company.toLowerCase() + "%"
-        )
-      );
+          builder.like(
+              builder.lower(companyJoin.get("companyName")),
+              "%" + company.toLowerCase() + "%"));
     }
 
     if (sectorName != null || sectorCode != null) {
-      Join<User, Sector> sectorJoin = root.join("sector");
+      Join<User, Sector> sectorJoin = root.join("sectors");
 
       if (sectorName != null) {
         predicates.add(
-          builder.like(
-            builder.lower(sectorJoin.get("sectorName")),
-            "%" + sectorName.toLowerCase() + "%"
-          )
-        );
+            builder.like(
+                builder.lower(sectorJoin.get("sectorName")),
+                "%" + sectorName.toLowerCase() + "%"));
       }
 
       if (sectorCode != null) {
         predicates.add(
-          builder.like(
-            builder.lower(sectorJoin.get("sectorCode")),
-            "%" + sectorCode.toLowerCase() + "%"
-          )
-        );
+            builder.like(
+                builder.lower(sectorJoin.get("sectorCode")),
+                "%" + sectorCode.toLowerCase() + "%"));
       }
     }
 
@@ -503,10 +448,8 @@ public class UserService {
 
   public User setStatusToUser(Long User_id, StatusUser statusUser) {
     User user = userRepository
-      .findById(User_id)
-      .orElseThrow(() ->
-        new RuntimeException("User not found with ID: " + User_id)
-      );
+        .findById(User_id)
+        .orElseThrow(() -> new RuntimeException("User not found with ID: " + User_id));
 
     user.setStatus(statusUser.toString());
     return userRepository.save(user);
@@ -514,16 +457,13 @@ public class UserService {
 
   public void addRoleToUser(Long userId, Roles roleName) {
     User user = userRepository
-      .findById(userId)
-      .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
+        .findById(userId)
+        .orElseThrow(() -> new RuntimeException("UserId not found: " + userId));
     Role role = roleRepository
-      .findByRole(roleName)
-      .orElseThrow(() ->
-        new ResponseStatusException(
-          HttpStatus.NOT_FOUND,
-          "Role not found: " + roleName
-        )
-      );
+        .findByRole(roleName)
+        .orElseThrow(() -> new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            "Role not found: " + roleName));
 
     user.getRoles().add(role);
     userRepository.save(user);

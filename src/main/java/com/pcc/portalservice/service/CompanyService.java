@@ -18,14 +18,9 @@ public class CompanyService {
   public Company create(CreateCompanyRequest createCompanyRequest) {
     Company company = Company
       .builder()
-      .id(createCompanyRequest.getCompanyId())
       .companyName(createCompanyRequest.getCompanyName())
       .build();
     return companyRepository.save(company);
-  }
-
-  public List<Company> findAll() {
-    return companyRepository.findAll();
   }
 
   public boolean isCompanyNull(CreateCompanyRequest request) {

@@ -39,13 +39,13 @@ public class User {
   @ManyToMany(fetch = FetchType.EAGER)
   private Set<Sector> sectors = new HashSet<>();
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany
+  @JoinTable(name = "user_departments", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "department_id"))
   private Set<Department> departments = new HashSet<>();
 
   @ManyToMany
   private Set<Company> companys = new HashSet<>();
 
-  
   @OneToOne
   @JoinColumn(name = "position_id")
   private Position position;

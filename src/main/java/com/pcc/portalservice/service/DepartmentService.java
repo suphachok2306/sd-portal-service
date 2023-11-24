@@ -23,19 +23,17 @@ public class DepartmentService {
 
   public Department create(CreateDepartmentRequest createDepartmentRequest) {
     Sector sectorId = sectorRepository
-      .findById(createDepartmentRequest.getSectorId())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "sectorId not found: " + createDepartmentRequest.getSectorId()
-        )
-      );
-
+        .findById(createDepartmentRequest.getSectorId())
+        .orElseThrow(() -> new RuntimeException(
+            "sectorId not found: " + createDepartmentRequest.getSectorId()));
+    
     Department department = Department
-      .builder()
-      .sector(sectorId)
-      .deptName(createDepartmentRequest.getDeptName())
-      .deptCode(createDepartmentRequest.getDeptCode())
-      .build();
+        .builder()
+        .id(null)
+        .sector(sectorId)
+        .deptName(createDepartmentRequest.getDeptName())
+        .deptCode(createDepartmentRequest.getDeptCode())
+        .build();
     return departmentRepository.save(department);
   }
 
@@ -44,24 +42,23 @@ public class DepartmentService {
   }
 
   public List<Map<String, Object>> findAllJoinDepartments() {
-    String jpql =
-      "SELECT " +
-      "c.company_name AS company_name, " +
-      "s.sector_name AS sector_name, " +
-      "s.sector_code AS sector_code, " +
-      "d.id AS department_id, " +
-      "d.dept_name AS department_name, " +
-      "d.dept_code AS department_code, " +
-      "p.id AS position_id, " +
-      "p.position_name AS position_name " +
-      "FROM department d " +
-      "JOIN sector s ON d.sector_id = s.id " +
-      "JOIN company c ON s.company_id = c.id " +
-      "JOIN position p ON p.department_id = d.id;";
+    String jpql = "SELECT " +
+        "c.company_name AS company_name, " +
+        "s.sector_name AS sector_name, " +
+        "s.sector_code AS sector_code, " +
+        "d.id AS department_id, " +
+        "d.dept_name AS department_name, " +
+        "d.dept_code AS department_code, " +
+        "p.id AS position_id, " +
+        "p.position_name AS position_name " +
+        "FROM department d " +
+        "JOIN sector s ON d.sector_id = s.id " +
+        "JOIN company c ON s.company_id = c.id " +
+        "JOIN position p ON p.department_id = d.id;";
 
     List<Object[]> results = entityManager
-      .createNativeQuery(jpql)
-      .getResultList();
+        .createNativeQuery(jpql)
+        .getResultList();
 
     List<Map<String, Object>> resultList = new ArrayList<>();
 
@@ -83,24 +80,21 @@ public class DepartmentService {
       if (companyMap.containsKey(company)) {
         resultMap = companyMap.get(company);
         List<Map<String, Object>> sectors = (List<Map<String, Object>>) resultMap.get(
-          "sectors"
-        );
+            "sectors");
 
         boolean sectorExists = false;
         for (Map<String, Object> sector : sectors) {
           if (sector.get("sectorname").equals(sectorname)) {
             sectorExists = true;
             List<Map<String, Object>> departments = (List<Map<String, Object>>) sector.get(
-              "departments"
-            );
+                "departments");
 
             boolean departmentExists = false;
             for (Map<String, Object> department : departments) {
               if (department.get("deptname").equals(deptname)) {
                 departmentExists = true;
                 List<Map<String, Object>> positions = (List<Map<String, Object>>) department.get(
-                  "positions"
-                );
+                    "positions");
                 positionMap.put("id", positionId.toString());
                 positionMap.put("name", positionName);
                 positions.add(positionMap);
@@ -190,26 +184,25 @@ public class DepartmentService {
     return resultList;
   }
 
-  public List<Map<String, Object>> findDepartmentsByUser(Optional<User> byId) {
-    String jpql =
-      "SELECT " +
-      "c.company_name AS company_name, " +
-      "s.sector_name AS sector_name, " +
-      "s.sector_code AS sector_code, " +
-      "d.id AS department_id, " +
-      "d.dept_name AS department_name, " +
-      "d.dept_code AS department_code " +
-      "FROM sector s " +
-      "JOIN company c ON s.company_id = c.id " +
-      "JOIN department d ON s.id = d.sector_id " +
-      "JOIN user_department ud ON ud.department_id = d.id " +
-      "JOIN users u ON ud.user_id = u.id " +
-      "WHERE u.id = :id";
+  public List<Map<String, Object>> findDepartmentsByUser(Long byId) {
+    String jpql = "SELECT " +
+        "c.company_name AS company_name, " +
+        "s.sector_name AS sector_name, " +
+        "s.sector_code AS sector_code, " +
+        "d.id AS department_id, " +
+        "d.dept_name AS department_name, " +
+        "d.dept_code AS department_code " +
+        "FROM sector s " +
+        "JOIN company c ON s.company_id = c.id " +
+        "JOIN department d ON s.id = d.sector_id " +
+        "JOIN user_departments ud ON ud.department_id = d.id " +
+        "JOIN users u ON ud.user_id = u.id " +
+        "WHERE u.id = :id";
 
     List<Object[]> results = entityManager
-      .createNativeQuery(jpql)
-      .setParameter("id", byId.map(User::getId).orElse(null))
-      .getResultList();
+        .createNativeQuery(jpql)
+        .setParameter("id", byId)
+        .getResultList();
 
     List<Map<String, Object>> resultList = new ArrayList<>();
 
@@ -229,16 +222,14 @@ public class DepartmentService {
       if (companyMap.containsKey(company)) {
         resultMap = companyMap.get(company);
         List<Map<String, Object>> sectors = (List<Map<String, Object>>) resultMap.get(
-          "sectors"
-        );
+            "sectors");
 
         boolean sectorExists = false;
         for (Map<String, Object> sector : sectors) {
           if (sector.get("sectorname").equals(sectorName)) {
             sectorExists = true;
             List<Map<String, Object>> departments = (List<Map<String, Object>>) sector.get(
-              "departments"
-            );
+                "departments");
 
             boolean departmentExists = false;
             for (Map<String, Object> department : departments) {
@@ -308,22 +299,21 @@ public class DepartmentService {
   }
 
   public List<Map<String, Object>> findAllJoinDepartmentssector() {
-    String jpql =
-      "SELECT " +
-      "c.company_name AS company_name, " +
-      "s.sector_name AS sector_name, " +
-      "s.sector_code AS sector_code, " +
-      "d.id AS department_id, " +
-      "d.dept_name AS department_name, " +
-      "d.dept_code AS department_code " +
-      "FROM " +
-      "department d " +
-      "JOIN sector s ON d.sector_id = s.id " +
-      "JOIN company c ON s.company_id = c.id; ";
+    String jpql = "SELECT " +
+        "c.company_name AS company_name, " +
+        "s.sector_name AS sector_name, " +
+        "s.sector_code AS sector_code, " +
+        "d.id AS department_id, " +
+        "d.dept_name AS department_name, " +
+        "d.dept_code AS department_code " +
+        "FROM " +
+        "department d " +
+        "JOIN sector s ON d.sector_id = s.id " +
+        "JOIN company c ON s.company_id = c.id; ";
 
     List<Object[]> results = entityManager
-      .createNativeQuery(jpql)
-      .getResultList();
+        .createNativeQuery(jpql)
+        .getResultList();
 
     List<Map<String, Object>> resultList = new ArrayList<>();
 
@@ -344,19 +334,16 @@ public class DepartmentService {
   }
 
   public Optional<Department> findByDeptCodeAndDeptName(
-    String DeptCode,
-    String DeptName
-  ) {
+      String DeptCode,
+      String DeptName) {
     return departmentRepository.findByDeptCodeAndDeptName(DeptCode, DeptName);
   }
 
   public boolean isDeptNull(CreateDepartmentRequest request) {
-    return (
-      request == null ||
-      request.getDeptName() == null ||
-      request.getDeptName().isEmpty() ||
-      request.getDeptCode() == null ||
-      request.getDeptCode().isEmpty()
-    );
+    return (request == null ||
+        request.getDeptName() == null ||
+        request.getDeptName().isEmpty() ||
+        request.getDeptCode() == null ||
+        request.getDeptCode().isEmpty());
   }
 }

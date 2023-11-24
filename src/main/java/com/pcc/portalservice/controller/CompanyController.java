@@ -1,6 +1,7 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Company;
+import com.pcc.portalservice.repository.CompanyRepository;
 import com.pcc.portalservice.requests.CreateCompanyRequest;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class CompanyController {
 
   private final CompanyService companyService;
+  private final CompanyRepository companyRepository;
 
   @PostMapping("/createCompany")
   public ResponseEntity<ApiResponse> createCompany(
@@ -53,6 +55,6 @@ public class CompanyController {
 
   @GetMapping("/findAllCompany")
   public List<Company> getAllCompany() {
-    return companyService.findAll();
+    return companyRepository.findAll();
   }
 }

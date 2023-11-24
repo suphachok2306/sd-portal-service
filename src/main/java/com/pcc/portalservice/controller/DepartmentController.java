@@ -65,7 +65,7 @@ public class DepartmentController {
     @RequestParam("userId") Long userId
   ) {
     return Collections.singletonList(
-      departmentService.findDepartmentsByUser(userRepository.findById(userId))
+      departmentService.findDepartmentsByUser(userId)
     );
   }
 
