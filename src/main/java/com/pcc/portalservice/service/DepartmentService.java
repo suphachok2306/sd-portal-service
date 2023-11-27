@@ -2,15 +2,15 @@ package com.pcc.portalservice.service;
 
 import com.pcc.portalservice.model.Department;
 import com.pcc.portalservice.model.Sector;
-import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.repository.DepartmentRepository;
 import com.pcc.portalservice.repository.SectorRepository;
 import com.pcc.portalservice.requests.CreateDepartmentRequest;
-import java.util.*;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -43,18 +43,19 @@ public class DepartmentService {
 
   public List<Map<String, Object>> findAllJoinDepartments() {
     String jpql = "SELECT " +
-        "c.company_name AS company_name, " +
-        "s.sector_name AS sector_name, " +
-        "s.sector_code AS sector_code, " +
-        "d.id AS department_id, " +
-        "d.dept_name AS department_name, " +
-        "d.dept_code AS department_code, " +
-        "p.id AS position_id, " +
-        "p.position_name AS position_name " +
-        "FROM department d " +
-        "JOIN sector s ON d.sector_id = s.id " +
-        "JOIN company c ON s.company_id = c.id " +
-        "JOIN position p ON p.department_id = d.id;";
+            "c.company_name AS company_name, " +
+            "d.sector_id AS sector_id, " +
+            "s.sector_name AS sector_name, " +
+            "s.sector_code AS sector_code, " +
+            "d.id AS department_id, " +
+            "d.dept_name AS department_name, " +
+            "d.dept_code AS department_code, " +
+            "p.id AS position_id, " +
+            "p.position_name AS position_name " +
+            "FROM department d " +
+            "JOIN sector s ON d.sector_id = s.id " +
+            "JOIN company c ON s.company_id = c.id " +
+            "JOIN position p ON p.department_id = d.id";
 
     List<Object[]> results = entityManager
         .createNativeQuery(jpql)
@@ -66,13 +67,14 @@ public class DepartmentService {
 
     for (Object[] row : results) {
       String company = (String) row[0];
-      String sectorname = (String) row[1];
-      String sectorcode = (String) row[2];
-      Long deptid = ((Number) row[3]).longValue();
-      String deptname = (String) row[4];
-      String deptcode = (String) row[5];
-      Long positionId = ((Number) row[6]).longValue();
-      String positionName = (String) row[7];
+      Long sectorid = ((Number) row[1]).longValue();
+      String sectorname = (String) row[2];
+      String sectorcode = (String) row[3];
+      Long deptid = ((Number) row[4]).longValue();
+      String deptname = (String) row[5];
+      String deptcode = (String) row[6];
+      Long positionId = ((Number) row[7]).longValue();
+      String positionName = (String) row[8];
 
       Map<String, Object> resultMap;
       Map<String, Object> positionMap = new LinkedHashMap<>();
@@ -124,6 +126,7 @@ public class DepartmentService {
 
         if (!sectorExists) {
           Map<String, Object> sectorMap = new LinkedHashMap<>();
+          sectorMap.put("sectorid", sectorid);
           sectorMap.put("sectorname", sectorname);
           sectorMap.put("sectorcode", sectorcode);
 
@@ -153,6 +156,7 @@ public class DepartmentService {
         List<Map<String, Object>> sectors = new ArrayList<>();
 
         Map<String, Object> sectorMap = new LinkedHashMap<>();
+        sectorMap.put("sectorid", sectorid);
         sectorMap.put("sectorname", sectorname);
         sectorMap.put("sectorcode", sectorcode);
 
