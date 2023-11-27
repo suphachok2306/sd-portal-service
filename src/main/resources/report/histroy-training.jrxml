@@ -52,7 +52,7 @@
 			<textField evaluationTime="Column">
 				<reportElement x="1" y="1" width="799" height="30" uuid="77b93c4c-5a50-49a6-bc0b-2d91ed8bada6"/>
 				<box>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
