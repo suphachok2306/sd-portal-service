@@ -57,7 +57,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{company}.equals("PCCTH") ? "บริษัท โปรเฟสชั่นนัลคอมพิวเตอร์ จำกัด" : "บริษัท ไวซซอฟท์ จำกัด"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{company}.equals("PCCTH") ? "บริษัท โปรเฟสชั่นนัล คอมพิวเตอร์ จำกัด" : "บริษัท ไวซ ซอฟท์ จำกัด"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="337" y="46" width="130" height="30" uuid="07b09585-5343-46b5-a4b5-eabba728abfe"/>
@@ -132,7 +132,7 @@
 			<staticText>
 				<reportElement x="1" y="172" width="148" height="30" uuid="2df89a4a-aca3-4072-89f8-650bd023ff79"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -142,7 +142,7 @@
 			<staticText>
 				<reportElement x="149" y="172" width="126" height="30" uuid="a10d2ba7-6d37-4dcc-9617-c2f80a1f28f2"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -152,7 +152,7 @@
 			<staticText>
 				<reportElement x="275" y="172" width="205" height="30" uuid="16e9f465-f074-4172-806d-5c9a89584a3c"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -162,7 +162,7 @@
 			<staticText>
 				<reportElement x="480" y="172" width="161" height="30" uuid="20270c36-5df4-49cf-a395-19363116ec50"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -172,7 +172,7 @@
 			<staticText>
 				<reportElement x="641" y="172" width="65" height="30" uuid="91a37c31-4550-4a23-b1fe-48a3bb6d80cc"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -182,7 +182,7 @@
 			<staticText>
 				<reportElement x="706" y="172" width="95" height="30" uuid="9256b7dc-f4b4-4f19-afd9-100a16bcb8d3"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -199,11 +199,11 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box leftPadding="10">
-					<pen lineWidth="1.0" lineStyle="Dashed"/>
-					<topPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-					<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
@@ -227,11 +227,11 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box topPadding="5" leftPadding="0" bottomPadding="0" rightPadding="0">
-								<pen lineStyle="Dashed"/>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+								<pen lineStyle="Solid"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
@@ -257,11 +257,11 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box topPadding="5">
-								<pen lineWidth="1.0" lineStyle="Dashed"/>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Left" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
@@ -287,11 +287,11 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box topPadding="5" leftPadding="0" bottomPadding="0" rightPadding="0">
-								<pen lineWidth="1.0" lineStyle="Dashed"/>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Left" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
@@ -317,17 +317,17 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box topPadding="5">
-								<pen lineStyle="Dashed"/>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+								<pen lineStyle="Solid"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Center" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="5"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{course_price}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[new java.text.DecimalFormat("###,###,##0.00").format($F{course_price})]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -347,11 +347,11 @@
 								<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							</reportElement>
 							<box topPadding="5">
-								<pen lineWidth="1.0" lineStyle="Dashed"/>
-								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								<leftPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<bottomPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
-								<rightPen lineWidth="1.0" lineStyle="Dashed" lineColor="#000000"/>
+								<pen lineWidth="1.0" lineStyle="Solid"/>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Left" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
@@ -389,7 +389,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{sumall}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new java.text.DecimalFormat("###,###,##0.00").format($F{sumall})]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
