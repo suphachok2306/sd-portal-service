@@ -7,6 +7,16 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -17,17 +27,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -46,6 +45,54 @@ public class TrainingService {
   private final EntityManager entityManager;
 
   private Long findDeptByUserID(Long id) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+    Root<User> userRoot = criteriaQuery.from(User.class);
+    Join<User, Department> departmentJoin = userRoot.join("departments");
+
+    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+    Root<Department> subqueryDepartmentRoot = subquery.from(Department.class);
+    subquery.select(subqueryDepartmentRoot.get("id"));
+    subquery.where(
+      criteriaBuilder.equal(subqueryDepartmentRoot, departmentJoin)
+    );
+
+    criteriaQuery
+      .select(departmentJoin.get("id"))
+      .distinct(true)
+      .where(
+        criteriaBuilder.and(criteriaBuilder.equal(userRoot.get("id"), id))
+      );
+
+    return entityManager.createQuery(criteriaQuery).getSingleResult();
+  }
+
+  private Long findsectorByUserID(Long id) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+    Root<User> userRoot = criteriaQuery.from(User.class);
+    Join<User, Department> departmentJoin = userRoot.join("departments");
+
+    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+    Root<Department> subqueryDepartmentRoot = subquery.from(Department.class);
+    subquery.select(subqueryDepartmentRoot.get("id"));
+    subquery.where(
+      criteriaBuilder.equal(subqueryDepartmentRoot, departmentJoin)
+    );
+
+    criteriaQuery
+      .select(departmentJoin.get("id"))
+      .distinct(true)
+      .where(
+        criteriaBuilder.and(criteriaBuilder.equal(userRoot.get("id"), id))
+      );
+
+    return entityManager.createQuery(criteriaQuery).getSingleResult();
+  }
+
+  private Long findcompanyByUserID(Long id) {
     CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
     CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
@@ -814,7 +861,12 @@ public class TrainingService {
     Long userId4
   ) {
     Training training_id = findByTrainingId(trainId);
+    System.out.println(training_id.getUser().getCompanys());
     Optional<Department> departmentOptional = departmentRepository.findById(
+      findDeptByUserID(training_id.getUser().getId())
+    );
+
+    Optional<Department> SectorOptional = departmentRepository.findById(
       findDeptByUserID(training_id.getUser().getId())
     );
 
@@ -918,10 +970,10 @@ public class TrainingService {
       }
 
       params.put("dept_code", departmentOptional.get().getDeptCode());
-      params.put(
-        "sector_name",
-        training_id.getUser().getSector().getSectorName()
-      );
+      // params.put(
+      //   "sector_name",
+      //   training_id.getUser().getSector().getSectorName()
+      // );
       params.put("dept_name", departmentOptional.get().getDeptName());
       params.put("date_save", training_id.getDateSave());
       params.put(
@@ -962,10 +1014,10 @@ public class TrainingService {
         training_id.getApprove1().getPosition().getPositionName()
       );
       params.put("app_dept_name", departmentOptional.get().getDeptName());
-      params.put(
-        "app_sector_name",
-        training_id.getApprove1().getSector().getSectorName()
-      );
+      // params.put(
+      //   "app_sector_name",
+      //   training_id.getApprove1().getSector().getSectorName()
+      // );
       params.put("result1", training_id.getResult().get(0).getResult1());
       params.put("result2", training_id.getResult().get(0).getResult2());
       params.put("result3", training_id.getResult().get(0).getResult3());
@@ -1496,7 +1548,7 @@ public class TrainingService {
           trainingRoot.get("id").alias("train_id"),
           courseJoin.get("active").alias("active"),
           statusJoin.get("status").alias("status"),
-          trainingRoot.get("user").get("company").get("id").alias("company_id")
+          trainingRoot.join("user").join("companys").get("id").alias("company_id")
         )
         .distinct(true);
 
@@ -1519,7 +1571,7 @@ public class TrainingService {
       );
 
       Predicate companyPredicate = cb.equal(
-        trainingRoot.get("user").get("company").get("id"),
+        trainingRoot.join("user").join("companys").get("id"),
         companyId
       );
 
