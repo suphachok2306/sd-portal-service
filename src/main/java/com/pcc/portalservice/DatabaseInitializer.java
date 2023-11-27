@@ -22,13 +22,13 @@ public class DatabaseInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    insertDataIntoCourseTable();
+    // insertDataIntoCourseTable();
     insertDataIntoCompanyTable();
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-    // insertDataIntoUsersTable();
-    insertBudgetTable();
+    insertDataIntoUsersTable();
+    // insertBudgetTable();
   }
 
   private boolean isTableEmpty(String tableName) {
@@ -94,7 +94,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         "( 'OSS (BOI)', 'OSS (BOI)', 2),  " +
         "( 'TOP', 'TOP', 2),  " +
         "( 'TOP (BOI)', 'TOP (BOI)', 2),  " +
-        "( 'SD (BOI)', 'SD (BOI)', 2)  "
+        "( 'SD (BOI)', 'SD (BOI)', 2) , " +
+        "('TOP Management','TOP Management',2)," +
+        "('TOP Management','TOP Management',1)"
       );
     }
   }
@@ -144,7 +146,9 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('CE', '4000', 21),  " +
         "('SM', '4000', 21),  " +
         "('NS', '4100', 22),  " +
-        "('SD', '5000', 23)  "
+        "('SD', '5000', 23) , " +
+        "('TOP Management','TOP Management',24)," +
+        "('TOP Management','TOP Management',25)"
       );
     }
   }
@@ -190,7 +194,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('PROGRAMMER II',14),\r\n" + //
         "('SR.SYSTEM ANALYST I',15),\r\n" + //
         "('SR.SYSTEM ANALYST II',16),\r\n" + //
-        // "('PROGRAMMER III',17)," +
+        "('PROGRAMMER III',17)," +
         "('Manager_Senior Manager', 22)," +
         "('Business Development Specialist_Senior', 22)," +
         "('Business Development_Senior', 22)," +
@@ -452,8 +456,8 @@ public class DatabaseInitializer implements CommandLineRunner {
         "('Admin Officer I / Senior Admin Officer', 8)," +
         "('Admin Officer II / Senior Admin Officer', 8)," +
         "('Admin Officer III / Senior Admin Officer', 8)," +
-        // "('Vice President', 17)," +
-        // "('Assistant Vice President', 17)," +
+        "('Vice President', 17)," +
+        "('Assistant Vice President', 17)," +
         "('Manager', 25)," +
         "('Asst_Manager', 25)," +
         "('Sr_System_Operator', 25)," +
@@ -553,268 +557,518 @@ public class DatabaseInitializer implements CommandLineRunner {
     String hashpassword = passwordEncoder.encode("1234");
 
     String sql =
-      "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, position_id, status, title) VALUES " +
-      "('admin@pccth.com', 000001, 'Admin', 'Admin', '" +
+      "INSERT INTO public.users (email, firstname, lastname, password, telephone, position_id, status, title) VALUES " +
+      //admin
+      "('wasana@pccth.com', 'วาสนา', 'ยีตา', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('approver@pccth.com', 000002, 'ประวิทย์', 'เถาว์พันธ์', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('kamonpanc@pccth.com', 'กมลพรรณ', 'ฉิมจารย์', '" +
       hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('vicepresident@pccth.com', 000003, 'VicePresident', 'VicePresident', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('napakwans@pccth.com', 'นภาขวัญ', 'แซ่อึ้ง', '" +
       hashpassword +
-      "','+3333333333',  1,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('personnel@pccth.com', 000004, 'Personnel', 'Personnel', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('narisa@pccth.com', 'ชณัญพัชร์', 'มิลินภรพิศุทธ์', '" +
       hashpassword +
-      "', '+4444444444',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('2@pccth.com', 000005, 'สุริยา', ' จันทร', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('utaiwank@pccth.com', 'อุทัยวรรณ', 'กิมศรี', '" +
       hashpassword +
-      "', '+6666666666',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('3@pccth.com', 000006, 'ณัทกฤช', 'เจริญธรรมทัด', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('nantidas@pccth.com', 'นันทิดา', 'แสงเดือน', '" +
       hashpassword +
-      "', '+7777777777',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('4@pccth.com', 000007, 'วาณี', 'ธรรมาภิมุขกุล', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('siriratc@pccth.com', 'ศิริรัตน์', 'ชาลียุทธ', '" +
       hashpassword +
-      "', '+8888888888',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('5@pccth.com', 000008, 'พันชริทร์', 'โสภะ', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('ratirotg@pccth.com', 'รติรส', 'กุญแจทอง', '" +
       hashpassword +
-      "', '+9999999999',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('6@pccth.com', 000009, 'เสาวภา', '6', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('sirirat@pccth.com', 'สิริรัตน', 'ทรงสอาด', '" +
       hashpassword +
-      "', '+0000000000', 4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('7@pccth.com', 000010, 'ณัฐวรรณ', '7', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('prapatsons@pccth.com', 'ประภัสสร', 'ศรีสังข์', '" +
       hashpassword +
-      "', '1234567890',  4,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('khunanonk@pccth.com', '123456', 'คุณานนท์', 'ครองขวัญ', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('rungkani@pccth.com', 'รุ่งกานต์', 'อินทรีประจง', '" +
       hashpassword +
-      "','0981234567',  13,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminFSI@pccth.com', 10006, 'วาสนา', 'ยีตา', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('orrathaip@pccth.com', 'อรทัย', 'เพียศักดิ์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminPBS@pccth.com', 10005, 'กมลพรรณ', 'ฉิมจารย์', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('chompoonuchc@pccth.com', 'ชมพูนุท', 'ชัยสุขโกศล', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminMS@pccth.com', 10004, 'นภาขวัญ', 'แซ่อึ้ง', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      "('sedtawutt@pccth.com', 'เสฏฐวุฒิ', 'ตัญจินดา', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminOSS@pccth.com', 10003, 'รติรส', 'กุญแจทอง', '" +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('angtima@pccth.com', 'อังติมา', 'เรืองวิไลรัตน์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminLG@pccth.com', 10001, 'รุ่งกานต์', 'อินทรีประจง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminPN&AD@pccth.com', 10002, 'อรทัย', 'เพืยศักดิ์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminAF@pccth.com', 10000, 'ชมพูนุท', 'ชัยสุขโกศล', '" +
-      hashpassword +
-      "', '+1111111111',   8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminSD@pccth.com', 10009, 'ชณัญพัชร์', 'มิลินภรพิศุทธ์', '" +
-      hashpassword +
-      "', '+1111111111',   8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminSE@pccth.com', 90000, 'อุทัยวรรณ', 'กิมศรี', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminCS&CE&SM@pccth.com', 10399, 'นันทิดา', 'แสงเตือน', '" +
-      hashpassword +
-      "', '+1111111111',   8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminNS@pccth.com', 10400, 'ศิริรัตน์', 'ชาลียุทธ', '" +
-      hashpassword +
-      "', '+1111111111',   8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminPM@pccth.com', 10430, 'สิริรัตน', 'ทรงสอาด', '" +
-      hashpassword +
-      "', '+1111111111',  8, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('adminDT@pccth.com', 10410, 'ประภัสสร', 'ศรีสังข์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userFSI@pccth.com', 20006, 'userFSI', 'userFSI', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPBS@pccth.com', 20005, 'userPBS', 'userPBS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userMS@pccth.com', 20004, 'userMS', 'userMS', '" +
-      hashpassword +
-      "', '+1111111111', 4 ,'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userOSS@pccth.com', 20003, 'userOSS', 'userOSS', '" +
-      hashpassword +
-      "', '+1111111111',4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userHQ@pccth.com', 20001, 'userHQ', 'userHQ', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAF@pccth.com', 20000, 'userAF', 'userAF', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('adminAPS@pccth.com', 2100, 'adminAPS', 'adminAPS', '" +
-      hashpassword +
-      "', '+1111111111', 8, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('adminHQ@pccth.com', 20200, 'adminHQ', 'adminHQ', '" +
-      hashpassword +
-      "', '+1111111111', 8, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSD1@pccth.com',7000, 'approverSD1', 'approverSD1', '" +
-      hashpassword +
-      "', '+2222222222', 4,'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSD2@pccth.com',7001, 'approverSD2', 'approverSD2', '" +
-      hashpassword +
-      "', '+2222222222', 4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSQA@pccth.com',7002, 'approverSQA', 'approverSQA', '" +
-      hashpassword +
-      "', '+2222222222', 4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverFSI@pccth.com',7003, 'approverFSI', 'approverFSI', '" +
-      hashpassword +
-      "', '+2222222222', 4,'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverPBS@pccth.com',7004, 'approverPBS', 'approverPBS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverMS@pccth.com',7005, 'approverMS', 'approverMS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSE@pccth.com',7006, 'approverSE', 'approverSE', '" +
-      hashpassword +
-      "', '+2222222222', 4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverCS@pccth.com',7007, 'approverCS', 'approverCS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverCE@pccth.com',7008, 'approverCE', 'approverCE', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverNS@pccth.com',7009, 'approverNS', 'approverNS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSM@pccth.com',7010, 'approverSM', 'approverSM', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverOSS@pccth.com',7011, 'approverOSS', 'approverOSS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverPM@pccth.com',7012, 'approverPM', 'approverPM', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverDT@pccth.com',7013, 'approverDT', 'approverDT', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverHQ@pccth.com',7014, 'approverHQ', 'approverHQ', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAF@pccth.com',7015, 'approverAF', 'approverAF', '" +
-      hashpassword +
-      "', '+2222222222',  4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverISO@pccth.com',7016, 'approverISO', 'approverISO', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverPS@pccth.com',7017, 'approverPS', 'approverPS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverTOP@pccth.com',7018, 'approverTOP', 'approverTOP', '" +
-      hashpassword +
-      "', '+2222222222',  4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSI@pccth.com',7019, 'approverSI', 'approverSI', '" +
-      hashpassword +
-      "', '+2222222222',   4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverBD@pccth.com',7020, 'approverBD', 'approverBD', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverIS@pccth.com',7021, 'approverIS', 'approverIS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAP@pccth.com',7022, 'approverAP', 'approverAP', '" +
-      hashpassword +
-      "', '+2222222222',  4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverFM@pccth.com',7023, 'approverFM', 'approverFM', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverLG@pccth.com',7024, 'approverLG', 'approverLG', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverPN@pccth.com',7025, 'approverPN', 'approverPN', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAD@pccth.com',7026, 'approverAD', 'approverAD', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAC@pccth.com',7027, 'approverAC', 'approverAC', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverFN@pccth.com',7028, 'approverFN', 'approverFN', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverMK@pccth.com',7029, 'approverMK', 'approverMK', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAPS@pccth.com',7030, 'approverAPS', 'approverAPS', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverAPS_BOI@pccth.com',7031, 'approverAPS(BOI)', 'approverAPS(BOI)', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverOSS_BOI@pccth.com',7032, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverSD_BOI@pccth.com',7033, 'approverSD(BOI)', 'approverSD(BOI)', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverTOP2CS@pccth.com',7052, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
-      hashpassword +
-      "', '+2222222222',  4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverTOP2CE@pccth.com',7053, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
-      hashpassword +
-      "', '+2222222222', 4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('approverTOP2SM@pccth.com',7054, 'approverOSS(BOI)', 'approverOSS(BOI)', '" +
-      hashpassword +
-      "', '+2222222222',  4,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicepresidentSD_PCC@pccth.com', 34566, 'VicePresidentSD_PCC', 'VicePresident', '" +
-      hashpassword +
-      "','+3333333333',  1,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('vicepresidentSD_wire@pccth.com', 67889, 'VicePresidentSD_wire', 'VicePresident', '" +
-      hashpassword +
-      "','+3333333333',  1,  'เป็นพนักงานอยู่', 'นาย'), " +
-      "('vicepresidentTOP@pccth.com', 043623, 'VicePresidentTOP', 'VicePresident', '" +
-      hashpassword +
-      "','+3333333333',  1,  'เป็นพนักงานอยู่', 'นาย')";
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
+      //vice
 
+      "('vicePresident1@pccth.com', 'ศักดิ์ณรงค์', 'แสงสง่าพงศ์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident2@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident3@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident4@pccth.com', 'วิชาญ', 'จุนทะเกาศลย์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident5@pccth.com', 'ปิยนาถ', 'ฑีฆวาณิช', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident6@pccth.com', 'ชนัฐ', 'จาดทองคำ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident7@pccth.com', 'ชิดพล', 'สมิตะลัมพะ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('vicePresident8@pccth.com', 'ศิโรตม์', 'แสงเจริญ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      //Approver
+
+      "('Approver1@pccth.com', 'ศิโรตม์', 'แสงเจริญ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver2@pccth.com', 'เสาวภา', 'ภารเพิง', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver3@pccth.com', 'ณัฐวรรณ', 'ทนุบำรุงสาสน์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver4@pccth.com', 'ธราธร', 'พิทยะ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver5@pccth.com', 'ภูรีลาภ', 'ก้อนทอง', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver6@pccth.com', 'ชัยสิทธิ์', 'พัฒนสุขเกษม', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver7@pccth.com', 'คมกฤช', 'สำเนียง', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver8@pccth.com', 'สามารถ', 'เหลี่ยวเจริญ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver9@pccth.com', 'ปิยนาถ', 'ฑีฆวาณิช', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver10@pccth.com', 'ณัฐธีร์', 'เปรมะสุทธิพัฒน์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver11@pccth.com', 'มาลินี', 'จงพัฒนกิจ', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver12@pccth.com', 'เจษฐา', 'วรรณกูล', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver13@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver14@pccth.com', 'วิชาญ', 'จุนทะเกาศลย์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver15@pccth.com', 'รุ่งปิยะธิดา', 'ศรีคง', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver16@pccth.com', 'ธันย์ชนก', 'พันธุวงษ์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver17@pccth.com', 'วงศ์พรรณ', 'จำปา', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver18@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "('Approver19@pccth.com', 'พร', 'สมทองพานิช', '" +
+      hashpassword +
+      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')";
+
+    //users
+    String users =
+      "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, position_id, status, title) VALUES " +
+      "('userSD1@pccth.com', 20000, 'userSD1', 'userSD1', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSD2@pccth.com', 20001, 'userSD2', 'userSD2', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSQA@pccth.com', 20002, 'userSQA', 'userSQA', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userFSI@pccth.com', 20003, 'userFSI', 'userFSI', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userPBS@pccth.com', 20004, 'userPBS', 'userPBS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userMS@pccth.com', 20005, 'userMS', 'userMS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSE@pccth.com', 20006, 'userSE', 'userSE', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userCS@pccth.com', 20007, 'userCS', 'userCS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userCE@pccth.com', 20008, 'userCE', 'userCE', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userNS@pccth.com', 20009, 'userNS', 'userNS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSM@pccth.com', 20010, 'userSM', 'userSM', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userOSS@pccth.com', 20011, 'userOSS', 'userOSS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userPM@pccth.com', 20012, 'userPM', 'userPM', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userDT@pccth.com', 20013, 'userDT', 'userDT', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userHQ@pccth.com', 20014, 'userHQ', 'userHQ', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAF@pccth.com', 20015, 'userAF', 'userAF', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userISO@pccth.com', 20016, 'userISO', 'userISO', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userPS@pccth.com', 20017, 'userPS', 'userPS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userTOP@pccth.com', 20018, 'userTOP', 'userTOP', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSI@pccth.com', 20019, 'userSI', 'userSI', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userBD@pccth.com', 20020, 'userBD', 'userBD', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userIS@pccth.com', 20021, 'userIS', 'userIS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAP@pccth.com', 20022, 'userAP', 'userAP', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userFM@pccth.com', 20023, 'userFM', 'userFM', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userLG@pccth.com', 20024, 'userLG', 'userLG', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userPN@pccth.com', 20025, 'userPN', 'userPN', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAD@pccth.com', 20026, 'userAD', 'userAD', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAC@pccth.com', 20027, 'userAC', 'userAC', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userFN@pccth.com', 20028, 'userFN', 'userFN', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userMK@pccth.com', 20029, 'userMK', 'userMK', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAPS@pccth.com', 20030, 'userAPS', 'userAPS', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userAPS(BOI)@pccth.com', 20031, 'userAPS(BOI)', 'userAPS(BOI)', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userOSS(BOI)@pccth.com', 20032, 'userOSS(BOI)', 'userOSS(BOI)', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+      "('userSD(BOI)@pccth.com', 20033, 'userSD(BOI)', 'userSD(BOI)', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ," +
+      "('Personnel@pccth.com', 88888, 'Personnel', 'Personnel', '" +
+      hashpassword +
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ";
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);
+      jdbcTemplate.execute(users);
       jdbcTemplate.execute(
-        "INSERT INTO public.users_roles (user_id, roles_id) VALUES (1, 1),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," +
-        "(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,5),(26,5),(27,5),(28,5),(29,5),(30,5),(31,1),(32,1),(33,2)," +
-        "(34,2),(35,2),(36,2),(37,2),(38,2),(39,2)," +
-        "(40,2),(41,2),(42,2),(43,2),(44,2),(45,2),(46,2),(47,2),(48,2),(49,2)," +
-        "(50,2),(51,2),(52,2),(53,2),(54,2),(55,2),(56,2),(57,2),(58,2),(59,2)," +
-        "(60,2),(61,2),(62,2),(63,2),(64,2),(65,2),(66,2),(67,2),(68,2),(69,2)," +
-        "(70,3),(71,3),(72,3)"
+        "INSERT INTO public.users_roles (user_id, roles_id) VALUES" +
+        "(1,1)," +
+        "(2,1)," +
+        "(3,1)," +
+        "(4,1)," +
+        "(5,1)," +
+        "(6,1)," +
+        "(7,1)," +
+        "(8,1)," +
+        "(9,1)," +
+        "(10,1)," +
+        "(11,1)," +
+        "(12,1)," +
+        "(13,1)," +
+        "(14,1)," +
+        "(15,1)," +
+        "(16,3)," +
+        "(17,3)," +
+        "(18,3)," +
+        "(19,3)," +
+        "(20,3)," +
+        "(21,3)," +
+        "(22,3)," +
+        "(23,3)," +
+        "(24,2)," +
+        "(25,2)," +
+        "(26,2)," +
+        "(27,2)," +
+        "(28,2)," +
+        "(29,2)," +
+        "(30,2)," +
+        "(31,2)," +
+        "(32,2)," +
+        "(33,2)," +
+        "(34,2)," +
+        "(35,2)," +
+        "(36,2)," +
+        "(37,2)," +
+        "(38,2)," +
+        "(39,2)," +
+        "(40,2)," +
+        "(41,2)," +
+        "(42,2)," +
+        "(43,2)," +
+        "(44,5)," +
+        "(45,5)," +
+        "(46,5)," +
+        "(47,5)," +
+        "(48,5)," +
+        "(49,5)," +
+        "(50,5)," +
+        "(51,5)," +
+        "(52,5)," +
+        "(53,5)," +
+        "(54,5)," +
+        "(55,5)," +
+        "(56,5)," +
+        "(57,5)," +
+        "(58,5)," +
+        "(59,5)," +
+        "(60,5)," +
+        "(61,5)," +
+        "(62,5)," +
+        "(63,5)," +
+        "(64,5)," +
+        "(65,5)," +
+        "(66,5)," +
+        "(67,5)," +
+        "(68,5)," +
+        "(69,5)," +
+        "(70,5)," +
+        "(71,5)," +
+        "(72,5)," +
+        "(73,5)," +
+        "(74,5)," +
+        "(75,5)," +
+        "(76,5)," +
+        "(77,4)"
       );
       jdbcTemplate.execute(
         "INSERT INTO public.user_departments (user_id, department_id) VALUES " +
-        "(1,1),(1, 2),(1, 3),(2,1),(3,1),(3,2),(3,3),(3,42),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1)," +
-        "(12,5),(13,6),(16,26),(17,27),(17,28),(19,1),(20,8),(21,9),(21,10),(21,12)," +
-        "(22,11),(23,14),(24,15),(25,5),(26,6),(27,7),(28,13),(29,16),(30,17),(21,38),(21,39),(21,40)," +
-        "(14,21),(14,22),(14,23),(14,24),(15,25),(15,36),(15,37),(18,29),(18,30),(18,32),(19,2),(19,3)," +
-        "(22,41),(12,33),(31,34),(31,35),(19,42),(32,31),(33,1)," +
-        "(34,2),(35,3),(36,5),(37,6),(38,7),(39,8)," +
-        "(40,38),(41,39),(42,41),(43,40),(44,36),(45,14),(46,15),(47,31),(48,32),(49,18)," +
-        "(50,19),(51,20),(52,21),(53,22),(54,23),(55,24),(56,25),(57,26),(58,27),(59,28)," +
-        "(60,29),(61,30),(62,33),(63,34),(64,35),(65,37),(66,42),(67,38),(68,39),(69,40)," +
-        "(70,1),(70,2),(70,3),(71,42),(72,8),(72,9),(72,10),(72,11),(72,12),(72,38),(72,39),(72,40),(72,41)"
+        "(43,1)," +
+        "(44,2)," +
+        "(45,3)," +
+        "(46,5)," +
+        "(47,6)," +
+        "(48,7)," +
+        "(49,8)," +
+        "(50,38)," +
+        "(51,39)," +
+        "(52,41)," +
+        "(53,40)," +
+        "(54,36)," +
+        "(55,14)," +
+        "(56,15)," +
+        "(57,31)," +
+        "(58,32)," +
+        "(59,18)," +
+        "(60,19)," +
+        "(61,20)," +
+        "(62,21)," +
+        "(63,22)," +
+        "(64,23)," +
+        "(65,24)," +
+        "(66,25)," +
+        "(67,26)," +
+        "(68,27)," +
+        "(69,28)," +
+        "(70,29)," +
+        "(71,30)," +
+        "(72,33)," +
+        "(73,34)," +
+        "(74,35)," +
+        "(75,37)," +
+        "(76,42)," +
+        "(77,1)," +
+        "(77,2)," +
+        "(77,3)," +
+        "(77,4)," +
+        "(77,5)," +
+        "(77,6)," +
+        "(77,7)," +
+        "(77,8)," +
+        "(77,9)," +
+        "(77,10)," +
+        "(77,11)," +
+        "(77,12)," +
+        "(77,13)," +
+        "(77,14)," +
+        "(77,15)," +
+        "(77,16)," +
+        "(77,17)," +
+        "(77,18)," +
+        "(77,19)," +
+        "(77,20)," +
+        "(77,21)," +
+        "(77,22)," +
+        "(77,23)," +
+        "(77,24)," +
+        "(77,25)," +
+        "(77,26)," +
+        "(77,27)," +
+        "(77,28)," +
+        "(77,29)," +
+        "(77,30)," +
+        "(77,31)," +
+        "(77,32)," +
+        "(77,33)," +
+        "(77,34)," +
+        "(77,35)," +
+        "(77,36)," +
+        "(77,37)," +
+        "(77,38)," +
+        "(77,39)," +
+        "(77,40)," +
+        "(77,41)," +
+        "(77,42)"
       );
     }
     jdbcTemplate.execute(
-      "INSERT INTO public.users_companys (user_id, companys_id) VALUES (1, 1),(2, 2),(3, 1),(4, 2),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1)," +
-      "(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(27,1),(28,1),(29,1),(30,1),(31,1),(32,1),(33,2)," +
-      "(34,2),(35,2),(36,2),(37,2),(38,2),(39,2)," +
-      "(40,2),(41,2),(42,2),(43,2),(44,2),(45,2),(46,2),(47,2),(48,2),(49,2)," +
-      "(50,2),(51,2),(52,2),(53,2),(54,2),(55,2),(56,2),(57,2),(58,2),(59,2)," +
-      "(60,2),(61,2),(62,2),(63,2),(64,2),(65,2),(66,2),(67,2),(68,2),(69,2)," +
-      "(70,1),(71,1),(72,1)"
+      "INSERT INTO public.users_companys (user_id, companys_id) VALUES" +
+      "(1,1)," +
+      "(2,1)," +
+      "(3,1)," +
+      "(4,1)," +
+      "(5,1)," +
+      "(6,1)," +
+      "(7,1)," +
+      "(8,1)," +
+      "(9,1)," +
+      "(10,1)," +
+      "(11,1)," +
+      "(12,1)," +
+      "(13,1)," +
+      "(14,1)," +
+      "(15,1)," +
+      "(16,1)," +
+      "(17,1)," +
+      "(18,1)," +
+      "(19,1)," +
+      "(20,1)," +
+      "(21,1)," +
+      "(22,1)," +
+      "(23,1)," +
+      "(24,1)," +
+      "(25,1)," +
+      "(26,1)," +
+      "(27,1)," +
+      "(28,1)," +
+      "(29,1)," +
+      "(30,1)," +
+      "(31,1)," +
+      "(32,1)," +
+      "(33,1)," +
+      "(34,1)," +
+      "(35,1)," +
+      "(36,1)," +
+      "(37,1)," +
+      "(38,1)," +
+      "(39,1)," +
+      "(40,1)," +
+      "(41,1)," +
+      "(42,1)," +
+      "(43,1)," +
+      "(44,1)," +
+      "(45,1)," +
+      "(46,1)," +
+      "(47,1)," +
+      "(48,1)," +
+      "(49,1)," +
+      "(50,1)," +
+      "(51,1)," +
+      "(52,1)," +
+      "(53,1)," +
+      "(54,1)," +
+      "(55,1)," +
+      "(56,1)," +
+      "(57,1)," +
+      "(58,1)," +
+      "(59,1)," +
+      "(60,1)," +
+      "(61,1)," +
+      "(62,1)," +
+      "(63,1)," +
+      "(64,1)," +
+      "(65,1)," +
+      "(66,1)," +
+      "(67,1)," +
+      "(68,1)," +
+      "(69,1)," +
+      "(70,1)," +
+      "(71,1)," +
+      "(72,1)," +
+      "(73,1)," +
+      "(74,1)," +
+      "(75,1)," +
+      "(76,1)," +
+      "(77,1),(77,2)"
     );
-
     jdbcTemplate.execute(
-      "INSERT INTO public.users_sectors (users_id, sectors_id) VALUES (1, 1),(1, 2),(1, 3),(2, 2),(3, 3),(4, 4),(5,2),(6, 2),(7, 2),(8, 2),(9, 2),(10,2),(11,5),(12,1),(13,1),(14,1),(15,1),(16,1)," +
-      "(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,5),(26,5),(27,5),(28,5),(29,5),(30,5),(31,1),(32,1),(33,2)," +
-      "(34,2),(35,2),(36,2),(37,2),(38,2),(39,2)," +
-      "(40,2),(41,2),(42,2),(43,2),(44,2),(45,2),(46,2),(47,2),(48,2),(49,2)," +
-      "(50,2),(51,2),(52,2),(53,2),(54,2),(55,2),(56,2),(57,2),(58,2),(59,2)," +
-      "(60,2),(61,2),(62,2),(63,2),(64,2),(65,2),(66,2),(67,2),(68,2),(69,2)," +
-      "(70,3),(71,3),(72,3)"
+      "INSERT INTO public.users_sectors (users_id, sectors_id) VALUES " +
+      "(77,1)," +
+      "(77,2)," +
+      "(77,3)," +
+      "(77,4)," +
+      "(77,5)," +
+      "(77,6)," +
+      "(77,7)," +
+      "(77,8)," +
+      "(77,9)," +
+      "(77,10)," +
+      "(77,11)," +
+      "(77,12)," +
+      "(77,13)," +
+      "(77,14)," +
+      "(77,15)," +
+      "(77,16)," +
+      "(77,17)," +
+      "(77,18)," +
+      "(77,19)," +
+      "(77,20)," +
+      "(77,21)," +
+      "(77,22)," +
+      "(77,23)," +
+      "(77,24)," +
+      "(77,25)"
     );
   }
 
