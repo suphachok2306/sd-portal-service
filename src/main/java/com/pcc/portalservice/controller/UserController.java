@@ -80,26 +80,26 @@ public class UserController {
     }
   }
 
-  @PostMapping("/createRole")
-  public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
-    Roles roleEnum = Roles.valueOf(roleName);
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    try {
-      Role role = userService.createRole(roleEnum);
-      if (role == null) {
-        response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
-        return ResponseEntity.badRequest().body(response);
-      }
-      data.setResult(roleEnum);
-      response.setResponseMessage("ทำรายการเรียบร้อย");
-      response.setResponseData(data);
-      return ResponseEntity.ok().body(response);
-    } catch (IllegalArgumentException e) {
-      response.setResponseMessage("Invalid role name: " + roleName);
-      return ResponseEntity.internalServerError().body(response);
-    }
-  }
+  // @PostMapping("/createRole")
+  // public ResponseEntity<ApiResponse> createRole(@RequestBody String roleName) {
+  //   Roles roleEnum = Roles.valueOf(roleName);
+  //   ApiResponse response = new ApiResponse();
+  //   ResponseData data = new ResponseData();
+  //   try {
+  //     Role role = userService.createRole(roleEnum);
+  //     if (role == null) {
+  //       response.setResponseMessage("Role นี้มีอยู่ในระบบอยู่แล้ว " + roleName);
+  //       return ResponseEntity.badRequest().body(response);
+  //     }
+  //     data.setResult(roleEnum);
+  //     response.setResponseMessage("ทำรายการเรียบร้อย");
+  //     response.setResponseData(data);
+  //     return ResponseEntity.ok().body(response);
+  //   } catch (IllegalArgumentException e) {
+  //     response.setResponseMessage("Invalid role name: " + roleName);
+  //     return ResponseEntity.internalServerError().body(response);
+  //   }
+  // }
 
   @PutMapping("/editEmployee")
   public ResponseEntity<ApiResponse> editEmployee(

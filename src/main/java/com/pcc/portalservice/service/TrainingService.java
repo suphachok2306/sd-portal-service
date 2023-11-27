@@ -73,41 +73,17 @@ public class TrainingService {
     CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 
     Root<User> userRoot = criteriaQuery.from(User.class);
-    Join<User, Department> departmentJoin = userRoot.join("departments");
+    Join<User, Sector> sectorJoin = userRoot.join("sectors");
 
     Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-    Root<Department> subqueryDepartmentRoot = subquery.from(Department.class);
-    subquery.select(subqueryDepartmentRoot.get("id"));
+    Root<Sector> subquerysectorRoot = subquery.from(Sector.class);
+    subquery.select(subquerysectorRoot.get("id"));
     subquery.where(
-      criteriaBuilder.equal(subqueryDepartmentRoot, departmentJoin)
+      criteriaBuilder.equal(subquerysectorRoot,sectorJoin)
     );
 
     criteriaQuery
-      .select(departmentJoin.get("id"))
-      .distinct(true)
-      .where(
-        criteriaBuilder.and(criteriaBuilder.equal(userRoot.get("id"), id))
-      );
-
-    return entityManager.createQuery(criteriaQuery).getSingleResult();
-  }
-
-  private Long findcompanyByUserID(Long id) {
-    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-    CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-
-    Root<User> userRoot = criteriaQuery.from(User.class);
-    Join<User, Department> departmentJoin = userRoot.join("departments");
-
-    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-    Root<Department> subqueryDepartmentRoot = subquery.from(Department.class);
-    subquery.select(subqueryDepartmentRoot.get("id"));
-    subquery.where(
-      criteriaBuilder.equal(subqueryDepartmentRoot, departmentJoin)
-    );
-
-    criteriaQuery
-      .select(departmentJoin.get("id"))
+      .select(sectorJoin.get("id"))
       .distinct(true)
       .where(
         criteriaBuilder.and(criteriaBuilder.equal(userRoot.get("id"), id))
@@ -816,7 +792,7 @@ public class TrainingService {
     }
     if (company != null) {
       Join<Training, User> userJoin = root.join("user");
-      Join<User, Company> companyJoin = userJoin.join("company");
+      Join<User, Company> companyJoin = userJoin.join("companys");
 
       predicates.add(
         builder.like(
@@ -866,8 +842,8 @@ public class TrainingService {
       findDeptByUserID(training_id.getUser().getId())
     );
 
-    Optional<Department> SectorOptional = departmentRepository.findById(
-      findDeptByUserID(training_id.getUser().getId())
+    Optional<Sector> SectorOptional = sectorRepository.findById(
+      findsectorByUserID(training_id.getUser().getId())
     );
 
     try {
@@ -970,10 +946,10 @@ public class TrainingService {
       }
 
       params.put("dept_code", departmentOptional.get().getDeptCode());
-      // params.put(
-      //   "sector_name",
-      //   training_id.getUser().getSector().getSectorName()
-      // );
+      params.put(
+        "sector_name",
+        SectorOptional.get().getSectorName()
+      );
       params.put("dept_name", departmentOptional.get().getDeptName());
       params.put("date_save", training_id.getDateSave());
       params.put(
@@ -1014,10 +990,10 @@ public class TrainingService {
         training_id.getApprove1().getPosition().getPositionName()
       );
       params.put("app_dept_name", departmentOptional.get().getDeptName());
-      // params.put(
-      //   "app_sector_name",
-      //   training_id.getApprove1().getSector().getSectorName()
-      // );
+      params.put(
+        "app_sector_name",
+        SectorOptional.get().getSectorName()
+      );
       params.put("result1", training_id.getResult().get(0).getResult1());
       params.put("result2", training_id.getResult().get(0).getResult2());
       params.put("result3", training_id.getResult().get(0).getResult3());

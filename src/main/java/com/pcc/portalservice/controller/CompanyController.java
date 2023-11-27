@@ -25,33 +25,33 @@ public class CompanyController {
   private final CompanyService companyService;
   private final CompanyRepository companyRepository;
 
-  @PostMapping("/createCompany")
-  public ResponseEntity<ApiResponse> createCompany(
-    @RequestBody CreateCompanyRequest createCompanyRequest
-  ) {
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    if (companyService.isCompanyNull(createCompanyRequest)) {
-      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-      return ResponseEntity.badRequest().body(response);
-    }
-    try {
-      Company company = companyService.create(createCompanyRequest);
-      data.setResult(company);
-      response.setResponseMessage("ทำรายการเรียบร้อย");
-      response.setResponseData(data);
-      URI uri = URI.create(
-        ServletUriComponentsBuilder
-          .fromCurrentContextPath()
-          .path("/createCompany")
-          .toUriString()
-      );
-      return ResponseEntity.created(uri).body(response);
-    } catch (Exception e) {
-      response.setResponseMessage(e.getMessage());
-      return ResponseEntity.internalServerError().body(response);
-    }
-  }
+  // @PostMapping("/createCompany")
+  // public ResponseEntity<ApiResponse> createCompany(
+  //   @RequestBody CreateCompanyRequest createCompanyRequest
+  // ) {
+  //   ApiResponse response = new ApiResponse();
+  //   ResponseData data = new ResponseData();
+  //   if (companyService.isCompanyNull(createCompanyRequest)) {
+  //     response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+  //     return ResponseEntity.badRequest().body(response);
+  //   }
+  //   try {
+  //     Company company = companyService.create(createCompanyRequest);
+  //     data.setResult(company);
+  //     response.setResponseMessage("ทำรายการเรียบร้อย");
+  //     response.setResponseData(data);
+  //     URI uri = URI.create(
+  //       ServletUriComponentsBuilder
+  //         .fromCurrentContextPath()
+  //         .path("/createCompany")
+  //         .toUriString()
+  //     );
+  //     return ResponseEntity.created(uri).body(response);
+  //   } catch (Exception e) {
+  //     response.setResponseMessage(e.getMessage());
+  //     return ResponseEntity.internalServerError().body(response);
+  //   }
+  // }
 
   @GetMapping("/findAllCompany")
   public List<Company> getAllCompany() {
