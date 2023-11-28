@@ -78,9 +78,7 @@ public class TrainingService {
     Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
     Root<Sector> subquerysectorRoot = subquery.from(Sector.class);
     subquery.select(subquerysectorRoot.get("id"));
-    subquery.where(
-      criteriaBuilder.equal(subquerysectorRoot,sectorJoin)
-    );
+    subquery.where(criteriaBuilder.equal(subquerysectorRoot, sectorJoin));
 
     criteriaQuery
       .select(sectorJoin.get("id"))
@@ -851,33 +849,6 @@ public class TrainingService {
 
       Map<String, Object> params = new HashMap<>();
 
-      if (userId1 == null) {
-        if (userId4 != null) {
-          User evaluator4 = userRepository.findById(userId4).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator4.getSignature().getImage())
-          );
-        } else if (userId1 == null && userId4 == null) {
-          User evaluator2 = userRepository.findById(userId2).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator2.getSignature().getImage())
-          );
-        } else if (userId1 == null && userId2 == null && userId4 == null) {
-          User evaluator3 = userRepository.findById(userId3).orElse(null);
-          params.put(
-            "approve1",
-            convertByteToBase64(evaluator3.getSignature().getImage())
-          );
-        }
-      } else if (userId1 != null) {
-        User evaluator1 = userRepository.findById(userId1).orElse(null);
-        params.put(
-          "approve1",
-          convertByteToBase64(evaluator1.getSignature().getImage())
-        );
-      }
 
       if (userId1 != null) {
         User user_id1 = userRepository.findById(userId1).orElse(null);
@@ -946,10 +917,7 @@ public class TrainingService {
       }
 
       params.put("dept_code", departmentOptional.get().getDeptCode());
-      params.put(
-        "sector_name",
-        SectorOptional.get().getSectorName()
-      );
+      params.put("sector_name", SectorOptional.get().getSectorName());
       params.put("dept_name", departmentOptional.get().getDeptName());
       params.put("date_save", training_id.getDateSave());
       params.put(
@@ -970,7 +938,6 @@ public class TrainingService {
         "priceProject",
         training_id.getCourses().get(0).getPriceProject()
       );
-
       params.put("emp_code", training_id.getUser().getEmpCode());
       params.put("firstname", training_id.getUser().getFirstname());
       params.put("lastname", training_id.getUser().getLastname());
@@ -982,33 +949,58 @@ public class TrainingService {
       params.put("action", training_id.getAction());
       params.put("actionDate", training_id.getActionDate());
 
-      // section2
-      params.put("app_name", training_id.getApprove1().getFirstname());
-      params.put("app_lastname", training_id.getApprove1().getLastname());
-      params.put(
-        "app_position",
-        training_id.getApprove1().getPosition().getPositionName()
-      );
-      params.put("app_dept_name", departmentOptional.get().getDeptName());
-      params.put(
-        "app_sector_name",
-        SectorOptional.get().getSectorName()
-      );
-      params.put("result1", training_id.getResult().get(0).getResult1());
-      params.put("result2", training_id.getResult().get(0).getResult2());
-      params.put("result3", training_id.getResult().get(0).getResult3());
-      params.put("result4", training_id.getResult().get(0).getResult4());
-      params.put("result5", training_id.getResult().get(0).getResult5());
-      params.put("result6", training_id.getResult().get(0).getResult6());
-      params.put("result7", training_id.getResult().get(0).getResult7());
-      params.put("comment", training_id.getResult().get(0).getComment());
-      params.put("cause", training_id.getResult().get(0).getCause());
-      params.put("plan", training_id.getResult().get(0).getPlan());
-      params.put("result", training_id.getResult().get(0).getResult());
-      params.put(
-        "date_saveEvaluation",
-        training_id.getResult().get(0).getEvaluationDate()
-      );
+      if (training_id.getResult().get(0).getResult() != null) {
+        if (userId1 == null) {
+        if (userId4 != null) {
+          User evaluator4 = userRepository.findById(userId4).orElse(null);
+          params.put(
+            "approve1",
+            convertByteToBase64(evaluator4.getSignature().getImage())
+          );
+        } else if (userId1 == null && userId4 == null) {
+          User evaluator2 = userRepository.findById(userId2).orElse(null);
+          params.put(
+            "approve1",
+            convertByteToBase64(evaluator2.getSignature().getImage())
+          );
+        } else if (userId1 == null && userId2 == null && userId4 == null) {
+          User evaluator3 = userRepository.findById(userId3).orElse(null);
+          params.put(
+            "approve1",
+            convertByteToBase64(evaluator3.getSignature().getImage())
+          );
+        }
+      } else if (userId1 != null) {
+        User evaluator1 = userRepository.findById(userId1).orElse(null);
+        params.put(
+          "approve1",
+          convertByteToBase64(evaluator1.getSignature().getImage())
+        );
+      }
+        params.put("app_name", training_id.getApprove1().getFirstname());
+        params.put("app_lastname", training_id.getApprove1().getLastname());
+        params.put(
+          "app_position",
+          training_id.getApprove1().getPosition().getPositionName()
+        );
+        params.put("app_dept_name", departmentOptional.get().getDeptName());
+        params.put("app_sector_name", SectorOptional.get().getSectorName());
+        params.put("result1", training_id.getResult().get(0).getResult1());
+        params.put("result2", training_id.getResult().get(0).getResult2());
+        params.put("result3", training_id.getResult().get(0).getResult3());
+        params.put("result4", training_id.getResult().get(0).getResult4());
+        params.put("result5", training_id.getResult().get(0).getResult5());
+        params.put("result6", training_id.getResult().get(0).getResult6());
+        params.put("result7", training_id.getResult().get(0).getResult7());
+        params.put("comment", training_id.getResult().get(0).getComment());
+        params.put("cause", training_id.getResult().get(0).getCause());
+        params.put("plan", training_id.getResult().get(0).getPlan());
+        params.put("result", training_id.getResult().get(0).getResult());
+        params.put(
+          "date_saveEvaluation",
+          training_id.getResult().get(0).getEvaluationDate()
+        );
+      }
       dataList.add(params);
 
       // Load the JasperReport from a JRXML file
@@ -1524,7 +1516,11 @@ public class TrainingService {
           trainingRoot.get("id").alias("train_id"),
           courseJoin.get("active").alias("active"),
           statusJoin.get("status").alias("status"),
-          trainingRoot.join("user").join("companys").get("id").alias("company_id")
+          trainingRoot
+            .join("user")
+            .join("companys")
+            .get("id")
+            .alias("company_id")
         )
         .distinct(true);
 
