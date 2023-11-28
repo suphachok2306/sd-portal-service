@@ -777,23 +777,23 @@ public class DatabaseInitializer implements CommandLineRunner {
       "('userAPS@pccth.com', 20030, 'userAPS', 'userAPS', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAPS(BOI)@pccth.com', 20031, 'userAPS(BOI)', 'userAPS(BOI)', '" +
+      "('userAPS_BOI@pccth.com', 20031, 'userAPS(BOI)', 'userAPS(BOI)', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userOSS(BOI)@pccth.com', 20032, 'userOSS(BOI)', 'userOSS(BOI)', '" +
+      "('userOSS_BOI@pccth.com', 20032, 'userOSS(BOI)', 'userOSS(BOI)', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSD(BOI)@pccth.com', 20033, 'userSD(BOI)', 'userSD(BOI)', '" +
+      "('userSD_BOI@pccth.com', 20033, 'userSD(BOI)', 'userSD(BOI)', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ," +
       "('Personnel@pccth.com', 88888, 'Personnel', 'Personnel', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('viceSD(BOI)@pccth.com', 80033, 'viceSD(BOI)', 'viceSD(BOI)', '" +
+      "('viceSD_BOI@pccth.com', 80033, 'viceSD(BOI)', 'viceSD(BOI)', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ," +
       
-      "('approveSD(BOI)@pccth.com', 70033, 'approveSD(BOI)', 'approveSD(BOI)', '" +
+      "('approveSD_BOI@pccth.com', 70033, 'approveSD(BOI)', 'approveSD(BOI)', '" +
       hashpassword +
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') " ;
       
