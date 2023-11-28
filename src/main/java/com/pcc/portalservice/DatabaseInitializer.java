@@ -27,7 +27,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-    insertDataIntoUsersTable();
+    // insertDataIntoUsersTable();
     // insertBudgetTable();
   }
 
@@ -875,7 +875,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(70,5)," +
         "(71,5)," +
         "(72,5)," +
-        "(73,5),(73,4),"+
+        "(73,5),(74,4),"+
         "(75,3),(76,4)"
       );
       jdbcTemplate.execute(
