@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OF1-report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d60daca-fdfc-4572-96eb-e90baf5f2a70">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
@@ -877,15 +877,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[ ($F{app_position} != null) ? $F{app_position} : ""]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{app_position} != null) ? $F{app_position} : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="60" y="70" width="220" height="30" uuid="dff17cf0-5312-4d47-bac6-0186b0c39681"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH Sarabun New" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{app_dept_name} != null) ? $F{app_dept_name} : ""
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{app_dept_name} != null) ? $F{app_dept_name} : ""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="339" y="70" width="205" height="30" uuid="589a089d-4a5b-49ad-a69d-a432f0c0c4d4"/>
@@ -1217,7 +1216,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="THSarabunNew" size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{result} == null) ? "" : new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th")).format($F{result}.getDate_save())]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{result} == null) ? "" : new SimpleDateFormat("dd/MM/yyyy", new Locale("TH","th")).format($F{date_save})]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
 				<reportElement stretchType="RelativeToTallestObject" x="152" y="583" width="40" height="40" uuid="a689bb76-1ec2-49d1-9861-b2743c7b6ec8">
