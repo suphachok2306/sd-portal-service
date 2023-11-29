@@ -9,18 +9,19 @@ import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
 import com.pcc.portalservice.response.ResponseData;
 import com.pcc.portalservice.service.TrainingService;
-import java.net.URI;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -234,18 +235,18 @@ public class TrainingController {
 
   @GetMapping("/Report")
   public String report(
-    @RequestParam Long trainId,
-    @RequestParam(required = false) Long userId1,
-    @RequestParam(required = false) Long userId2,
-    @RequestParam(required = false) Long userId3,
-    @RequestParam(required = false) Long userId4
+    @RequestParam Long trainId
+//    Long userId1,
+//    Long userId2,
+//    Long userId3,
+//    Long userId4
   ) {
     return trainingService.printReport(
-      trainId,
-      userId1,
-      userId2,
-      userId3,
-      userId4
+      trainId
+//      userId1,
+//      userId2,
+//      userId3,
+//      userId4
     );
   }
 

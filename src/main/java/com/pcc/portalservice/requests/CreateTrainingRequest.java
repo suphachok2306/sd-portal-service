@@ -1,9 +1,9 @@
 package com.pcc.portalservice.requests;
 
-import com.pcc.portalservice.model.enums.StatusApprove;
-import java.util.Date;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.Date;
 
 @Builder
 @Data
@@ -15,6 +15,9 @@ public class CreateTrainingRequest {
   String actionDate;
   int day;
   Long courseId;
-  Long approve1_id;
   Float budget;
+  Long approve1_id;
+  Long approve2_id;
+  Long approve3_id;
+  Long approve4_id;
 }

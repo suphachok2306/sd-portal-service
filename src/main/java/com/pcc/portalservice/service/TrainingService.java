@@ -7,16 +7,6 @@ import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,6 +17,17 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -99,6 +100,7 @@ public class TrainingService {
           "UserId not found: " + createTrainingRequest.getUserId()
         )
       );
+
     User approve1 = userRepository
       .findById(createTrainingRequest.getApprove1_id())
       .orElseThrow(() ->
@@ -106,6 +108,27 @@ public class TrainingService {
           "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
         )
       );
+    User approve2 = userRepository
+            .findById(createTrainingRequest.getApprove2_id())
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "Approve2Id not found: " + createTrainingRequest.getApprove2_id()
+                    )
+            );
+    User approve3 = userRepository
+            .findById(createTrainingRequest.getApprove3_id())
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "Approve3Id not found: " + createTrainingRequest.getApprove3_id()
+                    )
+            );
+    User approve4 = userRepository
+            .findById(createTrainingRequest.getApprove4_id())
+            .orElseThrow(() ->
+                    new RuntimeException(
+                            "Approve4Id not found: " + createTrainingRequest.getApprove4_id()
+                    )
+            );
     Course course = courseRepository
       .findById(createTrainingRequest.getCourseId())
       .orElseThrow(() ->
@@ -114,12 +137,22 @@ public class TrainingService {
         )
       );
 
-    Role vicePresidentRole = approve1
-      .getRoles()
-      .stream()
-      .filter(role -> role.getRole().equals(Roles.VicePresident))
-      .findFirst()
-      .orElse(null);
+//    Role vicePresidentRole = approve1
+//      .getRoles()
+//      .stream()
+//      .filter(role -> role.getRole().equals(Roles.VicePresident))
+//      .findFirst()
+//      .orElse(null);
+
+    Role vicePresidentRole = null;
+    if (approve1 != null && approve1.getRoles() != null) {
+      vicePresidentRole = approve1
+              .getRoles()
+              .stream()
+              .filter(role -> Roles.VicePresident.equals(role.getRole()))
+              .findFirst()
+              .orElse(null);
+    }
 
     Date startDate = course.getStartDate();
     Date endDate = course.getEndDate();
@@ -139,12 +172,19 @@ public class TrainingService {
       .dateSave(new Date())
       .day(daysDifference)
       .courses(Arrays.asList(course))
+//            .user(user1)
+//            .user(user2)
+//            .user(user3)
+//            .user(user4)
       .budget(createTrainingRequest.getBudget())
       .action(createTrainingRequest.getAction())
       .actionDate(actionDateFormat)
       // .action(null)
       // .actionDate(null)
       .approve1(approve1)
+            .approve2(approve2)
+            .approve3(approve3)
+            .approve4(approve4)
       .build();
 
     if (training.getResult() == null) {
@@ -186,32 +226,54 @@ public class TrainingService {
       training.getStatus().add(status1);
     } else {
       User ap1 = userRepository
-        .findById(Long.valueOf(3))
+        .findById(Long.valueOf(16))
         .orElseThrow(() ->
           new RuntimeException(
             "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
           )
         );
-      Status status1 = Status
-        .builder()
-        .status(null)
-        .training(training)
-        .approveId(approve1)
-        .active(1)
-        .build();
+//      User ap1 = userRepository
+//              .findById(vicePresidentRole.getId())
+//              .orElseThrow(() ->
+//                      new RuntimeException(
+//                              "Approve1Id not found: " + createTrainingRequest.getApprove1_id()
+//                      )
+//              );
+//        User ap1 = userRepository
+//                .findById(vicePresidentRole.getId())
+//                .orElseThrow(() ->
+//                        new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id())
+//                );
+//        User ap1 = null;
+//        if (vicePresidentRole != null) {
+//            ap1 = userRepository
+//                    .findById(vicePresidentRole.getId())
+//                    .orElseThrow(() ->
+//                            new RuntimeException("Approve1Id not found: " + createTrainingRequest.getApprove1_id())
+//                    );
+//        }
 
-      Status status2 = Status
-        .builder()
-        .status(null)
-        .training(training)
-        .approveId(ap1)
-        .active(0)
-        .build();
 
-      statusRepository.save(status1);
-      statusRepository.save(status2);
-      training.getStatus().add(status1);
-      training.getStatus().add(status2);
+        Status status1 = Status
+                .builder()
+                .status(null)
+                .training(training)
+                .approveId(approve1)
+                .active(1)
+                .build();
+
+        Status status2 = Status
+                .builder()
+                .status(null)
+                .training(training)
+                .approveId(ap1)
+                .active(0)
+                .build();
+
+        statusRepository.save(status1);
+        statusRepository.save(status2);
+        training.getStatus().add(status1);
+        training.getStatus().add(status2);
     }
 
     Training savedTraining = trainingRepository.save(training);
@@ -828,11 +890,11 @@ public class TrainingService {
   }
 
   public String printReport(
-    Long trainId,
-    Long userId1,
-    Long userId2,
-    Long userId3,
-    Long userId4
+    Long trainId
+//    Long userId1,
+//    Long userId2,
+//    Long userId3,
+//    Long userId4
   ) {
     Training training_id = findByTrainingId(trainId);
     System.out.println(training_id.getUser().getCompanys());
@@ -850,22 +912,69 @@ public class TrainingService {
       Map<String, Object> params = new HashMap<>();
 
 
+//      if (userId1 != null) {
+//        User user_id1 = userRepository.findById(userId1).orElse(null);
+//        if (user_id1 != null) {
+//          params.put(
+//            "imageBase64User1",
+//            convertByteToBase64(user_id1.getSignature().getImage())
+//          );
+//          params.put("positionAp1", user_id1.getPosition().getPositionName());
+//          params.put(
+//            "date_saveUser1",
+//            training_id.getStatus().get(0).getApprovalDate()
+//          );
+//        }
+//      }
+          Long userId1 = training_id.getApprove1().getId();
+          Long userId2 = training_id.getApprove2().getId();
+          Long userId3 = training_id.getApprove4().getId();
+          Long userId4 = training_id.getApprove3().getId();
+
+//      Long userId1 = Optional.ofNullable(training_id.getApprove1())
+//              .map(approve1 -> approve1.getTraining())
+//              .map(training -> training.getApprove1())
+//              .map(user1 -> user1.getId())
+//              .orElse(null);
+//
+//      Long userId2 = Optional.ofNullable(training_id.getApprove2())
+//              .map(approve2 -> approve2.getTraining())
+//              .map(training -> training.getApprove2())
+//              .map(user2 -> user2.getId())
+//              .orElse(null);
+//
+//      Long userId3 = Optional.ofNullable(training_id.getApprove4())
+//              .map(approve3 -> approve3.getTraining())
+//              .map(training -> training.getApprove4())
+//              .map(user3 -> user4.getId())
+//              .orElse(null);
+//
+//      Long userId4 = Optional.ofNullable(training_id.getApprove3())
+//              .map(approve4 -> approve4.getTraining())
+//              .map(training -> training.getApprove3())
+//              .map(user4 -> user3.getId())
+//              .orElse(null);
+
+
       if (userId1 != null) {
-        User user_id1 = userRepository.findById(userId1).orElse(null);
+        //User user_id1 = userRepository.findById(userId1).orElse(null);
+        User user_id1 = training_id.getApprove1();
         if (user_id1 != null) {
           params.put(
-            "imageBase64User1",
-            convertByteToBase64(user_id1.getSignature().getImage())
+                  "imageBase64User1",
+                  convertByteToBase64(user_id1.getSignature().getImage())
           );
           params.put("positionAp1", user_id1.getPosition().getPositionName());
           params.put(
-            "date_saveUser1",
-            training_id.getStatus().get(0).getApprovalDate()
+                  "date_saveUser1",
+                  training_id.getStatus().get(0).getApprovalDate()
           );
         }
       }
+
       if (userId2 != null) {
-        User user_id2 = userRepository.findById(userId2).orElse(null);
+        //User user_id2 = userRepository.findById(userId2).orElse(null);
+        User user_id2 = training_id.getApprove2();
         if (user_id2 != null) {
           params.put(
             "imageBase64User2",
@@ -886,7 +995,8 @@ public class TrainingService {
         }
       }
       if (userId3 != null) {
-        User user_id3 = userRepository.findById(userId3).orElse(null);
+        //User user_id3 = userRepository.findById(userId3).orElse(null);
+        User user_id3 = training_id.getApprove3();
         if (user_id3 != null) {
           params.put(
             "imageBase64User3",
@@ -907,7 +1017,8 @@ public class TrainingService {
       }
 
       if (userId4 != null) {
-        User user_id4 = userRepository.findById(userId4).orElse(null);
+        //User user_id4 = userRepository.findById(userId4).orElse(null);
+        User user_id4 = training_id.getApprove4();
         if (user_id4 != null) {
           params.put(
             "imageBase64User4",

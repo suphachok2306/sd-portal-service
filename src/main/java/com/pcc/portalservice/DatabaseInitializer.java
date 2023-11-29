@@ -22,13 +22,13 @@ public class DatabaseInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    // insertDataIntoCourseTable();
+//    insertDataIntoCourseTable();
     insertDataIntoCompanyTable();
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-    // insertDataIntoUsersTable();
-    // insertBudgetTable();
+//    insertDataIntoUsersTable();
+//    insertBudgetTable();
   }
 
   private boolean isTableEmpty(String tableName) {

@@ -1,12 +1,11 @@
 package com.pcc.portalservice.model;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
+import java.util.*;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Builder
@@ -45,9 +44,37 @@ public class Training {
   @JoinColumn(name = "approve1_id")
   private User approve1;
 
+  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+  @ManyToOne
+  @JoinColumn(name = "approve2_id")
+  private User approve2;
+
+  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+  @ManyToOne
+  @JoinColumn(name = "approve3_id")
+  private User approve3;
+
+  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+  @ManyToOne
+  @JoinColumn(name = "approve4_id")
+  private User approve4;
+
   @OneToMany(mappedBy = "training")
   private List<Status> status = new ArrayList<>();
 
   @OneToMany(mappedBy = "training")
   private List<Result> result = new ArrayList<>();
+
+//  @ManyToMany
+//  @JoinTable(
+//          name = "training_signature",
+//          joinColumns = @JoinColumn(name = "user_id"),
+//          inverseJoinColumns = @JoinColumn(name = "signature_id")
+//  )
+//  private Set<User> users = new HashSet<>();
+
+//  @ManyToMany
+//  private List<User> users = new ArrayList<>();
+
+
 }
