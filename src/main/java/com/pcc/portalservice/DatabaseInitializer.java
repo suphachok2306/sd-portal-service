@@ -608,28 +608,28 @@ public class DatabaseInitializer implements CommandLineRunner {
 
       "('vicePresident1@pccth.com', 'ศักดิ์ณรงค์', 'แสงสง่าพงศ์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident2@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident3@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident4@pccth.com', 'วิชาญ', 'จุนทะเกาศลย์', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident5@pccth.com', 'ปิยนาถ', 'ฑีฆวาณิช', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident6@pccth.com', 'ชนัฐ', 'จาดทองคำ', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident7@pccth.com', 'ชิดพล', 'สมิตะลัมพะ', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       "('vicePresident8@pccth.com', 'ศิโรตม์', 'แสงเจริญ', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
       //Approver
 
       "('Approver1@pccth.com', 'เสาวภา', 'ภารเพิง', '" +
@@ -791,11 +791,15 @@ public class DatabaseInitializer implements CommandLineRunner {
       "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย')," +
       "('viceSD_BOI@pccth.com', 80033, 'viceSD(BOI)', 'viceSD(BOI)', '" +
       hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ," +
+      "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย') ," +
       
       "('approveSD_BOI@pccth.com', 70033, 'approveSD(BOI)', 'approveSD(BOI)', '" +
       hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') " ;
+      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
+    //President
+      "('President@pccth.com', 80324, 'President', 'President', '" +
+            hashpassword +
+            "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย') " ;
       
 
     if (isTableEmpty("public.users")) {
@@ -876,7 +880,7 @@ public class DatabaseInitializer implements CommandLineRunner {
         "(71,5)," +
         "(72,5)," +
         "(73,5),(74,4),"+
-        "(75,3),(76,4)"
+        "(75,3),(76,4),(77,6)"
       );
       jdbcTemplate.execute(
         "INSERT INTO public.user_departments (user_id, department_id) VALUES " +
