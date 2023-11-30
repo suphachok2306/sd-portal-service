@@ -235,18 +235,18 @@ public class TrainingController {
 
   @GetMapping("/Report")
   public String report(
-    @RequestParam Long trainId
-//    Long userId1,
-//    Long userId2,
-//    Long userId3,
-//    Long userId4
+    @RequestParam Long trainId,
+    @RequestParam Long userId1,
+    @RequestParam Long userId2,
+    @RequestParam Long userId3,
+    @RequestParam Long userId4
   ) {
     return trainingService.printReport(
-      trainId
-//      userId1,
-//      userId2,
-//      userId3,
-//      userId4
+      trainId,
+      userId1,
+      userId2,
+      userId3,
+      userId4
     );
   }
 

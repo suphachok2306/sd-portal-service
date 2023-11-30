@@ -17,7 +17,7 @@ public class CreateTrainingRequest {
   Long courseId;
   Float budget;
   Long approve1_id;
-  Long approve2_id;
-  Long approve3_id;
-  Long approve4_id;
+//  Long approve2_id;
+//  Long approve3_id;
+//  Long approve4_id;
 }

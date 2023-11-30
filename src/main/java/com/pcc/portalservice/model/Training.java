@@ -44,20 +44,20 @@ public class Training {
   @JoinColumn(name = "approve1_id")
   private User approve1;
 
-  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-  @ManyToOne
-  @JoinColumn(name = "approve2_id")
-  private User approve2;
-
-  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-  @ManyToOne
-  @JoinColumn(name = "approve3_id")
-  private User approve3;
-
-  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-  @ManyToOne
-  @JoinColumn(name = "approve4_id")
-  private User approve4;
+//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+//  @ManyToOne
+//  @JoinColumn(name = "approve2_id")
+//  private User approve2;
+//
+//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+//  @ManyToOne
+//  @JoinColumn(name = "approve3_id")
+//  private User approve3;
+//
+//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
+//  @ManyToOne
+//  @JoinColumn(name = "approve4_id")
+//  private User approve4;
 
   @OneToMany(mappedBy = "training")
   private List<Status> status = new ArrayList<>();
