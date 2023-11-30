@@ -634,7 +634,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
       "('Approver1@pccth.com', 'เสาวภา', 'ภารเพิง', '" +
       hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
+      "', '+1111111111',  17,  'เป็นพนักงานอยู่', 'นาย')," +
       "('Approver2@pccth.com', 'ณัฐวรรณ', 'ทนุบำรุงสาสน์', '" +
       hashpassword +
       "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
