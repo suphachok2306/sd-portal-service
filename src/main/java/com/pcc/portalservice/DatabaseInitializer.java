@@ -22,12 +22,12 @@ public class DatabaseInitializer implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-//    insertDataIntoCourseTable();
+    insertDataIntoCourseTable();
     insertDataIntoCompanyTable();
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-//    insertDataIntoUsersTable();
+    // insertDataIntoUsersTable();
 //    insertBudgetTable();
   }
 

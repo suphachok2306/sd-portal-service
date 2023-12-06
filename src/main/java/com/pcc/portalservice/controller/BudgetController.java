@@ -20,78 +20,62 @@ public class BudgetController {
 
   private final BudgetService budgetService;
 
-  @PostMapping("/createBudget")
-  public ResponseEntity<ApiResponse> createBudget(
-    @RequestBody CreateBudgetRequest createbudgetRequest
-  ) {
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    if (budgetService.isBudgetNull(createbudgetRequest)) {
-      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-      return ResponseEntity.badRequest().body(response);
-    }
-    try {
-      Budget budget = budgetService.create(createbudgetRequest);
-      data.setResult(budget);
-      response.setResponseMessage("ทำรายการเรียบร้อย");
-      response.setResponseData(data);
-      URI uri = URI.create(
-        ServletUriComponentsBuilder
-          .fromCurrentContextPath()
-          .path("/createBudget")
-          .toUriString()
-      );
-      return ResponseEntity.created(uri).body(response);
-    } catch (Exception e) {
-      response.setResponseMessage(e.getMessage());
-      return ResponseEntity.internalServerError().body(response);
-    }
-  }
+  // @PostMapping("/createBudget")
+  // public ResponseEntity<ApiResponse> createBudget(
+  //   @RequestBody CreateBudgetRequest createbudgetRequest
+  // ) {
+  //   ApiResponse response = new ApiResponse();
+  //   ResponseData data = new ResponseData();
+  //   if (budgetService.isBudgetNull(createbudgetRequest)) {
+  //     response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+  //     return ResponseEntity.badRequest().body(response);
+  //   }
+  //   try {
+  //     Budget budget = budgetService.create(createbudgetRequest);
+  //     data.setResult(budget);
+  //     response.setResponseMessage("ทำรายการเรียบร้อย");
+  //     response.setResponseData(data);
+  //     URI uri = URI.create(
+  //       ServletUriComponentsBuilder
+  //         .fromCurrentContextPath()
+  //         .path("/createBudget")
+  //         .toUriString()
+  //     );
+  //     return ResponseEntity.created(uri).body(response);
+  //   } catch (Exception e) {
+  //     response.setResponseMessage(e.getMessage());
+  //     return ResponseEntity.internalServerError().body(response);
+  //   }
+  // }
 
-  @DeleteMapping("/deleteBudgetById")
-  public ResponseEntity<ApiResponse> delete(@RequestParam Long budgetID) {
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    String budget = budgetService.deleteData(budgetID);
-    if (budget != null) {
-      data.setResult(budget);
-      response.setResponseMessage("ลบข้อมูลเรียบร้อย");
-      response.setResponseData(data);
-      return ResponseEntity.ok().body(response);
-    } else {
-      response.setResponseMessage("ไม่สามารถทำรายการได้");
-      return ResponseEntity.badRequest().body(response);
-    }
-  }
-
-  @PutMapping("/editBudget")
-  public ResponseEntity<ApiResponse> updateBudget(
-    @RequestBody CreateBudgetRequest createbudgetRequest,
-    @RequestParam Long budgetID
-  ) {
-    ApiResponse response = new ApiResponse();
-    ResponseData data = new ResponseData();
-    if (budgetService.isBudgetNull(createbudgetRequest)) {
-      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
-      return ResponseEntity.badRequest().body(response);
-    }
-    try {
-      Budget budget = budgetService.editBudget(createbudgetRequest, budgetID);
-      data.setResult(budget);
-      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
-      response.setResponseData(data);
-      URI uri = URI.create(
-        ServletUriComponentsBuilder
-          .fromCurrentContextPath()
-          .path("/editEmployee")
-          .toUriString()
-      );
-      return ResponseEntity.created(uri).body(response);
-    } catch (Exception e) {
-      response.setResponseMessage(e.getMessage());
-      return ResponseEntity.internalServerError().body(response);
-    }
-  }
+  // @PutMapping("/editBudget")
+  // public ResponseEntity<ApiResponse> updateBudget(
+  //   @RequestBody CreateBudgetRequest createbudgetRequest,
+  //   @RequestParam Long budgetID
+  // ) {
+  //   ApiResponse response = new ApiResponse();
+  //   ResponseData data = new ResponseData();
+  //   if (budgetService.isBudgetNull(createbudgetRequest)) {
+  //     response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+  //     return ResponseEntity.badRequest().body(response);
+  //   }
+  //   try {
+  //     Budget budget = budgetService.editBudget(createbudgetRequest, budgetID);
+  //     data.setResult(budget);
+  //     response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+  //     response.setResponseData(data);
+  //     URI uri = URI.create(
+  //       ServletUriComponentsBuilder
+  //         .fromCurrentContextPath()
+  //         .path("/editEmployee")
+  //         .toUriString()
+  //     );
+  //     return ResponseEntity.created(uri).body(response);
+  //   } catch (Exception e) {
+  //     response.setResponseMessage(e.getMessage());
+  //     return ResponseEntity.internalServerError().body(response);
+  //   }
+  // }
 
   @GetMapping("/findTotalBudget")
   public Object findTotal(
@@ -182,4 +166,37 @@ public class BudgetController {
 
     return resultList;
   }
+
+  @PostMapping("/createbudget")
+  public ResponseEntity<ApiResponse> createOrUpdateBudget(
+      @RequestBody CreateBudgetRequest createBudgetRequest){
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+
+    // Check if budget is null
+    if (budgetService.isBudgetNull(createBudgetRequest)) {
+      response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    try {
+      Budget budget = budgetService.saveOrUpdate(createBudgetRequest);
+      data.setResult(budget);
+      response.setResponseMessage("ทำรายการเรียบร้อย");
+      response.setResponseData(data);
+
+      URI uri = URI.create(
+          ServletUriComponentsBuilder
+              .fromCurrentContextPath()
+              .path("/api/budgets/budget")
+              .queryParam("budgetID", budget.getId())
+              .toUriString());
+
+      return ResponseEntity.created(uri).body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
+    }
+  }
+
 }

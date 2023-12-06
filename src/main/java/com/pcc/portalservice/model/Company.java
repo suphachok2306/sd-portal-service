@@ -21,11 +21,4 @@ public class Company {
 
   private String companyName;
 
-  @JsonIgnore
-  @ManyToOne()
-  private Sector sector;
-
-  @JsonIgnore
-  @ManyToOne()
-  private Budget budget;
 }
