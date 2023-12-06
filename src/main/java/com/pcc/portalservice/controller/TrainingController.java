@@ -1,9 +1,11 @@
 package com.pcc.portalservice.controller;
 
 import com.pcc.portalservice.model.Result;
+import com.pcc.portalservice.model.ResultGeneric9;
 import com.pcc.portalservice.model.Training;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
+import com.pcc.portalservice.requests.EditGeneric9Result;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import com.pcc.portalservice.response.ApiResponse;
@@ -236,10 +238,10 @@ public class TrainingController {
   @GetMapping("/Report")
   public String report(
     @RequestParam Long trainId,
-    @RequestParam Long userId1,
-    @RequestParam Long userId2,
-    @RequestParam Long userId3,
-    @RequestParam Long userId4
+    Long userId1,
+    Long userId2,
+    Long userId3,
+    Long userId4
   ) {
     return trainingService.printReport(
       trainId,
@@ -313,5 +315,33 @@ public class TrainingController {
   // public List<Map<String, Object>> findNextApprove() {
   //     return trainingService.findNextApprove();
   // }
+
+  @PostMapping("/editGeneric9")
+  public ResponseEntity<ApiResponse> editGeneric9(
+    @RequestParam Long Generic9id,
+    @RequestBody EditGeneric9Result editTraining
+  ) throws ParseException {
+    ApiResponse response = new ApiResponse();
+    ResponseData data = new ResponseData();
+    try {
+      ResultGeneric9 training = trainingService.editGeneric9(
+        Generic9id,
+        editTraining
+      );
+      data.setResult(training);
+      response.setResponseMessage("กรอกข้อมูลเรียบร้อย");
+      response.setResponseData(data);
+      URI uri = URI.create(
+        ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/editTraining")
+          .toUriString()
+      );
+      return ResponseEntity.created(uri).body(response);
+    } catch (Exception e) {
+      response.setResponseMessage(e.getMessage());
+      return ResponseEntity.internalServerError().body(response);
+    }
+  }
 
 }

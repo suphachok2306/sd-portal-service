@@ -7,6 +7,7 @@ import com.pcc.portalservice.model.enums.Roles;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import com.pcc.portalservice.repository.*;
 import com.pcc.portalservice.requests.CreateTrainingRequest;
+import com.pcc.portalservice.requests.EditGeneric9Result;
 import com.pcc.portalservice.requests.EditTrainingSection1Request;
 import com.pcc.portalservice.requests.EditTrainingSection2Request;
 import java.io.ByteArrayOutputStream;
@@ -43,6 +44,7 @@ public class TrainingService {
   private final DepartmentRepository departmentRepository;
   private final SectorRepository sectorRepository;
   private final PositionRepository positionRepository;
+  private final ResultGeneric9Repository resultGeneric9Repository;
 
   private final EntityManager entityManager;
 
@@ -161,14 +163,13 @@ public class TrainingService {
         )
       : null;
 
-      Optional<Sector> SectorOptional = sectorRepository.findById(
+    Optional<Sector> SectorOptional = sectorRepository.findById(
       findsectorByUserID(user.getId())
     );
 
     Sector sector = SectorOptional.get();
 
-
-     User vice = findVicebySector(sector.getSectorName()).get(0) != 0
+    User vice = findVicebySector(sector.getSectorName()).get(0) != 0
       ? userRepository
         .findById(findVicebySector(sector.getSectorName()).get(0))
         .orElseThrow(() ->
@@ -177,7 +178,6 @@ public class TrainingService {
           )
         )
       : null;
-
 
     Course course = courseRepository
       .findById(createTrainingRequest.getCourseId())
@@ -257,8 +257,11 @@ public class TrainingService {
 
     if (training != null && training.getResult() == null) {
       training.setResult(new ArrayList<>());
+      training.setResultGeneric9(new ArrayList<>());
     }
     Training savedTraining = trainingRepository.save(training);
+
+
     Result result = Result
       .builder()
       .training(training)
@@ -278,6 +281,19 @@ public class TrainingService {
     resultRepository.save(result);
     training.getResult().add(result);
 
+    ResultGeneric9 resultGeneric9 = ResultGeneric9
+    .builder()
+    .result1(null)
+    .result2(null)
+    .result3(null)
+    .result4(null)
+    .result5(null)
+    .training(training)
+    .build();
+    
+     resultGeneric9Repository.save(resultGeneric9);
+    training.getResultGeneric9().add(resultGeneric9);
+
     if (training != null && training.getStatus() == null) {
       training.setStatus(new ArrayList<>());
     }
@@ -294,16 +310,16 @@ public class TrainingService {
       statusRepository.save(status1);
       training.getStatus().add(status1);
       active = 0;
-      
+
       if (approve2 == null && approve3 == null) {
-         Status viceStatus = Status
-        .builder()
-        .status(null)
-        .training(training)
-        .approveId(vice)
-        .active(0)
-        .build();
-         statusRepository.save(viceStatus);
+        Status viceStatus = Status
+          .builder()
+          .status(null)
+          .training(training)
+          .approveId(vice)
+          .active(0)
+          .build();
+        statusRepository.save(viceStatus);
         training.getStatus().add(viceStatus);
         active = 0;
       }
@@ -320,14 +336,14 @@ public class TrainingService {
       statusRepository.save(status2);
       training.getStatus().add(status2);
       if (approve3 == null) {
-         Status viceStatus = Status
-        .builder()
-        .status(null)
-        .training(training)
-        .approveId(vice)
-        .active(0)
-        .build();
-         statusRepository.save(viceStatus);
+        Status viceStatus = Status
+          .builder()
+          .status(null)
+          .training(training)
+          .approveId(vice)
+          .active(0)
+          .build();
+        statusRepository.save(viceStatus);
         training.getStatus().add(viceStatus);
       }
       active = 0;
@@ -379,13 +395,46 @@ public class TrainingService {
       .orElseThrow(() ->
         new RuntimeException("UserId not found: " + editTraining.getUserId())
       );
-    User approve1_id = userRepository
-      .findById(editTraining.getApprove1_id())
-      .orElseThrow(() ->
-        new RuntimeException(
-          "Approve1Id not found: " + editTraining.getApprove1_id()
+    User approve1 = editTraining.getApprove1_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove1_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve1Id not found: " + editTraining.getApprove1_id()
+          )
         )
-      );
+      : null;
+
+    User approve2 = editTraining.getApprove2_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove2_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve2Id not found: " + editTraining.getApprove2_id()
+          )
+        )
+      : null;
+
+    User approve3 = editTraining.getApprove3_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove3_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve3Id not found: " + editTraining.getApprove3_id()
+          )
+        )
+      : null;
+
+    User approve4 = editTraining.getApprove4_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove4_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve4Id not found: " + editTraining.getApprove4_id()
+          )
+        )
+      : null;
+
     if (editTraining.getApprove1_id() != training_id.getApprove1().getId()) {
       changeApprover(editTraining, trainingId);
     }
@@ -398,7 +447,13 @@ public class TrainingService {
     training_id.getCourses().add(course_id);
     training_id.setAction(editTraining.getAction());
     training_id.setActionDate(actionDateFormat);
-    training_id.setApprove1(approve1_id);
+    if (editTraining.getApprove1_id() != 0) {
+      training_id.setApprove1(approve1);
+    } else if (editTraining.getApprove2_id() != 0) {
+      training_id.setApprove1(approve2);
+    } else if (editTraining.getApprove3_id() != 0) {
+      training_id.setApprove1(approve3);
+    }
     training_id.setBudget(editTraining.getBudget());
 
     Training updatedTraining = trainingRepository.save(training_id);
@@ -1855,67 +1910,142 @@ public class TrainingService {
       .setParameter("training_id", trainingId)
       .executeUpdate();
 
-    User approve1 = userRepository
-      .findById(editTraining.getApprove1_id())
+    User user = userRepository
+      .findById(editTraining.getUserId())
       .orElseThrow(() ->
-        new RuntimeException(
-          "Approve1Id not found: " + editTraining.getApprove1_id()
-        )
+        new RuntimeException("UserId not found: " + editTraining.getUserId())
       );
 
-    User approve3 = userRepository
-      .findById(Long.valueOf(3))
-      .orElseThrow(() ->
-        new RuntimeException(
-          "Approve1Id not found: " + editTraining.getApprove1_id()
+    User approve1 = editTraining.getApprove1_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove1_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve1Id not found: " + editTraining.getApprove1_id()
+          )
         )
-      );
+      : null;
 
-    Role vicePresidentRole = approve1
-      .getRoles()
-      .stream()
-      .filter(role -> role.getRole().equals(Roles.VicePresident))
-      .findFirst()
-      .orElse(null);
+    User approve2 = editTraining.getApprove2_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove2_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve2Id not found: " + editTraining.getApprove2_id()
+          )
+        )
+      : null;
+
+    User approve3 = editTraining.getApprove3_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove3_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve3Id not found: " + editTraining.getApprove3_id()
+          )
+        )
+      : null;
+
+    User approve4 = editTraining.getApprove4_id() != 0
+      ? userRepository
+        .findById(editTraining.getApprove4_id())
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Approve4Id not found: " + editTraining.getApprove4_id()
+          )
+        )
+      : null;
+
+    Optional<Sector> SectorOptional = sectorRepository.findById(
+      findsectorByUserID(user.getId())
+    );
+
+    Sector sector = SectorOptional.get();
+
+    User vice = findVicebySector(sector.getSectorName()).get(0) != 0
+      ? userRepository
+        .findById(findVicebySector(sector.getSectorName()).get(0))
+        .orElseThrow(() ->
+          new RuntimeException(
+            "Vice not found: " + findVicebySector(sector.getSectorName()).get(0)
+          )
+        )
+      : null;
 
     Training training_id = findByTrainingIdEdit(trainingId);
     if (training_id.getStatus() == null) {
       training_id.setStatus(new ArrayList<>());
     }
-    if (vicePresidentRole != null) {
+    int active = 1;
+
+    if (approve1 != null) {
       Status status1 = Status
         .builder()
-        .training(training_id)
         .status(null)
+        .training(training_id)
         .approveId(approve1)
-        .active(1)
+        .active(active)
         .build();
-
       statusRepository.save(status1);
+      active = 0;
 
-      training_id.getStatus().add(status1);
-    } else {
-      Status status1 = Status
-        .builder()
-        .status(null)
-        .training(training_id)
-        .approveId(approve1)
-        .active(1)
-        .build();
+      if (approve2 == null && approve3 == null) {
+        Status viceStatus = Status
+          .builder()
+          .status(null)
+          .training(training_id)
+          .approveId(vice)
+          .active(0)
+          .build();
+        statusRepository.save(viceStatus);
+        active = 0;
+      }
+    }
 
+    if (approve2 != null) {
       Status status2 = Status
         .builder()
         .status(null)
         .training(training_id)
-        .approveId(approve3)
-        .active(0)
+        .approveId(approve2)
+        .active(active)
         .build();
-
-      statusRepository.save(status1);
       statusRepository.save(status2);
+      if (approve3 == null) {
+        Status viceStatus = Status
+          .builder()
+          .status(null)
+          .training(training_id)
+          .approveId(vice)
+          .active(0)
+          .build();
+        statusRepository.save(viceStatus);
+      }
+      active = 0;
+    }
 
-      training_id.getStatus().add(status1);
-      training_id.getStatus().add(status2);
+    if (approve3 != null) {
+      Status status3 = Status
+        .builder()
+        .status(null)
+        .training(training_id)
+        .approveId(approve3)
+        .active(active)
+        .build();
+      statusRepository.save(status3);
+      active = 0;
+    }
+
+    if (approve4 != null) {
+      Status status4 = Status
+        .builder()
+        .status(null)
+        .training(training_id)
+        .approveId(approve4)
+        .active(active)
+        .build();
+      statusRepository.save(status4);
+      active = 0;
     }
   }
 
@@ -1929,5 +2059,23 @@ public class TrainingService {
       .createQuery(query)
       .getResultList();
     return trainingList.get(0);
+  }
+
+  public ResultGeneric9 editGeneric9(
+    Long gen9ID,
+    EditGeneric9Result editTraining
+  ) throws ParseException {
+    ResultGeneric9 result_id = resultGeneric9Repository
+      .findById(gen9ID)
+      .orElseThrow(() -> new RuntimeException("ResultId not found: " + gen9ID));
+
+    result_id.setResult1(editTraining.getResult1());
+    result_id.setResult2(editTraining.getResult2());
+    result_id.setResult3(editTraining.getResult3());
+    result_id.setResult4(editTraining.getResult4());
+    result_id.setResult5(editTraining.getResult5());
+
+    ResultGeneric9 updatedTraining = resultGeneric9Repository.save(result_id);
+    return updatedTraining;
   }
 }

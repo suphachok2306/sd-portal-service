@@ -17,5 +17,8 @@ public class EditTrainingSection1Request {
   String actionDate;
   Long courseId;
   Long approve1_id;
+  Long approve2_id;
+  Long approve3_id;
+  Long approve4_id;
   float budget;
 }

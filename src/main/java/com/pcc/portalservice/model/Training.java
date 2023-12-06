@@ -66,6 +66,12 @@ public class Training {
   @OneToMany(mappedBy = "training")
   private List<Result> result = new ArrayList<>();
 
+  @OneToMany(mappedBy = "training")
+  private List<ResultGeneric9> resultGeneric9 = new ArrayList<>();
+
+
+  
+
 //  @ManyToMany
 //  @JoinTable(
 //          name = "training_signature",
