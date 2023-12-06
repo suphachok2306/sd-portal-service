@@ -43,6 +43,7 @@ public class Training {
   @ManyToOne
   @JoinColumn(name = "approve1_id")
   private User approve1;
+  
 
 //  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
 //  @ManyToOne
