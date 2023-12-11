@@ -1328,12 +1328,10 @@ public class TrainingService {
       List<String> result5 = new ArrayList<>();
       String position = (String) userData.get("position");
       Long id = (Long) userData.get("user_id");
-      String name =
-        userData.get("title") +
-        " " +
-        userData.get("firstname") +
-        " " +
-        userData.get("lastname");
+      String title = userData.get("title").toString() ;
+      String firstname = userData.get("firstname").toString();
+      String lastname =   userData.get("lastname").toString();
+
 
       List<Map<String, Object>> courseList = (List<Map<String, Object>>) userData.get(
         "course"
@@ -1370,7 +1368,9 @@ public class TrainingService {
           result4,
           result5,
           position,
-          name,
+          title,
+          firstname,
+          lastname,
           id
         )
       );
@@ -1948,11 +1948,11 @@ public class TrainingService {
           .get("position")
           .get("id")
           .alias("position_id"),
-        trainingRootOutput.join("result").get("result1").alias("result1"),
-        trainingRootOutput.join("result").get("result2").alias("result2"),
-        trainingRootOutput.join("result").get("result3").alias("result3"),
-        trainingRootOutput.join("result").get("result4").alias("result4"),
-        trainingRootOutput.join("result").get("result5").alias("result5"),
+        trainingRootOutput.join("resultGeneric9").get("result1").alias("result1"),
+        trainingRootOutput.join("resultGeneric9").get("result2").alias("result2"),
+        trainingRootOutput.join("resultGeneric9").get("result3").alias("result3"),
+        trainingRootOutput.join("resultGeneric9").get("result4").alias("result4"),
+        trainingRootOutput.join("resultGeneric9").get("result5").alias("result5"),
         trainingRootOutput
           .join("courses")
           .get("courseName")
@@ -2006,11 +2006,19 @@ public class TrainingService {
         course.put("result3", row.get("result3"));
         course.put("result4", row.get("result4"));
         course.put("result5", row.get("result5"));
+        System.out.println(row.get("result1"));
+        System.out.println(row.get("result2"));
+        System.out.println(row.get("result3"));
+        System.out.println(row.get("result4"));
+        System.out.println(row.get("result5"));
+
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );
       }
+
       result.put("data", users);
+
 
       return result;
     } catch (ParseException e) {

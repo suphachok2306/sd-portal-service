@@ -8,7 +8,8 @@ public enum Roles implements GrantedAuthority {
   VicePresident,
   Personnel,
   User,
-  President;
+  President,
+  Manager;
 
   public String getAuthority() {
     return name();
