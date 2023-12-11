@@ -16,7 +16,7 @@ public class EditEmployeeRequest {
   String email;
 
   private List<Long> deptID;
-  private List<Long> companiesID;
+  private List<Long> companyID;
   private List<Long> sectorID;
   private List<String> roles;
 }

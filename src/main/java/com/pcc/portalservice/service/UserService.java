@@ -248,9 +248,11 @@ public class UserService {
       }
     }
 
-    if (!positionFound) {
-      throw new RuntimeException("Position not found in any department");
-    }
+    System.out.println(positionFound);
+
+   if (!positionFound) {
+     throw new RuntimeException("Position not found in any department");
+   }
 
     for (Long sectorID : editEmployeeRequest.getSectorID()) {
       Sector sector_id = sectorRepository.findById(sectorID).orElse(null);
@@ -259,7 +261,7 @@ public class UserService {
       }
     }
 
-    for (Long companyID : editEmployeeRequest.getCompaniesID()) {
+    for (Long companyID : editEmployeeRequest.getCompanyID()) {
       Company company_id = companyRepository.findById(companyID).orElse(null);
       if (company_id != null) {
         user.getCompanys().add(company_id);
