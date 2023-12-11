@@ -620,28 +620,15 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 2) {
-        if (approvedCount == 2) {
-          result_status = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
-        } else {
-          result_status = "รอประเมิน";
-        }
+      if (approvedCount == count) {
+        result_status = "อนุมัติ";
+      } else if (disapprovedCount >= 1) {
+        result_status = "ไม่อนุมัติ";
+      } else if (cancalapprovedCount >= 1) {
+        result_status = "ยกเลิก";
       } else {
-        if (approvedCount == 1) {
-          result_status = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
-        } else {
-          result_status = "รอประเมิน";
-        }
+        result_status = "รอประเมิน";
       }
-
       List<Status> statusListCopy = new ArrayList<>(training.getStatus());
       statusListCopy.sort(Comparator.comparing(Status::getId));
       training.setStatus(statusListCopy);
@@ -778,26 +765,14 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 2) {
-        if (approvedCount == 2) {
-          result_status = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
-        } else {
-          result_status = "รอประเมิน";
-        }
+      if (approvedCount == count) {
+        result_status = "อนุมัติ";
+      } else if (disapprovedCount >= 1) {
+        result_status = "ไม่อนุมัติ";
+      } else if (cancalapprovedCount >= 1) {
+        result_status = "ยกเลิก";
       } else {
-        if (approvedCount == 1) {
-          result_status = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          result_status = "ไม่อนุมัติ";
-        } else if (cancalapprovedCount >= 1) {
-          result_status = "ยกเลิก";
-        } else {
-          result_status = "รอประเมิน";
-        }
+        result_status = "รอประเมิน";
       }
 
       List<Status> statusListCopy = new ArrayList<>(uniqueStatusList);
@@ -860,26 +835,14 @@ public class TrainingService {
         count++;
       }
 
-      if (count == 2) {
-        if (approvedCount == 2) {
-          resultStatus = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          resultStatus = "ไม่อนุมัติ";
-        } else if (cancelApprovedCount >= 1) {
-          resultStatus = "ยกเลิก";
-        } else {
-          resultStatus = "รอประเมิน";
-        }
+      if (approvedCount == count) {
+        resultStatus = "อนุมัติ";
+      } else if (disapprovedCount >= 1) {
+        resultStatus = "ไม่อนุมัติ";
+      } else if (cancelApprovedCount >= 1) {
+        resultStatus = "ยกเลิก";
       } else {
-        if (approvedCount == 1) {
-          resultStatus = "อนุมัติ";
-        } else if (disapprovedCount >= 1) {
-          resultStatus = "ไม่อนุมัติ";
-        } else if (cancelApprovedCount >= 1) {
-          resultStatus = "ยกเลิก";
-        } else {
-          resultStatus = "รอประเมิน";
-        }
+        resultStatus = "รอประเมิน";
       }
 
       if (
