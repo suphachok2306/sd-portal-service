@@ -1251,6 +1251,7 @@ public class TrainingService {
       List<Float> course_prices = new ArrayList<>();
       List<String> course_priceProjects = new ArrayList<>();
       List<String> dates = new ArrayList<>();
+      List<String> course_hours = new ArrayList<>();
       Float sums = 0.0f;
 
       Long id = (Long) userData.get("user_id");
@@ -1273,12 +1274,18 @@ public class TrainingService {
             ? course.get("course_name").toString()
             : ""
         );
+        course_hours.add(
+                course.get("course_hour") != null
+                        ? course.get("course_hour").toString()
+                        : ""
+        );
         course_places.add(
           course.get("place") != null ? course.get("place").toString() : ""
         );
         course_prices.add(
           course.get("price") != null ? (float) course.get("price") : 0.0f
         );
+
         String startDate = course.get("start_date") != null
           ? course.get("start_date").toString()
           : "";
@@ -1321,12 +1328,14 @@ public class TrainingService {
       course_names.add("\t\t\t");
       course_places.add("\t\t\t รวม");
       course_prices.add(sums);
+      course_hours.add("\t\t\t");
       dates.add("\t\t\t");
       course_priceProjects.add("\t\t\t");
 
       coll.add(
         new BeanHistroy(
           course_names,
+          course_hours,
           course_places,
           course_prices,
           course_priceProjects,
@@ -1354,8 +1363,6 @@ public class TrainingService {
       List<String> result3 = new ArrayList<>();
       List<String> result4 = new ArrayList<>();
       List<String> result5 = new ArrayList<>();
-      List<String> result6 = new ArrayList<>();
-      List<String> result7 = new ArrayList<>();
       String position = (String) userData.get("position");
       Long id = (Long) userData.get("user_id");
       String name =
@@ -1390,12 +1397,6 @@ public class TrainingService {
         result5.add(
           course.get("result5") != null ? (String) course.get("result5") : " "
         );
-        result6.add(
-          course.get("result6") != null ? (String) course.get("result6") : " "
-        );
-        result7.add(
-          course.get("result7") != null ? (String) course.get("result7") : " "
-        );
       }
       coll.add(
         new BeanGeneric9(
@@ -1405,8 +1406,6 @@ public class TrainingService {
           result3,
           result4,
           result5,
-          result6,
-          result7,
           position,
           name,
           id
@@ -1657,7 +1656,8 @@ public class TrainingService {
         trainingRootOutput.join("courses").get("price").alias("price"),
         trainingRootOutput.join("courses").get("startDate").alias("start_date"),
         trainingRootOutput.join("courses").get("endDate").alias("end_date"),
-        trainingRootOutput
+              trainingRootOutput.join("courses").get("hours").alias("hours"),
+              trainingRootOutput
           .join("courses")
           .get("priceProject")
           .alias("priceProject")
@@ -1711,6 +1711,7 @@ public class TrainingService {
         course.put("start_date", row.get("start_date"));
         course.put("end_date", row.get("end_date"));
         course.put("priceProject", row.get("priceProject"));
+        course.put("course_hour",row.get("hours"));
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );
@@ -1812,6 +1813,7 @@ public class TrainingService {
               trainingRootOutput.join("courses").get("price").alias("price"),
               trainingRootOutput.join("courses").get("startDate").alias("start_date"),
               trainingRootOutput.join("courses").get("endDate").alias("end_date"),
+              trainingRootOutput.join("courses").get("hours").alias("hours"),
               trainingRootOutput
                       .join("courses")
                       .get("priceProject")
@@ -1866,6 +1868,7 @@ public class TrainingService {
         course.put("start_date", row.get("start_date"));
         course.put("end_date", row.get("end_date"));
         course.put("priceProject", row.get("priceProject"));
+        course.put("course_hour",row.get("hours"));
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
                 course
         );
@@ -1987,8 +1990,6 @@ public class TrainingService {
         trainingRootOutput.join("result").get("result3").alias("result3"),
         trainingRootOutput.join("result").get("result4").alias("result4"),
         trainingRootOutput.join("result").get("result5").alias("result5"),
-        trainingRootOutput.join("result").get("result6").alias("result6"),
-        trainingRootOutput.join("result").get("result7").alias("result7"),
         trainingRootOutput
           .join("courses")
           .get("courseName")
@@ -2042,8 +2043,6 @@ public class TrainingService {
         course.put("result3", row.get("result3"));
         course.put("result4", row.get("result4"));
         course.put("result5", row.get("result5"));
-        course.put("result6", row.get("result6"));
-        course.put("result7", row.get("result7"));
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );

@@ -33,11 +33,18 @@
 		</queryString>
 		<field name="name" class="java.lang.String"/>
 	</subDataset>
+	<subDataset name="Dataset8" uuid="161b2e1b-0de8-4165-bf49-0a3d0acf7fea">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<field name="course_hour" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+	</subDataset>
 	<parameter name="name_course" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long"/>
 	<field name="course_names" class="java.util.Collection"/>
 	<field name="course_prices" class="java.util.Collection"/>
 	<field name="course_places" class="java.util.Collection"/>
+	<field name="course_hours" class="java.util.Collection"/>
 	<field name="priceProjects" class="java.util.Collection"/>
 	<field name="dates" class="java.util.Collection"/>
 	<field name="sums" class="java.lang.Float"/>
@@ -144,6 +151,15 @@
 				</textElement>
 				<text><![CDATA[จำนวนชั่วโมง]]></text>
 			</staticText>
+			<componentElement>
+				<reportElement x="242" y="74" width="100" height="30" uuid="526b465b-3313-4e53-874d-5a4a4d25228b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="Dataset8" uuid="001cc314-9a14-4bed-b2ca-239a0411de31">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="100"/>
+				</jr:list>
+			</componentElement>
 		</band>
 	</columnHeader>
 	<detail>
@@ -323,8 +339,8 @@
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="dataset6" uuid="3fbb4361-5d39-4ebd-a50a-37a281a6678a">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{dates})]]></dataSourceExpression>
+					<datasetRun subDataset="Dataset8" uuid="3fbb4361-5d39-4ebd-a50a-37a281a6678a">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{course_hours})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="60" width="60">
 						<textField>
@@ -343,7 +359,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Top">
 								<font fontName="THSarabunNew" size="12"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{course_hour}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
