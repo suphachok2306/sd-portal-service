@@ -1,9 +1,8 @@
-﻿package com.pcc.portalservice.model;
+package com.pcc.portalservice.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Date;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

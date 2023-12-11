@@ -173,7 +173,6 @@ public class BudgetController {
     ApiResponse response = new ApiResponse();
     ResponseData data = new ResponseData();
 
-    // Check if budget is null
     if (budgetService.isBudgetNull(createBudgetRequest)) {
       response.setResponseMessage("ไม่สามารถบันทึกข้อมูลลงฐานข้อมูลได้");
       return ResponseEntity.badRequest().body(response);

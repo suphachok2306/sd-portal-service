@@ -35,28 +35,29 @@ public class BudgetService {
   private final EntityManager entityManager;
 
   public Budget saveOrUpdate(CreateBudgetRequest createBudgetRequest) {
-    Long department_Id = createBudgetRequest.getDepartment_Id();
-    String year = createBudgetRequest.getYear();
-    Company company = companyRepository
+    try {
+      Long department_Id = createBudgetRequest.getDepartment_Id();
+      String year = createBudgetRequest.getYear();
+      Company company = companyRepository
         .findById(createBudgetRequest.getCompany_Id())
         .orElseThrow(() ->
           new RuntimeException(
             "companyName not found: " + createBudgetRequest.getCompany_Id()
           )
         );
-    Department department = departmentRepository
-      .findById(department_Id)
-      .orElseThrow(() ->
-        new RuntimeException("departmentId not found: " + department_Id)
+      Department department = departmentRepository
+        .findById(department_Id)
+        .orElseThrow(() ->
+          new RuntimeException("departmentId not found: " + department_Id)
+        );
+
+      Budget existingBudget = budgetRepository.findByYearAndDepartment(
+        year,
+        department
       );
 
-    Budget existingBudget = budgetRepository.findByYearAndDepartment(
-      year,
-      department
-    );
-
-    Budget budget;
-    List<Float> trainingIds = getTrainingIds(year, department_Id, "สอบ");
+      Budget budget;
+      List<Float> trainingIds = getTrainingIds(year, department_Id, "สอบ");
       List<Float> trainingIdsTrain = getTrainingIds(
         year,
         department_Id,
@@ -67,8 +68,7 @@ public class BudgetService {
         "อบรม",
         trainingIdsTrain
       );
-    if (existingBudget == null) {
-
+      if (existingBudget == null) {
         budget = new Budget();
         budget.setDepartment(department);
         budget.setCompany(company);
@@ -82,33 +82,43 @@ public class BudgetService {
           )
         );
         return budgetRepository.save(budget);
-    } else {
-      budget = existingBudget;
-      if (
-        createBudgetRequest.getBudgetCer() - (
-          resultListBudgetCer.get(0) != null ? (Double) resultListBudgetCer.get(0) : 0
-        ) >=
-        0 &&
-        createBudgetRequest.getBudgetTraining() -
-         (
-          resultListBudgetTraining.get(0) != null
-            ? (Double)resultListBudgetTraining.get(0)
-            : 0
-        ) >=
-        0
-      ) {
-        budget.setBudgetCer(createBudgetRequest.getBudgetCer());
-        budget.setBudgetTraining(createBudgetRequest.getBudgetTraining());
-        budget.setTotal_exp(
-          totalExp(
-            createBudgetRequest.getBudgetCer(),
-            createBudgetRequest.getBudgetTraining()
-          )
-        );
-        return budgetRepository.save(budget);
       } else {
-        throw new RuntimeException("งบที่อัพเดตมีค่าน้อยกว่าที่ใช้ไปแล้ว");
+        budget = existingBudget;
+        if (
+          createBudgetRequest.getBudgetCer() -
+          (
+            (
+              resultListBudgetCer.get(0) != null
+                ? ((Double) resultListBudgetCer.get(0)).doubleValue()
+                : 0
+            )
+          ) >=
+          0 &&
+          createBudgetRequest.getBudgetTraining() -
+          (
+            (
+              resultListBudgetTraining.get(0) != null
+                ? ((Double) resultListBudgetTraining.get(0)).doubleValue()
+                : 0
+            )
+          ) >=
+          0
+        ) {
+          budget.setBudgetCer(createBudgetRequest.getBudgetCer());
+          budget.setBudgetTraining(createBudgetRequest.getBudgetTraining());
+          budget.setTotal_exp(
+            totalExp(
+              createBudgetRequest.getBudgetCer(),
+              createBudgetRequest.getBudgetTraining()
+            )
+          );
+          return budgetRepository.save(budget);
+        } else {
+          throw new RuntimeException("งบที่อัพเดตมีค่าน้อยกว่าที่ใช้ไปแล้ว");
+        }
       }
+    } catch (Exception e) {
+      throw new RuntimeException("ไม่มีงบในระบบ", e);
     }
   }
 
@@ -317,9 +327,8 @@ public class BudgetService {
 
       return result;
     } catch (Exception e) {
-      System.out.println(e);
+        throw new RuntimeException("ไม่มีงบในระบบ", e);
     }
-    return result;
   }
 
   public List<LinkedHashMap<String, Object>> find_budget(

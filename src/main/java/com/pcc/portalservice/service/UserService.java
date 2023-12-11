@@ -266,6 +266,20 @@ public class UserService {
       }
     }
 
+    for (String RoleString : editEmployeeRequest.getRoles()) {
+      Roles roleEnum = null;
+      try {
+        roleEnum = Roles.valueOf(RoleString);
+      } catch (IllegalArgumentException e) {
+        throw e;
+      }
+
+      Role role = roleRepository.findByRole(roleEnum).orElse(null);
+      if (role != null && !user.getRoles().contains(role)) {
+        user.getRoles().add(role);
+      }
+    }
+
     return userRepository.save(user);
   }
 

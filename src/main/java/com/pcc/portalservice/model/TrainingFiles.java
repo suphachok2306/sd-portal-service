@@ -1,4 +1,4 @@
-﻿package com.pcc.portalservice.model;
+package com.pcc.portalservice.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 

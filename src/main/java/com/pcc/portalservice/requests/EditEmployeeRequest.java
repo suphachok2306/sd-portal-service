@@ -18,4 +18,5 @@ public class EditEmployeeRequest {
   private List<Long> deptID;
   private List<Long> companiesID;
   private List<Long> sectorID;
+  private List<String> roles;
 }
