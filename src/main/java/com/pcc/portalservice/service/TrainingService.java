@@ -1421,6 +1421,44 @@ public class TrainingService {
       }
       return null;
     }
+    else if (deptID == null){
+      try {
+        String spec = "report/histroy-training_noDept.jrxml";
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(
+                "startdate",
+                new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+                        .format(new SimpleDateFormat("yyyy-MM-dd").parse(startDate))
+        );
+        params.put(
+                "enddate",
+                new SimpleDateFormat("dd/MM/yyyy", new Locale("TH", "th"))
+                        .format(new SimpleDateFormat("yyyy-MM-dd").parse(endDate))
+        );
+
+        InputStream reportInput =
+                UserService.class.getClassLoader().getResourceAsStream(spec);
+        JasperReport jasperReport = JasperCompileManager.compileReport(
+                reportInput
+        );
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+                jasperReport,
+                params,
+                getDataSource(ht)
+        );
+        byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+        List<?> dataList = (List<?>) ht.get("data");
+
+        if (dataList != null && !dataList.isEmpty()) {
+          return Base64.encodeBase64String(bytes);
+        } else {
+          return "ไม่มีข้อมูล";
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return null;
+    }
     else{
       try {
         String spec = "report/histroy-training.jrxml";
