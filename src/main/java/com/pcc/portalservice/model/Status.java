@@ -37,4 +37,6 @@ public class Status {
   @JsonIgnore
   @JoinColumn(name = "training_id")
   private Training training;
+
+  private int indexOfSignature;
 }

@@ -27,7 +27,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-    // insertDataIntoUsersTable();
+//     insertDataIntoUsersTable();
 //    insertBudgetTable();
   }
 

@@ -21,6 +21,7 @@ public class Department {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+
   private String deptName;
   private String deptCode;
 
@@ -32,8 +33,11 @@ public class Department {
   @JsonIgnore
   private List<User> users = new ArrayList<>();
 
+
   @ManyToOne
   @JoinColumn(name = "sector_id")
   @JsonIgnore
   private Sector sector;
+
+
 }

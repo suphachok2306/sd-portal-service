@@ -261,7 +261,6 @@ public class TrainingService {
     }
     Training savedTraining = trainingRepository.save(training);
 
-
     Result result = Result
       .builder()
       .training(training)
@@ -282,16 +281,16 @@ public class TrainingService {
     training.getResult().add(result);
 
     ResultGeneric9 resultGeneric9 = ResultGeneric9
-    .builder()
-    .result1(null)
-    .result2(null)
-    .result3(null)
-    .result4(null)
-    .result5(null)
-    .training(training)
-    .build();
-    
-     resultGeneric9Repository.save(resultGeneric9);
+      .builder()
+      .result1(null)
+      .result2(null)
+      .result3(null)
+      .result4(null)
+      .result5(null)
+      .training(training)
+      .build();
+
+    resultGeneric9Repository.save(resultGeneric9);
     training.getResultGeneric9().add(resultGeneric9);
 
     if (training != null && training.getStatus() == null) {
@@ -303,6 +302,7 @@ public class TrainingService {
       Status status1 = Status
         .builder()
         .status(null)
+        .indexOfSignature(1)
         .training(training)
         .approveId(approve1)
         .active(active)
@@ -314,6 +314,7 @@ public class TrainingService {
       if (approve2 == null && approve3 == null) {
         Status viceStatus = Status
           .builder()
+          .indexOfSignature(3)
           .status(null)
           .training(training)
           .approveId(vice)
@@ -329,6 +330,7 @@ public class TrainingService {
       Status status2 = Status
         .builder()
         .status(null)
+        .indexOfSignature(2)
         .training(training)
         .approveId(approve2)
         .active(active)
@@ -339,6 +341,7 @@ public class TrainingService {
         Status viceStatus = Status
           .builder()
           .status(null)
+          .indexOfSignature(3)
           .training(training)
           .approveId(vice)
           .active(0)
@@ -356,6 +359,7 @@ public class TrainingService {
         .training(training)
         .approveId(approve3)
         .active(active)
+        .indexOfSignature(3)
         .build();
       statusRepository.save(status3);
       training.getStatus().add(status3);
@@ -369,10 +373,10 @@ public class TrainingService {
         .training(training)
         .approveId(approve4)
         .active(active)
+        .indexOfSignature(4)
         .build();
       statusRepository.save(status4);
       training.getStatus().add(status4);
-      active = 0;
     }
     return savedTraining;
   }
@@ -382,6 +386,7 @@ public class TrainingService {
     EditTrainingSection1Request editTraining
   ) throws ParseException {
     Training training_id = findByTrainingId(trainingId);
+
 
     Course course_id = courseRepository
       .findById(editTraining.getCourseId())
@@ -435,9 +440,9 @@ public class TrainingService {
         )
       : null;
 
-    if (editTraining.getApprove1_id() != training_id.getApprove1().getId()) {
-      changeApprover(editTraining, trainingId);
-    }
+
+    changeApprover(editTraining, trainingId);
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date actionDateFormat = dateFormat.parse(editTraining.getActionDate());
 
@@ -1981,6 +1986,7 @@ public class TrainingService {
     if (approve1 != null) {
       Status status1 = Status
         .builder()
+        .indexOfSignature(1)
         .status(null)
         .training(training_id)
         .approveId(approve1)
@@ -1993,6 +1999,7 @@ public class TrainingService {
         Status viceStatus = Status
           .builder()
           .status(null)
+          .indexOfSignature(3)
           .training(training_id)
           .approveId(vice)
           .active(0)
@@ -2005,6 +2012,7 @@ public class TrainingService {
     if (approve2 != null) {
       Status status2 = Status
         .builder()
+        .indexOfSignature(2)
         .status(null)
         .training(training_id)
         .approveId(approve2)
@@ -2014,6 +2022,7 @@ public class TrainingService {
       if (approve3 == null) {
         Status viceStatus = Status
           .builder()
+          .indexOfSignature(3)
           .status(null)
           .training(training_id)
           .approveId(vice)
@@ -2027,6 +2036,7 @@ public class TrainingService {
     if (approve3 != null) {
       Status status3 = Status
         .builder()
+        .indexOfSignature(3)
         .status(null)
         .training(training_id)
         .approveId(approve3)
@@ -2039,13 +2049,13 @@ public class TrainingService {
     if (approve4 != null) {
       Status status4 = Status
         .builder()
+        .indexOfSignature(4)
         .status(null)
         .training(training_id)
         .approveId(approve4)
         .active(active)
         .build();
       statusRepository.save(status4);
-      active = 0;
     }
   }
 
