@@ -276,6 +276,22 @@ public class TrainingController {
     return trainingService.HistoryTraining(startDate, endDate, deptID);
   }
 
+  @GetMapping("/HistoryTrainingByCourse")
+  public LinkedHashMap<String, Object> HistoryTraining(
+          @RequestParam Long course_id
+  ) {
+    return trainingService.HistoryTrainingByCourse(course_id);
+  }
+
+  @GetMapping("/ReportHistoryTrainingByCourse")
+  public String reportHistoryTrainingByCourse(
+          @RequestParam Long course_id
+  ) throws Exception {
+    return trainingService.printReportHistoryTrainingByCourse(
+            course_id
+    );
+  }
+
   @GetMapping("/Generic9")
   public LinkedHashMap<String, Object> generic9(
     @RequestParam String startDate,

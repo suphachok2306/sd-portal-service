@@ -172,6 +172,10 @@ public class UserController {
     );
   }
 
+  @GetMapping("/findAll")
+  public List<User> getAll() {
+    return userRepository.findAll();
+  }
   @GetMapping("/findAllEmployee")
   public List<User> getAllEmployee() {
     return userService.findAllEmployee();
