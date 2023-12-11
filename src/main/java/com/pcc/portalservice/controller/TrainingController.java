@@ -254,43 +254,30 @@ public class TrainingController {
 
   @GetMapping("/ReportHistoryTraining")
   public String reportHistoryTraining(
-    @RequestParam String startDate,
-    @RequestParam String endDate,
-    @RequestParam Long deptID,
-    @RequestParam Long sectorID
+          @RequestParam(required = false)String startDate,
+          @RequestParam(required = false)String endDate,
+          @RequestParam(required = false)Long deptID,
+          @RequestParam(required = false)Long courseID
   ) throws Exception {
     return trainingService.printReportHistoryTraining(
       startDate,
       endDate,
       deptID,
-      sectorID
+      courseID
     );
   }
 
   @GetMapping("/HistoryTraining")
   public LinkedHashMap<String, Object> HistoryTraining(
-    @RequestParam String startDate,
-    @RequestParam String endDate,
-    @RequestParam Long deptID
+          @RequestParam(required = false)String startDate,
+          @RequestParam(required = false)String endDate,
+          @RequestParam(required = false)Long deptID,
+          @RequestParam(required = false)Long courseID
   ) {
-    return trainingService.HistoryTraining(startDate, endDate, deptID);
+    return trainingService.HistoryTraining(startDate, endDate, deptID,courseID);
   }
 
-  @GetMapping("/HistoryTrainingByCourse")
-  public LinkedHashMap<String, Object> HistoryTraining(
-          @RequestParam Long course_id
-  ) {
-    return trainingService.HistoryTrainingByCourse(course_id);
-  }
 
-  @GetMapping("/ReportHistoryTrainingByCourse")
-  public String reportHistoryTrainingByCourse(
-          @RequestParam Long course_id
-  ) throws Exception {
-    return trainingService.printReportHistoryTrainingByCourse(
-            course_id
-    );
-  }
 
   @GetMapping("/Generic9")
   public LinkedHashMap<String, Object> generic9(
