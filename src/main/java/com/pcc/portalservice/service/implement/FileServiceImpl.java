@@ -55,7 +55,7 @@ public class FileServiceImpl extends FileService {
                     .build();
             TrainingFiles trainingFiles = fileRepository.save(file);
             result.put("responseMessage","อัพไฟล์เรียบร้อย");
-            result.put("ID Files = ",trainingFiles.getId());
+            result.put("ID",trainingFiles.getId());
             return result;
         } catch (Exception e) {
             throw new RuntimeException("Fail to upload");
