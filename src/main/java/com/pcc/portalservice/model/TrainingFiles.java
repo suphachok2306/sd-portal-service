@@ -3,7 +3,10 @@ package com.pcc.portalservice.model;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,20 +18,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "TrainingFiles")
+@Table(name = "trainingFiles")
 public class TrainingFiles {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "training_id")
   @JsonIgnore
-  private Training training;
+  private String fileType;
+  @JsonIgnore
+  private String filePath;
+  private String fileName;
 
-  private String type;
-  private String path;
-
+  @ManyToMany(mappedBy = "trainingFiles")
+  @JsonIgnore
+  private List<Training> training = new ArrayList<>();
   
 }

@@ -45,20 +45,6 @@ public class Training {
   private User approve1;
   
 
-//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-//  @ManyToOne
-//  @JoinColumn(name = "approve2_id")
-//  private User approve2;
-//
-//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-//  @ManyToOne
-//  @JoinColumn(name = "approve3_id")
-//  private User approve3;
-//
-//  @ToString.Exclude //ใส่มาแก้ loop .hashcode()
-//  @ManyToOne
-//  @JoinColumn(name = "approve4_id")
-//  private User approve4;
 
   @OneToMany(mappedBy = "training")
   private List<Status> status = new ArrayList<>();
@@ -69,19 +55,8 @@ public class Training {
   @OneToMany(mappedBy = "training")
   private List<ResultGeneric9> resultGeneric9 = new ArrayList<>();
 
-
-  
-
-//  @ManyToMany
-//  @JoinTable(
-//          name = "training_signature",
-//          joinColumns = @JoinColumn(name = "user_id"),
-//          inverseJoinColumns = @JoinColumn(name = "signature_id")
-//  )
-//  private Set<User> users = new HashSet<>();
-
-//  @ManyToMany
-//  private List<User> users = new ArrayList<>();
+  @ManyToMany(fetch = FetchType.EAGER)
+  private Set<TrainingFiles> trainingFiles = new HashSet<>();
 
 
 }

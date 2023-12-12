@@ -3,6 +3,8 @@ package com.pcc.portalservice.requests;
 import com.pcc.portalservice.model.User;
 import com.pcc.portalservice.model.enums.StatusApprove;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,4 +23,5 @@ public class EditTrainingSection1Request {
   Long approve3_id;
   Long approve4_id;
   float budget;
+  List<Long> fileID;
 }

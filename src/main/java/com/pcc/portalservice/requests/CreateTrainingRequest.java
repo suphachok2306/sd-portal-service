@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Data
@@ -20,4 +21,7 @@ public class CreateTrainingRequest {
   Long approve2_id;
   Long approve3_id;
   Long approve4_id;
+  List<Long> fileID;
+
+
 }

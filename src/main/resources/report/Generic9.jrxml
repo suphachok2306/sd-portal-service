@@ -260,8 +260,7 @@
 							<textElement textAlignment="Center" verticalAlignment="Middle">
 								<font fontName="THSarabunNew" size="12"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result1}.equals("1") ? "น้อย" : $F{result1}.equals("2") ? "ปานกลาง" : $F{result1}.equals("3") ? "มาก" : ""
-]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result1}.equals("1") ? "ปรับปรุง" : $F{result1}.equals("2") ? "พอใช้" : $F{result1}.equals("3") ? "ดีมาก" : ""]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -289,8 +288,7 @@
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result2}.equals("1") ? "น้อย" : $F{result2}.equals("2") ? "ปานกลาง" : $F{result2}.equals("3") ? "มาก" : ""
-]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result2}.equals("1") ? "ปรับปรุง" : $F{result2}.equals("2") ? "พอใช้" : $F{result2}.equals("3") ? "ดีมาก" : ""]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -317,8 +315,7 @@
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result3}.equals("1") ? "น้อย" : $F{result3}.equals("2") ? "ปานกลาง" : $F{result3}.equals("3") ? "มาก" : ""
-]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result3}.equals("1") ? "ปรับปรุง" : $F{result3}.equals("2") ? "พอใช้" : $F{result3}.equals("3") ? "ดีมาก" : ""]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -345,8 +342,7 @@
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result4}.equals("1") ? "น้อย" : $F{result4}.equals("2") ? "ปานกลาง" : $F{result4}.equals("3") ? "มาก" : ""
-]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result4}.equals("1") ? "ปรับปรุง" : $F{result4}.equals("2") ? "พอใช้" : $F{result4}.equals("3") ? "ดีมาก" : ""]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
@@ -373,8 +369,7 @@
 								<font fontName="THSarabunNew" size="12"/>
 								<paragraph leftIndent="10"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{result5}.equals("1") ? "น้อย" : $F{result5}.equals("2") ? "ปานกลาง" : $F{result5}.equals("3") ? "มาก" : ""
-]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{result5}.equals("1") ? "ปรับปรุง" : $F{result5}.equals("2") ? "พอใช้" : $F{result5}.equals("3") ? "ดีมาก" : ""]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>

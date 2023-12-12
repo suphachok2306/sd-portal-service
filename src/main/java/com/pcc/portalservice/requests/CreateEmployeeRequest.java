@@ -14,8 +14,8 @@ public class CreateEmployeeRequest {
   String lastname;
   String positionName;
   String email;
-  private List<Long> deptID;
-  private List<Long> companyID;
-  private List<Long> sectorID;
-  private List<String> roles;
+  List<Long> deptID;
+  List<Long> companyID;
+  List<Long> sectorID;
+  List<String> roles;
 }
