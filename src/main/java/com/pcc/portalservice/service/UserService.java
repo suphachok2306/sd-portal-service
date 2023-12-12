@@ -219,11 +219,14 @@ public class UserService {
     user.setSectors(new HashSet<>());
     user.setCompanys(new HashSet<>());
     user.setDepartments(new HashSet<>());
+    user.setRoles(new HashSet<>());
+
+    userRepository.save(user);
 
     boolean positionFound = false;
 
     for (Long i : editEmployeeRequest.getDeptID()) {
-      try {
+
         Department department_id = departmentRepository
           .findById(i)
           .orElse(null);
@@ -241,14 +244,10 @@ public class UserService {
           if (position != null) {
             user.setPosition(position);
             positionFound = true;
-          }
+
         }
-      } catch (RuntimeException e) {
-        continue;
       }
     }
-
-    System.out.println(positionFound);
 
    if (!positionFound) {
      throw new RuntimeException("Position not found in any department");
