@@ -123,7 +123,7 @@ public class TrainingService {
           "UserId not found: " + createTrainingRequest.getUserId()
         )
       );
-
+    
     User approve1 = createTrainingRequest.getApprove1_id() != 0
       ? userRepository
         .findById(createTrainingRequest.getApprove1_id())
@@ -133,7 +133,6 @@ public class TrainingService {
           )
         )
       : null;
-
     User approve2 = createTrainingRequest.getApprove2_id() != 0
       ? userRepository
         .findById(createTrainingRequest.getApprove2_id())
@@ -143,7 +142,6 @@ public class TrainingService {
           )
         )
       : null;
-
     User approve3 = createTrainingRequest.getApprove3_id() != 0
       ? userRepository
         .findById(createTrainingRequest.getApprove3_id())
@@ -153,7 +151,6 @@ public class TrainingService {
           )
         )
       : null;
-
     User approve4 = createTrainingRequest.getApprove4_id() != 0
       ? userRepository
         .findById(createTrainingRequest.getApprove4_id())
@@ -165,9 +162,8 @@ public class TrainingService {
       : null;
 
     Optional<Sector> SectorOptional = sectorRepository.findById(
-      findsectorByUserID(user.getId())
+      user.getSector().getId()
     );
-
     Sector sector = SectorOptional.get();
 
     User vice = findVicebySector(sector.getSectorName()).get(0) != 0

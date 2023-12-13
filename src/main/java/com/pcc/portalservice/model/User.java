@@ -58,6 +58,14 @@ public class User {
   @JsonIgnore
   private Signature signature;
 
+  @OneToOne
+  @JoinColumn(name = "dept_actual")
+  private Department department;
+
+  @OneToOne
+  @JoinColumn(name = "sector_actual")
+  private Sector sector;
+
   @Override
   public int hashCode() {
     return Objects.hash(id, empCode, firstname, lastname, email, roles);

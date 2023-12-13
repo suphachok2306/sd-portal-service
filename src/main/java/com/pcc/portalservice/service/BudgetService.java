@@ -221,18 +221,16 @@ public class BudgetService {
     String courseType
   ) {
     String trainingIdsQuery =
-      "SELECT DISTINCT t.id " +
-      "FROM Training t " +
-      "JOIN t.courses c " +
-      "LEFT JOIN t.status s " +
-      "JOIN t.user u " +
-      "JOIN u.departments ud " +
-      "WHERE ud.id = :departmentId " +
-      "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
-      "AND c.active != 'ยกเลิก' " +
-      "AND c.type = :courseType " +
-      "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
-      "AND (c.priceProject IS NULL OR c.priceProject = '')";
+            "SELECT DISTINCT t.id " +
+                    "FROM Training t " +
+                    "JOIN t.courses c " +
+                    "LEFT JOIN t.status s " +
+                    "WHERE t.user.department.id = :departmentId " +
+                    "AND EXTRACT(YEAR FROM t.dateSave) = :year " +
+                    "AND c.active != 'ยกเลิก' " +
+                    "AND c.type = :courseType " +
+                    "AND (s.status IS NULL OR s.status != 'ยกเลิก') " +
+                    "AND (c.priceProject IS NULL OR c.priceProject = '')";
 
     Query query = entityManager.createQuery(trainingIdsQuery);
     query.setParameter("departmentId", department_id);
