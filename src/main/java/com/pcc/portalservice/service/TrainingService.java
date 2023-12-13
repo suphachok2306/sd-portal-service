@@ -123,7 +123,7 @@ public class TrainingService {
           "UserId not found: " + createTrainingRequest.getUserId()
         )
       );
-    
+
     User approve1 = createTrainingRequest.getApprove1_id() != 0
       ? userRepository
         .findById(createTrainingRequest.getApprove1_id())

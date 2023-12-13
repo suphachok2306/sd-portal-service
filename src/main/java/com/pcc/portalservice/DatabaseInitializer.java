@@ -27,7 +27,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     insertDataIntoSectorTable();
     insertDataIntoDepartmentTable();
     insertDataIntoPositionTable();
-//     insertDataIntoUsersTable();
+     insertDataIntoUsersTable();
 //    insertBudgetTable();
   }
 
@@ -557,250 +557,321 @@ public class DatabaseInitializer implements CommandLineRunner {
     String hashpassword = passwordEncoder.encode("1234");
 
     String sql =
-      "INSERT INTO public.users (email, firstname, lastname, password, telephone, position_id, status, title) VALUES " +
-      //admin
-      "('wasana@pccth.com', 'วาสนา', 'ยีตา', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('kamonpanc@pccth.com', 'กมลพรรณ', 'ฉิมจารย์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('napakwans@pccth.com', 'นภาขวัญ', 'แซ่อึ้ง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('narisa@pccth.com', 'ชณัญพัชร์', 'มิลินภรพิศุทธ์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('utaiwank@pccth.com', 'อุทัยวรรณ', 'กิมศรี', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('nantidas@pccth.com', 'นันทิดา', 'แสงเดือน', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('siriratc@pccth.com', 'ศิริรัตน์', 'ชาลียุทธ', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('ratirotg@pccth.com', 'รติรส', 'กุญแจทอง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('sirirat@pccth.com', 'สิริรัตน', 'ทรงสอาด', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('prapatsons@pccth.com', 'ประภัสสร', 'ศรีสังข์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('rungkani@pccth.com', 'รุ่งกานต์', 'อินทรีประจง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('orrathaip@pccth.com', 'อรทัย', 'เพียศักดิ์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('chompoonuchc@pccth.com', 'ชมพูนุท', 'ชัยสุขโกศล', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      "('sedtawutt@pccth.com', 'เสฏฐวุฒิ', 'ตัญจินดา', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('angtima@pccth.com', 'อังติมา', 'เรืองวิไลรัตน์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว')," +
-      //vice
+            "INSERT INTO public.users (email, firstname, lastname, password, telephone, position_id, status, title, dept_actual,sector_actual) VALUES " +
+                    //admin
+                    "('wasana@pccth.com', 'วาสนา', 'ยีตา','" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 33,16)," +
 
-      "('vicePresident1@pccth.com', 'ศักดิ์ณรงค์', 'แสงสง่าพงศ์', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident2@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident3@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident4@pccth.com', 'วิชาญ', 'จุนทะเกาศลย์', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident5@pccth.com', 'ปิยนาถ', 'ฑีฆวาณิช', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident6@pccth.com', 'ชนัฐ', 'จาดทองคำ', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident7@pccth.com', 'ชิดพล', 'สมิตะลัมพะ', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('vicePresident8@pccth.com', 'ศิโรตม์', 'แสงเจริญ', '" +
-      hashpassword +
-      "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย')," +
-      //Approver
+                    "('kamonpanc@pccth.com', 'กมลพรรณ', 'ฉิมจารย์','" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 6,7)," +
 
-      "('Approver1@pccth.com', 'เสาวภา', 'ภารเพิง', '" +
-      hashpassword +
-      "', '+1111111111',  17,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver2@pccth.com', 'ณัฐวรรณ', 'ทนุบำรุงสาสน์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver3@pccth.com', 'ธราธร', 'พิทยะ', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver4@pccth.com', 'ภูรีลาภ', 'ก้อนทอง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver5@pccth.com', 'ชัยสิทธิ์', 'พัฒนสุขเกษม', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver6@pccth.com', 'คมกฤช', 'สำเนียง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver7@pccth.com', 'สามารถ', 'เหลี่ยวเจริญ', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver8@pccth.com', 'ณัฐธีร์', 'เปรมะสุทธิพัฒน์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver9@pccth.com', 'มาลินี', 'จงพัฒนกิจ', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver10@pccth.com', 'เจษฐา', 'วรรณกูล', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver11@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver12@pccth.com', 'รุ่งปิยะธิดา', 'ศรีคง', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver13@pccth.com', 'ธันย์ชนก', 'พันธุวงษ์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver14@pccth.com', 'วงศ์พรรณ', 'จำปา', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver15@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')," +
-      "('Approver16@pccth.com', 'พร', 'สมทองพานิช', '" +
-      hashpassword +
-      "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย')";
+                    "('napakwans@pccth.com', 'นภาขวัญ', 'แซ่อึ้ง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 21,6)," +
+
+                    "('narisa@pccth.com', 'ชณัญพัชร์', 'มิลินภรพิศุทธ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 1,1)," +
+
+                    "('utaiwank@pccth.com', 'อุทัยวรรณ', 'กิมศรี', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 8,5)," +
+
+                    "('nantidas@pccth.com', 'นันทิดา', 'แสงเดือน', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 9,5)," +
+
+                    "('siriratc@pccth.com', 'ศิริรัตน์', 'ชาลียุทธ', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 11,5)," +
+
+                    "('ratirotg@pccth.com', 'รติรส', 'กุญแจทอง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 36,2)," +
+
+                    "('sirirat@pccth.com', 'สิริรัตน', 'ทรงสอาด', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว',14,4 )," +
+
+                    "('prapatsons@pccth.com', 'ประภัสสร', 'ศรีสังข์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 15,4)," +
+
+                    "('rungkani@pccth.com', 'รุ่งกานต์', 'อินทรีประจง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 26,11)," +
+
+                    "('orrathaip@pccth.com', 'อรทัย', 'เพียศักดิ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 28,11)," +
+
+                    "('chompoonuchc@pccth.com', 'ชมพูนุท', 'ชัยสุขโกศล', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 32,15)," +
+
+                    "('sedtawutt@pccth.com', 'เสฎฐวุฒิ', 'ติณจินดา', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 28,11)," +
+
+                    "('angtima@pccth.com', 'อังติมา', 'เรืองวิไลรัตน์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นางสาว', 34,17)," +
+                    //vice
+
+                    "('vicePresident1@pccth.com', 'ศักดิ์ณรงค์', 'แสงสง่าพงศ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย',16,11)," +
+
+                    "('vicePresident2@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 17,10)," +
+
+                    "('vicePresident3@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 7,6)," +
+
+                    "('vicePresident4@pccth.com', 'วิชาญ', 'จุนทะเกาศลย์', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 13,3)," +
+
+                    "('vicePresident5@pccth.com', 'ปิยนาถ', 'ฑีฆวาณิช', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 14,4)," +
+
+                    "('vicePresident6@pccth.com', 'ชนัฐ', 'จาดทองคำ', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 10,5)," +
+
+                    "('vicePresident7@pccth.com', 'ชิตพล', 'สมิตะลัมพะ', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 8,5)," +
+
+                    "('vicePresident8@pccth.com', 'ศิโรตม์', 'แสงเจริญ', '" +
+                    hashpassword +
+                    "', '+1111111111',  1,  'เป็นพนักงานอยู่', 'นาย', 1,1)," +
+                    //Approver
+
+                    "('Approver1@pccth.com', 'เสาวภา', 'ภารเพิง', '" +
+                    hashpassword +
+                    "', '+1111111111',  17,  'เป็นพนักงานอยู่', 'นาย', 2,1)," +
+
+                    "('Approver2@pccth.com', 'ณัฐวรรณ', 'ทนุบำรุงสาสน์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 3,1)," +
+
+                    "('Approver3@pccth.com', 'ธราธร', 'พิทยะ', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 8,5)," +
+
+                    "('Approver4@pccth.com', 'ภูรีลาภ', 'ก้อนทอง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 9,5)," +
+
+                    "('Approver5@pccth.com', 'ชัยสิทธิ์', 'พัฒนสุขเกษม', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 10,5)," +
+
+                    "('Approver6@pccth.com', 'คมกฤช', 'สำเนียง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 11,5)," +
+
+                    "('Approver7@pccth.com', 'สามารถ', 'เหลี่ยวเจริญ', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 12,5)," +
+
+                    "('Approver8@pccth.com', 'ณัฐธีร์', 'เปรมะสุทธิพัฒน์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 13,3)," +
+
+                    "('Approver9@pccth.com', 'มาลินี', 'จงพัฒนกิจ', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 7,6)," +
+
+                    "('Approver10@pccth.com', 'เจษฎา', 'วรรณกูล', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 23,6)," +
+
+                    "('Approver11@pccth.com', 'ชาญชัย', 'มีสวัสดิ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 7,6)," +
+
+                    "('Approver12@pccth.com', 'รุ่งปิยะธิดา', 'ศรีคง', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 26,11)," +
+
+                    "('Approver13@pccth.com', 'ธันย์ชนก', 'พันธุวงษ์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 27,11)," +
+
+                    "('Approver14@pccth.com', 'วงศ์พรรณ', 'จำปา', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 28,11)," +
+
+                    "('Approver15@pccth.com', 'มนัสนันท์', 'สุปัณณานนท์', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 17,10)," +
+
+                    "('Approver16@pccth.com', 'พร', 'สมทองพานิช', '" +
+                    hashpassword +
+                    "', '+1111111111',  8,  'เป็นพนักงานอยู่', 'นาย', 17,10)";
 
     //users
     String users =
-      "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, position_id, status, title) VALUES " +
-      "('userSD1@pccth.com', 20000, 'userSD1', 'userSD1', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSD2@pccth.com', 20001, 'userSD2', 'userSD2', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSQA@pccth.com', 20002, 'userSQA', 'userSQA', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userFSI@pccth.com', 20003, 'userFSI', 'userFSI', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPBS@pccth.com', 20004, 'userPBS', 'userPBS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userMS@pccth.com', 20005, 'userMS', 'userMS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSE@pccth.com', 20006, 'userSE', 'userSE', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userCS@pccth.com', 20007, 'userCS', 'userCS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userCE@pccth.com', 20008, 'userCE', 'userCE', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userNS@pccth.com', 20009, 'userNS', 'userNS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSM@pccth.com', 20010, 'userSM', 'userSM', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userOSS@pccth.com', 20011, 'userOSS', 'userOSS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPM@pccth.com', 20012, 'userPM', 'userPM', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userDT@pccth.com', 20013, 'userDT', 'userDT', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userHQ@pccth.com', 20014, 'userHQ', 'userHQ', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAF@pccth.com', 20015, 'userAF', 'userAF', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userISO@pccth.com', 20016, 'userISO', 'userISO', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPS@pccth.com', 20017, 'userPS', 'userPS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userTOP@pccth.com', 20018, 'userTOP', 'userTOP', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSI@pccth.com', 20019, 'userSI', 'userSI', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userBD@pccth.com', 20020, 'userBD', 'userBD', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userIS@pccth.com', 20021, 'userIS', 'userIS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAP@pccth.com', 20022, 'userAP', 'userAP', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userFM@pccth.com', 20023, 'userFM', 'userFM', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userLG@pccth.com', 20024, 'userLG', 'userLG', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userPN@pccth.com', 20025, 'userPN', 'userPN', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAD@pccth.com', 20026, 'userAD', 'userAD', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAC@pccth.com', 20027, 'userAC', 'userAC', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userFN@pccth.com', 20028, 'userFN', 'userFN', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userMK@pccth.com', 20029, 'userMK', 'userMK', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAPS@pccth.com', 20030, 'userAPS', 'userAPS', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userAPS_BOI@pccth.com', 20031, 'userAPS(BOI)', 'userAPS(BOI)', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userOSS_BOI@pccth.com', 20032, 'userOSS(BOI)', 'userOSS(BOI)', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-      "('userSD_BOI@pccth.com', 20033, 'userSD(BOI)', 'userSD(BOI)', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย') ," +
-      "('Personnel@pccth.com', 88888, 'Personnel', 'Personnel', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย')," +
-      "('viceSD_BOI@pccth.com', 80033, 'viceSD(BOI)', 'viceSD(BOI)', '" +
-      hashpassword +
-      "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย') ," +
-      
-      "('approveSD_BOI@pccth.com', 70033, 'approveSD(BOI)', 'approveSD(BOI)', '" +
-      hashpassword +
-      "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย'), " +
-    //President
-      "('President@pccth.com', 80324, 'President', 'President', '" +
-            hashpassword +
-            "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย') " ;
-      
+            "INSERT INTO public.users (email, emp_code, firstname, lastname, password, telephone, position_id, status, title, dept_actual,sector_actual) VALUES " +
+                    "('userSD1@pccth.com', 20000, 'userSD1', 'userSD1', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',1,1), " +
+
+                    "('userSD2@pccth.com', 20001, 'userSD2', 'userSD2', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',2,1), " +
+
+                    "('userSQA@pccth.com', 20002, 'userSQA', 'userSQA', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',3,1), " +
+
+                    "('userFSI@pccth.com', 20003, 'userFSI', 'userFSI', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',5,8), " +
+
+                    "('userPBS@pccth.com', 20004, 'userPBS', 'userPBS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',6,7), " +
+
+                    "('userMS@pccth.com', 20005, 'userMS', 'userMS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',7,6), " +
+
+                    "('userSE@pccth.com', 20006, 'userSE', 'userSE', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',8,5), " +
+
+                    "('userCS@pccth.com', 20007, 'userCS', 'userCS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',9,5), " +
+
+                    "('userCE@pccth.com', 20008, 'userCE', 'userCE', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',10,5), " +
+
+                    "('userNS@pccth.com', 20009, 'userNS', 'userNS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',11,5), " +
+
+                    "('userSM@pccth.com', 20010, 'userSM', 'userSM', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',12,5), " +
+
+                    "('userOSS@pccth.com', 20011, 'userOSS', 'userOSS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',13,3), " +
+
+                    "('userPM@pccth.com', 20012, 'userPM', 'userPM', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',14,4), " +
+
+                    "('userDT@pccth.com', 20013, 'userDT', 'userDT', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',15,4), " +
+
+                    "('userHQ@pccth.com', 20014, 'userHQ', 'userHQ', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',16,11), " +
+
+                    "('userAF@pccth.com', 20015, 'userAF', 'userAF', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',17,10), " +
+
+                    "('userISO@pccth.com', 20016, 'userISO', 'userISO', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',18,11), " +
+
+                    "('userPS@pccth.com', 20017, 'userPS', 'userPS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',19,4), " +
+
+                    "('userTOP@pccth.com', 20018, 'userTOP', 'userTOP', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',20,5), " +
+
+                    "('userSI@pccth.com', 20019, 'userSI', 'userSI', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',21,6), " +
+
+                    "('userBD@pccth.com', 20020, 'userBD', 'userBD', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',22,6), " +
+
+                    "('userIS@pccth.com', 20021, 'userIS', 'userIS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',23,6), " +
+
+                    "('userAP@pccth.com', 20022, 'userAP', 'userAP', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',24,6), " +
+
+                    "('userFM@pccth.com', 20023, 'userFM', 'userFM', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',25,3), " +
+
+                    "('userLG@pccth.com', 20024, 'userLG', 'userLG', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',26,11), " +
+
+                    "('userPN@pccth.com', 20025, 'userPN', 'userPN', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',27,11), " +
+
+                    "('userAD@pccth.com', 20026, 'userAD', 'userAD', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',28,11), " +
+
+                    "('userAC@pccth.com', 20027, 'userAC', 'userAC', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',29,10), " +
+
+                    "('userFN@pccth.com', 20028, 'userFN', 'userFN', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',30,10), " +
+
+                    "('userMK@pccth.com', 20029, 'userMK', 'userMK', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',33,16), " +
+
+                    "('userAPS@pccth.com', 20030, 'userAPS', 'userAPS', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',34,17), " +
+
+                    "('userAPS_BOI@pccth.com', 20031, 'userAPS(BOI)', 'userAPS(BOI)', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',35,18), " +
+
+                    "('userOSS_BOI@pccth.com', 20032, 'userOSS(BOI)', 'userOSS(BOI)', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',37,20), " +
+
+                    "('userSD_BOI@pccth.com', 20033, 'userSD(BOI)', 'userSD(BOI)', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',42,23) ," +
+
+                    "('Personnel@pccth.com', 88888, 'Personnel', 'Personnel', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',NULL,NULL)," +
+
+                    "('viceSD_BOI@pccth.com', 80033, 'viceSD(BOI)', 'viceSD(BOI)', '" +
+                    hashpassword +
+                    "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย',42,23) ," +
+
+                    "('approveSD_BOI@pccth.com', 70033, 'approveSD(BOI)', 'approveSD(BOI)', '" +
+                    hashpassword +
+                    "', '+1111111111', 4, 'เป็นพนักงานอยู่', 'นาย',42,23), " +
+                    //President
+                    "('President@pccth.com', 80324, 'President', 'President', '" +
+                    hashpassword +
+                    "', '+1111111111', 1, 'เป็นพนักงานอยู่', 'นาย', NULL, NULL) ";
+
 
     if (isTableEmpty("public.users")) {
       jdbcTemplate.execute(sql);

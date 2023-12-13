@@ -35,7 +35,6 @@ public class BudgetService {
   private final EntityManager entityManager;
 
   public Budget saveOrUpdate(CreateBudgetRequest createBudgetRequest) {
-    try {
       Long department_Id = createBudgetRequest.getDepartment_Id();
       String year = createBudgetRequest.getYear();
       Company company = companyRepository
@@ -84,6 +83,7 @@ public class BudgetService {
         return budgetRepository.save(budget);
       } else {
         budget = existingBudget;
+
         if (
           createBudgetRequest.getBudgetCer() -
           (
@@ -114,12 +114,10 @@ public class BudgetService {
           );
           return budgetRepository.save(budget);
         } else {
+          System.out.println("test2");
           throw new RuntimeException("งบที่อัพเดตมีค่าน้อยกว่าที่ใช้ไปแล้ว");
         }
       }
-    } catch (Exception e) {
-      throw new RuntimeException("ไม่มีงบในระบบ", e);
-    }
   }
 
   public float totalExp(float certificate, float training) {
@@ -237,6 +235,8 @@ public class BudgetService {
     query.setParameter("year", Integer.parseInt(year));
     query.setParameter("courseType", courseType);
 
+    System.out.println(query.getResultList());
+
     return query.getResultList();
   }
 
@@ -291,8 +291,6 @@ public class BudgetService {
         )
       );
 
-      System.out.println(resultListBudgetTraining.get(0));
-      System.out.println(resultListBudgetCer.get(0));
 
       BigDecimal total_use = certificate.add(train);
 
