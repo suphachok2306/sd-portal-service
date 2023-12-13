@@ -15,6 +15,8 @@ public class EditEmployeeRequest {
   String positionName;
   String email;
 
+  Long dept_actual;
+  Long sector_actual;
   private List<Long> deptID;
   private List<Long> companyID;
   private List<Long> sectorID;

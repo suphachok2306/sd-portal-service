@@ -125,6 +125,15 @@ public class UserService {
       new RuntimeException("Position not found")
     );
 
+    Department departmentA = departmentRepository.findById(createEmployeeRequest.getDept_actual()).orElseThrow(() ->
+            new RuntimeException("Department not found")
+    );
+
+    Sector sectorA = sectorRepository.findById(createEmployeeRequest.getSector_actual()).orElseThrow(() ->
+            new RuntimeException("Sector not found")
+    );
+
+
     User user = User
       .builder()
       .companys(new HashSet<>())
@@ -135,6 +144,8 @@ public class UserService {
       .firstname(createEmployeeRequest.getFirstname())
       .lastname(createEmployeeRequest.getLastname())
       .email(createEmployeeRequest.getEmail())
+            .department(departmentA)
+            .sector(sectorA)
       .roles(new HashSet<>())
       .position(position)
       .status(StatusUser.เป็นพนักงานอยู่.toString())
@@ -211,11 +222,21 @@ public class UserService {
       throw new RuntimeException("EmpCode is already in use.");
     }
 
+    Department departmentA = departmentRepository.findById(editEmployeeRequest.getDept_actual()).orElseThrow(() ->
+            new RuntimeException("Department not found")
+    );
+
+    Sector sectorA = sectorRepository.findById(editEmployeeRequest.getSector_actual()).orElseThrow(() ->
+            new RuntimeException("Sector not found")
+    );
+
     user.setEmpCode(editEmployeeRequest.getEmpCode());
     user.setTitle(editEmployeeRequest.getTitle());
     user.setFirstname(editEmployeeRequest.getFirstname());
     user.setLastname(editEmployeeRequest.getLastname());
     user.setEmail(editEmployeeRequest.getEmail());
+    user.setSector(sectorA);
+    user.setDepartment(departmentA);
     user.setSectors(new HashSet<>());
     user.setCompanys(new HashSet<>());
     user.setDepartments(new HashSet<>());
