@@ -36,7 +36,6 @@ public class FileServiceImpl extends FileService {
 
     @Value("${file.path}")
     private String filepath;
-
     @Override
     public LinkedHashMap<String, Object> save(MultipartFile multipartFile) {
         String dir = System.getProperty("user.dir") + "/" + filepath;
@@ -46,6 +45,10 @@ public class FileServiceImpl extends FileService {
         String formattedDate = dateFormat.format(date);
         String name = formattedDate + "_" + multipartFile.getOriginalFilename();
         try {
+            File directory = new File(dir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
             multipartFile.transferTo(new File(dir + name));
             TrainingFiles file = TrainingFiles
                     .builder()
