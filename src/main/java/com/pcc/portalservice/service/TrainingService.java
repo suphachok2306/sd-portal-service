@@ -1022,7 +1022,6 @@ public class TrainingService {
     Long userId4
   ) {
     Training training_id = findByTrainingId(trainId);
-    System.out.println(training_id.getUser().getCompanys());
     Optional<Department> departmentOptional = departmentRepository.findById(
       findDeptByUserID(training_id.getUser().getId())
     );
@@ -1590,7 +1589,6 @@ public class TrainingService {
 
       Join<Training, Course> courseJoin = trainingRoot.join("courses");
       Join<Training, Status> statusJoin = trainingRoot.join("status");
-
       query
               .multiselect(
                       trainingRoot.get("id").alias("train_id"),
@@ -1605,7 +1603,6 @@ public class TrainingService {
               courseJoin.get("active"),
               "ดำเนินการอยู่"
       );
-
       Predicate passPredicate = cb.equal(
               statusJoin.get("status"),
               StatusApprove.อนุมัติ
@@ -1637,7 +1634,6 @@ public class TrainingService {
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
       List<Tuple> resultListIDTraining = typedQuery.getResultList();
 
-      System.out.println(resultListIDTraining);
 
       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
@@ -1686,10 +1682,7 @@ public class TrainingService {
       float totalAll = 0;
 
       for (Tuple row : resultListIDTrainingOutput) {
-        if (
-                currentUser == null ||
-                        !currentUser.get("emp_code").equals(row.get("emp_code"))
-        ) {
+        if (currentUser == null || currentUser.get("emp_code") == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
           if (currentUser != null) {
             currentUser.put("total", totalAll);
           }
@@ -1703,7 +1696,6 @@ public class TrainingService {
           users.add(currentUser);
           totalAll = 0;
         }
-
         LinkedHashMap<String, Object> course = new LinkedHashMap<>();
         course.put("course_id", row.get("course_id"));
         course.put("course_name", row.get("course_name"));
@@ -1726,9 +1718,9 @@ public class TrainingService {
               .stream()
               .mapToDouble(user -> (Float) user.get("total"))
               .sum();
-
       result.put("total_All", totalAllValue);
       result.put("data", users);
+
 
       return result;
     }
@@ -1786,7 +1778,6 @@ public class TrainingService {
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
       List<Tuple> resultListIDTraining = typedQuery.getResultList();
 
-      System.out.println(resultListIDTraining);
 
       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
@@ -1835,10 +1826,7 @@ public class TrainingService {
       float totalAll = 0;
 
       for (Tuple row : resultListIDTrainingOutput) {
-        if (
-                currentUser == null ||
-                        !currentUser.get("emp_code").equals(row.get("emp_code"))
-        ) {
+        if (currentUser == null || currentUser.get("emp_code") == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
           if (currentUser != null) {
             currentUser.put("total", totalAll);
           }
@@ -1995,10 +1983,7 @@ public class TrainingService {
         float totalAll = 0;
 
         for (Tuple row : resultListIDTrainingOutput) {
-          if (
-                  currentUser == null ||
-                          !currentUser.get("emp_code").equals(row.get("emp_code"))
-          ) {
+          if (currentUser == null || currentUser.get("emp_code") == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
             if (currentUser != null) {
               currentUser.put("total", totalAll);
             }
@@ -2063,7 +2048,6 @@ public class TrainingService {
 
       Join<Training, Course> courseJoin = trainingRoot.join("courses");
       Join<Training, Status> statusJoin = trainingRoot.join("status");
-
       query
         .multiselect(
           trainingRoot.get("id").alias("train_id"),
@@ -2076,7 +2060,6 @@ public class TrainingService {
             .alias("company_id")
         )
         .distinct(true);
-
       Predicate startDatePredicate = cb.greaterThanOrEqualTo(
         courseJoin.get("startDate"),
         parsedStartDate
@@ -2089,7 +2072,6 @@ public class TrainingService {
         courseJoin.get("active"),
         "ดำเนินการอยู่"
       );
-
       Predicate passPredicate = cb.equal(
         statusJoin.get("status"),
         StatusApprove.อนุมัติ
@@ -2107,14 +2089,12 @@ public class TrainingService {
         cb.equal(statusRoot1.get("status"), StatusApprove.อนุมัติ),
         cb.equal(trainingRoot.get("id"), statusRoot1.get("training"))
       );
-
       Subquery<Long> totalStatusCountSubquery = query.subquery(Long.class);
       Root<Status> statusRoot2 = totalStatusCountSubquery.from(Status.class);
       totalStatusCountSubquery.select(cb.count(statusRoot2));
       totalStatusCountSubquery.where(
         cb.equal(trainingRoot.get("id"), statusRoot2.get("training"))
       );
-
       query.where(
         cb.and(
           startDatePredicate,
@@ -2127,7 +2107,6 @@ public class TrainingService {
       );
       TypedQuery<Tuple> typedQuery = entityManager.createQuery(query);
       List<Tuple> resultListIDTraining = typedQuery.getResultList();
-
       CriteriaBuilder cbOutput = entityManager.getCriteriaBuilder();
       CriteriaQuery<Tuple> queryOutput = cbOutput.createTupleQuery();
       Root<Training> trainingRootOutput = queryOutput.from(Training.class);
@@ -2173,16 +2152,13 @@ public class TrainingService {
       LinkedHashMap<String, Object> result = new LinkedHashMap<>();
       List<LinkedHashMap<String, Object>> users = new ArrayList<>();
       LinkedHashMap<String, Object> currentUser = null;
-
       for (Tuple row : resultListIDTrainingOutput) {
         Optional<Position> positionOptional = positionRepository.findById(
           (Long) row.get("position_id")
         );
         String positionString = positionOptional.get().getPositionName();
         if (
-          currentUser == null ||
-          !currentUser.get("emp_code").equals(row.get("emp_code"))
-        ) {
+                currentUser == null || currentUser.get("emp_code") == null || !currentUser.get("emp_code").equals(row.get("emp_code"))) {
           currentUser = new LinkedHashMap<>();
           currentUser.put("user_id", row.get("user_id"));
           currentUser.put("emp_code", row.get("emp_code"));
@@ -2193,7 +2169,6 @@ public class TrainingService {
           currentUser.put("course", new ArrayList<>());
           users.add(currentUser);
         }
-
         LinkedHashMap<String, Object> course = new LinkedHashMap<>();
         course.put("course_name", row.get("course_name"));
         course.put("result1", row.get("result1"));
@@ -2201,18 +2176,12 @@ public class TrainingService {
         course.put("result3", row.get("result3"));
         course.put("result4", row.get("result4"));
         course.put("result5", row.get("result5"));
-        System.out.println(row.get("result1"));
-        System.out.println(row.get("result2"));
-        System.out.println(row.get("result3"));
-        System.out.println(row.get("result4"));
-        System.out.println(row.get("result5"));
-
         ((List<LinkedHashMap<String, Object>>) currentUser.get("course")).add(
             course
           );
-      }
 
-      result.put("data", users);
+      }
+      result.put("data", users);;
 
 
       return result;
